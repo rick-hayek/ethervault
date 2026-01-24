@@ -6,7 +6,12 @@
     ],
     "scripts": {
         "dev": "npm run dev -w @premium-password-manager/app",
+        "dev:desktop": "NODE_ENV=development concurrently \"npm run dev -w @premium-password-manager/app\" \"wait-on http://localhost:3000 && npm run dev -w @premium-password-manager/electron\"",
         "build": "npm run build --workspaces",
         "test": "npm run test --workspaces"
+    },
+    "devDependencies": {
+        "concurrently": "^9.2.1",
+        "wait-on": "^9.0.3"
     }
 }

@@ -25,3 +25,4 @@ dist-ssr
 
 #doc
 documents
+package-lock.json
