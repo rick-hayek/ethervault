@@ -1,0 +1,12 @@
+{
+    "name": "premium-password-manager-monorepo",
+    "private": true,
+    "workspaces": [
+        "packages/*"
+    ],
+    "scripts": {
+        "dev": "npm run dev -w @premium-password-manager/app",
+        "build": "npm run build --workspaces",
+        "test": "npm run test --workspaces"
+    }
+}

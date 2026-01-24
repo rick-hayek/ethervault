@@ -1,0 +1,131 @@
+
+import React, { useState } from 'react';
+import {
+  Fingerprint,
+  Shield,
+  Clock,
+  Moon,
+  Smartphone,
+  Cloud,
+  Check,
+  RefreshCcw,
+  Database,
+  Lock,
+  Globe,
+  Bell
+} from 'lucide-react';
+import { AppSettings, CloudProvider } from '@premium-password-manager/core';
+
+interface SettingsViewProps {
+  settings: AppSettings;
+  setSettings: (settings: AppSettings) => void;
+}
+
+export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSettings }) => {
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  const toggleBiometrics = () => {
+    setSettings({ ...settings, biometricsEnabled: !settings.biometricsEnabled });
+  };
+
+  const handleSync = (provider: CloudProvider) => {
+    if (settings.cloudProvider === provider) {
+      setIsSyncing(true);
+      setTimeout(() => { setIsSyncing(false); setSettings({ ...settings, lastSync: 'Just now' }); }, 1000);
+    } else {
+      setIsSyncing(true);
+      setTimeout(() => { setIsSyncing(false); setSettings({ ...settings, cloudProvider: provider, lastSync: 'Just now' }); }, 800);
+    }
+  };
+
+  const CompactSetting = ({ icon: Icon, label, value, onClick, type = 'toggle' }: any) => (
+    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
+      <div className="flex items-center gap-3">
+        <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
+          <Icon className="w-3.5 h-3.5" />
+        </div>
+        <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 uppercase tracking-tight">{label}</span>
+      </div>
+      {type === 'toggle' ? (
+        <button onClick={onClick} className={`w-8 h-4 rounded-full relative transition-all ${value ? 'bg-indigo-600' : 'bg-slate-200 dark:bg-slate-800'}`}>
+          <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${value ? 'right-0.5' : 'left-0.5'}`} />
+        </button>
+      ) : (
+        <span className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 uppercase">{value}</span>
+      )}
+    </div>
+  );
+
+  return (
+    <div className="space-y-4 pb-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Settings</h1>
+          <p className="hidden md:block text-slate-500 dark:text-slate-400 text-xs mt-0.5">Manage your security and synchronization preferences.</p>
+        </div>
+        <div className="text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] border border-slate-200 dark:border-slate-800 px-2 py-1 rounded-lg">VER 2.6.0</div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+        {/* Cloud Config - Tighter */}
+        <div className="lg:col-span-5 bg-white dark:bg-slate-900 p-4 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+          <div className="flex items-center justify-between mb-1">
+            <h2 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">Sync Provider</h2>
+            {settings.lastSync && <span className="text-[8px] text-emerald-500 font-bold uppercase">{settings.lastSync}</span>}
+          </div>
+
+          <div className="grid grid-cols-3 gap-2">
+            {[
+              { id: 'google', name: 'Drive', icon: Globe },
+              { id: 'icloud', name: 'iCloud', icon: Cloud },
+              { id: 'onedrive', name: 'Sync', icon: Smartphone }
+            ].map(p => (
+              <button
+                key={p.id}
+                onClick={() => handleSync(p.id as CloudProvider)}
+                className={`flex flex-col items-center gap-1.5 p-2 rounded-xl border transition-all ${settings.cloudProvider === p.id
+                  ? 'border-indigo-500 bg-indigo-50/30 dark:bg-indigo-500/5'
+                  : 'border-slate-50 dark:border-slate-800 hover:border-slate-200'
+                  }`}
+              >
+                <div className={`p-1.5 rounded-lg ${settings.cloudProvider === p.id ? 'bg-indigo-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}`}>
+                  <p.icon className="w-4 h-4" />
+                </div>
+                <span className="text-[8px] font-bold text-slate-500 uppercase">{p.name}</span>
+              </button>
+            ))}
+          </div>
+
+          <button
+            disabled={isSyncing || settings.cloudProvider === 'none'}
+            onClick={() => handleSync(settings.cloudProvider)}
+            className="w-full py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-bold rounded-xl active:scale-95 transition-all disabled:opacity-30 flex items-center justify-center gap-2"
+          >
+            <RefreshCcw className={`w-3 h-3 ${isSyncing ? 'animate-spin' : ''}`} />
+            {isSyncing ? 'UPDATING...' : 'FORCE SYNC'}
+          </button>
+        </div>
+
+        {/* Access Settings - High Density Grid */}
+        <div className="lg:col-span-7 space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <CompactSetting icon={Fingerprint} label="Biometric ID" value={settings.biometricsEnabled} onClick={toggleBiometrics} />
+            <CompactSetting icon={Shield} label="2FA Protection" value={settings.twoFactorEnabled} />
+            <CompactSetting icon={Clock} label="Lock Timer" value="5 MINS" type="value" />
+            <CompactSetting icon={Bell} label="Login Alerts" value={true} />
+            <CompactSetting icon={Moon} label="Dark Mode" value={settings.theme === 'dark'} onClick={() => setSettings({ ...settings, theme: settings.theme === 'dark' ? 'light' : 'dark' })} />
+            <CompactSetting icon={Lock} label="Master Log" value="ENABLED" type="value" />
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-900">
+        <div className="flex items-center gap-4">
+          <button className="text-[9px] font-bold text-slate-400 uppercase tracking-widest hover:text-rose-500 transition-colors">Export Vault</button>
+          <button className="text-[9px] font-bold text-slate-400 uppercase tracking-widest hover:text-rose-500 transition-colors">Clear Cache</button>
+        </div>
+        <span className="text-[8px] font-black text-slate-300 dark:text-slate-800 uppercase tracking-[0.5em]">AES-256 Bit Encryption</span>
+      </div>
+    </div>
+  );
+};
