@@ -2,6 +2,7 @@ import { PasswordEntry, Category } from './types';
 import { CryptoService } from './CryptoService';
 import { AuthService } from './AuthService';
 import { StorageService } from './StorageService';
+import { SecurityService } from './SecurityService';
 
 export class VaultService {
     private static entries: PasswordEntry[] = [];
@@ -33,7 +34,8 @@ export class VaultService {
             id,
             createdAt: Date.now(),
             updatedAt: Date.now(),
-            favorite: entry.favorite || false
+            favorite: entry.favorite || false,
+            strength: entry.password ? SecurityService.calculateStrength(entry.password) : 'Weak'
         };
 
         // Encrypt sensitive fields (everything except ID and metadata for filtering)
@@ -71,6 +73,9 @@ export class VaultService {
         if (!existing) throw new Error('Entry not found');
 
         const updated = { ...existing, ...updates, updatedAt: Date.now() };
+        if (updates.password) {
+            updated.strength = SecurityService.calculateStrength(updates.password);
+        }
 
         const sensitiveFields = {
             title: updated.title,
@@ -115,5 +120,38 @@ export class VaultService {
         const { ciphertext, nonce } = JSON.parse(encryptedJson);
         const decrypted = CryptoService.decrypt(ciphertext, nonce, key);
         this.entries = JSON.parse(decrypted);
+    }
+
+    static async reencryptVault(newKey: Uint8Array): Promise<void> {
+        const entries = await this.getEntries();
+
+        const updates = entries.map(async (entry) => {
+            const sensitiveFields = {
+                title: entry.title,
+                username: entry.username,
+                password: entry.password,
+                website: entry.website,
+                url: entry.url,
+                notes: entry.notes,
+                category: entry.category,
+                tags: entry.tags
+            };
+
+            const { ciphertext, nonce } = CryptoService.encrypt(JSON.stringify(sensitiveFields), newKey);
+
+            const storageItem = {
+                id: entry.id,
+                payload: ciphertext,
+                nonce,
+                category: entry.category,
+                createdAt: entry.createdAt,
+                updatedAt: entry.updatedAt,
+                favorite: entry.favorite
+            };
+
+            await StorageService.setItem('vault', entry.id, storageItem);
+        });
+
+        await Promise.all(updates);
     }
 }

@@ -66,6 +66,30 @@ const App: React.FC = () => {
     initializeApp();
   }, []);
 
+  // Auto-lock timer
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
+    let timer: any;
+    const resetTimer = () => {
+      if (timer) clearTimeout(timer);
+      // settings.autoLockTimeout is in minutes, convert to ms
+      timer = setTimeout(() => {
+        handleLock();
+      }, settings.autoLockTimeout * 60 * 1000);
+    };
+
+    const events = ['mousemove', 'keydown', 'mousedown', 'touchstart'];
+    events.forEach(event => window.addEventListener(event, resetTimer));
+
+    resetTimer(); // Initial start
+
+    return () => {
+      if (timer) clearTimeout(timer);
+      events.forEach(event => window.removeEventListener(event, resetTimer));
+    };
+  }, [isAuthenticated, settings.autoLockTimeout]);
+
   useEffect(() => {
     if (isDarkMode) {
       document.documentElement.classList.add('dark');

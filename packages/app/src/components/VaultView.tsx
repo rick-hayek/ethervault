@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { Search, Plus, MoreVertical, ExternalLink, Copy, Check, Tag as TagIcon, X, Globe, User as UserIcon, Lock, Eye, EyeOff, Trash2, Edit2, ChevronRight } from 'lucide-react';
-import { PasswordEntry, Category } from '@premium-password-manager/core';
+import { PasswordEntry, Category, SecurityService } from '@premium-password-manager/core';
 import { CATEGORIES } from '../constants';
 
 interface VaultViewProps {
@@ -92,8 +92,8 @@ export const VaultView: React.FC<VaultViewProps> = ({
                 key={cat}
                 onClick={() => onCategoryChange(cat)}
                 className={`px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-wider whitespace-nowrap transition-all border ${activeCategory === cat
-                    ? `${getCategoryColor(cat)} border-transparent shadow-md`
-                    : 'bg-white dark:bg-slate-900 text-slate-400 dark:text-slate-500 border-slate-100 dark:border-slate-800 hover:border-slate-200'
+                  ? `${getCategoryColor(cat)} border-transparent shadow-md`
+                  : 'bg-white dark:bg-slate-900 text-slate-400 dark:text-slate-500 border-slate-100 dark:border-slate-800 hover:border-slate-200'
                   }`}
               >
                 {cat}
@@ -110,8 +110,8 @@ export const VaultView: React.FC<VaultViewProps> = ({
             key={cat}
             onClick={() => onCategoryChange(cat)}
             className={`px-3.5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider whitespace-nowrap transition-all border ${activeCategory === cat
-                ? `${getCategoryColor(cat)} border-transparent shadow-md`
-                : 'bg-white dark:bg-slate-950 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'
+              ? `${getCategoryColor(cat)} border-transparent shadow-md`
+              : 'bg-white dark:bg-slate-950 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'
               }`}
           >
             {cat}
@@ -182,8 +182,8 @@ export const VaultView: React.FC<VaultViewProps> = ({
               </div>
               <div className="flex items-center gap-2">
                 <div className={`w-1.5 h-1.5 rounded-full ${entry.strength === 'Secure' ? 'bg-emerald-500' :
-                    entry.strength === 'Strong' ? 'bg-blue-500' :
-                      entry.strength === 'Medium' ? 'bg-amber-500' : 'bg-rose-500'
+                  entry.strength === 'Strong' ? 'bg-blue-500' :
+                    entry.strength === 'Medium' ? 'bg-amber-500' : 'bg-rose-500'
                   }`} />
                 <ChevronRight className="w-4 h-4 text-slate-300" />
               </div>
@@ -221,9 +221,9 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
     e.preventDefault();
     const result: PasswordEntry = {
       ...formData as PasswordEntry,
-      id: entry?.id || Math.random().toString(36).substr(2, 9),
+      id: entry?.id || crypto.randomUUID(),
       lastUpdated: 'Just now',
-      strength: (formData.password?.length || 0) > 12 ? 'Secure' : (formData.password?.length || 0) > 8 ? 'Strong' : 'Medium'
+      strength: formData.password ? SecurityService.calculateStrength(formData.password) : 'Weak'
     };
     onSave(result);
   };

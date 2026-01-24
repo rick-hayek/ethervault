@@ -14,7 +14,7 @@ import {
   Globe,
   Bell
 } from 'lucide-react';
-import { AppSettings, CloudProvider } from '@premium-password-manager/core';
+import { AppSettings, CloudProvider, AuthService } from '@premium-password-manager/core';
 
 interface SettingsViewProps {
   settings: AppSettings;
@@ -23,6 +23,10 @@ interface SettingsViewProps {
 
 export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSettings }) => {
   const [isSyncing, setIsSyncing] = useState(false);
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [passwordForm, setPasswordForm] = useState({ old: '', new: '', confirm: '' });
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
 
   const toggleBiometrics = () => {
     setSettings({ ...settings, biometricsEnabled: !settings.biometricsEnabled });
@@ -35,6 +39,33 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     } else {
       setIsSyncing(true);
       setTimeout(() => { setIsSyncing(false); setSettings({ ...settings, cloudProvider: provider, lastSync: 'Just now' }); }, 800);
+    }
+  };
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(false);
+
+    if (passwordForm.new !== passwordForm.confirm) {
+      setError('New passwords do not match');
+      return;
+    }
+
+    try {
+      const result = await AuthService.changeMasterPassword(passwordForm.old, passwordForm.new);
+      if (result) {
+        setSuccess(true);
+        setTimeout(() => {
+          setIsPasswordModalOpen(false);
+          setPasswordForm({ old: '', new: '', confirm: '' });
+          setSuccess(false);
+        }, 2000);
+      } else {
+        setError('Incorrect original password');
+      }
+    } catch (err: any) {
+      setError(err.message || 'Failed to change password');
     }
   };
 
@@ -111,13 +142,80 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <CompactSetting icon={Fingerprint} label="Biometric ID" value={settings.biometricsEnabled} onClick={toggleBiometrics} />
             <CompactSetting icon={Shield} label="2FA Protection" value={settings.twoFactorEnabled} />
-            <CompactSetting icon={Clock} label="Lock Timer" value="5 MINS" type="value" />
+            <CompactSetting icon={Clock} label="Lock Timer" value={`${settings.autoLockTimeout} MINS`} type="value" />
             <CompactSetting icon={Bell} label="Login Alerts" value={true} />
             <CompactSetting icon={Moon} label="Dark Mode" value={settings.theme === 'dark'} onClick={() => setSettings({ ...settings, theme: settings.theme === 'dark' ? 'light' : 'dark' })} />
             <CompactSetting icon={Lock} label="Master Log" value="ENABLED" type="value" />
           </div>
+
+          <button
+            onClick={() => setIsPasswordModalOpen(true)}
+            className="w-full py-3 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-[11px] font-black rounded-2xl hover:bg-indigo-100 transition-all flex items-center justify-center gap-2"
+          >
+            <Shield className="w-4 h-4" />
+            CHANGE MASTER PASSWORD
+          </button>
         </div>
       </div>
+
+      {isPasswordModalOpen && (
+        <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+          <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden p-8 animate-in zoom-in-95 duration-200">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">Change Master Password</h2>
+            <form onSubmit={handlePasswordChange} className="space-y-4">
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Current Password</label>
+                <input
+                  type="password"
+                  required
+                  value={passwordForm.old}
+                  onChange={e => setPasswordForm({ ...passwordForm, old: e.target.value })}
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
+                />
+              </div>
+              <div className="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">New Password</label>
+                <input
+                  type="password"
+                  required
+                  value={passwordForm.new}
+                  onChange={e => setPasswordForm({ ...passwordForm, new: e.target.value })}
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
+                />
+              </div>
+              <div className="space-y-1.5">
+                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">Confirm New Password</label>
+                <input
+                  type="password"
+                  required
+                  value={passwordForm.confirm}
+                  onChange={e => setPasswordForm({ ...passwordForm, confirm: e.target.value })}
+                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
+                />
+              </div>
+
+              {error && <p className="text-rose-500 text-[10px] font-bold uppercase text-center pt-2">{error}</p>}
+              {success && <p className="text-emerald-500 text-[10px] font-bold uppercase text-center pt-2">Password updated successfully!</p>}
+
+              <div className="flex gap-3 pt-6">
+                <button
+                  type="button"
+                  onClick={() => { setIsPasswordModalOpen(false); setError(null); }}
+                  className="flex-1 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black rounded-xl hover:opacity-90 transition-all"
+                >
+                  Save Changes
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-900">
         <div className="flex items-center gap-4">
