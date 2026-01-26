@@ -32,6 +32,8 @@ function createWindow() {
         mainWindow.loadFile(indexPath).catch(err => {
             console.error('Failed to load production UI:', err);
         });
+
+        mainWindow.webContents.openDevTools();
     }
 
     // Capture load failures

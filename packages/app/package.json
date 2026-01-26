@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "type-check": "tsc --noEmit",
     "preview": "vite preview",
     "cap:sync": "npm run build && npx cap sync",
     "cap:open:ios": "npx cap open ios",

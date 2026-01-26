@@ -5,6 +5,8 @@
     "main": "src/index.ts",
     "scripts": {
         "build": "tsc",
+        "dev": "tsc -w",
+        "type-check": "tsc --noEmit",
         "test": "vitest"
     },
     "devDependencies": {

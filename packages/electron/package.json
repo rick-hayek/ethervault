@@ -7,12 +7,16 @@
     "main": "dist/main.js",
     "scripts": {
         "dev": "tsc && electron .",
-        "build:preload": "esbuild src/preload.ts --bundle --platform=node --target=node18 --external:electron --outfile=dist/preload.js",
         "watch": "tsc -w",
-        "package": "npm run build && electron-builder",
-        "build": "npm run build:main && npm run dist",
+        "build": "npm run build:main && npm run build:preload",
         "build:main": "tsc",
-        "dist": "electron-builder --mac"
+        "build:preload": "esbuild src/preload.ts --bundle --platform=node --target=node18 --external:electron --outfile=dist/preload.js",
+        "type-check": "tsc --noEmit",
+        "dist": "npm run build && electron-builder",
+        "dist:mac": "npm run build && electron-builder --mac --x64 --arm64",
+        "dist:win": "npm run build && electron-builder --win",
+        "dist:linux": "npm run build && electron-builder --linux",
+        "pack": "npm run build && electron-builder --dir"
     },
     "build": {
         "appId": "com.premium.passwordmanager",
