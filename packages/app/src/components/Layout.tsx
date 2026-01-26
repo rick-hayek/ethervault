@@ -83,7 +83,7 @@ export const Layout: React.FC<LayoutProps> = ({
     <div className="h-screen flex flex-col md:flex-row bg-slate-50 dark:bg-slate-950 transition-colors duration-300 overflow-hidden">
       {/* Sidebar - Desktop/Tablet (Fixed position, non-scrolling) */}
       <aside className="hidden md:flex flex-col md:w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 h-full shrink-0 z-20">
-        <div className="p-4 md:p-8 flex items-center justify-start gap-3">
+        <div className="p-4 md:p-8 flex items-center justify-start gap-3 titlebar">
           <div className="p-2 bg-slate-900 dark:bg-white rounded-xl shadow-lg shrink-0">
             <ShieldCheck className="w-5 h-5 md:w-6 md:h-6 text-white dark:text-slate-900" />
           </div>
@@ -130,15 +130,15 @@ export const Layout: React.FC<LayoutProps> = ({
       </aside>
 
       {/* Mobile Header (Sticky) */}
-      <header className="md:hidden flex items-center h-14 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 shrink-0 z-30 px-4">
+      <header className="md:hidden flex items-center h-14 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 shrink-0 z-30 px-4 titlebar">
         {isSearchMode ? (
           <div className="flex items-center w-full gap-2 animate-in slide-in-from-right-2 duration-200">
-            <button onClick={() => { setIsSearchMode(false); onSearch?.(''); }} className="p-2 text-slate-900 dark:text-white"><ArrowLeft className="w-5 h-5" /></button>
+            <button onClick={() => { setIsSearchMode(false); onSearch?.(''); }} className="p-2 text-slate-900 dark:text-white no-drag"><ArrowLeft className="w-5 h-5" /></button>
             <div className="flex-1 relative">
               <input
                 type="text" autoFocus value={searchQuery} onChange={(e) => onSearch?.(e.target.value)}
                 placeholder={t('layout.search_placeholder')}
-                className="w-full bg-slate-100 dark:bg-slate-900 rounded-lg py-1.5 pl-3 pr-8 outline-none text-xs text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800"
+                className="w-full bg-slate-100 dark:bg-slate-900 rounded-lg py-1.5 pl-3 pr-8 outline-none text-xs text-slate-900 dark:text-white border border-slate-200 dark:border-slate-800 no-drag"
               />
             </div>
           </div>
@@ -151,11 +151,11 @@ export const Layout: React.FC<LayoutProps> = ({
             <div className="flex items-center">
               {currentView === 'vault' && (
                 <>
-                  <button onClick={() => setIsSearchMode(true)} className="p-2 text-slate-900 dark:text-white"><Search className="w-5 h-5" /></button>
-                  <button onClick={onAddClick} className="p-2 text-slate-900 dark:text-white"><Plus className="w-5 h-5" /></button>
+                  <button onClick={() => setIsSearchMode(true)} className="p-2 text-slate-900 dark:text-white no-drag"><Search className="w-5 h-5" /></button>
+                  <button onClick={onAddClick} className="p-2 text-slate-900 dark:text-white no-drag"><Plus className="w-5 h-5" /></button>
                 </>
               )}
-              <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 text-slate-900 dark:text-white"><MoreVertical className="w-5 h-5" /></button>
+              <button onClick={() => setIsMobileMenuOpen(true)} className="p-2 text-slate-900 dark:text-white no-drag"><MoreVertical className="w-5 h-5" /></button>
             </div>
           </>
         )}

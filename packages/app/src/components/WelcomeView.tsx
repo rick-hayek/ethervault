@@ -34,8 +34,8 @@ export const WelcomeView: React.FC<WelcomeViewProps> = ({ onComplete }) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4">
-      <div className="max-w-md w-full">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4 titlebar">
+      <div className="max-w-md w-full no-drag">
         {/* Progress Bar - Reduced margin */}
         <div className="flex gap-2 mb-6 md:mb-8">
           <div className={`h-1 flex-1 rounded-full transition-all duration-700 ${step >= 1 ? 'bg-slate-900 dark:bg-white' : 'bg-slate-200 dark:bg-slate-800'}`} />
