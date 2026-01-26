@@ -34,7 +34,8 @@
                     "**/*"
                 ]
             },
-            "package.json"
+            "package.json",
+            "assets/**/*"
         ],
         "extends": null,
         "mac": {

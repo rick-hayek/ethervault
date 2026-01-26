@@ -54,9 +54,11 @@ function createWindow() {
 }
 
 function createTray() {
-    // Use the official EtherVault tray icon
-    const iconPath = path.join(__dirname, '../assets/tray-icon.png');
-    tray = new Tray(nativeImage.createFromPath(iconPath));
+    // Use the official EtherVault tray icon (Template suffix for macOS menu bar)
+    const iconPath = path.join(__dirname, '../assets/tray-iconTemplate.png');
+    const icon = nativeImage.createFromPath(iconPath);
+    icon.setTemplateImage(true); // Mark as template for macOS
+    tray = new Tray(icon);
 
     const contextMenu = Menu.buildFromTemplate([
         { label: 'Open Vault', click: () => mainWindow?.show() },
@@ -109,6 +111,13 @@ if (!gotTheLock) {
                 createWindow();
             }
         });
+
+        // TODO: remove this
+        // Set Dock Icon on macOS
+        if (process.platform === 'darwin') {
+            const dockIconPath = path.join(__dirname, '../assets/icon.png');
+            app.dock.setIcon(dockIconPath);
+        }
     });
 }
 
