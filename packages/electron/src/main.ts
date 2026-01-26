@@ -28,7 +28,7 @@ function createWindow() {
         mainWindow.webContents.openDevTools();
     } else {
         // In production, load the built files from the local app-dist folder
-        const indexPath = path.join(__dirname, '../../app/dist/index.html');
+        const indexPath = path.join(__dirname, '../app-dist/index.html');
         mainWindow.loadFile(indexPath).catch(err => {
             console.error('Failed to load production UI:', err);
         });

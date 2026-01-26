@@ -23,7 +23,13 @@
         },
         "files": [
             "dist/**/*",
-            "app-dist/**/*",
+            {
+                "from": "../app/dist",
+                "to": "app-dist",
+                "filter": [
+                    "**/*"
+                ]
+            },
             "package.json"
         ],
         "extends": null,
