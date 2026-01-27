@@ -10,6 +10,7 @@ declare global {
                 openLogFile: () => void;
                 getRecentLogs: () => Promise<string[]>;
             };
+            clearCache?: () => Promise<boolean>;
             utils?: {
                 fetchIcon: (url: string) => Promise<string | null>;
             };

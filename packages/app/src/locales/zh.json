@@ -84,7 +84,8 @@
             "failed": "修改密码失败"
         },
         "success": {
-            "password": "密码更新成功！"
+            "password": "密码修改成功",
+            "cache_cleared": "缓存已清理!"
         },
         "export": "导出密码库",
         "clear_cache": "清除缓存"

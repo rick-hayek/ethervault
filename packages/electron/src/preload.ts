@@ -4,6 +4,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     platform: process.platform,
     version: process.versions.electron,
     onVaultLock: (callback: () => void) => ipcRenderer.on('vault-lock', callback),
+    clearCache: () => ipcRenderer.invoke('app-clear-cache'),
     log: {
         info: (...args: any[]) => ipcRenderer.send('log-message', 'info', ...args),
         warn: (...args: any[]) => ipcRenderer.send('log-message', 'warn', ...args),

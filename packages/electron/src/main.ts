@@ -231,3 +231,23 @@ ipcMain.handle('fetch-icon', async (event, url: string) => {
         request.end();
     });
 });
+
+import { session } from 'electron';
+
+ipcMain.handle('app-clear-cache', async () => {
+    try {
+        await session.defaultSession.clearCache();
+
+        // Clear log file if it exists
+        const logPath = log.transports.file.getFile().path;
+        if (fs.existsSync(logPath)) {
+            await fs.promises.truncate(logPath, 0);
+            log.info('[SYSTEM] Logs cleared by user');
+        }
+
+        return true;
+    } catch (error) {
+        log.error('Failed to clear cache:', error);
+        return false;
+    }
+});

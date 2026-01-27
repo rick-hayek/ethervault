@@ -84,7 +84,8 @@
             "failed": "Failed to change password"
         },
         "success": {
-            "password": "Password updated successfully!"
+            "password": "Password changed successfully",
+            "cache_cleared": "Cache Cleared!"
         },
         "export": "Export Vault",
         "clear_cache": "Clear Cache"

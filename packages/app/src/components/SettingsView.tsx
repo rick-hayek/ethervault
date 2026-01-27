@@ -41,12 +41,30 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   const [success, setSuccess] = useState<boolean>(false);
   const [isActivityModalOpen, setIsActivityModalOpen] = useState(false);
   const [activityLogs, setActivityLogs] = useState<string[]>([]);
+  const [cacheMessage, setCacheMessage] = useState<string | null>(null);
 
   const fetchLogs = async () => {
     if (logger.getRecentLogs) {
       const logs = await logger.getRecentLogs();
       setActivityLogs(logs);
     }
+  };
+
+  const handleClearCache = async () => {
+    // 1. Clear Local Storage Logs
+    localStorage.removeItem('ethervault_logs');
+
+    // 2. Clear Electron Cache
+    if (window.electronAPI?.clearCache) {
+      await window.electronAPI.clearCache();
+    }
+
+    // 3. Clear State immediately
+    setActivityLogs([]);
+
+    // 4. Show Feedback
+    setCacheMessage(t('settings.success.cache_cleared') || 'Cache Cleared!');
+    setTimeout(() => setCacheMessage(null), 2000);
   };
 
   useEffect(() => {
@@ -402,7 +420,15 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           >
             {t('import.title')}
           </button>
-          <button className="text-[9px] font-bold text-slate-400 uppercase tracking-widest hover:text-rose-500 transition-colors">{t('settings.clear_cache')}</button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleClearCache}
+              className="text-[9px] font-bold text-slate-400 uppercase tracking-widest hover:text-rose-500 transition-colors"
+            >
+              {t('settings.clear_cache')}
+            </button>
+            {cacheMessage && <span className="text-[9px] font-bold text-emerald-500 animate-in fade-in slide-in-from-left-2 duration-300">{cacheMessage}</span>}
+          </div>
         </div>
         <span className="text-[8px] font-black text-slate-300 dark:text-slate-800 uppercase tracking-[0.5em]">{t('settings.encryption')}</span>
       </div>
