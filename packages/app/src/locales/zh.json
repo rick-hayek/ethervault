@@ -54,8 +54,6 @@
             "master_log": "主日志"
         },
         "change_password": "修改主密码",
-        "export": "导出密码库",
-        "clear_cache": "清除缓存",
         "encryption": "AES-256 位加密",
         "password_modal": {
             "title": "修改主密码",
@@ -72,7 +70,29 @@
         },
         "success": {
             "password": "密码更新成功！"
-        }
+        },
+        "export": "导出密码库",
+        "clear_cache": "清除缓存"
+    },
+    "export": {
+        "title": "导出密码库",
+        "warning_title": "安全警告",
+        "warning_desc": "您即将以明文形式导出密码。任何拥有此文件的人都可以查看您的凭据，请安全存储。",
+        "format": "选择格式",
+        "preview": "数据预览",
+        "download": "下载文件"
+    },
+    "import": {
+        "title": "导入密码库",
+        "drag_drop": "拖拽 CSV/JSON 到此处",
+        "formats": "支持格式: .csv, .json",
+        "ready": "发现 {{count}} 条数据。准备就绪！",
+        "error": "导入失败",
+        "error_binary": "检测到二进制文件",
+        "error_invalid_format": "无效的文件格式",
+        "note_title": "注意",
+        "note_desc": "重复的数据将作为新条目添加，并带有时间戳标签。不会覆盖任何现有数据。",
+        "action": "导入数据"
     },
     "login": {
         "locked_local_db": "已锁定本地数据库",

@@ -207,7 +207,14 @@ const App: React.FC = () => {
       case 'generator':
         return <GeneratorView />;
       case 'settings':
-        return <SettingsView settings={settings} setSettings={(s: any) => setSettings(s)} />;
+        return <SettingsView
+          settings={settings}
+          setSettings={(s: any) => setSettings(s)}
+          onDataChange={async () => {
+            const entries = await VaultService.getEntries();
+            setPasswords(entries);
+          }}
+        />;
       default:
         return <VaultView
           passwords={filteredPasswords}

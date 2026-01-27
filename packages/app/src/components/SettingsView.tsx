@@ -16,20 +16,109 @@ import {
   Languages
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { AppSettings, CloudProvider, AuthService } from '@premium-password-manager/core';
+import { AppSettings, CloudProvider, AuthService, VaultService } from '@premium-password-manager/core';
+import { ImportModal } from './ImportModal';
+import { ExportModal } from './ExportModal';
 
 interface SettingsViewProps {
   settings: AppSettings;
   setSettings: (settings: AppSettings) => void;
+  onDataChange: () => void;
 }
 
-export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSettings }) => {
+export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSettings, onDataChange }) => {
   const { t, i18n } = useTranslation();
   const [isSyncing, setIsSyncing] = useState(false);
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
+  const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [passwordForm, setPasswordForm] = useState({ old: '', new: '', confirm: '' });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
+
+  // Wrapper to fetch entries for export
+  const ExportModalWrapper = ({ onClose }: { onClose: () => void }) => {
+    const [entries, setEntries] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
+
+    React.useEffect(() => {
+      VaultService.getEntries()
+        .then(data => {
+          setEntries(data);
+          setLoading(false);
+        })
+        .catch(err => {
+          console.error('Failed to load entries for export:', err);
+          setLoading(false);
+          setError('Failed to decrypt vault data. Please log in again with the correct master password.');
+        });
+    }, []);
+
+    if (error) {
+      return (
+        <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={onClose}>
+          <div className="bg-white dark:bg-slate-900 w-full max-w-sm rounded-3xl border border-rose-200 dark:border-rose-900/30 shadow-2xl p-6 text-center space-y-4 animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+            <div className="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-900/20 flex items-center justify-center mx-auto text-rose-500">
+              <Shield className="w-6 h-6" />
+            </div>
+            <div>
+              <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Export Failed</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">{error}</p>
+            </div>
+            <button
+              onClick={onClose}
+              className="w-full py-2.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black rounded-xl uppercase tracking-widest hover:opacity-90 transition-opacity"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    if (loading) return null;
+
+    return (
+      <ExportModal
+        entries={entries}
+        onClose={onClose}
+        onExport={async (format) => {
+          try {
+            const date = new Date().toISOString().split('T')[0];
+            const filename = `ethervault-backup-${date}.${format}`;
+            let content = '';
+
+            if (format === 'json') {
+              content = JSON.stringify(entries, null, 2);
+            } else {
+              const headers = ['Title', 'Username', 'Password', 'Website', 'Category', 'Notes'];
+              const rows = entries.map(e =>
+                [e.title, e.username, e.password, e.website, e.category, e.notes]
+                  .map(field => `"${(field || '').replace(/"/g, '""')}"`) // Escape quotes
+                  .join(',')
+              );
+              content = [headers.join(','), ...rows].join('\n');
+            }
+
+            const blob = new Blob([content], { type: format === 'json' ? 'application/json' : 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            onClose();
+          } catch (err) {
+            console.error('Export failed', err);
+          }
+        }}
+      />
+    );
+  };
 
   const toggleBiometrics = () => {
     setSettings({ ...settings, biometricsEnabled: !settings.biometricsEnabled });
@@ -225,11 +314,44 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
       <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-900">
         <div className="flex items-center gap-4">
-          <button className="text-[9px] font-bold text-slate-400 uppercase tracking-widest hover:text-rose-500 transition-colors">{t('settings.export')}</button>
+          <button
+            onClick={() => setIsExportModalOpen(true)}
+            className="text-[9px] font-bold text-slate-400 uppercase tracking-widest hover:text-rose-500 transition-colors"
+          >
+            {t('settings.export')}
+          </button>
+          <button
+            onClick={() => setIsImportModalOpen(true)}
+            className="text-[9px] font-bold text-slate-400 uppercase tracking-widest hover:text-indigo-500 transition-colors"
+          >
+            {t('import.title')}
+          </button>
           <button className="text-[9px] font-bold text-slate-400 uppercase tracking-widest hover:text-rose-500 transition-colors">{t('settings.clear_cache')}</button>
         </div>
         <span className="text-[8px] font-black text-slate-300 dark:text-slate-800 uppercase tracking-[0.5em]">{t('settings.encryption')}</span>
       </div>
+
+      {isExportModalOpen && (
+        <ExportModalWrapper
+          onClose={() => setIsExportModalOpen(false)}
+        />
+      )}
+
+      {isImportModalOpen && (
+        <ImportModal
+          onClose={() => setIsImportModalOpen(false)}
+          onImport={async (entries) => {
+            // Let the ImportModal handle the try-catch so it can show the error state
+            for (const entry of entries) {
+              const { id, createdAt, updatedAt, ...rest } = entry;
+              await VaultService.addEntry(rest);
+            }
+            setIsImportModalOpen(false);
+            setSettings({ ...settings, lastSync: 'Imported just now' });
+            onDataChange();
+          }}
+        />
+      )}
     </div>
   );
 };

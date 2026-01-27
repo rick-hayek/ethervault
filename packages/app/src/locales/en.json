@@ -54,8 +54,6 @@
             "master_log": "Master Log"
         },
         "change_password": "CHANGE MASTER PASSWORD",
-        "export": "Export Vault",
-        "clear_cache": "Clear Cache",
         "encryption": "AES-256 Bit Encryption",
         "password_modal": {
             "title": "Change Master Password",
@@ -72,7 +70,29 @@
         },
         "success": {
             "password": "Password updated successfully!"
-        }
+        },
+        "export": "Export Vault",
+        "clear_cache": "Clear Cache"
+    },
+    "export": {
+        "title": "Export Vault",
+        "warning_title": "Security Warning",
+        "warning_desc": "You are about to export your passwords in plain text. Anyone with this file will be able to see your credentials. Store it securely.",
+        "format": "Select Format",
+        "preview": "Data Preview",
+        "download": "Download File"
+    },
+    "import": {
+        "title": "Import Vault",
+        "drag_drop": "Drag & Drop CSV/JSON here",
+        "formats": "Supported formats: .csv, .json",
+        "ready": "Found {{count}} entries. Ready!",
+        "error": "Import Failed",
+        "error_binary": "Binary file detected",
+        "error_invalid_format": "Invalid file format",
+        "note_title": "Note",
+        "note_desc": "Duplicate entries will be added as new items with a timestamp tag. No existing data will be overwritten.",
+        "action": "Import Data"
     },
     "login": {
         "locked_local_db": "Locked Local Database",
