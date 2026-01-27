@@ -51,7 +51,8 @@
             "login_alerts": "Login Alerts",
             "dark_mode": "Dark Mode",
             "language": "Language",
-            "master_log": "Master Log"
+            "master_log": "Master Log",
+            "open_log": "Open Log"
         },
         "change_password": "CHANGE MASTER PASSWORD",
         "encryption": "AES-256 Bit Encryption",

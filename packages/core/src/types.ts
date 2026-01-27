@@ -27,4 +27,5 @@ export interface AppSettings {
     theme: 'dark' | 'light' | 'system';
     cloudProvider: CloudProvider;
     lastSync: string;
+    masterLogEnabled?: boolean;
 }

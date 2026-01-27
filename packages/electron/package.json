@@ -63,6 +63,7 @@
     },
     "dependencies": {
         "@premium-password-manager/core": "file:../core",
+        "electron-log": "^5.4.3",
         "libsodium-wrappers-sumo": "^0.8.1"
     },
     "devDependencies": {

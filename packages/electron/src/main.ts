@@ -1,8 +1,45 @@
-import { app, BrowserWindow, Tray, Menu, nativeImage, globalShortcut } from 'electron';
+import { app, BrowserWindow, Tray, Menu, nativeImage, globalShortcut, ipcMain, shell } from 'electron';
 import * as path from 'path';
+import log from 'electron-log/main';
+
+// Initialize logger
+log.initialize();
+
+// Security: Redact sensitive data from logs
+log.hooks.push((message, transport) => {
+    if (transport !== log.transports.file) return message;
+
+    const SENSITIVE_KEYS = ['password', 'masterKey', 'secret', 'hash', 'payload', 'key', 'token'];
+
+    // Helper to redact object recursively
+    const redact = (obj: any): any => {
+        if (!obj || typeof obj !== 'object') return obj;
+
+        if (Array.isArray(obj)) {
+            return obj.map(redact);
+        }
+
+        const newObj = { ...obj };
+        for (const key of Object.keys(newObj)) {
+            if (SENSITIVE_KEYS.some(k => key.toLowerCase().includes(k))) {
+                newObj[key] = '[REDACTED]';
+            } else if (typeof newObj[key] === 'object') {
+                newObj[key] = redact(newObj[key]);
+            }
+        }
+        return newObj;
+    };
+
+    message.data = message.data.map(arg => typeof arg === 'object' ? redact(arg) : arg);
+    return message;
+});
+
+// Capture unhandled errors
+log.errorHandler.startCatching();
 
 // Set the app name explicitly
 app.setName('EtherVault');
+log.info('App starting: EtherVault');
 
 let mainWindow: BrowserWindow | null = null;
 let tray: Tray | null = null;
@@ -124,12 +161,28 @@ if (!gotTheLock) {
     });
 }
 
-app.on('will-quit', () => {
-    globalShortcut.unregisterAll();
+
+// IPC Logger Handler
+ipcMain.on('log-message', (event, level: string, ...args: any[]) => {
+    if (['info', 'warn', 'error', 'debug'].includes(level)) {
+        (log as any)[level](...args);
+    }
 });
 
-app.on('window-all-closed', () => {
-    if (process.platform !== 'darwin') {
-        app.quit();
+ipcMain.on('log-set-enabled', (event, enabled: boolean) => {
+    if (enabled) {
+        log.transports.file.level = 'info';
+        log.info('Master Log ENABLED by user.');
+    } else {
+        log.info('Master Log DISABLED by user.');
+        log.transports.file.level = false;
     }
+});
+
+// Import shell efficiently or reuse if already imported
+// import { shell } from 'electron';
+
+ipcMain.on('log-open', () => {
+    const logPath = log.transports.file.getFile().path;
+    shell.showItemInFolder(logPath);
 });
