@@ -368,6 +368,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     if (settings.cloudProvider === provider) {
       setIsSyncing(true);
       try {
+        // Ensure we're connected before syncing
+        const connected = await CloudService.connect();
+        if (!connected) {
+          setError(t('settings.error.failed'));
+          return;
+        }
+
         const entries = await VaultService.getEncryptedEntries();
         const result = await CloudService.sync(entries);
 

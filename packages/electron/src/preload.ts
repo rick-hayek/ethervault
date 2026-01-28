@@ -16,6 +16,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     },
     utils: {
         fetchIcon: (url: string) => ipcRenderer.invoke('fetch-icon', url),
+        getRedirectUrl: (url: string) => ipcRenderer.invoke('get-redirect-url', url),
     }
 });
 

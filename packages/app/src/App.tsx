@@ -17,7 +17,8 @@ import {
   CloudService,
   PasswordEntry,
   Category,
-  AppSettings
+  AppSettings,
+  CloudProvider
 } from '@premium-password-manager/core';
 import { AlertProvider } from './hooks/useAlert';
 
@@ -42,14 +43,28 @@ const App: React.FC = () => {
   });
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  const [settings, setSettings] = useState<AppSettings>({
-    biometricsEnabled: localStorage.getItem('ethervault_bio') === 'true',
-    autoLockTimeout: 5,
-    twoFactorEnabled: true,
-    theme: 'dark', // Default to dark
-    cloudProvider: 'none',
-    lastSync: '' // Translated at render time in SettingsView
+  const [settings, setSettings] = useState<AppSettings>(() => {
+    const savedProvider = localStorage.getItem('ethervault_cloud_provider') as CloudProvider | null;
+    return {
+      biometricsEnabled: localStorage.getItem('ethervault_bio') === 'true',
+      autoLockTimeout: 5,
+      twoFactorEnabled: true,
+      theme: 'dark',
+      cloudProvider: savedProvider || 'none',
+      lastSync: ''
+    };
   });
+
+  // Persist cloud provider to localStorage and initialize CloudService when it changes
+  useEffect(() => {
+    if (settings.cloudProvider !== 'none') {
+      localStorage.setItem('ethervault_cloud_provider', settings.cloudProvider);
+      // Initialize CloudService with the saved provider (no connection yet)
+      CloudService.useProvider(settings.cloudProvider);
+    } else {
+      localStorage.removeItem('ethervault_cloud_provider');
+    }
+  }, [settings.cloudProvider]);
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -133,6 +148,20 @@ const App: React.FC = () => {
     });
   }, [passwords, activeCategory, activeTag, searchQuery]);
 
+  // Auto-sync to cloud after local changes (if cloud is enabled)
+  const syncToCloud = async () => {
+    if (settings.cloudProvider === 'none') return;
+    try {
+      const entries = await VaultService.getEncryptedEntries();
+      await CloudService.sync(entries);
+      setSettings(prev => ({ ...prev, lastSync: new Date().toLocaleTimeString() }));
+      logger.info('[SYNC] Auto-sync completed after local change');
+    } catch (err) {
+      logger.warn('[SYNC] Auto-sync failed', err);
+      // Silent failure - don't interrupt user flow
+    }
+  };
+
   const handleAddPassword = async (entry: Omit<PasswordEntry, 'id' | 'createdAt' | 'updatedAt'>) => {
     const newEntry = await VaultService.addEntry(entry);
     setPasswords(prev => [newEntry, ...prev]);
@@ -149,6 +178,9 @@ const App: React.FC = () => {
         }
       });
     }
+
+    // Auto-sync to cloud
+    syncToCloud();
   };
 
   const handleUpdatePassword = async (updatedEntry: PasswordEntry) => {
@@ -171,12 +203,18 @@ const App: React.FC = () => {
         }
       });
     }
+
+    // Auto-sync to cloud
+    syncToCloud();
   };
 
   const handleDeletePassword = async (id: string) => {
     await VaultService.deleteEntry(id);
     setPasswords(prev => prev.filter(p => p.id !== id));
     logger.info('[DATA] Deleted password entry', { id });
+
+    // Auto-sync to cloud
+    syncToCloud();
   };
 
   const handleSetupComplete = async (key: string, bioEnabled: boolean) => {
@@ -248,7 +286,21 @@ const App: React.FC = () => {
           />
         );
       case 'security':
-        return <SecurityDashboard passwords={passwords} />;
+        return <SecurityDashboard
+          passwords={passwords}
+          onResolve={(entryId) => {
+            const entry = passwords.find(p => p.id === entryId);
+            if (entry) {
+              setEditingEntry(entry);
+              setIsModalOpen(true);
+              setCurrentView('vault');
+            }
+          }}
+          onScan={async () => {
+            const entries = await VaultService.getEntries();
+            setPasswords(entries);
+          }}
+        />;
       case 'generator':
         return <GeneratorView />;
       case 'settings':

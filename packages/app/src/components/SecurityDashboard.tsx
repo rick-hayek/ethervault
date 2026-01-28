@@ -1,5 +1,5 @@
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { ShieldAlert, ShieldCheck, RefreshCcw, AlertCircle } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { useTranslation } from 'react-i18next';
@@ -7,10 +7,13 @@ import { PasswordEntry, SecurityService } from '@premium-password-manager/core';
 
 interface SecurityDashboardProps {
   passwords: PasswordEntry[];
+  onResolve: (entryId: string) => void;
+  onScan?: () => void;
 }
 
-export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords }) => {
+export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords, onResolve, onScan }) => {
   const { t } = useTranslation();
+  const [isScanning, setIsScanning] = useState(false);
   const audit = useMemo(() => {
     return SecurityService.performAudit(passwords);
   }, [passwords]);
@@ -34,9 +37,19 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords 
           <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{t('security.title')}</h1>
           <p className="hidden md:block text-slate-500 dark:text-slate-400 text-xs mt-0.5">{t('security.subtitle')}</p>
         </div>
-        <button className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-100 dark:border-emerald-500/20 active:scale-95 transition-all">
-          <RefreshCcw className="w-3 h-3" />
-          {t('security.scan')}
+        <button
+          onClick={() => {
+            if (onScan) {
+              setIsScanning(true);
+              onScan();
+              setTimeout(() => setIsScanning(false), 1000);
+            }
+          }}
+          disabled={isScanning}
+          className="flex items-center gap-1.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-100 dark:border-emerald-500/20 active:scale-95 transition-all disabled:opacity-50"
+        >
+          <RefreshCcw className={`w-3 h-3 ${isScanning ? 'animate-spin' : ''}`} />
+          {isScanning ? t('security.scanning', 'SCANNING...') : t('security.scan')}
         </button>
       </div>
 
@@ -139,11 +152,30 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords 
                     <AlertCircle className="w-4 h-4" />
                   </div>
                   <div>
-                    <h4 className="text-xs font-bold text-slate-900 dark:text-white">{alert.title}</h4>
-                    <p className="text-[10px] text-slate-400 mt-0.5">{alert.description}</p>
+                    <h4 className="text-xs font-bold text-slate-900 dark:text-white">
+                      {alert.type === 'weak'
+                        ? t('security.alerts.weak_title', { title: alert.entryTitle })
+                        : alert.type === 'reused'
+                          ? t('security.alerts.reused_title', { count: alert.count })
+                          : alert.title}
+                    </h4>
+                    <p className="text-[10px] text-slate-400 mt-0.5">
+                      {alert.type === 'weak'
+                        ? t('security.alerts.weak_description')
+                        : alert.type === 'reused'
+                          ? (alert.count && alert.count > 3
+                            ? t('security.alerts.reused_description_more', { titles: alert.titles })
+                            : t('security.alerts.reused_description', { titles: alert.titles }))
+                          : alert.description}
+                    </p>
                   </div>
                 </div>
-                <button className="text-[9px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-100 dark:border-emerald-500/20 hover:bg-emerald-100 transition-all">{t('security.alerts.resolve')}</button>
+                <button
+                  onClick={() => alert.entryIds.length > 0 && onResolve(alert.entryIds[0])}
+                  className="text-[9px] font-bold text-emerald-600 bg-emerald-50 dark:bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-100 dark:border-emerald-500/20 hover:bg-emerald-100 transition-all"
+                >
+                  {t('security.alerts.resolve')}
+                </button>
               </div>
             ))
           )}

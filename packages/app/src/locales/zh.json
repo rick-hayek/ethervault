@@ -10,6 +10,10 @@
         "lock_vault": "锁定库",
         "search_placeholder": "搜索..."
     },
+    "common": {
+        "cancel": "取消",
+        "confirm_delete": "删除"
+    },
     "vault": {
         "title": "您的密码库",
         "subtitle": "使用工业级安全标准管理您的凭据。",
@@ -19,6 +23,13 @@
             "description": "连接云存储，随时随地访问您的密码。",
             "action": "设置同步"
         },
+        "strength": {
+            "Secure": "安全",
+            "Strong": "强",
+            "Medium": "中等",
+            "Weak": "弱"
+        },
+        "just_now": "刚刚",
         "search": "搜索...",
         "update": "更新凭据",
         "save": "保存凭据",
@@ -147,7 +158,12 @@
             "title": "安全警报",
             "action_items": "个待处理项",
             "empty": "未发现安全问题。干得漂亮！",
-            "resolve": "解决"
+            "resolve": "解决",
+            "weak_title": "弱密码: {{title}}",
+            "weak_description": "此密码过短或复杂度不足。",
+            "reused_title": "重复密码: {{count}} 个账户",
+            "reused_description": "用于 {{titles}}。",
+            "reused_description_more": "用于 {{titles}} 等。"
         }
     },
     "generator": {

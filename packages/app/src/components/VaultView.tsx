@@ -227,9 +227,14 @@ export const VaultView: React.FC<VaultViewProps> = ({
                   </button>
                 </div>
                 <div className="flex items-center justify-between pt-1">
-                  <div className={`text-[8px] font-black px-2 py-0.5 rounded-md uppercase tracking-widest ${getStrengthColor(entry.strength)}`}>
-                    {entry.strength}
-                  </div>
+                  {(() => {
+                    const strength = entry.strength || (entry.password ? SecurityService.calculateStrength(entry.password) : 'Medium');
+                    return (
+                      <div className={`text-[8px] font-black px-2 py-0.5 rounded-md uppercase tracking-widest ${getStrengthColor(strength)}`}>
+                        {t(`vault.strength.${strength}`, strength)}
+                      </div>
+                    );
+                  })()}
                   <span className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">{entry.lastUpdated}</span>
                 </div>
               </div>
@@ -252,10 +257,13 @@ export const VaultView: React.FC<VaultViewProps> = ({
                 <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate mt-1 font-medium">{entry.username}</p>
               </div>
               <div className="flex items-center gap-2">
-                <div className={`w-1.5 h-1.5 rounded-full ${entry.strength === 'Secure' ? 'bg-emerald-500' :
-                  entry.strength === 'Strong' ? 'bg-blue-500' :
-                    entry.strength === 'Medium' ? 'bg-amber-500' : 'bg-rose-500'
-                  }`} />
+                {(() => {
+                  const strength = entry.strength || (entry.password ? SecurityService.calculateStrength(entry.password) : 'Medium');
+                  return <div className={`w-1.5 h-1.5 rounded-full ${strength === 'Secure' ? 'bg-emerald-500' :
+                    strength === 'Strong' ? 'bg-blue-500' :
+                      strength === 'Medium' ? 'bg-amber-500' : 'bg-rose-500'
+                    }`} />;
+                })()}
                 <ChevronRight className="w-4 h-4 text-slate-300" />
               </div>
             </div>
@@ -285,16 +293,17 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
       category: 'All',
       tags: [],
       strength: 'Medium',
-      lastUpdated: 'Just now'
+      lastUpdated: t('vault.just_now', 'Just now')
     }
   );
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const result: PasswordEntry = {
       ...formData as PasswordEntry,
       id: entry?.id || crypto.randomUUID(),
-      lastUpdated: 'Just now',
+      lastUpdated: t('vault.just_now', 'Just now'),
       strength: formData.password ? SecurityService.calculateStrength(formData.password) : 'Weak'
     };
     onSave(result);
@@ -381,14 +390,32 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
           </div>
 
           <div className="pt-6 flex gap-3">
-            {entry && (
+            {entry && !showDeleteConfirm && (
               <button
                 type="button"
-                onClick={() => onDelete(entry.id)}
+                onClick={() => setShowDeleteConfirm(true)}
                 className="flex items-center justify-center p-3 rounded-xl border border-rose-100 dark:border-rose-900/30 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all"
               >
                 <Trash2 className="w-5 h-5" />
               </button>
+            )}
+            {entry && showDeleteConfirm && (
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all text-sm font-medium"
+                >
+                  {t('common.cancel', 'Cancel')}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => onDelete(entry.id)}
+                  className="px-3 py-2 rounded-xl bg-rose-500 text-white hover:bg-rose-600 transition-all text-sm font-bold"
+                >
+                  {t('common.confirm_delete', 'Delete')}
+                </button>
+              </div>
             )}
             <button
               type="submit"

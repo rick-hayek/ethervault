@@ -205,6 +205,8 @@ ipcMain.handle('log-read-recent', async () => {
 
 import { net } from 'electron';
 
+const MAX_REDIRECTS = 5;
+
 ipcMain.handle('fetch-icon', async (event, url: string) => {
     return new Promise((resolve) => {
         const request = net.request(url);
@@ -230,6 +232,20 @@ ipcMain.handle('fetch-icon', async (event, url: string) => {
         });
         request.end();
     });
+});
+
+ipcMain.handle('get-redirect-url', async (event, url: string) => {
+    try {
+        // Use native fetch to follow redirects
+        const response = await fetch(url.startsWith('http') ? url : `https://${url}`, {
+            method: 'HEAD', // HEAD is lighter
+            redirect: 'follow'
+        });
+        return response.url;
+    } catch (error) {
+        log.warn('Failed to follow redirect:', error);
+        return null;
+    }
 });
 
 import { session } from 'electron';

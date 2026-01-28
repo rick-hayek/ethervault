@@ -5,9 +5,13 @@ export type Strength = 'Secure' | 'Strong' | 'Medium' | 'Weak';
 export interface AuditAlert {
     type: 'compromised' | 'reused' | 'weak';
     entryIds: string[];
-    title: string;
-    description: string;
+    title: string;  // Will be deprecated, use for raw title if needed
+    description: string;  // Will be deprecated
     severity: 'high' | 'medium' | 'low';
+    // Metadata for translation
+    entryTitle?: string;  // For weak passwords
+    count?: number;       // For reused passwords
+    titles?: string;      // Comma-separated titles for reused
 }
 
 export interface AuditResult {
@@ -87,7 +91,9 @@ export class SecurityService {
                     entryIds: ids,
                     title: `Reused Password: ${ids.length} Accounts`,
                     description: `Used for ${titles}${ids.length > 3 ? ' and more' : ''}.`,
-                    severity: 'medium'
+                    severity: 'medium',
+                    count: ids.length,
+                    titles: titles
                 });
             }
         });
@@ -97,7 +103,8 @@ export class SecurityService {
             entryIds: [entry.id],
             title: `Weak Password: ${entry.title}`,
             description: 'This password is too short or lacks complexity.',
-            severity: 'high'
+            severity: 'high',
+            entryTitle: entry.title
         }));
 
         const alerts = [...weakAlerts, ...reusedAlerts];

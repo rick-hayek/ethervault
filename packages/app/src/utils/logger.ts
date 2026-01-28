@@ -14,6 +14,7 @@ declare global {
             getVersion?: () => Promise<string>;
             utils?: {
                 fetchIcon: (url: string) => Promise<string | null>;
+                getRedirectUrl?: (url: string) => Promise<string | null>;
             };
             // ... allow other props
             [key: string]: any;

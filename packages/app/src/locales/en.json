@@ -10,6 +10,10 @@
         "lock_vault": "Lock Vault",
         "search_placeholder": "Search..."
     },
+    "common": {
+        "cancel": "Cancel",
+        "confirm_delete": "Delete"
+    },
     "vault": {
         "title": "Your Vault",
         "subtitle": "Manage your credentials with industry-grade security.",
@@ -19,6 +23,13 @@
             "description": "Connect to cloud storage to access your passwords anywhere.",
             "action": "Setup Sync"
         },
+        "strength": {
+            "Secure": "SECURE",
+            "Strong": "STRONG",
+            "Medium": "MEDIUM",
+            "Weak": "WEAK"
+        },
+        "just_now": "Just now",
         "search": "Search...",
         "update": "UPDATE CREDENTIAL",
         "save": "SAVE CREDENTIAL",
@@ -147,7 +158,12 @@
             "title": "Security Alerts",
             "action_items": "ACTION ITEMS",
             "empty": "No security issues found. Great job!",
-            "resolve": "RESOLVE"
+            "resolve": "RESOLVE",
+            "weak_title": "Weak Password: {{title}}",
+            "weak_description": "This password is too short or lacks complexity.",
+            "reused_title": "Reused Password: {{count}} Accounts",
+            "reused_description": "Used for {{titles}}.",
+            "reused_description_more": "Used for {{titles}} and more."
         }
     },
     "generator": {

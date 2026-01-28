@@ -64,6 +64,39 @@ export const IconService = {
             return directIcon;
         }
 
+        // 3. Try Redirect Resolution (Strategy 3)
+        // If the domain itself redirects (e.g. gmail.com -> mail.google.com), try the resolved URL
+        if (window.electronAPI?.utils?.getRedirectUrl) {
+            console.log('[IconService] Strategy 3: Checking for redirect...');
+            try {
+                const finalUrl = await window.electronAPI.utils.getRedirectUrl(`https://${domain}`);
+                if (finalUrl) {
+                    const newDomain = new URL(finalUrl).hostname;
+                    if (newDomain && newDomain !== domain) {
+                        console.log('[IconService] Redirect found:', domain, '->', newDomain);
+
+                        // Retry Strategy 1 with new domain
+                        const retryGoogleUrl = `https://s2.googleusercontent.com/s2/favicons?domain=${newDomain}&sz=64`;
+                        const retryIcon = await performFetch(retryGoogleUrl);
+                        if (retryIcon) {
+                            console.log('[IconService] Strategy 3 Success (Google S2 via Redirect)');
+                            return retryIcon;
+                        }
+
+                        // Retry Strategy 2 with new domain
+                        const retryDirectUrl = `https://${newDomain}/favicon.ico`;
+                        const retryDirectIcon = await performFetch(retryDirectUrl);
+                        if (retryDirectIcon) {
+                            console.log('[IconService] Strategy 3 Success (Direct via Redirect)');
+                            return retryDirectIcon;
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('[IconService] Strategy 3 failed:', e);
+            }
+        }
+
         console.warn('[IconService] All strategies failed for', domain);
         return null;
     }
