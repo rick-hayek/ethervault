@@ -19,6 +19,7 @@ import {
   Category,
   AppSettings
 } from '@premium-password-manager/core';
+import { AlertProvider } from './hooks/useAlert';
 
 // Initialize Cloud Logging with App Logger (Universal)
 CloudService.setLogger(logger);
@@ -47,7 +48,7 @@ const App: React.FC = () => {
     twoFactorEnabled: true,
     theme: 'dark', // Default to dark
     cloudProvider: 'none',
-    lastSync: 'Never synced'
+    lastSync: '' // Translated at render time in SettingsView
   });
 
   useEffect(() => {
@@ -243,6 +244,7 @@ const App: React.FC = () => {
             onTagChange={setActiveTag}
             onEdit={handleOpenEdit}
             onAdd={handleOpenAdd}
+            onGoToSettings={() => setCurrentView('settings')}
           />
         );
       case 'security':
@@ -269,6 +271,7 @@ const App: React.FC = () => {
           onTagChange={setActiveTag}
           onEdit={handleOpenEdit}
           onAdd={handleOpenAdd}
+          onGoToSettings={() => setCurrentView('settings')}
         />;
     }
   };
@@ -307,4 +310,10 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+const AppWithProviders: React.FC = () => (
+  <AlertProvider>
+    <App />
+  </AlertProvider>
+);
+
+export default AppWithProviders;

@@ -156,4 +156,73 @@ export class AuthService {
         }
         return this.sodium;
     }
+
+    /**
+     * Import cloud credentials (salt + verifier) during sync.
+     * Used when adopting a cloud vault on a new device.
+     * 
+     * IMPORTANT: Both salt AND verifier are required. Without a verifier,
+     * the user cannot authenticate after salt import.
+     */
+    static async importCloudCredentials(saltB64: string, verifierJson: string): Promise<void> {
+        // Validate verifier is present and valid
+        if (!verifierJson || !verifierJson.trim()) {
+            throw new Error('MISSING_VERIFIER: Cloud vault has no password verifier. Cannot sync without it.');
+        }
+
+        let verifier;
+        try {
+            verifier = JSON.parse(verifierJson);
+            if (!verifier.payload || !verifier.nonce) {
+                throw new Error('Invalid verifier structure');
+            }
+        } catch (e) {
+            throw new Error('INVALID_VERIFIER: Cloud vault has invalid password verifier. Cannot sync.');
+        }
+
+        // Decode base64 salt
+        const saltBytes = Uint8Array.from(atob(saltB64), c => c.charCodeAt(0));
+
+        // Store both salt and verifier atomically
+        await StorageService.setItem('metadata', 'salt', saltBytes);
+        await StorageService.setItem('metadata', 'auth_verifier', verifier);
+
+        // Clear current auth state (force re-login)
+        this.masterKey = null;
+        this.isAuthenticated = false;
+
+        console.log('[AuthService] Imported cloud credentials. Re-login required.');
+    }
+
+    /**
+     * Derive a key using a specific salt (for decrypting cloud data with cloud password).
+     */
+    static async deriveKeyWithSalt(password: string, saltB64: string): Promise<Uint8Array> {
+        const saltBytes = Uint8Array.from(atob(saltB64), c => c.charCodeAt(0));
+        return CryptoService.deriveKey(password, saltBytes);
+    }
+
+    /**
+     * Get the current salt as base64 string
+     */
+    static async getSaltBase64(): Promise<string | null> {
+        const salt = await StorageService.getItem('metadata', 'salt');
+        if (!salt) return null;
+
+        let saltArr = salt;
+        if (!(salt instanceof Uint8Array)) {
+            saltArr = new Uint8Array(Object.values(salt));
+        }
+
+        return btoa(String.fromCharCode(...saltArr));
+    }
+
+    /**
+     * Get the current verifier as JSON string
+     */
+    static async getVerifierJson(): Promise<string | null> {
+        const verifier = await StorageService.getItem('metadata', 'auth_verifier');
+        if (!verifier) return null;
+        return JSON.stringify(verifier);
+    }
 }

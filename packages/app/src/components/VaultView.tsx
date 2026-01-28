@@ -5,6 +5,42 @@ import { PasswordEntry, Category, SecurityService } from '@premium-password-mana
 import { useTranslation } from 'react-i18next';
 import { CATEGORIES } from '../constants';
 
+// One-time prompt component
+const CloudSyncPrompt: React.FC<{ onGoToSettings: () => void, onDismiss: () => void }> = ({ onGoToSettings, onDismiss }) => {
+  const { t } = useTranslation();
+  return (
+    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-indigo-50 dark:bg-indigo-900/10 border border-indigo-100 dark:border-indigo-500/20 p-4 rounded-3xl animate-in fade-in slide-in-from-top-4 duration-500">
+      <div className="flex items-center gap-4">
+        <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
+          <Globe className="w-5 h-5" />
+        </div>
+        <div>
+          <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+            {t('vault.sync_prompt.title', 'Sync your vault across devices')}
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+            {t('vault.sync_prompt.description', 'Connect to cloud storage to access your passwords anywhere.')}
+          </p>
+        </div>
+      </div>
+      <div className="flex items-center gap-3 w-full md:w-auto justify-end">
+        <button
+          onClick={onDismiss}
+          className="px-4 py-2 text-xs font-bold text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors uppercase tracking-wider"
+        >
+          {t('common.dismiss', 'Dismiss')}
+        </button>
+        <button
+          onClick={onGoToSettings}
+          className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-indigo-500/20 hover:shadow-indigo-500/30 active:scale-95 whitespace-nowrap"
+        >
+          {t('vault.sync_prompt.action', 'Setup Sync')}
+        </button>
+      </div>
+    </div>
+  );
+};
+
 interface VaultViewProps {
   passwords: PasswordEntry[];
   activeCategory: Category;
@@ -15,6 +51,7 @@ interface VaultViewProps {
   onTagChange: (tag: string | null) => void;
   onEdit: (entry: PasswordEntry) => void;
   onAdd: () => void;
+  onGoToSettings: () => void;
 }
 
 export const VaultView: React.FC<VaultViewProps> = ({
@@ -26,10 +63,26 @@ export const VaultView: React.FC<VaultViewProps> = ({
   activeTag,
   onTagChange,
   onEdit,
-  onAdd
+  onAdd,
+  onGoToSettings
 }) => {
   const { t } = useTranslation();
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // One-time sync prompt state
+  const [showSyncPrompt, setShowSyncPrompt] = useState(() => {
+    return localStorage.getItem('ethervault_sync_prompt_seen') !== 'true';
+  });
+
+  const handleDismissPrompt = () => {
+    localStorage.setItem('ethervault_sync_prompt_seen', 'true');
+    setShowSyncPrompt(false);
+  };
+
+  const handleGoToSettings = () => {
+    localStorage.setItem('ethervault_sync_prompt_seen', 'true');
+    onGoToSettings();
+  };
 
   const handleCopy = (id: string, text: string) => {
     if (!text) return;
@@ -74,6 +127,14 @@ export const VaultView: React.FC<VaultViewProps> = ({
           {t('vault.add')}
         </button>
       </div>
+
+      {/* Synchronize Prompt (One-time) */}
+      {showSyncPrompt && (
+        <CloudSyncPrompt
+          onGoToSettings={handleGoToSettings}
+          onDismiss={handleDismissPrompt}
+        />
+      )}
 
       {/* Filters - Hidden on mobile */}
       <div className="hidden md:block space-y-4 bg-white dark:bg-slate-900 p-5 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">

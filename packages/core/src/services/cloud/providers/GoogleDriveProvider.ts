@@ -156,6 +156,76 @@ export class GoogleDriveProvider implements CloudProviderInterface {
         return this.connected && this.isTokenValid();
     }
 
+    /**
+     * Fetch cloud metadata (salt + verifier) without full sync.
+     * Used to check if cloud has existing data before enabling sync.
+     */
+    async fetchMetadata(): Promise<{ salt: string; verifier: string } | null> {
+        if (!this.connected || !this.accessToken) return null;
+
+        try {
+            const fileId = await this.findFileId('metadata');
+            if (!fileId) return null;
+
+            const data = await this.downloadJson(fileId);
+            if (data && data.salt) {
+                return {
+                    salt: data.salt,
+                    verifier: data.verifier || ''
+                };
+            }
+            return null;
+        } catch (e) {
+            this.log('error', '[GoogleDrive] fetchMetadata error:', e);
+            return null;
+        }
+    }
+
+    /**
+     * Download all vault entries from cloud (for merge operation).
+     * Returns raw encrypted entries - caller must decrypt with appropriate key.
+     */
+    async downloadAllEntries(): Promise<VaultStorageItem[]> {
+        if (!this.connected || !this.accessToken) return [];
+
+        const entries: VaultStorageItem[] = [];
+
+        try {
+            // List all files in appDataFolder
+            const listUrl = `https://www.googleapis.com/drive/v3/files?spaces=appDataFolder&fields=files(id,name)&pageSize=1000`;
+            const listRes = await fetch(listUrl, {
+                headers: { 'Authorization': `Bearer ${this.accessToken}` }
+            });
+
+            if (!listRes.ok) return [];
+            const data = await listRes.json();
+
+            for (const file of data.files || []) {
+                // Skip metadata.json
+                if (file.name === 'metadata.json') continue;
+
+                // Download each entry
+                const downloadUrl = `https://www.googleapis.com/drive/v3/files/${file.id}?alt=media`;
+                const downloadRes = await fetch(downloadUrl, {
+                    headers: { 'Authorization': `Bearer ${this.accessToken}` }
+                });
+
+                if (downloadRes.ok) {
+                    const entry = await downloadRes.json();
+                    if (entry && entry.id) {
+                        entries.push(entry);
+                    }
+                }
+            }
+
+            this.log('info', `[GoogleDrive] Downloaded ${entries.length} entries for merge.`);
+            return entries;
+        } catch (e) {
+            this.log('error', '[GoogleDrive] downloadAllEntries error:', e);
+            return [];
+        }
+    }
+
     async uploadEntry(entry: VaultStorageItem, knownFileId?: string): Promise<boolean> {
         if (!this.connected || !this.accessToken) return false;
         // console.log(`[GoogleDrive] Uploading entry: ${entry.id}`); // Reduce noise

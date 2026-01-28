@@ -73,6 +73,30 @@ class CloudServiceManager {
     isSyncEnabled(): boolean {
         return !!this.provider && this.provider.isConnected();
     }
+
+    /**
+     * Fetch cloud metadata (salt + verifier) without full sync.
+     */
+    async fetchMetadata(): Promise<{ salt: string; verifier: string } | null> {
+        if (!this.provider) return null;
+        return (this.provider as any).fetchMetadata?.() ?? null;
+    }
+
+    /**
+     * Download all vault entries from cloud for merge operation.
+     */
+    async downloadAllEntries(): Promise<VaultStorageItem[]> {
+        if (!this.provider) return [];
+        return (this.provider as any).downloadAllEntries?.() ?? [];
+    }
+
+    /**
+     * Clear all remote data (for conflict resolution).
+     */
+    async clearRemoteData(): Promise<void> {
+        if (!this.provider) return;
+        await (this.provider as any).clearRemoteData?.();
+    }
 }
 
 export const CloudService = new CloudServiceManager();

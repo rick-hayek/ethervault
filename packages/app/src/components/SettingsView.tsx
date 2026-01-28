@@ -25,6 +25,8 @@ import { ImportModal } from './ImportModal';
 import { ExportModal } from './ExportModal';
 
 import { SyncWarningModal } from './SyncWarningModal';
+import { SyncConflictModal, ConflictResolution } from './SyncConflictModal';
+import { useAlert } from '../hooks/useAlert';
 
 interface SettingsViewProps {
   settings: AppSettings;
@@ -43,6 +45,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   const [isSyncWarningModalOpen, setIsSyncWarningModalOpen] = useState(false);
   const [pendingProvider, setPendingProvider] = useState<CloudProvider | null>(null);
 
+  const { showAlert, showSuccess, showError, showWarning, showInfo } = useAlert();
+
   const [passwordForm, setPasswordForm] = useState({ old: '', new: '', confirm: '' });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -50,6 +54,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   const [activityLogs, setActivityLogs] = useState<string[]>([]);
   const [cacheMessage, setCacheMessage] = useState<string | null>(null);
   const [appVersion, setAppVersion] = useState<string>(__APP_VERSION__);
+
+  // Conflict Resolution State
+  const [isConflictModalOpen, setIsConflictModalOpen] = useState(false);
+  const [conflictCloudMeta, setConflictCloudMeta] = useState<{ salt: string; verifier: string } | null>(null);
+  const [localEntryCount, setLocalEntryCount] = useState(0);
 
   useEffect(() => {
     // Runtime check for version (Desktop overrides Web build version)
@@ -186,15 +195,65 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
       CloudService.useProvider(provider);
       const connected = await CloudService.connect();
 
-      if (connected) {
-        setSettings({ ...settings, cloudProvider: provider, lastSync: 'Connected' });
-      } else {
+      if (!connected) {
         console.warn('Failed to connect to provider', provider);
         setError(t('settings.error.failed'));
+        return;
       }
-    } catch (e) {
+
+      // Check if cloud has existing metadata
+      const cloudMeta = await CloudService.fetchMetadata();
+
+      if (cloudMeta?.salt) {
+        // Cloud has data - check if salt matches local
+        const localSalt = await AuthService.getSaltBase64();
+
+        if (localSalt && cloudMeta.salt !== localSalt) {
+          // Salt mismatch - check if we have local entries
+          const localEntries = await VaultService.getEncryptedEntries();
+
+          if (localEntries.length > 0) {
+            // CONFLICT: Both local and cloud have different salts
+            setLocalEntryCount(localEntries.length);
+            setConflictCloudMeta(cloudMeta);
+            setIsConflictModalOpen(true);
+            return;
+          } else {
+            // No local entries - adopt cloud credentials silently
+            await AuthService.importCloudCredentials(cloudMeta.salt, cloudMeta.verifier);
+            showSuccess(
+              t('sync.credentials_imported', 'Cloud vault found. Please log in again with your original password.'),
+              undefined,
+              () => window.location.reload()
+            );
+            return;
+          }
+        }
+      }
+
+      // No conflict - proceed normally
+      setSettings({ ...settings, cloudProvider: provider, lastSync: t('sync.syncing') });
+
+      // Auto-trigger sync after successful connection
+      const entries = await VaultService.getEncryptedEntries();
+      const result = await CloudService.sync(entries);
+
+      if (result && result.updatedEntries.length > 0) {
+        await VaultService.processCloudEntries(result.updatedEntries);
+        onDataChange(); // Refresh UI with new entries
+      }
+
+      setSettings({ ...settings, cloudProvider: provider, lastSync: t('sync.just_now') });
+    } catch (e: any) {
       console.error('Provider connection error', e);
-      setError(t('settings.error.failed'));
+
+      // Handle specific errors
+      if (e.message?.includes('MISSING_VERIFIER') || e.message?.includes('INVALID_VERIFIER')) {
+        setError(t('sync.error.missing_verifier',
+          'Cloud vault is missing password verification data. Please sync from the original device first to update cloud metadata.'));
+      } else {
+        setError(t('settings.error.failed'));
+      }
     } finally {
       setIsSyncing(false);
     }
@@ -209,6 +268,101 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     }
   };
 
+  const handleConflictResolve = async (resolution: ConflictResolution, cloudPassword?: string) => {
+    if (resolution === 'cancel') {
+      setIsConflictModalOpen(false);
+      setConflictCloudMeta(null);
+      return;
+    }
+
+    setIsSyncing(true);
+
+    try {
+      switch (resolution) {
+        case 'merge':
+          if (!cloudPassword || !conflictCloudMeta) {
+            showError(t('sync.error.missing_password', 'Cloud password is required for merge.'));
+            setIsSyncing(false);
+            return;
+          }
+
+          // 1. Derive cloud key
+          const cloudKey = await AuthService.deriveKeyWithSalt(cloudPassword, conflictCloudMeta.salt);
+
+          // 2. Download all cloud entries
+          const cloudEntries = await CloudService.downloadAllEntries();
+
+          if (cloudEntries.length === 0) {
+            showError(t('sync.error.no_cloud_entries', 'No cloud entries found to merge.'));
+            setIsSyncing(false);
+            return;
+          }
+
+          // 3. Merge: decrypt with cloud key, re-encrypt with local key
+          const mergedCount = await VaultService.mergeCloudEntries(cloudEntries, cloudKey);
+
+          // CRITICAL: Validate merge succeeded before clearing cloud
+          // If cloudEntries existed but mergedCount is 0, decryption failed (wrong password)
+          if (mergedCount === 0) {
+            showError(t('sync.error.wrong_password', 'Incorrect cloud password. Decryption failed. Please try again.'));
+            setIsSyncing(false);
+            return; // Do NOT clear cloud data! Keep modal open for retry
+          }
+
+          // 4. Clear cloud and re-upload with local credentials
+          await CloudService.clearRemoteData();
+
+          // 5. Trigger full sync to upload merged data
+          const localEntries = await VaultService.getEncryptedEntries();
+          await CloudService.sync(localEntries);
+
+          setSettings({ ...settings, cloudProvider: pendingProvider || settings.cloudProvider, lastSync: t('sync.just_now') });
+          onDataChange();
+          setIsConflictModalOpen(false); // Close modal on success
+          setConflictCloudMeta(null); // Cleanup
+          showSuccess(t('sync.merge_complete', `Successfully merged ${mergedCount} entries from cloud.`));
+          break;
+
+        case 'use_cloud':
+          if (!conflictCloudMeta) return;
+
+          // Clear local vault and adopt cloud credentials
+          await VaultService.clearLocalVault();
+          await AuthService.importCloudCredentials(conflictCloudMeta.salt, conflictCloudMeta.verifier);
+
+          showSuccess(t('sync.use_cloud_complete', 'Switched to cloud vault. Please log in again with your cloud password.'));
+          setIsConflictModalOpen(false);
+          setConflictCloudMeta(null);
+          window.location.reload();
+          break;
+
+        case 'use_local':
+          // Clear cloud and upload local data
+          await CloudService.clearRemoteData();
+
+          // Trigger sync to upload local data
+          const entries = await VaultService.getEncryptedEntries();
+          await CloudService.sync(entries);
+
+          setSettings({ ...settings, cloudProvider: pendingProvider || settings.cloudProvider, lastSync: t('sync.just_now') });
+          setIsConflictModalOpen(false); // Close modal on success
+          setConflictCloudMeta(null);
+          showSuccess(t('sync.use_local_complete', 'Cloud has been overwritten with local data.'));
+          break;
+      }
+    } catch (e: any) {
+      console.error('Conflict resolution error:', e);
+      if (e.message?.includes('wrong secret key') || e.message?.includes('decryption failed')) {
+        showError(t('sync.error.wrong_password', 'Incorrect cloud password. Decryption failed.'));
+      } else {
+        showError(t('settings.error.failed'));
+      }
+    } finally {
+      setIsSyncing(false);
+      // NOTE: Do NOT clear conflictCloudMeta here, as we might be in a retry-able error state (wrong password)
+    }
+  };
+
   const handleSync = async (provider: CloudProvider) => {
     // If same provider, Force Sync
     if (settings.cloudProvider === provider) {
@@ -219,17 +373,20 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
         if (result && result.updatedEntries.length > 0) {
           await VaultService.processCloudEntries(result.updatedEntries);
-          setSettings({ ...settings, lastSync: 'Just now' }); // Update timestamp
+          setSettings({ ...settings, lastSync: t('sync.just_now') }); // Update timestamp
           onDataChange(); // Refresh UI with new entries
         }
-        setSettings({ ...settings, lastSync: 'Just now' });
+        setSettings({ ...settings, lastSync: t('sync.just_now') });
         setSuccess(true);
         setTimeout(() => setSuccess(false), 2000);
       } catch (err: any) {
         if (err.message === 'SALT_UPDATED') {
           // Force reload to clear memory and re-login with new salt
-          alert(t('sync.salt_updated') || 'Cloud security settings updated. You must log in again.');
-          window.location.reload();
+          showInfo(
+            t('sync.salt_updated') || 'Cloud security settings updated. You must log in again.',
+            undefined,
+            () => window.location.reload()
+          );
           return;
         }
         console.error('Sync failed', err);
@@ -325,9 +482,26 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
           <div className="grid grid-cols-3 gap-2">
             {[
-              { id: 'google', name: 'Drive', icon: Globe },
+              {
+                id: 'google', name: 'Google Drive', icon: () => (
+                  <svg viewBox="0 0 87.3 78" className="w-4 h-4">
+                    <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da" />
+                    <path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47" />
+                    <path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335" />
+                    <path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d" />
+                    <path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc" />
+                    <path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00" />
+                  </svg>
+                )
+              },
               // { id: 'icloud', name: 'iCloud', icon: Cloud }, // Postponed
-              { id: 'onedrive', name: 'Sync', icon: Smartphone }
+              {
+                id: 'onedrive', name: 'OneDrive', icon: () => (
+                  <svg viewBox="0 0 24 24" className="w-4 h-4">
+                    <path d="M19.35 10.04C18.67 6.59 15.64 4 12 4C8.36 4 5.33 6.59 4.65 10.04C2.02 10.32 0 12.48 0 15.12C0 17.89 2.24 20.13 5 20.13H19C21.76 20.13 24 17.89 24 15.12C24 12.48 21.98 10.32 19.35 10.04Z" fill="#0078D4" />
+                  </svg>
+                )
+              }
             ].map(p => (
               <button
                 key={p.id}
@@ -337,10 +511,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   : 'border-slate-50 dark:border-slate-800 hover:border-slate-200'
                   }`}
               >
-                <div className={`p-1.5 rounded-lg ${settings.cloudProvider === p.id ? 'bg-indigo-600 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-400'}`}>
-                  <p.icon className="w-4 h-4" />
+                <div className={`p-1.5 rounded-lg ${settings.cloudProvider === p.id ? 'bg-white dark:bg-slate-800' : 'bg-slate-100 dark:bg-slate-800'}`}>
+                  <p.icon />
                 </div>
-                <span className="text-[8px] font-bold text-slate-500 uppercase">{p.name}</span>
+                <span className="text-[8px] font-bold text-slate-500">{p.name}</span>
               </button>
             ))}
           </div>
@@ -355,7 +529,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           </button>
 
           {/* DEV ONLY BUTTON - Only visible in development mode */}
-          {import.meta.env.DEV && settings.cloudProvider === 'google' && (
+          {import.meta.env.DEV && CloudService.activeProvider?.isConnected() && (
             <button
               onClick={async () => {
                 if (confirm('DANGER: This will PERMANENTLY DELETE all cloud data. Are you sure?')) {
@@ -363,10 +537,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                     const provider = CloudService.activeProvider as any;
                     if (provider && typeof provider.clearRemoteData === 'function') {
                       await provider.clearRemoteData();
-                      alert('Cloud data wiped successfully.');
+                      showSuccess('Cloud data wiped successfully.');
                     }
                   } catch (e) {
-                    alert('Failed to wipe data.');
+                    showError('Failed to wipe data.');
                   }
                 }
               }}
@@ -574,6 +748,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           onConfirm={handleSyncConfirm}
         />
       )}
+
+      {/* Salt Conflict Resolution Modal */}
+      <SyncConflictModal
+        isOpen={isConflictModalOpen}
+        localEntryCount={localEntryCount}
+        onResolve={handleConflictResolve}
+      />
 
       {isActivityModalOpen && (
         <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={() => setIsActivityModalOpen(false)}>

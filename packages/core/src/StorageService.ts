@@ -78,4 +78,19 @@ export class StorageService {
             request.onerror = () => reject(request.error);
         });
     }
+
+    /**
+     * Clear all items from an object store.
+     */
+    static async clear(storeName: string): Promise<void> {
+        const db = await this.init();
+        return new Promise((resolve, reject) => {
+            const transaction = db.transaction(storeName, 'readwrite');
+            const store = transaction.objectStore(storeName);
+            const request = store.clear();
+
+            request.onsuccess = () => resolve();
+            request.onerror = () => reject(request.error);
+        });
+    }
 }

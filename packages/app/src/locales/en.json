@@ -14,6 +14,11 @@
         "title": "Your Vault",
         "subtitle": "Manage your credentials with industry-grade security.",
         "add": "ADD CREDENTIAL",
+        "sync_prompt": {
+            "title": "Sync your vault across devices",
+            "description": "Connect to cloud storage to access your passwords anywhere.",
+            "action": "Setup Sync"
+        },
         "search": "Search...",
         "update": "UPDATE CREDENTIAL",
         "save": "SAVE CREDENTIAL",
@@ -179,5 +184,9 @@
             "length": "Master Key must be at least 8 characters.",
             "match": "Keys do not match."
         }
+    },
+    "sync": {
+        "just_now": "Just now",
+        "syncing": "Syncing..."
     }
 }

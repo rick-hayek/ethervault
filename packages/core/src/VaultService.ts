@@ -225,4 +225,92 @@ export class VaultService {
         // Sort by createdAt desc
         this.entries.sort((a, b) => b.createdAt - a.createdAt);
     }
+
+    /**
+     * Merge cloud entries encrypted with a different key.
+     * Decrypts with cloudKey, re-encrypts with local key, and adds to vault.
+     * Used during conflict resolution "Merge" option.
+     * 
+     * @param cloudEntries - Encrypted entries from cloud
+     * @param cloudKey - Key derived from cloud password + cloud salt
+     * @returns Number of successfully merged entries
+     */
+    static async mergeCloudEntries(
+        cloudEntries: VaultStorageItem[],
+        cloudKey: Uint8Array
+    ): Promise<number> {
+        const localKey = AuthService.getMasterKey();
+        let mergedCount = 0;
+
+        for (const item of cloudEntries) {
+            try {
+                if (!item.payload || !item.nonce) {
+                    console.warn(`[VaultService] Merge: Item ${item.id} missing payload/nonce - skipping`);
+                    continue;
+                }
+
+                // 1. Decrypt with cloud key
+                const decryptedData = CryptoService.decrypt(item.payload, item.nonce, cloudKey);
+                const decryptedFields = JSON.parse(decryptedData);
+
+                // 2. Check if entry already exists locally
+                const existingIndex = this.entries.findIndex(e => e.id === item.id);
+                if (existingIndex !== -1) {
+                    // Skip if local entry is newer
+                    if (this.entries[existingIndex].updatedAt >= item.updatedAt) {
+                        console.log(`[VaultService] Merge: Skipping ${item.id} - local is newer`);
+                        continue;
+                    }
+                }
+
+                // 3. Re-encrypt with local key
+                const { ciphertext, nonce } = CryptoService.encrypt(
+                    JSON.stringify(decryptedFields),
+                    localKey
+                );
+
+                // 4. Create new storage item
+                const newStorageItem: VaultStorageItem = {
+                    id: item.id,
+                    payload: ciphertext,
+                    nonce,
+                    category: decryptedFields.category || item.category,
+                    createdAt: item.createdAt,
+                    updatedAt: item.updatedAt,
+                    favorite: decryptedFields.favorite ?? item.favorite,
+                    icon: item.icon
+                };
+
+                // 5. Save to storage
+                await StorageService.setItem('vault', item.id, newStorageItem);
+
+                // 6. Update in-memory cache
+                const fullEntry = { ...newStorageItem, ...decryptedFields };
+                if (existingIndex !== -1) {
+                    this.entries[existingIndex] = fullEntry;
+                } else {
+                    this.entries.push(fullEntry);
+                }
+
+                mergedCount++;
+            } catch (e) {
+                console.error(`[VaultService] Merge: Failed to process ${item.id}:`, e);
+            }
+        }
+
+        // Sort by createdAt desc
+        this.entries.sort((a, b) => b.createdAt - a.createdAt);
+
+        console.log(`[VaultService] Merge complete: ${mergedCount}/${cloudEntries.length} entries merged.`);
+        return mergedCount;
+    }
+
+    /**
+     * Clear all local vault data (for "Use Cloud" conflict resolution).
+     */
+    static async clearLocalVault(): Promise<void> {
+        await StorageService.clear('vault');
+        this.entries = [];
+        console.log('[VaultService] Local vault cleared.');
+    }
 }
