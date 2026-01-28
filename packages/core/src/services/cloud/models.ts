@@ -56,4 +56,10 @@ export interface CloudProviderInterface {
         updatedEntries: VaultStorageItem[];
         deletedIds: string[];
     }>;
+
+    /**
+     * Clear all remote data (for dev/testing purposes)
+     * Optional - not all providers may implement this
+     */
+    clearRemoteData?(): Promise<void>;
 }

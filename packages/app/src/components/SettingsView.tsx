@@ -24,6 +24,8 @@ import { AppSettings, CloudProvider, AuthService, VaultService, CloudService } f
 import { ImportModal } from './ImportModal';
 import { ExportModal } from './ExportModal';
 
+import { SyncWarningModal } from './SyncWarningModal';
+
 interface SettingsViewProps {
   settings: AppSettings;
   setSettings: (settings: AppSettings) => void;
@@ -36,6 +38,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+
+  // Sync Warning State
+  const [isSyncWarningModalOpen, setIsSyncWarningModalOpen] = useState(false);
+  const [pendingProvider, setPendingProvider] = useState<CloudProvider | null>(null);
+
   const [passwordForm, setPasswordForm] = useState({ old: '', new: '', confirm: '' });
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
@@ -173,18 +180,58 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     setSettings({ ...settings, biometricsEnabled: !settings.biometricsEnabled });
   };
 
-  const handleSync = async (provider: CloudProvider) => {
+  const connectToProvider = async (provider: CloudProvider) => {
     setIsSyncing(true);
+    try {
+      CloudService.useProvider(provider);
+      const connected = await CloudService.connect();
 
-    // If the same provider, Force Sync
+      if (connected) {
+        setSettings({ ...settings, cloudProvider: provider, lastSync: 'Connected' });
+      } else {
+        console.warn('Failed to connect to provider', provider);
+        setError(t('settings.error.failed'));
+      }
+    } catch (e) {
+      console.error('Provider connection error', e);
+      setError(t('settings.error.failed'));
+    } finally {
+      setIsSyncing(false);
+    }
+  };
+
+  const handleSyncConfirm = () => {
+    if (pendingProvider) {
+      localStorage.setItem(`ethervault_sync_warning_${pendingProvider}`, 'true');
+      setIsSyncWarningModalOpen(false);
+      connectToProvider(pendingProvider);
+      setPendingProvider(null);
+    }
+  };
+
+  const handleSync = async (provider: CloudProvider) => {
+    // If same provider, Force Sync
     if (settings.cloudProvider === provider) {
+      setIsSyncing(true);
       try {
         const entries = await VaultService.getEncryptedEntries();
-        await CloudService.sync(entries);
+        const result = await CloudService.sync(entries);
+
+        if (result && result.updatedEntries.length > 0) {
+          await VaultService.processCloudEntries(result.updatedEntries);
+          setSettings({ ...settings, lastSync: 'Just now' }); // Update timestamp
+          onDataChange(); // Refresh UI with new entries
+        }
         setSettings({ ...settings, lastSync: 'Just now' });
         setSuccess(true);
         setTimeout(() => setSuccess(false), 2000);
-      } catch (err) {
+      } catch (err: any) {
+        if (err.message === 'SALT_UPDATED') {
+          // Force reload to clear memory and re-login with new salt
+          alert(t('sync.salt_updated') || 'Cloud security settings updated. You must log in again.');
+          window.location.reload();
+          return;
+        }
         console.error('Sync failed', err);
         setError(t('settings.error.failed'));
       } finally {
@@ -196,30 +243,19 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     // Switch Provider Logic
     if (provider === 'none') {
       setSettings({ ...settings, cloudProvider: provider, lastSync: '' });
-      setIsSyncing(false);
       return;
     }
 
-    try {
-      CloudService.useProvider(provider);
-      const connected = await CloudService.connect();
-
-      if (connected) {
-        setSettings({ ...settings, cloudProvider: provider, lastSync: 'Connected' });
-        // Optional: Trigger initial sync immediately?
-        // const entries = await VaultService.getEntries();
-        // await CloudService.sync(entries);
-      } else {
-        // Failed to connect (e.g. popup closed)
-        console.warn('Failed to connect to provider', provider);
-        setError(t('settings.error.failed'));
-      }
-    } catch (e) {
-      console.error('Provider connection error', e);
-      setError(t('settings.error.failed'));
-    } finally {
-      setIsSyncing(false);
+    // Check for First Time Warning
+    const hasSeenWarning = localStorage.getItem(`ethervault_sync_warning_${provider}`);
+    if (!hasSeenWarning) {
+      setPendingProvider(provider);
+      setIsSyncWarningModalOpen(true);
+      return;
     }
+
+    // Already authorized, connect immediately
+    connectToProvider(provider);
   };
 
   const handlePasswordChange = async (e: React.FormEvent) => {
@@ -317,6 +353,28 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
             <RefreshCcw className={`w-3 h-3 ${isSyncing ? 'animate-spin' : ''}`} />
             {isSyncing ? t('settings.updating') : t('settings.force_sync')}
           </button>
+
+          {/* DEV ONLY BUTTON - Only visible in development mode */}
+          {import.meta.env.DEV && settings.cloudProvider === 'google' && (
+            <button
+              onClick={async () => {
+                if (confirm('DANGER: This will PERMANENTLY DELETE all cloud data. Are you sure?')) {
+                  try {
+                    const provider = CloudService.activeProvider as any;
+                    if (provider && typeof provider.clearRemoteData === 'function') {
+                      await provider.clearRemoteData();
+                      alert('Cloud data wiped successfully.');
+                    }
+                  } catch (e) {
+                    alert('Failed to wipe data.');
+                  }
+                }
+              }}
+              className="w-full py-2 mt-2 border border-rose-200 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 text-[9px] font-bold rounded-xl uppercase tracking-widest transition-colors"
+            >
+              Reset Cloud Data (Dev)
+            </button>
+          )}
         </div>
 
         {/* Access Settings - High Density Grid */}
@@ -505,6 +563,18 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           }}
         />
       )}
+
+      {isSyncWarningModalOpen && pendingProvider && (
+        <SyncWarningModal
+          providerName={pendingProvider === 'google' ? 'Google Drive' : pendingProvider}
+          onClose={() => {
+            setIsSyncWarningModalOpen(false);
+            setPendingProvider(null);
+          }}
+          onConfirm={handleSyncConfirm}
+        />
+      )}
+
       {isActivityModalOpen && (
         <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={() => setIsActivityModalOpen(false)}>
           <div className="bg-white dark:bg-slate-900 w-full max-w-2xl h-[600px] flex flex-col rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>

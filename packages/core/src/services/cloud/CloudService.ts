@@ -43,6 +43,10 @@ class CloudServiceManager {
         this.log('info', `[CloudService] Switched to provider: ${provider.name}`);
     }
 
+    get activeProvider(): CloudProviderInterface | null {
+        return this.provider;
+    }
+
     async connect(): Promise<boolean> {
         if (!this.provider) return false;
         return this.provider.connect();

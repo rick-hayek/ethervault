@@ -22,11 +22,19 @@ export class VaultService {
         const key = AuthService.getMasterKey();
         const encryptedEntries = await StorageService.getAll('vault');
 
-        this.entries = encryptedEntries.map(e => {
-            if (!e.payload || !e.nonce) return e;
-            const decryptedData = CryptoService.decrypt(e.payload, e.nonce, key);
-            return { ...e, ...JSON.parse(decryptedData) };
+        const decryptedEntries = encryptedEntries.map(e => {
+            try {
+                if (!e.payload || !e.nonce) return null;
+                const decryptedData = CryptoService.decrypt(e.payload, e.nonce, key);
+                return { ...e, ...JSON.parse(decryptedData) };
+            } catch (err) {
+                // This is expected for items encrypted with an old Master Password
+                console.warn(`[VaultService] Skipping entry ${e.id}: Decryption failed (Key mismatch)`);
+                return null;
+            }
         });
+
+        this.entries = decryptedEntries.filter((e): e is PasswordEntry => e !== null);
 
         return [...this.entries];
     }
@@ -72,8 +80,7 @@ export class VaultService {
         this.entries = [newEntry, ...this.entries];
 
         // Sync to Cloud (Background)
-        // @ts-ignore
-        CloudService.uploadEntry(storageItem).catch(e => console.error('Cloud Sync Failed:', e));
+        CloudService.uploadEntry(storageItem as any).catch((e: Error) => console.error('Cloud Sync Failed:', e));
 
         return newEntry;
     }
@@ -116,8 +123,7 @@ export class VaultService {
         this.entries = this.entries.map(e => e.id === id ? updated : e);
 
         // Sync to Cloud (Background)
-        // @ts-ignore
-        CloudService.uploadEntry(storageItem).catch(e => console.error('Cloud Sync Failed:', e));
+        CloudService.uploadEntry(storageItem as any).catch((e: Error) => console.error('Cloud Sync Failed:', e));
 
         return updated;
     }
@@ -173,5 +179,50 @@ export class VaultService {
         });
 
         await Promise.all(updates);
+    }
+    static async processCloudEntries(items: VaultStorageItem[]): Promise<void> {
+        if (items.length === 0) return;
+        console.log(`[VaultService] Processing ${items.length} incoming cloud entries...`);
+
+        const key = AuthService.getMasterKey();
+        const savePromises: Promise<void>[] = [];
+        let successCount = 0;
+        let failCount = 0;
+
+        for (const item of items) {
+            // Fix #5: Try to decrypt FIRST before saving
+            try {
+                if (!item.payload || !item.nonce) {
+                    console.warn(`[VaultService] Item ${item.id} missing payload/nonce - skipping`);
+                    failCount++;
+                    continue;
+                }
+
+                const decryptedData = CryptoService.decrypt(item.payload, item.nonce, key);
+                const decryptedEntry = { ...item, ...JSON.parse(decryptedData) };
+
+                // Only save to storage AFTER successful decryption
+                savePromises.push(StorageService.setItem('vault', item.id, item));
+
+                // Update in-memory cache
+                const index = this.entries.findIndex(e => e.id === item.id);
+                if (index !== -1) {
+                    this.entries[index] = decryptedEntry;
+                } else {
+                    this.entries.push(decryptedEntry);
+                }
+                successCount++;
+            } catch (e) {
+                // Do NOT save to storage - this entry cannot be decrypted
+                console.error(`[VaultService] Failed to decrypt cloud entry ${item.id}. Skipping save.`);
+                failCount++;
+            }
+        }
+
+        await Promise.all(savePromises);
+        console.log(`[VaultService] Cloud Import Result: ${successCount} saved, ${failCount} skipped (decryption failed).`);
+
+        // Sort by createdAt desc
+        this.entries.sort((a, b) => b.createdAt - a.createdAt);
     }
 }
