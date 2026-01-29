@@ -81,7 +81,7 @@ export const GeneratorView: React.FC = () => {
             <div className="absolute -inset-1 bg-gradient-to-r from-violet-500 to-fuchsia-500 rounded-[32px] blur-2xl opacity-5 dark:opacity-10 pointer-events-none" />
 
             <div className="relative text-center space-y-8 z-10">
-              <span className="text-3xl md:text-5xl font-mono font-bold text-slate-800 dark:text-white break-all tracking-tight leading-tight selection:bg-violet-500 selection:text-white block min-h-[1.2em]">
+              <span className="text-3xl md:text-5xl font-mono font-bold text-slate-800 dark:text-white line-clamp-2 break-all w-full px-4 tracking-tight leading-tight selection:bg-violet-500 selection:text-white min-h-[1.2em]">
                 {password}
               </span>
 

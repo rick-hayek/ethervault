@@ -27,6 +27,7 @@ export const AlertProvider: React.FC<{ children: ReactNode }> = ({ children }) =
     });
 
     const showAlert = useCallback((message: string, type: AlertType = 'info', title?: string, onClose?: () => void) => {
+        console.log('[AlertProvider] showAlert called:', { message, type });
         setAlert({ isOpen: true, type, title, message, onClose });
     }, []);
 

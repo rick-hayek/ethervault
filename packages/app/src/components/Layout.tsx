@@ -179,7 +179,7 @@ export const Layout: React.FC<LayoutProps> = ({
       <main
         ref={mainRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto p-4 lg:p-8 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-8 relative scrollbar-hide"
+        className="flex-1 overflow-y-auto p-4 md:p-8 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-8 relative scrollbar-hide"
       >
         <div className="max-w-6xl mx-auto">
           {children}

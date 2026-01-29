@@ -74,7 +74,8 @@
             "syncing": "同步中...",
             "sync_now": "立即同步",
             "disconnect": "断开连接",
-            "connect_account": "连接账户"
+            "connect_account": "连接账户",
+            "connection_failed": "连接失败，请检查网络设置。"
         },
         "option": {
             "biometric": "生物识别",

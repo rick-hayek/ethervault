@@ -1,0 +1,1 @@
+export const NETWORK_TIMEOUT_MS = 30000;

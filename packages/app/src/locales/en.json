@@ -74,7 +74,8 @@
             "syncing": "Syncing...",
             "sync_now": "Sync Now",
             "disconnect": "Disconnect",
-            "connect_account": "Connect Account"
+            "connect_account": "Connect Account",
+            "connection_failed": "Connection failed. Please check your network."
         },
         "option": {
             "biometric": "Biometric ID",

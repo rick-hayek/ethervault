@@ -3,6 +3,7 @@ import { CloudProviderInterface, SyncResult } from '../models';
 import { VaultStorageItem, Logger } from '../../../types';
 import { AuthService } from '../../../AuthService';
 import { StorageService } from '../../../StorageService';
+import { NETWORK_TIMEOUT_MS } from '../../../constants';
 
 // Declare global Google API types
 declare global {
@@ -58,10 +59,24 @@ export class GoogleDriveProvider implements CloudProviderInterface {
             // 2. Initialize Token Client
             this.log('info', '[GoogleDrive] Initializing Token Client...');
             return new Promise((resolve) => {
+                // Variable to hold popup reference (assigned during request)
+                let authPopup: Window | null = null;
+
+                const timeoutId = setTimeout(() => {
+                    this.log('error', `[GoogleDrive] Auth timed out(${NETWORK_TIMEOUT_MS}ms)`);
+                    if (authPopup) {
+                        this.log('info', '[GoogleDrive] Closing auth popup due to timeout.');
+                        authPopup.close();
+                    }
+                    resolve(false);
+                }, NETWORK_TIMEOUT_MS);
+
                 this.tokenClient = window.google.accounts.oauth2.initTokenClient({
                     client_id: this.clientId,
                     scope: this.scope,
                     callback: (response: any) => {
+                        clearTimeout(timeoutId);
+
                         if (response.error) {
                             this.log('error', '[GoogleDrive] Auth Error:', response);
                             resolve(false);
@@ -92,7 +107,25 @@ export class GoogleDriveProvider implements CloudProviderInterface {
 
                 // 3. Trigger Popup (use empty prompt for seamless reconnection if token cached)
                 this.log('info', '[GoogleDrive] Requesting Access Token...');
-                this.tokenClient.requestAccessToken({ prompt: '' });
+
+                // Intercept window.open to capture popup reference strictly for timeout handling
+                {
+                    const originalOpen = window.open;
+                    window.open = (...args) => {
+                        const win = originalOpen(...args);
+                        authPopup = win;
+                        return win;
+                    };
+
+                    try {
+                        this.tokenClient.requestAccessToken({ prompt: '' });
+                    } finally {
+                        // Restore original window.open after a short delay
+                        setTimeout(() => {
+                            window.open = originalOpen;
+                        }, 500);
+                    }
+                }
             });
         } catch (e) {
             console.error('[GoogleDrive] Initialization failed:', e);
@@ -102,26 +135,38 @@ export class GoogleDriveProvider implements CloudProviderInterface {
 
     private loadScript(src: string): Promise<void> {
         return new Promise((resolve, reject) => {
-            if (document.querySelector(`script[src="${src}"]`)) {
-                this.log('info', `[GoogleDrive] Script already loaded: ${src}`);
+            // Check if script is already present
+            if (document.querySelector(`script[src = "${src}"]`)) {
+                this.log('info', `[GoogleDrive] Script already loaded: ${src} `);
                 resolve();
                 return;
             }
 
-            this.log('info', `[GoogleDrive] Loading script: ${src}`);
+            this.log('info', `[GoogleDrive] Loading script: ${src} `);
             const script = document.createElement('script');
             script.src = src;
             script.async = true;
             script.defer = true;
 
+            // Timeout to prevent hanging indefinitely
+            const timeoutId = setTimeout(() => {
+                script.remove(); // Remove bad script tag
+                const err = new Error(`Script load timed out(${NETWORK_TIMEOUT_MS}ms): ${src} `);
+                this.log('error', err.message);
+                reject(err);
+            }, NETWORK_TIMEOUT_MS);
+
             script.onload = () => {
-                this.log('info', `[GoogleDrive] Script loaded: ${src}`);
+                clearTimeout(timeoutId);
+                this.log('info', `[GoogleDrive] Script loaded: ${src} `);
                 resolve();
             };
 
             script.onerror = (e) => {
-                this.log('error', `[GoogleDrive] Script failed to load: ${src}`, e);
-                reject(new Error(`Failed to load ${src}`));
+                clearTimeout(timeoutId);
+                script.remove(); // Remove bad script tag so we can retry later
+                this.log('error', `[GoogleDrive] Script failed to load: ${src} `, e);
+                reject(new Error(`Failed to load ${src} `));
             };
 
             document.body.appendChild(script);
@@ -139,7 +184,7 @@ export class GoogleDriveProvider implements CloudProviderInterface {
         this.accessToken = null;
         this.tokenExpiresAt = 0;
         this.connected = false;
-        console.log(`disconnect:this.connected: ${this.connected}`);
+        console.log(`disconnect: this.connected: ${this.connected} `);
     }
 
     /**

@@ -18,11 +18,12 @@ import {
   FileText,
   Activity,
   X,
-  Trash2
+  Trash2,
+  Loader2
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { BiometricService } from '../utils/BiometricService';
-import { AppSettings, CloudProvider, AuthService, VaultService, CloudService } from '@premium-password-manager/core';
+import { AppSettings, CloudProvider, AuthService, VaultService, CloudService, NETWORK_TIMEOUT_MS } from '@premium-password-manager/core';
 import { ImportModal } from './ImportModal';
 import { ExportModal } from './ExportModal';
 
@@ -253,14 +254,17 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   };
 
   const connectToProvider = async (provider: CloudProvider) => {
+    logger.info('[SettingsView] connectToProvider called for:', provider.id);
     setIsSyncing(true);
     try {
       CloudService.useProvider(provider);
       const connected = await CloudService.connect();
+      logger.info('[SettingsView] CloudService.connect result:', connected);
 
       if (!connected) {
         console.warn('Failed to connect to provider', provider);
-        setError(t('settings.error.failed'));
+        logger.info('[SettingsView] Calling showError with literal string...');
+        showError(t('settings.cloud.connection_failed', 'Connection failed. Please check your network.'));
         return;
       }
 
@@ -312,10 +316,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
       // Handle specific errors
       if (e.message?.includes('MISSING_VERIFIER') || e.message?.includes('INVALID_VERIFIER')) {
-        setError(t('sync.error.missing_verifier',
+        showError(t('sync.error.missing_verifier',
           'Cloud vault is missing password verification data. Please sync from the original device first to update cloud metadata.'));
       } else {
-        setError(t('settings.error.failed'));
+        showError(e.message || t('settings.error.failed', 'Connection failed. Please try again.'));
       }
     } finally {
       setIsSyncing(false);
@@ -433,13 +437,22 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
       try {
         // Ensure we're connected before syncing
         const connected = await CloudService.connect();
+        logger.info('[SettingsView] handleSync: connect result:', connected);
+
         if (!connected) {
-          setError(t('settings.error.failed'));
+          showError(t('settings.cloud.connection_failed', 'Connection failed. Please check your network.'));
           return;
         }
 
         const entries = await VaultService.getEncryptedEntries();
-        const result = await CloudService.sync(entries);
+
+        // Race sync against timeout logic (using shared constant)
+        const syncPromise = CloudService.sync(entries);
+        const timeoutPromise = new Promise<any>((_, reject) =>
+          setTimeout(() => reject(new Error('SYNC_TIMEOUT')), NETWORK_TIMEOUT_MS)
+        );
+
+        const result = await Promise.race([syncPromise, timeoutPromise]);
 
         if (result && result.updatedEntries.length > 0) {
           await VaultService.processCloudEntries(result.updatedEntries);
@@ -460,7 +473,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           return;
         }
         console.error('Sync failed', err);
-        setError(t('settings.error.failed'));
+        logger.error('[SettingsView] Sync failed', err);
+
+        if (err.message === 'SYNC_TIMEOUT') {
+          showError(t('settings.cloud.connection_failed', 'Connection failed. Please check your network.'));
+        } else {
+          showError(err.message || t('settings.error.failed', 'Operation failed.'));
+        }
       } finally {
         setIsSyncing(false);
       }
@@ -644,15 +663,19 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                         ) : isActive && !cloudConnected ? (
                           <button
                             onClick={() => handleSync(p.id as CloudProvider)} // Will trigger connect flow
-                            className="w-full py-3 bg-amber-500 text-white text-[11px] font-bold rounded-xl hover:bg-amber-600 transition-all active:scale-95 flex items-center justify-center gap-2 shadow-sm shadow-amber-500/20"
+                            disabled={isSyncing}
+                            className="w-full py-3 bg-amber-500 text-white text-[11px] font-bold rounded-xl hover:bg-amber-600 transition-all active:scale-95 flex items-center justify-center gap-2 shadow-sm shadow-amber-500/20 disabled:opacity-50 disabled:cursor-wait"
                           >
+                            {isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                             {t('settings.cloud.reconnect', 'Resume Connection')}
                           </button>
                         ) : (
                           <button
                             onClick={() => handleSync(p.id as CloudProvider)}
-                            className="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[11px] font-bold rounded-xl hover:shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
+                            disabled={isSyncing}
+                            className="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[11px] font-bold rounded-xl hover:shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-wait"
                           >
+                            {isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                             {t('settings.cloud.connect_account')}
                           </button>
                         )}
