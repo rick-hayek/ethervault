@@ -1,4 +1,4 @@
-package com.premium.passwordmanager;
+package com.ethervault.app;
 
 import com.getcapacitor.BridgeActivity;
 

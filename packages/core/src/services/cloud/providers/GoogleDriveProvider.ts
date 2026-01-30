@@ -4,6 +4,8 @@ import { VaultStorageItem, Logger } from '../../../types';
 import { AuthService } from '../../../AuthService';
 import { StorageService } from '../../../StorageService';
 import { NETWORK_TIMEOUT_MS } from '../../../constants';
+import { Browser } from '@capacitor/browser';
+import { Capacitor } from '@capacitor/core';
 
 // Declare global Google API types
 declare global {
@@ -13,12 +15,50 @@ declare global {
     }
 }
 
+// --- PKCE Helpers ---
+async function sha256(plain: string) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(plain);
+    const hash = await crypto.subtle.digest('SHA-256', data);
+    return new Uint8Array(hash);
+}
+
+function base64UrlEncode(a: Uint8Array) {
+    let str = "";
+    const bytes = a;
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+        str += String.fromCharCode(bytes[i]);
+    }
+    return btoa(str)
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=+$/, "");
+}
+
+async function generateChallenge(verifier: string) {
+    const hashed = await sha256(verifier);
+    return base64UrlEncode(hashed);
+}
+
+function generateVerifier() {
+    const array = new Uint8Array(32);
+    crypto.getRandomValues(array);
+    return base64UrlEncode(array);
+}
+
 export class GoogleDriveProvider implements CloudProviderInterface {
     readonly id = 'google';
     readonly name = 'Google Drive';
 
     private clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID || '';
+
+    // Injected Native Client IDs
+    private iosClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID_IOS || '';
+    private androidClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID_ANDROID || '';
+
     private scope = 'https://www.googleapis.com/auth/drive.appdata';
+    private pkceVerifier: string = ''; // Store verifier temporarily
 
     private tokenClient: any;
     private accessToken: string | null = null;
@@ -38,7 +78,114 @@ export class GoogleDriveProvider implements CloudProviderInterface {
         }
     }
 
+    // Called by App.tsx when deep link is received
+    async handleRedirect(url: string): Promise<boolean> {
+        if (!url.includes('code=')) return false;
+
+        this.log('info', '[GoogleDrive] Handling redirect URL...');
+        // Close browser if open
+        try { await Browser.close(); } catch (e) { /* ignore */ }
+
+        const params = new URLSearchParams(url.split('?')[1]);
+        const code = params.get('code');
+
+        if (!code) {
+            this.log('error', '[GoogleDrive] No code found in redirect URL');
+            return false;
+        }
+
+        return this.exchangeCodeForToken(code);
+    }
+
+    async exchangeCodeForToken(code: string): Promise<boolean> {
+        try {
+            this.log('info', '[GoogleDrive] Exchanging code for token...');
+
+            const isIos = Capacitor.getPlatform() === 'ios';
+            const targetClientId = (isIos ? this.iosClientId : this.androidClientId) || this.clientId;
+
+            // Redirect URI must match exactly what was sent in auth request
+            let redirectUri = `com.ethervault.app:/oauth2redirect`;
+            if (isIos && this.iosClientId) {
+                const reversedId = this.iosClientId.split('.').reverse().join('.');
+                redirectUri = `${reversedId}:/oauth2redirect`;
+            }
+
+            const body = new URLSearchParams({
+                code: code,
+                client_id: targetClientId,
+                redirect_uri: redirectUri,
+                grant_type: 'authorization_code',
+                code_verifier: this.pkceVerifier,
+            });
+
+            const res = await fetch('https://oauth2.googleapis.com/token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: body.toString()
+            });
+
+            if (!res.ok) {
+                const err = await res.json();
+                this.log('error', '[GoogleDrive] Token exchange failed:', err);
+                return false;
+            }
+
+            const tokens = await res.json();
+            this.accessToken = tokens.access_token;
+            this.tokenExpiresAt = Date.now() + (tokens.expires_in * 1000);
+            this.connected = true;
+
+            this.log('info', '[GoogleDrive] Native Connected via PKCE! Token received.');
+            return true;
+        } catch (e) {
+            this.log('error', '[GoogleDrive] Token Exchange Exception:', e);
+            return false;
+        }
+    }
+
+    async connectNative(): Promise<boolean> {
+        this.log('info', '[GoogleDrive] Starting Native Auth (PKCE)...');
+        try {
+            this.pkceVerifier = generateVerifier();
+            const challenge = await generateChallenge(this.pkceVerifier);
+
+            const isIos = Capacitor.getPlatform() === 'ios';
+            const targetClientId = (isIos ? this.iosClientId : this.androidClientId) || this.clientId;
+
+            let redirectUri = `com.ethervault.app:/oauth2redirect`;
+            if (isIos && this.iosClientId) {
+                const reversedId = this.iosClientId.split('.').reverse().join('.');
+                redirectUri = `${reversedId}:/oauth2redirect`;
+            }
+
+            this.log('info', `[GoogleDrive] Using Client ID: ${targetClientId}, Redirect: ${redirectUri}`);
+
+            const authUrl = 'https://accounts.google.com/o/oauth2/v2/auth' +
+                `?response_type=code` +
+                `&client_id=${encodeURIComponent(targetClientId)}` +
+                `&redirect_uri=${encodeURIComponent(redirectUri)}` +
+                `&scope=${encodeURIComponent(this.scope)}` +
+                `&code_challenge=${encodeURIComponent(challenge)}` +
+                `&code_challenge_method=S256`;
+
+            await Browser.open({ url: authUrl });
+
+            // Identify that we are waiting for a redirect
+            // For now, return "true" to signal the process started. 
+            // In a real app, we might want to return a Promise that resolves on redirect.
+            return true;
+        } catch (error) {
+            this.log('error', '[GoogleDrive] Native Auth start failed:', error);
+            return false;
+        }
+    }
+
     async connect(): Promise<boolean> {
+        if (Capacitor.isNativePlatform()) {
+            return this.connectNative();
+        }
+
         if (this.connected && this.accessToken) {
             this.log('info', '[GoogleDrive] Already connected.');
             return true;

@@ -15,6 +15,7 @@ import { BackHandlerProvider, useBackHandler } from './hooks/useBackHandler';
 import { AlertProvider } from './hooks/useAlert';
 import { App as CapacitorApp } from '@capacitor/app';
 
+
 // ... existing imports ...
 
 // Initialize Cloud Logging with App Logger (Universal)
@@ -68,6 +69,8 @@ const AppContent: React.FC = () => {
   useEffect(() => {
     const initializeApp = async () => {
       try {
+
+
         await CryptoService.init();
 
         // Check if account is already setup in persistence
@@ -94,6 +97,21 @@ const AppContent: React.FC = () => {
         handleLock();
       });
     }
+  }, []);
+
+  // Listen for Deep Links (OAuth Redirects)
+  useEffect(() => {
+    CapacitorApp.addListener('appUrlOpen', (data) => {
+      console.log('[App] Deep Link Received:', data.url);
+      // Pass to CloudService to handle if it's an auth redirect
+      CloudService.handleRedirect(data.url).then(handled => {
+        if (handled) {
+          console.log('[App] Deep link handled by CloudService');
+        } else {
+          console.log('[App] Deep link ignored');
+        }
+      });
+    });
   }, []);
 
   // Auto-lock timer

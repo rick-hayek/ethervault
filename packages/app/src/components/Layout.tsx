@@ -6,11 +6,12 @@ import {
   Settings,
   Moon,
   Sun,
-  LogOut
+  LogOut,
+  Search,
+  X
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { BottomTabNav } from './BottomTabNav';
-import { FAB } from './FAB';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -23,8 +24,6 @@ interface LayoutProps {
   searchQuery?: string;
   onAddClick?: () => void;
 }
-
-// ...
 
 export const Layout: React.FC<LayoutProps> = ({
   children,
@@ -39,8 +38,6 @@ export const Layout: React.FC<LayoutProps> = ({
 }) => {
   const { t } = useTranslation();
   const [isSearchMode, setIsSearchMode] = useState(false);
-  const [showFab, setShowFab] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
 
   const mainRef = React.useRef<HTMLElement>(null);
   const touchStartRef = React.useRef<number | null>(null);
@@ -89,17 +86,6 @@ export const Layout: React.FC<LayoutProps> = ({
       mainRef.current.scrollTop = 0;
     }
   }, [currentView]);
-
-  const handleScroll = (e: React.UIEvent<HTMLElement>) => {
-    const currentScrollY = e.currentTarget.scrollTop;
-    // Hide FAB if scrolling down more than 10px and not at the top
-    if (currentScrollY > lastScrollY && currentScrollY > 10) {
-      setShowFab(false);
-    } else {
-      setShowFab(true);
-    }
-    setLastScrollY(currentScrollY);
-  };
 
   const navItems = [
     {
@@ -189,27 +175,51 @@ export const Layout: React.FC<LayoutProps> = ({
 
       {/* Mobile Header (Clean & Minimal) - Only show on Vault view */}
       {!['generator', 'security', 'settings'].includes(currentView) && (
-        <header className="md:hidden flex items-center pt-[calc(env(safe-area-inset-top)+20px)] pb-4 bg-slate-50 dark:bg-slate-950 shrink-0 z-30 px-4 titlebar transition-all duration-300">
-          <div className="flex items-center gap-3 flex-1 overflow-hidden">
-            <div className="p-1.5 bg-slate-900 dark:bg-white rounded-xl shrink-0 shadow-sm"><ShieldCheck className="w-4 h-4 text-white dark:text-slate-900" /></div>
-            <span className="font-bold text-xl text-slate-900 dark:text-white truncate tracking-tight">EtherVault</span>
-          </div>
-          <div className="flex items-center gap-1">
-            {currentView === 'vault' && (
-              <div className="relative">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => onSearch?.(e.target.value)}
-                  placeholder={t('layout.search_placeholder')}
-                  className="w-32 bg-slate-100 dark:bg-slate-900 rounded-lg py-1.5 pl-3 pr-2 outline-none text-xs font-medium text-slate-900 dark:text-white border border-transparent focus:border-indigo-500/50 focus:w-48 transition-all"
-                />
+        <header className="md:hidden flex items-center pt-[calc(env(safe-area-inset-top)+16px)] pb-4 bg-slate-50 dark:bg-slate-950 shrink-0 z-30 px-4 titlebar transition-all duration-300 min-h-[60px]">
+          {isSearchMode ? (
+            <div className="flex-1 flex items-center gap-3 animate-in fade-in slide-in-from-right-5 duration-200">
+              <Search className="w-5 h-5 text-slate-400 shrink-0" />
+              <input
+                autoFocus
+                type="text"
+                value={searchQuery}
+                onChange={(e) => onSearch?.(e.target.value)}
+                placeholder={t('layout.search_placeholder')}
+                className="flex-1 bg-transparent border-none outline-none text-base font-medium text-slate-900 dark:text-white placeholder:text-slate-400"
+              />
+              <button
+                onClick={() => {
+                  setIsSearchMode(false);
+                  onSearch?.('');
+                }}
+                className="p-2 -mr-2 text-slate-500 dark:text-slate-400"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className="flex-1 flex items-center">
+                <span className="font-bold text-2xl text-slate-900 dark:text-white tracking-tight">EtherVault</span>
               </div>
-            )}
-            <button onClick={toggleDarkMode} className="p-2 ml-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl">
-              {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </button>
-          </div>
+              <div className="flex items-center gap-2">
+                {currentView === 'vault' && (
+                  <button
+                    onClick={() => setIsSearchMode(true)}
+                    className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+                  >
+                    <Search className="w-5 h-5" />
+                  </button>
+                )}
+                <button
+                  onClick={toggleDarkMode}
+                  className="p-2 -mr-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition-colors"
+                >
+                  {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                </button>
+              </div>
+            </>
+          )}
         </header>
       )}
 
@@ -219,21 +229,19 @@ export const Layout: React.FC<LayoutProps> = ({
       {/* Main Content Area (Independent scroll) */}
       <main
         ref={mainRef}
-        onScroll={handleScroll}
-        className="flex-1 overflow-y-auto md:p-8 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-8 relative scrollbar-hide"
+        className="flex-1 overflow-y-auto pb-[calc(5rem+env(safe-area-inset-bottom))] relative scrollbar-hide"
       >
         <div className="max-w-6xl mx-auto">
           {children}
         </div>
       </main>
 
-      {/* FAB (Only on Vault view) */}
-      {currentView === 'vault' && onAddClick && (
-        <FAB onClick={onAddClick} visible={showFab} />
-      )}
-
       {/* Mobile Bottom Navigation */}
-      <BottomTabNav currentView={currentView} setView={setView} />
+      <BottomTabNav
+        currentView={currentView}
+        setView={setView}
+        onAddClick={onAddClick}
+      />
     </div>
   );
 };

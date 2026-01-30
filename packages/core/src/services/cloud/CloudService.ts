@@ -124,6 +124,14 @@ class CloudServiceManager {
         if (!this.provider) return;
         await (this.provider as any).clearRemoteData?.();
     }
+
+    /**
+     * Handle OAuth redirects for native flows.
+     */
+    async handleRedirect(url: string): Promise<boolean> {
+        if (!this.provider) return false;
+        return (this.provider as any).handleRedirect?.(url) ?? false;
+    }
 }
 
 export const CloudService = new CloudServiceManager();

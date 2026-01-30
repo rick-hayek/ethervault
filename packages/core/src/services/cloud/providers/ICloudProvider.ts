@@ -10,7 +10,7 @@ export class ICloudProvider implements CloudProviderInterface {
     readonly name = 'iCloud';
 
     // TODO: [USER] Replace these with your actual Apple Developer values
-    private containerIdentifier = 'iCloud.com.premium.passwordmanager';
+    private containerIdentifier = 'iCloud.ethervault';
     private apiToken = 'YOUR_APPLE_API_TOKEN';
 
     private connected = false;

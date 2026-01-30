@@ -62,7 +62,7 @@ export const GeneratorView: React.FC = () => {
 
   return (
     <div className="min-h-full">
-      <div className="sticky top-0 z-30 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm px-4 pt-[calc(env(safe-area-inset-top)+20px)] pb-2 md:static md:bg-transparent md:backdrop-blur-none md:p-0 md:pt-0 transition-all">
+      <div className="sticky top-0 z-30 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm px-4 pt-[calc(env(safe-area-inset-top)+16px)] pb-2 md:sticky md:px-8 md:pt-8 md:pb-4 transition-all">
         <div className="flex items-center justify-between">
           <div className="block">
             <h1 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">{t('generator.title')}</h1>
@@ -74,7 +74,7 @@ export const GeneratorView: React.FC = () => {
         </div>
       </div>
 
-      <div className="px-4 md:px-0 space-y-6 pb-6 md:mt-6">
+      <div className="px-4 md:px-8 space-y-4 pb-6 md:pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Result Card */}
           <div className="lg:col-span-7 flex flex-col">

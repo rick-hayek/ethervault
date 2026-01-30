@@ -570,7 +570,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
   return (
     <div className="min-h-full">
-      <div className="sticky top-0 z-30 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm px-4 pt-[calc(env(safe-area-inset-top)+20px)] pb-2 md:static md:bg-transparent md:backdrop-blur-none md:p-0 md:pt-0 transition-all">
+      <div className="sticky top-0 z-30 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm px-4 pt-[calc(env(safe-area-inset-top)+16px)] pb-2 md:sticky md:px-8 md:pt-8 md:pb-4 transition-all">
         <div className="flex items-center justify-between">
           <div className="block">
             <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{t('settings.title')}</h1>
@@ -580,7 +580,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
         </div>
       </div>
 
-      <div className="px-4 md:px-0 space-y-4 pb-6 md:mt-6">
+      <div className="px-4 md:px-8 space-y-4 pb-6 md:pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           {/* Cloud Config - Tighter */}
           <div className="lg:col-span-5 bg-white dark:bg-slate-900 p-6 rounded-[32px] border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
