@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PasswordEntry } from '@premium-password-manager/core';
+import { PasswordEntry, VaultStorageItem, CryptoService } from '@ethervault/core';
 import { useTranslation } from 'react-i18next';
 import { Download, FileJson, FileText, Check, AlertTriangle, X } from 'lucide-react';
 

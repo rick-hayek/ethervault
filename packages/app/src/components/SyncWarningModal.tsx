@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Shield, AlertTriangle } from 'lucide-react';
-import { AuthService } from '@premium-password-manager/core';
+import { CloudProvider, AuthService } from '@ethervault/core';
 
 interface SyncWarningModalProps {
     onClose: () => void;

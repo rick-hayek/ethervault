@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { PasswordEntry, Category } from '@premium-password-manager/core';
+import { VaultService, PasswordEntry, SecurityService, Category } from '@ethervault/core';
 import { useTranslation } from 'react-i18next';
 import { Upload, FileText, Check, AlertCircle, X, Loader2 } from 'lucide-react';
 

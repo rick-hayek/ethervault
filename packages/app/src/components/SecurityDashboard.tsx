@@ -2,7 +2,7 @@
 import React, { useMemo, useState } from 'react';
 import { ShieldAlert, ShieldCheck, RefreshCcw, AlertCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { PasswordEntry, SecurityService } from '@premium-password-manager/core';
+import { SecurityService, PasswordEntry } from '@ethervault/core';
 
 interface SecurityDashboardProps {
   passwords: PasswordEntry[];

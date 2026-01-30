@@ -1,4 +1,3 @@
-
-import { PasswordEntry, Category } from '@premium-password-manager/core';
+import { AppSettings, Category } from '@ethervault/core';
 
 export const CATEGORIES: Category[] = ['All', 'Personal', 'Work', 'Others'];

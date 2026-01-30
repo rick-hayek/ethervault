@@ -10,16 +10,7 @@ import { SettingsView } from './components/SettingsView';
 import { WelcomeView } from './components/WelcomeView';
 import { LoginView } from './components/LoginView';
 import { EntryModal } from './components/VaultView'; // Exported for use here
-import {
-  AuthService,
-  VaultService,
-  CryptoService,
-  CloudService,
-  PasswordEntry,
-  Category,
-  AppSettings,
-  CloudProvider
-} from '@premium-password-manager/core';
+import { VaultService, AuthService, StorageService, CloudService, AppSettings, PasswordEntry, Category, CloudProvider, CryptoService } from '@ethervault/core';
 import { BackHandlerProvider, useBackHandler } from './hooks/useBackHandler';
 import { AlertProvider } from './hooks/useAlert';
 import { App as CapacitorApp } from '@capacitor/app';

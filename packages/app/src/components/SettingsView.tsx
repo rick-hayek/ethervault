@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { BiometricService } from '../utils/BiometricService';
-import { AppSettings, CloudProvider, AuthService, VaultService, CloudService, NETWORK_TIMEOUT_MS } from '@premium-password-manager/core';
+import { AppSettings, CloudProvider, AuthService, VaultService, CloudService, NETWORK_TIMEOUT_MS } from '@ethervault/core';
 import { ImportModal } from './ImportModal';
 import { ExportModal } from './ExportModal';
 import { SyncWarningModal } from './SyncWarningModal';

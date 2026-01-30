@@ -1,5 +1,5 @@
 {
-    "name": "@premium-password-manager/electron",
+    "name": "@ethervault/electron",
     "version": "0.0.2",
     "description": "Secure password management for desktop.",
     "author": "Rick Huang",
@@ -19,7 +19,7 @@
         "pack": "npm run build && electron-builder --dir"
     },
     "build": {
-        "appId": "com.premium.passwordmanager",
+        "appId": "com.ethervault.app",
         "productName": "EtherVault",
         "icon": "assets/icon.png",
         "directories": {
@@ -62,7 +62,7 @@
         }
     },
     "dependencies": {
-        "@premium-password-manager/core": "file:../core",
+        "@ethervault/core": "file:../core",
         "electron-log": "^5.4.3",
         "libsodium-wrappers-sumo": "^0.8.1"
     },

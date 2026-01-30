@@ -1,5 +1,5 @@
 {
-    "name": "@premium-password-manager/core",
+    "name": "@ethervault/core",
     "version": "0.0.1",
     "private": true,
     "main": "src/index.ts",

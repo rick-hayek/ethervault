@@ -1,5 +1,5 @@
 {
-  "name": "@premium-password-manager/app",
+  "name": "@ethervault/app",
   "private": true,
   "version": "0.0.3",
   "type": "module",
@@ -18,7 +18,7 @@
     "@capacitor/core": "^8.0.1",
     "@capacitor/ios": "^8.0.1",
     "@capgo/capacitor-native-biometric": "^8.3.2",
-    "@premium-password-manager/core": "*",
+    "@ethervault/core": "*",
     "clsx": "^2.1.0",
     "i18next": "^23.10.0",
     "lucide-react": "^0.562.0",

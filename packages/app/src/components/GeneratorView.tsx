@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { RefreshCw, Copy, Check, Info, Type, Hash, Code } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { CryptoService } from '@premium-password-manager/core';
+import { CryptoService } from '@ethervault/core';
 
 export const GeneratorView: React.FC = () => {
   const { t } = useTranslation();
