@@ -1,26 +1,5 @@
 
-declare global {
-    interface Window {
-        electronAPI?: {
-            log: {
-                info: (...args: any[]) => void;
-                warn: (...args: any[]) => void;
-                error: (...args: any[]) => void;
-                setEnabled: (enabled: boolean) => void;
-                openLogFile: () => void;
-                getRecentLogs: () => Promise<string[]>;
-            };
-            clearCache?: () => Promise<boolean>;
-            getVersion?: () => Promise<string>;
-            utils?: {
-                fetchIcon: (url: string) => Promise<string | null>;
-                getRedirectUrl?: (url: string) => Promise<string | null>;
-            };
-            // ... allow other props
-            [key: string]: any;
-        };
-    }
-}
+// Electron API Interface - moved to global types
 
 const LOG_STORAGE_KEY = 'ethervault_logs';
 const MAX_LOG_LINES = 50;

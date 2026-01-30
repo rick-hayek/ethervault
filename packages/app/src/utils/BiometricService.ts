@@ -3,19 +3,7 @@ import { NativeBiometric } from '@capgo/capacitor-native-biometric';
 import i18next from '../i18n';
 
 // Electron API Interface (from preload)
-declare global {
-    interface Window {
-        electronAPI?: {
-            biometrics: {
-                isAvailable: () => Promise<boolean>;
-                saveSecret: (secret: string) => Promise<boolean>;
-                retrieveSecret: (reason: string) => Promise<string | null>;
-                deleteSecret: () => Promise<boolean>;
-                hasSavedSecret: () => Promise<boolean>;
-            };
-        };
-    }
-}
+// Electron API Interface (from preload) - moved to global types
 
 export class BiometricService {
     private static isNative = Capacitor.isNativePlatform();

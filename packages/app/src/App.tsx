@@ -20,14 +20,16 @@ import {
   AppSettings,
   CloudProvider
 } from '@premium-password-manager/core';
+import { BackHandlerProvider, useBackHandler } from './hooks/useBackHandler';
 import { AlertProvider } from './hooks/useAlert';
-
 import { App as CapacitorApp } from '@capacitor/app';
+
+// ... existing imports ...
 
 // Initialize Cloud Logging with App Logger (Universal)
 CloudService.setLogger(logger);
 
-const App: React.FC = () => {
+const AppContent: React.FC = () => {
   // const [isDarkMode, setIsDarkMode] = useState<boolean>(true); // Removed redundant state
   const [currentView, setCurrentView] = useState<'vault' | 'security' | 'generator' | 'settings'>('vault');
   const [passwords, setPasswords] = useState<PasswordEntry[]>([]);
@@ -138,45 +140,42 @@ const App: React.FC = () => {
   }, [settings.theme]);
 
   // Handle Android Back Button
-  useEffect(() => {
-    CapacitorApp.addListener('backButton', ({ canGoBack }) => {
-      // 1. Close Swiped Rows (Priority)
-      const swipedElements = document.querySelectorAll('.overflow-x-auto');
-      let swipeClosed = false;
-      swipedElements.forEach((el) => {
-        if (el.scrollLeft > 0) {
-          el.scrollTo({ left: 0, behavior: 'smooth' });
-          swipeClosed = true;
-        }
-      });
-      if (swipeClosed) return;
-
-      // 2. Close Modal
-      if (isModalOpen) {
-        setIsModalOpen(false);
-        return;
+  useBackHandler('app-root', async () => {
+    // 1. Close Swiped Rows (Priority)
+    const swipedElements = document.querySelectorAll('.overflow-x-auto');
+    let swipeClosed = false;
+    swipedElements.forEach((el) => {
+      if (el.scrollLeft > 0) {
+        el.scrollTo({ left: 0, behavior: 'smooth' });
+        swipeClosed = true;
       }
-
-      // 3. Clear Search
-      if (searchQuery) {
-        setSearchQuery('');
-        return;
-      }
-
-      // 4. Navigate to Home
-      if (currentView !== 'vault') {
-        setCurrentView('vault');
-        return;
-      }
-
-      // 5. Default: Minimize App (Android)
-      CapacitorApp.minimizeApp();
     });
+    if (swipeClosed) return true;
 
-    return () => {
-      CapacitorApp.removeAllListeners();
-    };
-  }, [isModalOpen, searchQuery, currentView]);
+    // 2. Close Modal
+    if (isModalOpen) {
+      setIsModalOpen(false);
+      return true;
+    }
+
+    // 3. Clear Search
+    if (searchQuery) {
+      setSearchQuery('');
+      return true;
+    }
+
+    // 4. Navigate to Home
+    if (currentView !== 'vault') {
+      setCurrentView('vault');
+      return true;
+    }
+
+    // 5. Default: Minimize App (Android)
+    CapacitorApp.minimizeApp();
+    return true;
+  });
+
+
 
   const allTags = useMemo(() => {
     const tags = new Set<string>();
@@ -347,7 +346,7 @@ const App: React.FC = () => {
             if (entry) {
               setEditingEntry(entry);
               setIsModalOpen(true);
-              setCurrentView('vault');
+              // Stay on security view
             }
           }}
           onScan={async () => {
@@ -420,7 +419,9 @@ const App: React.FC = () => {
 
 const AppWithProviders: React.FC = () => (
   <AlertProvider>
-    <App />
+    <BackHandlerProvider>
+      <AppContent />
+    </BackHandlerProvider>
   </AlertProvider>
 );
 

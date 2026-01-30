@@ -43,6 +43,43 @@ export const Layout: React.FC<LayoutProps> = ({
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const mainRef = React.useRef<HTMLElement>(null);
+  const touchStartRef = React.useRef<number | null>(null);
+
+  // Swipe Navigation Logic
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartRef.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartRef.current === null) return;
+
+    const touchEnd = e.changedTouches[0].clientX;
+    const diff = touchStartRef.current - touchEnd;
+    const threshold = 50; // px
+
+    // Ignore small swipes
+    if (Math.abs(diff) < threshold) return;
+
+    const VIEW_ORDER = ['vault', 'security', 'generator', 'settings'];
+    const currentIndex = VIEW_ORDER.indexOf(currentView);
+    if (currentIndex === -1) return;
+
+    // Swipe Left (diff > 0) -> Next View
+    if (diff > threshold) {
+      if (currentIndex < VIEW_ORDER.length - 1) {
+        setView(VIEW_ORDER[currentIndex + 1]);
+      }
+    }
+    // Swipe Right (diff < 0) -> Prev View
+    else if (diff < -threshold) {
+      if (currentIndex > 0) {
+        setView(VIEW_ORDER[currentIndex - 1]);
+      }
+    }
+
+    // Reset
+    touchStartRef.current = null;
+  };
 
   // Clear search and mode if view changes
   React.useLayoutEffect(() => {
@@ -97,7 +134,11 @@ export const Layout: React.FC<LayoutProps> = ({
   ];
 
   return (
-    <div className="h-[100dvh] flex flex-col md:flex-row bg-slate-50 dark:bg-slate-950 transition-colors duration-300 overflow-hidden">
+    <div
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      className="h-[100dvh] flex flex-col md:flex-row bg-slate-50 dark:bg-slate-950 transition-colors duration-300 overflow-hidden"
+    >
       {/* Sidebar - Desktop/Tablet (Fixed position, non-scrolling) */}
       <aside className="hidden md:flex flex-col md:w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 h-full shrink-0 z-20">
         <div className="p-4 md:p-8 flex items-center justify-start gap-3 titlebar">
@@ -148,10 +189,10 @@ export const Layout: React.FC<LayoutProps> = ({
 
       {/* Mobile Header (Clean & Minimal) - Only show on Vault view */}
       {!['generator', 'security', 'settings'].includes(currentView) && (
-        <header className="md:hidden flex items-center pt-[env(safe-area-inset-top)] h-[calc(3.5rem+env(safe-area-inset-top))] bg-slate-50 dark:bg-slate-950 shrink-0 z-30 px-4 titlebar transition-all duration-300">
+        <header className="md:hidden flex items-center pt-[calc(env(safe-area-inset-top)+20px)] pb-4 bg-slate-50 dark:bg-slate-950 shrink-0 z-30 px-4 titlebar transition-all duration-300">
           <div className="flex items-center gap-3 flex-1 overflow-hidden">
             <div className="p-1.5 bg-slate-900 dark:bg-white rounded-xl shrink-0 shadow-sm"><ShieldCheck className="w-4 h-4 text-white dark:text-slate-900" /></div>
-            <span className="font-bold text-lg text-slate-900 dark:text-white truncate tracking-tight">EtherVault</span>
+            <span className="font-bold text-xl text-slate-900 dark:text-white truncate tracking-tight">EtherVault</span>
           </div>
           <div className="flex items-center gap-1">
             {currentView === 'vault' && (
@@ -179,7 +220,7 @@ export const Layout: React.FC<LayoutProps> = ({
       <main
         ref={mainRef}
         onScroll={handleScroll}
-        className="flex-1 overflow-y-auto p-4 md:p-8 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-8 relative scrollbar-hide"
+        className="flex-1 overflow-y-auto md:p-8 pb-[calc(5rem+env(safe-area-inset-bottom))] md:pb-8 relative scrollbar-hide"
       >
         <div className="max-w-6xl mx-auto">
           {children}

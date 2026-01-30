@@ -18,16 +18,16 @@ export const BottomTabNav: React.FC<BottomTabNavProps> = ({ currentView, setView
             activeClass: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/20',
         },
         {
-            id: 'generator',
-            label: t('layout.nav.generator'),
-            icon: KeyRound,
-            activeClass: 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-500/20',
-        },
-        {
             id: 'security',
             label: t('layout.nav.security'),
             icon: ShieldCheck,
             activeClass: 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/20',
+        },
+        {
+            id: 'generator',
+            label: t('layout.nav.generator'),
+            icon: KeyRound,
+            activeClass: 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-500/20',
         },
         {
             id: 'settings',
@@ -38,7 +38,7 @@ export const BottomTabNav: React.FC<BottomTabNavProps> = ({ currentView, setView
     ];
 
     return (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 px-4 pb-4 pt-2 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl border-t border-slate-200 dark:border-slate-800 safe-area-bottom">
+        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 px-4 pb-4 pt-2 bg-white/80 dark:bg-slate-950/80 backdrop-blur-xl safe-area-bottom">
             <nav className="flex items-center justify-between max-w-sm mx-auto">
                 {navItems.map((item) => {
                     const isActive = currentView === item.id;

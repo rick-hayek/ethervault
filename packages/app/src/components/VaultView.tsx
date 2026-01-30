@@ -111,7 +111,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
   }
 
   return (
-    <div className="space-y-4 md:space-y-6">
+    <div className="p-4 md:p-0 space-y-4 md:space-y-6">
       {/* Header section - Hidden on mobile */}
       <div className="hidden md:flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
@@ -331,6 +331,12 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.password?.trim()) {
+      alert(t('vault.error.password_required', 'Password field must not be empty'));
+      return;
+    }
+
     const result: PasswordEntry = {
       ...formData as PasswordEntry,
       id: entry?.id || crypto.randomUUID(),
@@ -343,7 +349,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
   return (
     <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-end md:items-center justify-center p-0 md:p-4 animate-in fade-in duration-200">
       <div className="bg-white dark:bg-slate-900 w-full md:max-w-lg h-[100dvh] md:h-auto md:max-h-[90vh] rounded-none md:rounded-[2rem] border-t md:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 md:zoom-in-95 duration-300 flex flex-col">
-        <div className="px-6 md:px-8 py-4 md:py-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-10 shrink-0">
+        <div className="px-6 md:px-8 py-4 md:py-6 flex items-center justify-between bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-10 shrink-0">
           <div className="flex items-center gap-3">
             <div className="hidden md:flex p-2 bg-slate-900 dark:bg-white rounded-xl">
               <Lock className="w-5 h-5 text-white dark:text-slate-900" />
@@ -426,6 +432,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
               <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
               <input
                 type="text"
+                required
                 value={formData.password}
                 onChange={e => setFormData({ ...formData, password: e.target.value })}
                 className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-12 outline-none focus:border-indigo-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-mono shadow-sm"

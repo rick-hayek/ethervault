@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { AlertDialog, AlertType } from '../components/AlertDialog';
+import { useBackHandler } from './useBackHandler';
 
 interface AlertState {
     isOpen: boolean;
@@ -53,6 +54,14 @@ export const AlertProvider: React.FC<{ children: ReactNode }> = ({ children }) =
             return { ...prev, isOpen: false };
         });
     }, []);
+
+    useBackHandler('alert-provider', async () => {
+        if (alert.isOpen) {
+            handleClose();
+            return true;
+        }
+        return false;
+    });
 
     return (
         <AlertContext.Provider value={{ showAlert, showSuccess, showError, showWarning, showInfo }}>

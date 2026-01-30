@@ -26,10 +26,10 @@ import { BiometricService } from '../utils/BiometricService';
 import { AppSettings, CloudProvider, AuthService, VaultService, CloudService, NETWORK_TIMEOUT_MS } from '@premium-password-manager/core';
 import { ImportModal } from './ImportModal';
 import { ExportModal } from './ExportModal';
-
 import { SyncWarningModal } from './SyncWarningModal';
 import { SyncConflictModal, ConflictResolution } from './SyncConflictModal';
 import { useAlert } from '../hooks/useAlert';
+import { useBackHandler } from '../hooks/useBackHandler';
 
 interface SettingsViewProps {
   settings: AppSettings;
@@ -79,6 +79,18 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   const [bioPassword, setBioPassword] = useState('');
   const [bioError, setBioError] = useState<string | null>(null);
 
+  useBackHandler('settings-view', async () => {
+    if (isCacheConfirmOpen) { setIsCacheConfirmOpen(false); return true; }
+    if (isActivityModalOpen) { setIsActivityModalOpen(false); return true; }
+    if (isPasswordModalOpen) { setIsPasswordModalOpen(false); return true; }
+    if (isBioModalOpen) { setIsBioModalOpen(false); return true; }
+    if (isExportModalOpen) { setIsExportModalOpen(false); return true; }
+    if (isImportModalOpen) { setIsImportModalOpen(false); return true; }
+    if (isSyncWarningModalOpen) { setIsSyncWarningModalOpen(false); return true; }
+    if (isConflictModalOpen) { setIsConflictModalOpen(false); return true; }
+    return false;
+  }, true); // Enabled by default
+
   useEffect(() => {
     // Runtime check for version (Desktop overrides Web build version)
     const checkVersion = async () => {
@@ -97,7 +109,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     }
   };
 
-  const handleClearCache = async () => {
+  const [isCacheConfirmOpen, setIsCacheConfirmOpen] = useState(false);
+
+  const performClearCache = async () => {
     // 1. Clear Local Storage Logs
     localStorage.removeItem('ethervault_logs');
 
@@ -254,7 +268,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   };
 
   const connectToProvider = async (provider: CloudProvider) => {
-    logger.info('[SettingsView] connectToProvider called for:', provider.id);
+    logger.info('[SettingsView] connectToProvider called for:', provider);
     setIsSyncing(true);
     try {
       CloudService.useProvider(provider);
@@ -555,525 +569,560 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   );
 
   return (
-    <div className="space-y-4 pb-6">
-      <div className="flex items-center justify-between">
-        <div className="block">
-          <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{t('settings.title')}</h1>
-          <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">{t('settings.subtitle')}</p>
+    <div className="min-h-full">
+      <div className="sticky top-0 z-30 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm px-4 pt-[calc(env(safe-area-inset-top)+20px)] pb-2 md:static md:bg-transparent md:backdrop-blur-none md:p-0 md:pt-0 transition-all">
+        <div className="flex items-center justify-between">
+          <div className="block">
+            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{t('settings.title')}</h1>
+            <p className="text-slate-500 dark:text-slate-400 text-xs mt-0.5">{t('settings.subtitle')}</p>
+          </div>
+          <div className="hidden md:block text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] px-2 py-1 rounded-lg">VER {appVersion}</div>
         </div>
-        <div className="hidden md:block text-[9px] font-black text-slate-400 uppercase tracking-[0.3em] border border-slate-200 dark:border-slate-800 px-2 py-1 rounded-lg">VER {appVersion}</div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        {/* Cloud Config - Tighter */}
-        <div className="lg:col-span-5 bg-white dark:bg-slate-900 p-6 rounded-[32px] border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
-          <div className="flex items-center justify-between mb-1">
-            <h2 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">{t('settings.sync_provider')}</h2>
-            {settings.lastSync && <span className="text-[8px] text-emerald-500 font-bold uppercase">{settings.lastSync}</span>}
-          </div>
+      <div className="px-4 md:px-0 space-y-4 pb-6 md:mt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
+          {/* Cloud Config - Tighter */}
+          <div className="lg:col-span-5 bg-white dark:bg-slate-900 p-6 rounded-[32px] border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+            <div className="flex items-center justify-between mb-1">
+              <h2 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">{t('settings.sync_provider')}</h2>
+              {settings.lastSync && <span className="text-[8px] text-emerald-500 font-bold uppercase">{settings.lastSync}</span>}
+            </div>
 
-          <div className="space-y-3">
-            {[
-              {
-                id: 'google', name: 'Google Drive', color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-900/20', border: 'hover:border-blue-200 dark:hover:border-blue-800', icon: () => (
-                  <svg viewBox="0 0 87.3 78" className="w-6 h-6">
-                    <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da" />
-                    <path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47" />
-                    <path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335" />
-                    <path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d" />
-                    <path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc" />
-                    <path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00" />
-                  </svg>
-                )
-              },
-              // OneDrive (Postponed)
-              // {
-              //   id: 'onedrive', name: 'OneDrive', color: 'text-[#0078D4]', bg: 'bg-[#0078D4]/10', border: 'hover:border-[#0078D4]/30', icon: () => (...)
-              // }
-            ].map(p => {
-              const isActive = settings.cloudProvider === p.id;
+            <div className="space-y-3">
+              {[
+                {
+                  id: 'google', name: 'Google Drive', color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-900/20', border: 'hover:border-blue-200 dark:hover:border-blue-800', icon: () => (
+                    <svg viewBox="0 0 87.3 78" className="w-6 h-6">
+                      <path d="m6.6 66.85 3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8h-27.5c0 1.55.4 3.1 1.2 4.5z" fill="#0066da" />
+                      <path d="m43.65 25-13.75-23.8c-1.35.8-2.5 1.9-3.3 3.3l-25.4 44a9.06 9.06 0 0 0 -1.2 4.5h27.5z" fill="#00ac47" />
+                      <path d="m73.55 76.8c1.35-.8 2.5-1.9 3.3-3.3l1.6-2.75 7.65-13.25c.8-1.4 1.2-2.95 1.2-4.5h-27.502l5.852 11.5z" fill="#ea4335" />
+                      <path d="m43.65 25 13.75-23.8c-1.35-.8-2.9-1.2-4.5-1.2h-18.5c-1.6 0-3.15.45-4.5 1.2z" fill="#00832d" />
+                      <path d="m59.8 53h-32.3l-13.75 23.8c1.35.8 2.9 1.2 4.5 1.2h50.8c1.6 0 3.15-.45 4.5-1.2z" fill="#2684fc" />
+                      <path d="m73.4 26.5-12.7-22c-.8-1.4-1.95-2.5-3.3-3.3l-13.75 23.8 16.15 28h27.45c0-1.55-.4-3.1-1.2-4.5z" fill="#ffba00" />
+                    </svg>
+                  )
+                },
+                // OneDrive (Postponed)
+                // {
+                //   id: 'onedrive', name: 'OneDrive', color: 'text-[#0078D4]', bg: 'bg-[#0078D4]/10', border: 'hover:border-[#0078D4]/30', icon: () => (...)
+                // }
+              ].map(p => {
+                const isActive = settings.cloudProvider === p.id;
 
-              return (
-                <div
-                  key={p.id}
-                  className={`relative overflow-hidden rounded-2xl border transition-all duration-300 ${isActive
-                    ? 'border-indigo-500/50 bg-indigo-50/50 dark:bg-indigo-500/10 dark:border-indigo-500/30 shadow-md ring-1 ring-indigo-500/20'
-                    : 'border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-800 hover:shadow-sm'
-                    }`}
-                >
-                  <div className="p-4 flex items-start gap-4">
-                    <div className={`p-2.5 rounded-xl shrink-0 ${isActive ? 'bg-white dark:bg-slate-800 shadow-sm' : 'bg-white dark:bg-slate-800'}`}>
-                      <p.icon />
-                    </div>
-
-                    <div className="flex-1 min-w-0 pt-0.5">
-                      <div className="flex items-center justify-between mb-1">
-                        <h3 className="text-sm font-bold text-slate-900 dark:text-white leading-none">{p.name}</h3>
-                        {isActive && cloudConnected && (
-                          <span className="flex items-center gap-1 text-[9px] font-black text-emerald-500 uppercase tracking-wider bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-full">
-                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                            {t('settings.cloud.connected')}
-                          </span>
-                        )}
-                        {isActive && !cloudConnected && (
-                          <span className="flex items-center gap-1 text-[9px] font-black text-amber-500 uppercase tracking-wider bg-amber-50 dark:bg-amber-500/10 px-2 py-0.5 rounded-full">
-                            <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
-                            {t('settings.cloud.paused', 'Paused')}
-                          </span>
-                        )}
+                return (
+                  <div
+                    key={p.id}
+                    className={`relative overflow-hidden rounded-2xl border transition-all duration-300 ${isActive
+                      ? 'border-indigo-500/50 bg-indigo-50/50 dark:bg-indigo-500/10 dark:border-indigo-500/30 shadow-md ring-1 ring-indigo-500/20'
+                      : 'border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-800 hover:shadow-sm'
+                      }`}
+                  >
+                    <div className="p-4 flex items-start gap-4">
+                      <div className={`p-2.5 rounded-xl shrink-0 ${isActive ? 'bg-white dark:bg-slate-800 shadow-sm' : 'bg-white dark:bg-slate-800'}`}>
+                        <p.icon />
                       </div>
 
-                      <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed max-w-[90%]">
-                        {isActive
-                          ? t('settings.cloud.connected_desc', { provider: p.name })
-                          : t('settings.cloud.connect_desc', { provider: p.name })
-                        }
-                      </p>
-
-                      {isActive && settings.lastSync && (
-                        <div className="mt-3 flex items-center gap-1.5 text-[9px] font-medium text-slate-400">
-                          <RefreshCcw className="w-3 h-3 text-slate-300" />
-                          {t('settings.cloud.last_synced')} <span className="text-slate-600 dark:text-slate-300 font-bold">
-                            {settings.lastSync === 'Just now' || settings.lastSync === '刚刚'
-                              ? t('sync.just_now')
-                              : settings.lastSync}
-                          </span>
+                      <div className="flex-1 min-w-0 pt-0.5">
+                        <div className="flex items-center justify-between mb-1">
+                          <h3 className="text-sm font-bold text-slate-900 dark:text-white leading-none">{p.name}</h3>
+                          {isActive && cloudConnected && (
+                            <span className="flex items-center gap-1 text-[9px] font-black text-emerald-500 uppercase tracking-wider bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                              <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                              {t('settings.cloud.connected')}
+                            </span>
+                          )}
+                          {isActive && !cloudConnected && (
+                            <span className="flex items-center gap-1 text-[9px] font-black text-amber-500 uppercase tracking-wider bg-amber-50 dark:bg-amber-500/10 px-2 py-0.5 rounded-full">
+                              <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+                              {t('settings.cloud.paused', 'Paused')}
+                            </span>
+                          )}
                         </div>
-                      )}
 
-                      <div className="mt-4 flex items-center gap-2">
-                        {isActive && cloudConnected ? (
-                          <>
+                        <p className="text-[10px] text-slate-500 dark:text-slate-400 leading-relaxed max-w-[90%]">
+                          {isActive
+                            ? t('settings.cloud.connected_desc', { provider: p.name })
+                            : t('settings.cloud.connect_desc', { provider: p.name })
+                          }
+                        </p>
+
+                        {isActive && settings.lastSync && (
+                          <div className="mt-3 flex items-center gap-1.5 text-[9px] font-medium text-slate-400">
+                            <RefreshCcw className="w-3 h-3 text-slate-300" />
+                            {t('settings.cloud.last_synced')} <span className="text-slate-600 dark:text-slate-300 font-bold">
+                              {settings.lastSync === 'Just now' || settings.lastSync === '刚刚'
+                                ? t('sync.just_now')
+                                : settings.lastSync}
+                            </span>
+                          </div>
+                        )}
+
+                        <div className="mt-4 flex items-center gap-2">
+                          {isActive && cloudConnected ? (
+                            <>
+                              <button
+                                onClick={() => handleSync(p.id as CloudProvider)}
+                                disabled={isSyncing}
+                                className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2 shadow-sm shadow-indigo-200 dark:shadow-none"
+                              >
+                                <RefreshCcw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
+                                {isSyncing ? t('settings.cloud.syncing') : t('settings.cloud.sync_now')}
+                              </button>
+                              <button
+                                onClick={() => handleSync('none')} // Disconnect
+                                disabled={isSyncing}
+                                className="px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-rose-500 hover:border-rose-200 dark:hover:border-rose-900/50 text-[11px] font-bold rounded-xl transition-all active:scale-95"
+                              >
+                                {t('settings.cloud.disconnect')}
+                              </button>
+                            </>
+                          ) : isActive && !cloudConnected ? (
+                            <button
+                              onClick={() => handleSync(p.id as CloudProvider)} // Will trigger connect flow
+                              disabled={isSyncing}
+                              className="w-full py-3 bg-amber-500 text-white text-[11px] font-bold rounded-xl hover:bg-amber-600 transition-all active:scale-95 flex items-center justify-center gap-2 shadow-sm shadow-amber-500/20 disabled:opacity-50 disabled:cursor-wait"
+                            >
+                              {isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                              {t('settings.cloud.reconnect', 'Resume Connection')}
+                            </button>
+                          ) : (
                             <button
                               onClick={() => handleSync(p.id as CloudProvider)}
                               disabled={isSyncing}
-                              className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2 shadow-sm shadow-indigo-200 dark:shadow-none"
+                              className="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[11px] font-bold rounded-xl hover:shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-wait"
                             >
-                              <RefreshCcw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
-                              {isSyncing ? t('settings.cloud.syncing') : t('settings.cloud.sync_now')}
+                              {isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                              {t('settings.cloud.connect_account')}
                             </button>
-                            <button
-                              onClick={() => handleSync('none')} // Disconnect
-                              disabled={isSyncing}
-                              className="px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-rose-500 hover:border-rose-200 dark:hover:border-rose-900/50 text-[11px] font-bold rounded-xl transition-all active:scale-95"
-                            >
-                              {t('settings.cloud.disconnect')}
-                            </button>
-                          </>
-                        ) : isActive && !cloudConnected ? (
-                          <button
-                            onClick={() => handleSync(p.id as CloudProvider)} // Will trigger connect flow
-                            disabled={isSyncing}
-                            className="w-full py-3 bg-amber-500 text-white text-[11px] font-bold rounded-xl hover:bg-amber-600 transition-all active:scale-95 flex items-center justify-center gap-2 shadow-sm shadow-amber-500/20 disabled:opacity-50 disabled:cursor-wait"
-                          >
-                            {isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                            {t('settings.cloud.reconnect', 'Resume Connection')}
-                          </button>
-                        ) : (
-                          <button
-                            onClick={() => handleSync(p.id as CloudProvider)}
-                            disabled={isSyncing}
-                            className="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[11px] font-bold rounded-xl hover:shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-wait"
-                          >
-                            {isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                            {t('settings.cloud.connect_account')}
-                          </button>
-                        )}
+                          )}
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
-          </div>
+                );
+              })}
+            </div>
 
-          {/* DEV ONLY BUTTON - Only visible in development mode */}
-          {import.meta.env.DEV && CloudService.activeProvider?.isConnected() && (
-            <button
-              onClick={async () => {
-                if (confirm('DANGER: This will PERMANENTLY DELETE all cloud data. Are you sure?')) {
-                  try {
-                    const provider = CloudService.activeProvider as any;
-                    if (provider && typeof provider.clearRemoteData === 'function') {
-                      await provider.clearRemoteData();
-                      showSuccess('Cloud data wiped successfully.');
+            {/* DEV ONLY BUTTON - Only visible in development mode */}
+            {import.meta.env.DEV && CloudService.activeProvider?.isConnected() && (
+              <button
+                onClick={async () => {
+                  if (confirm('DANGER: This will PERMANENTLY DELETE all cloud data. Are you sure?')) {
+                    try {
+                      const provider = CloudService.activeProvider as any;
+                      if (provider && typeof provider.clearRemoteData === 'function') {
+                        await provider.clearRemoteData();
+                        showSuccess('Cloud data wiped successfully.');
+                      }
+                    } catch (e) {
+                      showError('Failed to wipe data.');
                     }
-                  } catch (e) {
-                    showError('Failed to wipe data.');
                   }
-                }
-              }}
-              className="w-full py-2 mt-2 border border-rose-200 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 text-[9px] font-bold rounded-xl uppercase tracking-widest transition-colors"
-            >
-              Reset Cloud Data (Dev)
-            </button>
-          )}
-        </div>
-
-        {/* Access Settings - High Density Grid */}
-        <div className="lg:col-span-7 space-y-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <CompactSetting icon={Fingerprint} label={t('settings.option.biometric')} value={settings.biometricsEnabled} onClick={toggleBiometrics} />
-            <CompactSetting icon={Shield} label={t('settings.option.2fa')} value={settings.twoFactorEnabled} />
-            {/* Lock Timer Dropdown */}
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
-              <div className="flex items-center gap-3">
-                <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
-                  <Clock className="w-3.5 h-3.5" />
-                </div>
-                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.lock_timer')}</span>
-              </div>
-              <select
-                value={settings.autoLockTimeout}
-                onChange={(e) => setSettings({ ...settings, autoLockTimeout: Number(e.target.value) })}
-                className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-indigo-500 transition-all cursor-pointer"
+                }}
+                className="w-full py-2 mt-2 border border-rose-200 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 text-[9px] font-bold rounded-xl uppercase tracking-widest transition-colors"
               >
-                {[1, 5, 15, 30, 60].map(val => (
-                  <option key={val} value={val}>
-                    {val === 60 ? t('settings.option.time.1h') : t(`settings.option.time.${val}m`)}
-                  </option>
-                ))}
-              </select>
-            </div>
-            {/* Recent Activity Button */}
-            <div
-              onClick={() => setIsActivityModalOpen(true)}
-              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group cursor-pointer hover:border-indigo-500/50 transition-all"
-            >
-              <div className="flex items-center gap-3">
-                <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
-                  <Activity className="w-3.5 h-3.5" />
-                </div>
-                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.recent_activity')}</span>
-              </div>
-              <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400">
-                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
-              </div>
-            </div>
-            <CompactSetting icon={Moon} label={t('settings.option.dark_mode')} value={settings.theme === 'dark'} onClick={() => setSettings({ ...settings, theme: settings.theme === 'dark' ? 'light' : 'dark' })} />
-            <CompactSetting icon={Languages} label={t('settings.option.language')} value={i18n.language === 'zh' ? '中文' : 'ENGLISH'} type="value" onClick={() => i18n.changeLanguage(i18n.language === 'zh' ? 'en' : 'zh')} />
-
-            {/* Master Log Settings */}
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
-              <div className="flex items-center gap-3">
-                <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
-                  <FileText className="w-3.5 h-3.5" />
-                </div>
-                <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.master_log')}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                {(settings.masterLogEnabled ?? true) && window.electronAPI && (
-                  <button onClick={() => logger.openLogFile()} className="text-[9px] font-bold text-slate-400 hover:text-indigo-500 transition-colors px-2">{t('settings.option.open_log')}</button>
-                )}
-                <button
-                  onClick={() => {
-                    const newValue = !(settings.masterLogEnabled ?? true);
-                    setSettings({ ...settings, masterLogEnabled: newValue });
-                    logger.setEnabled(newValue);
-                  }}
-                  className={`w-8 h-4 rounded-full relative transition-all ${settings.masterLogEnabled ?? true ? 'bg-indigo-600' : 'bg-slate-200 dark:bg-slate-700'}`}
-                >
-                  <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${(settings.masterLogEnabled ?? true) ? 'right-0.5' : 'left-0.5'}`} />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <button
-            onClick={() => setIsPasswordModalOpen(true)}
-            className="w-full py-3 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-[11px] font-black rounded-2xl hover:bg-indigo-100 transition-all flex items-center justify-center gap-2"
-          >
-            <Shield className="w-4 h-4" />
-            {t('settings.change_password')}
-          </button>
-
-          {/* Data Management Section */}
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-[24px] space-y-4">
-            <h3 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 pl-1">{t('settings.data_management', 'Data Management')}</h3>
-
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                onClick={() => setIsImportModalOpen(true)}
-                className="flex flex-col items-center justify-center gap-2 py-4 bg-slate-50 dark:bg-slate-800 rounded-2xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all group"
-              >
-                <div className="p-2 bg-white dark:bg-slate-700 rounded-full shadow-sm group-hover:scale-110 transition-transform">
-                  <Database className="w-4 h-4 text-slate-400 group-hover:text-indigo-500" />
-                </div>
-                <span className="text-[10px] font-bold uppercase tracking-wider">{t('settings.import', 'Import')}</span>
+                Reset Cloud Data (Dev)
               </button>
-
-              <button
-                onClick={() => setIsExportModalOpen(true)}
-                className="flex flex-col items-center justify-center gap-2 py-4 bg-slate-50 dark:bg-slate-800 rounded-2xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all group"
-              >
-                <div className="p-2 bg-white dark:bg-slate-700 rounded-full shadow-sm group-hover:scale-110 transition-transform">
-                  <FileText className="w-4 h-4 text-slate-400 group-hover:text-indigo-500" />
-                </div>
-                <span className="text-[10px] font-bold uppercase tracking-wider">{t('settings.export', 'Export')}</span>
-              </button>
-            </div>
-
-            <button
-              onClick={handleClearCache}
-              className="w-full flex items-center justify-between p-3 rounded-xl border border-rose-100 dark:border-rose-900/30 hover:bg-rose-50 dark:hover:bg-rose-900/10 transition-colors group"
-            >
-              <div className="flex items-center gap-3">
-                <div className="p-1.5 bg-rose-50 dark:bg-rose-900/20 rounded-lg text-rose-400 group-hover:text-rose-500 transition-colors">
-                  <Trash2 className="w-3.5 h-3.5" />
-                </div>
-                <span className="text-xs font-bold text-slate-600 dark:text-slate-300 group-hover:text-rose-600 dark:group-hover:text-rose-400">{t('settings.clear_cache', 'Clear App Cache')}</span>
-              </div>
-              <span className="text-[9px] font-black text-rose-300 group-hover:text-rose-500 uppercase tracking-widest">{t('common.clear', 'Clean')}</span>
-            </button>
-            {cacheMessage && (
-              <p className="text-[10px] font-bold text-center text-emerald-500 uppercase tracking-widest animate-in fade-in slide-in-from-bottom-1">
-                {cacheMessage}
-              </p>
             )}
           </div>
-        </div>
-      </div>
 
-      {
-        isPasswordModalOpen && (
-          <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden p-8 animate-in zoom-in-95 duration-200">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">{t('settings.password_modal.title')}</h2>
-              <form onSubmit={handlePasswordChange} className="space-y-4">
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.current')}</label>
-                  <input
-                    type="password"
-                    required
-                    value={passwordForm.old}
-                    onChange={e => setPasswordForm({ ...passwordForm, old: e.target.value })}
-                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
-                  />
+          {/* Access Settings - High Density Grid */}
+          <div className="lg:col-span-7 space-y-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <CompactSetting icon={Fingerprint} label={t('settings.option.biometric')} value={settings.biometricsEnabled} onClick={toggleBiometrics} />
+              <CompactSetting icon={Shield} label={t('settings.option.2fa')} value={settings.twoFactorEnabled} />
+              {/* Lock Timer Dropdown */}
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
+                <div className="flex items-center gap-3">
+                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
+                    <Clock className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.lock_timer')}</span>
                 </div>
-                <div className="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.new')}</label>
-                  <input
-                    type="password"
-                    required
-                    value={passwordForm.new}
-                    onChange={e => setPasswordForm({ ...passwordForm, new: e.target.value })}
-                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
-                  />
+                <select
+                  value={settings.autoLockTimeout}
+                  onChange={(e) => setSettings({ ...settings, autoLockTimeout: Number(e.target.value) })}
+                  className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-indigo-500 transition-all cursor-pointer"
+                >
+                  {[1, 5, 15, 30, 60].map(val => (
+                    <option key={val} value={val}>
+                      {val === 60 ? t('settings.option.time.1h') : t(`settings.option.time.${val}m`)}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {/* Recent Activity Button */}
+              <div
+                onClick={() => setIsActivityModalOpen(true)}
+                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group cursor-pointer hover:border-indigo-500/50 transition-all"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
+                    <Activity className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.recent_activity')}</span>
                 </div>
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.confirm')}</label>
-                  <input
-                    type="password"
-                    required
-                    value={passwordForm.confirm}
-                    onChange={e => setPasswordForm({ ...passwordForm, confirm: e.target.value })}
-                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
-                  />
-                </div>
-
-                {error && <p className="text-rose-500 text-[10px] font-bold uppercase text-center pt-2">{error}</p>}
-                {success && <p className="text-emerald-500 text-[10px] font-bold uppercase text-center pt-2">{t('settings.success.password')}</p>}
-
-                <div className="flex gap-3 pt-6">
-                  <button
-                    type="button"
-                    onClick={() => { setIsPasswordModalOpen(false); setError(null); }}
-                    className="flex-1 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
-                  >
-                    {t('settings.password_modal.cancel')}
-                  </button>
-                  <button
-                    type="submit"
-                    className="flex-1 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black rounded-xl hover:opacity-90 transition-all"
-                  >
-                    {t('settings.password_modal.save')}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )
-      }
-
-      <div className="flex items-center justify-end pt-2 border-t border-slate-100 dark:border-slate-900">
-        <span className="text-[8px] font-black text-slate-300 dark:text-slate-800 uppercase tracking-[0.5em] hidden md:block">{t('settings.encryption')}</span>
-      </div>
-
-      <div className="md:hidden mt-8 text-center">
-        <span className="text-[9px] font-black text-slate-300 dark:text-slate-700 uppercase tracking-[0.3em] border border-slate-200 dark:border-slate-800 px-3 py-1.5 rounded-full">
-          VER {appVersion}
-        </span>
-      </div>
-
-      {
-        isBioModalOpen && (
-          <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-            <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden p-8 animate-in zoom-in-95 duration-200">
-              <div className="flex items-center gap-4 mb-6">
-                <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-                  <Fingerprint className="w-6 h-6" />
-                </div>
-                <div>
-                  <h2 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">{t('settings.biometric_modal.title')}</h2>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{t('settings.biometric_modal.description')}</p>
+                <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
                 </div>
               </div>
+              <CompactSetting icon={Moon} label={t('settings.option.dark_mode')} value={settings.theme === 'dark'} onClick={() => setSettings({ ...settings, theme: settings.theme === 'dark' ? 'light' : 'dark' })} />
+              <CompactSetting icon={Languages} label={t('settings.option.language')} value={i18n.language === 'zh' ? '中文' : 'ENGLISH'} type="value" onClick={() => i18n.changeLanguage(i18n.language === 'zh' ? 'en' : 'zh')} />
 
-              <form onSubmit={handleBioConfirm} className="space-y-4">
-                <div className="space-y-1.5">
-                  <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('login.master_password')}</label>
-                  <div className="relative">
+              {/* Master Log Settings */}
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
+                <div className="flex items-center gap-3">
+                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
+                    <FileText className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.master_log')}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  {(settings.masterLogEnabled ?? true) && window.electronAPI && (
+                    <button onClick={() => logger.openLogFile()} className="text-[9px] font-bold text-slate-400 hover:text-indigo-500 transition-colors px-2">{t('settings.option.open_log')}</button>
+                  )}
+                  <button
+                    onClick={() => {
+                      const newValue = !(settings.masterLogEnabled ?? true);
+                      setSettings({ ...settings, masterLogEnabled: newValue });
+                      logger.setEnabled(newValue);
+                    }}
+                    className={`w-8 h-4 rounded-full relative transition-all ${settings.masterLogEnabled ?? true ? 'bg-indigo-600' : 'bg-slate-200 dark:bg-slate-700'}`}
+                  >
+                    <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${(settings.masterLogEnabled ?? true) ? 'right-0.5' : 'left-0.5'}`} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setIsPasswordModalOpen(true)}
+              className="w-full py-3 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-[11px] font-black rounded-2xl hover:bg-indigo-100 transition-all flex items-center justify-center gap-2"
+            >
+              <Shield className="w-4 h-4" />
+              {t('settings.change_password')}
+            </button>
+
+            {/* Data Management Section */}
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-[24px] space-y-4">
+              <h3 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 pl-1">{t('settings.data_management', 'Data Management')}</h3>
+
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => setIsImportModalOpen(true)}
+                  className="flex flex-col items-center justify-center gap-2 py-4 bg-slate-50 dark:bg-slate-800 rounded-2xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all group"
+                >
+                  <div className="p-2 bg-white dark:bg-slate-700 rounded-full shadow-sm group-hover:scale-110 transition-transform">
+                    <Database className="w-4 h-4 text-slate-400 group-hover:text-indigo-500" />
+                  </div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider">{t('settings.import', 'Import')}</span>
+                </button>
+
+                <button
+                  onClick={() => setIsExportModalOpen(true)}
+                  className="flex flex-col items-center justify-center gap-2 py-4 bg-slate-50 dark:bg-slate-800 rounded-2xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all group"
+                >
+                  <div className="p-2 bg-white dark:bg-slate-700 rounded-full shadow-sm group-hover:scale-110 transition-transform">
+                    <FileText className="w-4 h-4 text-slate-400 group-hover:text-indigo-500" />
+                  </div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider">{t('settings.export', 'Export')}</span>
+                </button>
+              </div>
+
+              <button
+                onClick={() => setIsCacheConfirmOpen(true)}
+                className="w-full flex items-center justify-between p-3 rounded-xl border border-rose-100 dark:border-rose-900/30 hover:bg-rose-50 dark:hover:bg-rose-900/10 transition-colors group"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-1.5 bg-rose-50 dark:bg-rose-900/20 rounded-lg text-rose-400 group-hover:text-rose-500 transition-colors">
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-xs font-bold text-slate-600 dark:text-slate-300 group-hover:text-rose-600 dark:group-hover:text-rose-400">{t('settings.clear_cache', 'Clear App Cache')}</span>
+                </div>
+                <span className="text-[9px] font-black text-rose-300 group-hover:text-rose-500 uppercase tracking-widest">{t('common.clear', 'Clean')}</span>
+              </button>
+              {cacheMessage && (
+                <p className="text-[10px] font-bold text-center text-emerald-500 uppercase tracking-widest animate-in fade-in slide-in-from-bottom-1">
+                  {cacheMessage}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {
+          isPasswordModalOpen && (
+            <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+              <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden p-8 animate-in zoom-in-95 duration-200">
+                <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">{t('settings.password_modal.title')}</h2>
+                <form onSubmit={handlePasswordChange} className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.current')}</label>
                     <input
                       type="password"
                       required
-                      value={bioPassword}
-                      onChange={e => setBioPassword(e.target.value)}
-                      className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3 px-4 outline-none focus:border-indigo-500 transition-all text-sm font-bold"
-                      placeholder={t('login.unlock_placeholder')}
-                      autoFocus
+                      value={passwordForm.old}
+                      onChange={e => setPasswordForm({ ...passwordForm, old: e.target.value })}
+                      className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
                     />
-                    <Lock className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   </div>
-                </div>
+                  <div className="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.new')}</label>
+                    <input
+                      type="password"
+                      required
+                      value={passwordForm.new}
+                      onChange={e => setPasswordForm({ ...passwordForm, new: e.target.value })}
+                      className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
+                    />
+                  </div>
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.confirm')}</label>
+                    <input
+                      type="password"
+                      required
+                      value={passwordForm.confirm}
+                      onChange={e => setPasswordForm({ ...passwordForm, confirm: e.target.value })}
+                      className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
+                    />
+                  </div>
 
-                {bioError && <p className="text-rose-500 text-[10px] font-bold uppercase text-center pt-2">{bioError}</p>}
+                  {error && <p className="text-rose-500 text-[10px] font-bold uppercase text-center pt-2">{error}</p>}
+                  {success && <p className="text-emerald-500 text-[10px] font-bold uppercase text-center pt-2">{t('settings.success.password')}</p>}
 
-                <div className="flex gap-3 pt-4">
-                  <button
-                    type="button"
-                    onClick={() => { setIsBioModalOpen(false); setBioError(null); }}
-                    className="flex-1 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
-                  >
-                    {t('common.cancel')}
-                  </button>
-                  <button
-                    type="submit"
-                    className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-black rounded-xl hover:shadow-lg transition-all active:scale-95"
-                  >
-                    {t('settings.biometric_modal.enable')}
-                  </button>
-                </div>
-              </form>
+                  <div className="flex gap-3 pt-6">
+                    <button
+                      type="button"
+                      onClick={() => { setIsPasswordModalOpen(false); setError(null); }}
+                      className="flex-1 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                    >
+                      {t('settings.password_modal.cancel')}
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-1 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black rounded-xl hover:opacity-90 transition-all"
+                    >
+                      {t('settings.password_modal.save')}
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
-          </div>
-        )
-      }
+          )
+        }
 
-      {
-        isExportModalOpen && (
-          <ExportModalWrapper
-            onClose={() => setIsExportModalOpen(false)}
-          />
-        )
-      }
+        <div className="flex items-center justify-end pt-2 border-t border-slate-100 dark:border-slate-900">
+          <span className="text-[8px] font-black text-slate-300 dark:text-slate-800 uppercase tracking-[0.5em] hidden md:block">{t('settings.encryption')}</span>
+        </div>
 
-      {
-        isImportModalOpen && (
-          <ImportModal
-            onClose={() => setIsImportModalOpen(false)}
-            onImport={async (entries) => {
-              // Let the ImportModal handle the try-catch so it can show the error state
-              for (const entry of entries) {
-                const { id, createdAt, updatedAt, ...rest } = entry;
-                await VaultService.addEntry(rest);
-              }
-              setIsImportModalOpen(false);
-              setSettings({ ...settings, lastSync: 'Imported just now' });
-              onDataChange();
-            }}
-          />
-        )
-      }
+        <div className="md:hidden mt-8 text-center">
+          <span className="text-[9px] font-black text-slate-300 dark:text-slate-700 uppercase tracking-[0.3em] px-3 py-1.5 rounded-full">
+            VER {appVersion}
+          </span>
+        </div>
 
-      {
-        isSyncWarningModalOpen && pendingProvider && (
-          <SyncWarningModal
-            providerName={pendingProvider === 'google' ? 'Google Drive' : pendingProvider}
-            onClose={() => {
-              setIsSyncWarningModalOpen(false);
-              setPendingProvider(null);
-            }}
-            onConfirm={handleSyncConfirm}
-          />
-        )
-      }
-
-      {/* Salt Conflict Resolution Modal */}
-      <SyncConflictModal
-        isOpen={isConflictModalOpen}
-        localEntryCount={localEntryCount}
-        onResolve={handleConflictResolve}
-      />
-
-      {
-        isActivityModalOpen && (
-          <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-end md:items-center justify-center p-0 md:p-4" onClick={() => setIsActivityModalOpen(false)}>
-            <div className="bg-white dark:bg-slate-900 w-full h-[100dvh] md:h-[600px] md:max-w-2xl flex flex-col rounded-none md:rounded-3xl border-t md:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 md:zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
-              <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800">
-                <div className="flex items-center gap-3">
-                  <div className="p-2 bg-indigo-50 dark:bg-slate-800 rounded-xl text-indigo-500">
-                    <Activity className="w-5 h-5" />
+        {
+          isBioModalOpen && (
+            <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+              <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden p-8 animate-in zoom-in-95 duration-200">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                    <Fingerprint className="w-6 h-6" />
                   </div>
                   <div>
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-white">{t('settings.activity_modal.title')}</h2>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">~/Library/Logs/EtherVault/main.log</p>
+                    <h2 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">{t('settings.biometric_modal.title')}</h2>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{t('settings.biometric_modal.description')}</p>
                   </div>
                 </div>
-                <div>
+
+                <form onSubmit={handleBioConfirm} className="space-y-4">
+                  <div className="space-y-1.5">
+                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('login.master_password')}</label>
+                    <div className="relative">
+                      <input
+                        type="password"
+                        required
+                        value={bioPassword}
+                        onChange={e => setBioPassword(e.target.value)}
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3 px-4 outline-none focus:border-indigo-500 transition-all text-sm font-bold"
+                        placeholder={t('login.unlock_placeholder')}
+                        autoFocus
+                      />
+                      <Lock className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                    </div>
+                  </div>
+
+                  {bioError && <p className="text-rose-500 text-[10px] font-bold uppercase text-center pt-2">{bioError}</p>}
+
+                  <div className="flex gap-3 pt-4">
+                    <button
+                      type="button"
+                      onClick={() => { setIsBioModalOpen(false); setBioError(null); }}
+                      className="flex-1 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                    >
+                      {t('common.cancel')}
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-black rounded-xl hover:shadow-lg transition-all active:scale-95"
+                    >
+                      {t('settings.biometric_modal.enable')}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )
+        }
+
+        {
+          isExportModalOpen && (
+            <ExportModalWrapper
+              onClose={() => setIsExportModalOpen(false)}
+            />
+          )
+        }
+
+        {
+          isImportModalOpen && (
+            <ImportModal
+              onClose={() => setIsImportModalOpen(false)}
+              onImport={async (entries) => {
+                // Let the ImportModal handle the try-catch so it can show the error state
+                for (const entry of entries) {
+                  const { id, createdAt, updatedAt, ...rest } = entry;
+                  await VaultService.addEntry(rest);
+                }
+                setIsImportModalOpen(false);
+                setSettings({ ...settings, lastSync: 'Imported just now' });
+                onDataChange();
+              }}
+            />
+          )
+        }
+
+        {
+          isSyncWarningModalOpen && pendingProvider && (
+            <SyncWarningModal
+              providerName={pendingProvider === 'google' ? 'Google Drive' : pendingProvider}
+              onClose={() => {
+                setIsSyncWarningModalOpen(false);
+                setPendingProvider(null);
+              }}
+              onConfirm={handleSyncConfirm}
+            />
+          )
+        }
+
+        {/* Salt Conflict Resolution Modal */}
+        <SyncConflictModal
+          isOpen={isConflictModalOpen}
+          localEntryCount={localEntryCount}
+          onResolve={handleConflictResolve}
+        />
+
+        {
+          isActivityModalOpen && (
+            <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-end md:items-center justify-center p-0 md:p-4" onClick={() => setIsActivityModalOpen(false)}>
+              <div className="bg-white dark:bg-slate-900 w-full h-[100dvh] md:h-[600px] md:max-w-2xl flex flex-col rounded-none md:rounded-3xl border-t md:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 md:zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+                <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800">
+                  <div className="flex items-center gap-3">
+                    <div className="p-2 bg-indigo-50 dark:bg-slate-800 rounded-xl text-indigo-500">
+                      <Activity className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h2 className="text-lg font-bold text-slate-900 dark:text-white">{t('settings.activity_modal.title')}</h2>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">~/Library/Logs/EtherVault/main.log</p>
+                    </div>
+                  </div>
+                  <div>
+                    <button
+                      onClick={() => setIsActivityModalOpen(false)}
+                      className="p-2 text-slate-400 hover:text-rose-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="flex-1 overflow-auto scrollbar-hide p-6 bg-slate-50 dark:bg-slate-950 font-mono text-[10px] sm:text-xs text-slate-600 dark:text-slate-300 space-y-1">
+                  {activityLogs.length === 0 ? (
+                    <div className="h-full flex flex-col items-center justify-center text-slate-400">
+                      <Activity className="w-12 h-12 mb-4 opacity-20" />
+                      <p>{t('settings.activity_modal.empty')}</p>
+                    </div>
+                  ) : (
+                    activityLogs.map((log, index) => {
+                      let colorClass = "text-slate-600 dark:text-slate-400";
+                      if (log.includes('[error]') || log.includes('error:')) colorClass = "text-rose-500";
+                      if (log.includes('[warn]') || log.includes('warn:')) colorClass = "text-amber-500";
+                      if (log.includes('[info]') || log.includes('info:')) colorClass = "text-emerald-600 dark:text-emerald-400";
+
+                      // Highlight our custom tags
+                      const highlightedLog = log.replace(/(\[AUTH\]|\[VAULT\]|\[DATA\])/g, '<span class="font-bold text-indigo-500">$1</span>');
+
+                      return (
+                        <div key={index} className={`flex items-start gap-3 border-b border-slate-200/50 dark:border-slate-800/50 pb-1 ${colorClass}`}>
+                          <span className="opacity-50 select-none w-6 shrink-0 text-right">{index + 1}</span>
+                          <span className="break-all" dangerouslySetInnerHTML={{ __html: highlightedLog }} />
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+
+                <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between">
+                  <button
+                    onClick={fetchLogs}
+                    className="flex items-center gap-2 px-4 py-2 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:text-indigo-400 dark:hover:bg-indigo-500/10 transition-all"
+                  >
+                    <RefreshCcw className="w-4 h-4" />
+                    <span className="text-xs font-bold uppercase tracking-wider">{t('settings.activity_modal.refresh')}</span>
+                  </button>
                   <button
                     onClick={() => setIsActivityModalOpen(false)}
-                    className="p-2 text-slate-400 hover:text-rose-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                    className="px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold rounded-xl hover:opacity-90 transition-all uppercase tracking-wider"
                   >
-                    <X className="w-5 h-5" />
+                    {t('settings.activity_modal.close')}
                   </button>
                 </div>
               </div>
+            </div>
+          )
+        }
+      </div>
 
-              <div className="flex-1 overflow-auto scrollbar-hide p-6 bg-slate-50 dark:bg-slate-950 font-mono text-[10px] sm:text-xs text-slate-600 dark:text-slate-300 space-y-1">
-                {activityLogs.length === 0 ? (
-                  <div className="h-full flex flex-col items-center justify-center text-slate-400">
-                    <Activity className="w-12 h-12 mb-4 opacity-20" />
-                    <p>{t('settings.activity_modal.empty')}</p>
-                  </div>
-                ) : (
-                  activityLogs.map((log, index) => {
-                    let colorClass = "text-slate-600 dark:text-slate-400";
-                    if (log.includes('[error]') || log.includes('error:')) colorClass = "text-rose-500";
-                    if (log.includes('[warn]') || log.includes('warn:')) colorClass = "text-amber-500";
-                    if (log.includes('[info]') || log.includes('info:')) colorClass = "text-emerald-600 dark:text-emerald-400";
-
-                    // Highlight our custom tags
-                    const highlightedLog = log.replace(/(\[AUTH\]|\[VAULT\]|\[DATA\])/g, '<span class="font-bold text-indigo-500">$1</span>');
-
-                    return (
-                      <div key={index} className={`flex items-start gap-3 border-b border-slate-200/50 dark:border-slate-800/50 pb-1 ${colorClass}`}>
-                        <span className="opacity-50 select-none w-6 shrink-0 text-right">{index + 1}</span>
-                        <span className="break-all" dangerouslySetInnerHTML={{ __html: highlightedLog }} />
-                      </div>
-                    );
-                  })
-                )}
+      {isCacheConfirmOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setIsCacheConfirmOpen(false)} />
+          <div className="relative bg-white dark:bg-slate-900 w-full max-w-sm rounded-[2rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 p-6 space-y-6">
+            <div className="space-y-2 text-center">
+              <div className="w-12 h-12 bg-rose-50 dark:bg-rose-900/20 rounded-full flex items-center justify-center mx-auto mb-4 text-rose-500">
+                <Trash2 className="w-6 h-6" />
               </div>
-
-              <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between">
-                <button
-                  onClick={fetchLogs}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:text-indigo-400 dark:hover:bg-indigo-500/10 transition-all"
-                >
-                  <RefreshCcw className="w-4 h-4" />
-                  <span className="text-xs font-bold uppercase tracking-wider">{t('settings.activity_modal.refresh')}</span>
-                </button>
-                <button
-                  onClick={() => setIsActivityModalOpen(false)}
-                  className="px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold rounded-xl hover:opacity-90 transition-all uppercase tracking-wider"
-                >
-                  {t('settings.activity_modal.close')}
-                </button>
-              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">{t('settings.clear_cache')}?</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400">
+                {t('settings.clear_cache_desc', 'This will remove local logs and temporary data. Your vault data will NOT be deleted.')}
+              </p>
+            </div>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setIsCacheConfirmOpen(false)}
+                className="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all font-mono text-sm"
+              >
+                {t('common.cancel')}
+              </button>
+              <button
+                onClick={performClearCache}
+                className="flex-1 px-4 py-3 rounded-xl bg-rose-500 text-white font-bold hover:bg-rose-600 transition-all shadow-lg shadow-rose-500/20 font-mono text-sm"
+              >
+                {t('common.confirm_delete', 'Confirm')}
+              </button>
             </div>
           </div>
-        )
-      }
-    </div >
+        </div>
+      )}
+    </div>
   );
 };
