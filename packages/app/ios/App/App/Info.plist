@@ -59,7 +59,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
                 <!-- Existing Google Reversed Client ID (Keep if user provides it later) -->
-				<string>com.googleusercontent.apps.542863369623-v39rlkvg3i9f48dgm1b1cdmbqt8okip6</string>
+				<string>com.googleusercontent.apps.10010598822-hc94jt49t5pipri8eb6ariil0458u820</string>
                 <!-- Custom Scheme for PKCE Flow -->
                 <string>com.ethervault.app</string>
 			</array>
