@@ -43,7 +43,6 @@ class CloudServiceManager {
             return;
         }
         this.provider = provider;
-        this.provider = provider;
         this.log('info', `[CloudService] Switched to provider: ${provider.name}`);
         this.notifyListeners();
     }
@@ -77,6 +76,14 @@ class CloudServiceManager {
     private notifyListeners() {
         const isConnected = this.isSyncEnabled();
         this.listeners.forEach(l => l(isConnected));
+    }
+
+    // Cloud Sync Error Feedback: Expose sync error listener from active provider
+    onSyncError(listener: (error: string) => void): () => void {
+        if (this.provider && (this.provider as any).onSyncError) {
+            return (this.provider as any).onSyncError(listener);
+        }
+        return () => { }; // No-op unsubscribe if no provider
     }
 
     async sync(localEntries: VaultStorageItem[]) {

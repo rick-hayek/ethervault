@@ -65,6 +65,23 @@ export class GoogleDriveProvider implements CloudProviderInterface {
     private connected = false;
     private logger: Logger | null = null;
 
+    // Token Refresh Mutex: Mutex for token refresh to prevent race conditions
+    private refreshInProgress: Promise<boolean> | null = null;
+
+    // Cloud Sync Error Feedback: Error event listeners for sync feedback
+    private syncErrorListeners: ((error: string) => void)[] = [];
+
+    onSyncError(listener: (error: string) => void): () => void {
+        this.syncErrorListeners.push(listener);
+        return () => {
+            this.syncErrorListeners = this.syncErrorListeners.filter(l => l !== listener);
+        };
+    }
+
+    private emitSyncError(error: string) {
+        this.syncErrorListeners.forEach(l => l(error));
+    }
+
     setLogger(logger: Logger) {
         this.logger = logger;
     }
@@ -185,6 +202,23 @@ export class GoogleDriveProvider implements CloudProviderInterface {
     }
 
     private async refreshAccessToken(refreshToken: string): Promise<boolean> {
+        // Token Refresh Mutex: If a refresh is already in progress, wait for it instead of starting another
+        if (this.refreshInProgress) {
+            this.log('info', '[GoogleDrive] Refresh already in progress, waiting...');
+            return this.refreshInProgress;
+        }
+
+        // Start the refresh and store the promise
+        this.refreshInProgress = this.doRefreshAccessToken(refreshToken);
+
+        try {
+            return await this.refreshInProgress;
+        } finally {
+            this.refreshInProgress = null;
+        }
+    }
+
+    private async doRefreshAccessToken(refreshToken: string): Promise<boolean> {
         try {
             const isNative = Capacitor.isNativePlatform();
             const isElectron = this.isElectron();
@@ -203,10 +237,13 @@ export class GoogleDriveProvider implements CloudProviderInterface {
             });
 
             if (!res.ok) {
-                this.log('error', '[GoogleDrive] Refresh failed. Clearing storage.');
+                const errorBody = await res.json().catch(() => ({}));
+                this.log('error', '[GoogleDrive] Refresh failed. Clearing storage.', errorBody);
                 localStorage.removeItem('gdrive_access_token');
                 localStorage.removeItem('gdrive_token_expiry');
                 localStorage.removeItem('gdrive_refresh_token');
+                // Cloud Sync Error Feedback: Emit error to UI
+                this.emitSyncError('Session expired. Please re-authenticate with Google Drive.');
                 return false;
             }
 
@@ -223,8 +260,10 @@ export class GoogleDriveProvider implements CloudProviderInterface {
             this.connected = true;
             this.log('info', '[GoogleDrive] Session refreshed successfully (Refresh Token).');
             return true;
-        } catch (e) {
+        } catch (e: any) {
             this.log('error', '[GoogleDrive] Refresh exception:', e);
+            // Cloud Sync Error Feedback: Emit error to UI
+            this.emitSyncError(`Token refresh failed: ${e.message || 'Unknown error'}`);
             return false;
         }
     }

@@ -23,7 +23,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { BiometricService } from '../utils/BiometricService';
-import { AppSettings, CloudProvider, AuthService, VaultService, CloudService, NETWORK_TIMEOUT_MS } from '@ethervault/core';
+import { AppSettings, CloudProvider, AuthService, VaultService, CloudService, CryptoService, NETWORK_TIMEOUT_MS } from '@ethervault/core';
 import { ImportModal } from './ImportModal';
 import { ExportModal } from './ExportModal';
 import { SyncWarningModal } from './SyncWarningModal';
@@ -473,7 +473,28 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
         case 'use_cloud':
           if (!conflictCloudMeta) return;
 
-          // Clear local vault and adopt cloud credentials
+          // Cloud Conflict Password Verification: Verify cloud password BEFORE clearing local vault
+          // This prevents data loss if user doesn't know the cloud password
+          if (!cloudPassword) {
+            showError(t('sync.error.password_required', 'Cloud password is required to verify access before switching.'));
+            return;
+          }
+
+          // Derive key with cloud salt (same as merge case)
+          const useCloudKey = await AuthService.deriveKeyWithSalt(cloudPassword, conflictCloudMeta.salt);
+
+          // Download cloud entries and try to decrypt one to verify password
+          const useCloudEntries = await CloudService.downloadAllEntries();
+          if (useCloudEntries.length > 0) {
+            try {
+              CryptoService.decrypt(useCloudEntries[0].payload, useCloudEntries[0].nonce, useCloudKey);
+            } catch (e) {
+              showError(t('sync.error.wrong_password', 'Incorrect cloud password. Decryption failed.'));
+              return;
+            }
+          }
+
+          // Password verified - now safe to clear local and adopt cloud
           await VaultService.clearLocalVault();
           await AuthService.importCloudCredentials(conflictCloudMeta.salt, conflictCloudMeta.verifier);
 
