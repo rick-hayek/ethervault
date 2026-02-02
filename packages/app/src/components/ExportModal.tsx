@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PasswordEntry, VaultStorageItem, CryptoService } from '@ethervault/core';
 import { useTranslation } from 'react-i18next';
-import { Download, FileJson, FileText, Check, AlertTriangle, X } from 'lucide-react';
+import { Download, FileJson, FileText, Check, AlertTriangle, X, ChevronLeft } from 'lucide-react';
 
 interface ExportModalProps {
     entries: PasswordEntry[];
@@ -30,17 +30,23 @@ export const ExportModal: React.FC<ExportModalProps> = ({ entries, onClose, onEx
     return (
         <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-end md:items-center justify-center p-0 md:p-4 animate-in fade-in duration-200">
             <div className="bg-white dark:bg-slate-900 w-full md:max-w-lg h-[100dvh] md:h-auto md:max-h-[90vh] rounded-none md:rounded-[2rem] border-t md:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 md:zoom-in-95 duration-300 flex flex-col">
-                <div className="px-6 md:px-8 py-4 md:py-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50 shrink-0">
+                <div className="px-6 md:px-8 pt-[calc(env(safe-area-inset-top)+4px)] pb-4 md:py-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50 shrink-0">
                     <div className="flex items-center gap-3">
                         <div className="hidden md:flex p-2 bg-emerald-500/10 rounded-xl">
                             <Download className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                         </div>
-                        {/* Mobile Drag Handle */}
-                        <div className="md:hidden w-12 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full mx-auto absolute left-0 right-0 top-3" />
 
-                        <h2 className="text-lg md:text-xl font-bold text-slate-900 dark:text-white pt-2 md:pt-0">{t('export.title')}</h2>
+                        {/* Mobile Back Button */}
+                        <button onClick={onClose} className="md:hidden p-2 -ml-2 text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800 rounded-full transition-colors">
+                            <ChevronLeft className="w-6 h-6" />
+                        </button>
+
+                        {/* Mobile Drag Handle */}
+                        <div className="md:hidden w-12 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full mx-auto absolute left-0 right-0 top-3 pointer-events-none" />
+
+                        <h2 className="text-lg md:text-xl font-bold text-slate-900 dark:text-white md:pt-0">{t('export.title')}</h2>
                     </div>
-                    <button onClick={onClose} className="p-2 -mr-2 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors bg-white/50 dark:bg-slate-800/50 rounded-full md:bg-transparent">
+                    <button onClick={onClose} className="hidden md:block p-2 -mr-2 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors bg-white/50 dark:bg-slate-800/50 rounded-full md:bg-transparent">
                         <X className="w-6 h-6" />
                     </button>
                 </div>

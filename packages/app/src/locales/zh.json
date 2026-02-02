@@ -245,5 +245,16 @@
         "subtitle": "使用您的生物识别 ID",
         "reason": "解锁密码库",
         "cancel": "取消"
+    },
+    "about": {
+        "title": "关于 EtherVault",
+        "menu_title": "关于",
+        "description": "一款专为隐私和简洁打造的安全、离线优先、跨平台密码管理器。",
+        "opensource": "开源代码",
+        "privacy_title": "隐私与安全",
+        "privacy_desc": "您的数据在设备上通过 AES-256-GCM 进行加密。我们不收集任何个人数据或分析数据。",
+        "help_title": "帮助与支持",
+        "contact": "联系我们",
+        "footer": "© 2026 EtherVault"
     }
 }

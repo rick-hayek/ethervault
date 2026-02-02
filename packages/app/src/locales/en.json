@@ -245,5 +245,16 @@
         "subtitle": "Use your biometric ID",
         "reason": "Unlock Vault",
         "cancel": "Cancel"
+    },
+    "about": {
+        "title": "About EtherVault",
+        "menu_title": "About",
+        "description": "A secure, offline-first, cross-platform password manager built for privacy and simplicity.",
+        "opensource": "Open Source",
+        "privacy_title": "Privacy & Security",
+        "privacy_desc": "Your data is encrypted with AES-256-GCM purely on your device. We do not collect any personal data or analytics.",
+        "help_title": "Help & Support",
+        "contact": "Contact Us",
+        "footer": "© 2026 EtherVault"
     }
 }

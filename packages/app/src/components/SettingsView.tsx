@@ -19,7 +19,9 @@ import {
   Activity,
   X,
   Trash2,
-  Loader2
+  Loader2,
+  Info,
+  ChevronLeft
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { BiometricService } from '../utils/BiometricService';
@@ -28,6 +30,7 @@ import { ImportModal } from './ImportModal';
 import { ExportModal } from './ExportModal';
 import { SyncWarningModal } from './SyncWarningModal';
 import { SyncConflictModal, ConflictResolution } from './SyncConflictModal';
+import { AboutModal } from './AboutModal';
 import { useAlert } from '../hooks/useAlert';
 import { useBackHandler } from '../hooks/useBackHandler';
 import { MobileFileService } from '../utils/MobileFileService';
@@ -46,6 +49,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
+
 
   // Sync Warning State
   const [isSyncWarningModalOpen, setIsSyncWarningModalOpen] = useState(false);
@@ -1007,6 +1012,25 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
               )}
             </div>
           </div>
+
+          {/* About Section */}
+          <button
+            onClick={() => setIsAboutModalOpen(true)}
+            className="w-full py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[24px] flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group shadow-sm"
+          >
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 group-hover:text-indigo-500 transition-colors">
+                <Info className="w-5 h-5" />
+              </div>
+              <div className="text-left">
+                <h3 className="text-xs font-black uppercase tracking-widest text-slate-700 dark:text-slate-200">{t('about.menu_title', 'About')}</h3>
+                <p className="text-[10px] font-bold text-slate-400 group-hover:text-slate-500 dark:group-hover:text-slate-400 transition-colors mt-0.5">v{appVersion}</p>
+              </div>
+            </div>
+            <div className="text-slate-300 dark:text-slate-700 group-hover:translate-x-1 transition-transform">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+            </div>
+          </button>
         </div>
 
         {
@@ -1080,15 +1104,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           )
         }
 
-        <div className="flex items-center justify-end pt-2 border-t border-slate-100 dark:border-slate-900">
-          <span className="text-[8px] font-black text-slate-300 dark:text-slate-800 uppercase tracking-[0.5em] hidden md:block">{t('settings.encryption')}</span>
+        <div className="flex items-center justify-center md:justify-end pt-2 border-t border-slate-100 dark:border-slate-900">
+          <span className="text-[8px] font-black text-slate-300 dark:text-slate-800 uppercase tracking-[0.5em]">{t('settings.encryption')}</span>
         </div>
 
-        <div className="md:hidden mt-8 text-center">
-          <span className="text-[9px] font-black text-slate-300 dark:text-slate-700 uppercase tracking-[0.3em] px-3 py-1.5 rounded-full">
-            VER {appVersion}
-          </span>
-        </div>
+
 
         {
           isBioModalOpen && (
@@ -1194,20 +1214,26 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           isActivityModalOpen && (
             <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-end md:items-center justify-center p-0 md:p-4" onClick={() => setIsActivityModalOpen(false)}>
               <div className="bg-white dark:bg-slate-900 w-full h-[100dvh] md:h-[600px] md:max-w-2xl flex flex-col rounded-none md:rounded-3xl border-t md:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 md:zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
-                <div className="flex items-center justify-between p-6 border-b border-slate-100 dark:border-slate-800">
+                <div className="flex items-center justify-between px-6 md:px-8 pt-[calc(env(safe-area-inset-top)+4px)] pb-4 md:py-6 border-b border-slate-100 dark:border-slate-800">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 bg-indigo-50 dark:bg-slate-800 rounded-xl text-indigo-500">
+                    <div className="hidden md:flex p-2 bg-indigo-50 dark:bg-slate-800 rounded-xl text-indigo-500">
                       <Activity className="w-5 h-5" />
                     </div>
+
+                    {/* Mobile Back Button */}
+                    <button onClick={() => setIsActivityModalOpen(false)} className="md:hidden p-2 -ml-2 text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800 rounded-full transition-colors">
+                      <ChevronLeft className="w-6 h-6" />
+                    </button>
+
                     <div>
                       <h2 className="text-lg font-bold text-slate-900 dark:text-white">{t('settings.activity_modal.title')}</h2>
-                      <p className="text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">~/Library/Logs/EtherVault/main.log</p>
+                      <p className="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">~/Library/Logs/EtherVault/main.log</p>
                     </div>
                   </div>
                   <div>
                     <button
                       onClick={() => setIsActivityModalOpen(false)}
-                      className="p-2 text-slate-400 hover:text-rose-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                      className="hidden md:block p-2 text-slate-400 hover:text-rose-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
                     >
                       <X className="w-5 h-5" />
                     </button>
@@ -1240,7 +1266,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   )}
                 </div>
 
-                <div className="p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 flex items-center justify-between">
+                <div className="hidden md:flex p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 items-center justify-between">
                   <button
                     onClick={fetchLogs}
                     className="flex items-center gap-2 px-4 py-2 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:text-indigo-400 dark:hover:bg-indigo-500/10 transition-all"
@@ -1260,6 +1286,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           )
         }
       </div>
+
+      <AboutModal isOpen={isAboutModalOpen} onClose={() => setIsAboutModalOpen(false)} appVersion={appVersion} />
 
       {isCacheConfirmOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">

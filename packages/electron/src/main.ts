@@ -256,7 +256,31 @@ ipcMain.handle('log-read-recent', async () => {
 
         const content = await fs.promises.readFile(logPath, 'utf8');
         const lines = content.split('\n').filter(line => line.trim() !== '');
-        return lines.slice(-50).reverse(); // Return last 50 lines, newest first
+
+        const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+        const cutoff = Date.now() - ONE_DAY_MS;
+        const result: string[] = [];
+
+        // Iterate backwards to find lines within the window
+        for (let i = lines.length - 1; i >= 0; i--) {
+            const line = lines[i];
+            // Format example: [2024-01-01 12:00:00.000] [info] ...
+            const match = line.match(/^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\]/);
+
+            if (match) {
+                const timestamp = new Date(match[1]).getTime();
+                if (timestamp < cutoff) {
+                    // We found a log older than 1 day. 
+                    // Since logs are chronological, we can stop here.
+                    break;
+                }
+            }
+            // Include valid recent lines AND non-timestamped lines (stack traces) encountered during reverse traversal
+            result.push(line);
+        }
+
+        // result is currently reversed (newest first), which is what we want for display
+        return result;
     } catch (error) {
         log.error('Failed to read log file:', error);
         return [];

@@ -11,7 +11,7 @@ import { GeneratorView } from './components/GeneratorView';
 import { SettingsView } from './components/SettingsView';
 import { WelcomeView } from './components/WelcomeView';
 import { LoginView } from './components/LoginView';
-import { EntryModal } from './components/VaultView'; // Exported for use here
+import { EntryModal } from './components/EntryModal';
 import { VaultService, AuthService, StorageService, CloudService, AppSettings, PasswordEntry, Category, CloudProvider, CryptoService } from '@ethervault/core';
 import { BackHandlerProvider, useBackHandler } from './hooks/useBackHandler';
 import { AlertProvider } from './hooks/useAlert';
