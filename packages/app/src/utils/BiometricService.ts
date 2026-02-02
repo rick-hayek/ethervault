@@ -101,12 +101,30 @@ export class BiometricService {
 
     static async hasSavedSecret(): Promise<boolean> {
         if (this.isNative) {
-            // NativeBiometric doesn't have a direct 'check' without retrieving.
-            // We might need to try retrieve or just rely on a flag if we want to be fast.
-            // But for security, we usually just assume available if the device supports it
-            // AND we have successfully saved before. 
-            // A better way: check if we have a flag in localStorage that WE set when saving.
-            return localStorage.getItem('ethervault_bio_enabled') === 'true';
+            // Fix: Actually check if credentials exist in keychain
+            // instead of relying on localStorage flag which can be inconsistent
+            // (e.g., after app reinstall, keychain persists but localStorage is cleared)
+            try {
+                // NativeBiometric.getCredentials will throw if no credentials exist
+                // We don't need to verify identity, just check if credentials are stored
+                const credentials = await NativeBiometric.getCredentials({
+                    server: 'com.ethervault.app',
+                });
+                const hasSecret = !!(credentials && credentials.username === 'master_auth');
+
+                // Sync localStorage flag with actual keychain state
+                if (hasSecret) {
+                    localStorage.setItem('ethervault_bio_enabled', 'true');
+                } else {
+                    localStorage.removeItem('ethervault_bio_enabled');
+                }
+
+                return hasSecret;
+            } catch (e) {
+                // No credentials found or error accessing keychain
+                localStorage.removeItem('ethervault_bio_enabled');
+                return false;
+            }
         } else if (window.electronAPI?.biometrics) {
             return await window.electronAPI.biometrics.hasSavedSecret();
         }
