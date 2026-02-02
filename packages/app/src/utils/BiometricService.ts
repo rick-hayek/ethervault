@@ -44,9 +44,16 @@ export class BiometricService {
         if (this.isNative) {
             try {
                 // First verify identity
+                // Check if i18n is ready and log warning if translations are missing
+                const titleKey = 'biometric_prompt.title';
+                const title = i18next.t(titleKey);
+                if (title === titleKey) {
+                    console.warn('[Bio] i18n not ready or translation missing for biometric prompt');
+                }
+
                 const bioOptions = {
                     reason: reason,
-                    title: i18next.t('biometric_prompt.title') || 'Unlock EtherVault',
+                    title: title || 'Unlock EtherVault',
                     subtitle: i18next.t('biometric_prompt.subtitle') || 'Use your biometric ID',
                     description: i18next.t('biometric_prompt.reason') || reason,
                     negativeButtonText: i18next.t('biometric_prompt.cancel') || 'Cancel',
