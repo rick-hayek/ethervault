@@ -5,9 +5,10 @@ import { useTranslation } from 'react-i18next';
 
 interface WelcomeViewProps {
   onComplete: (masterKey: string, bioEnabled: boolean) => void;
+  biometricsSupported?: boolean;
 }
 
-export const WelcomeView: React.FC<WelcomeViewProps> = ({ onComplete }) => {
+export const WelcomeView: React.FC<WelcomeViewProps> = ({ onComplete, biometricsSupported = false }) => {
   const { t } = useTranslation();
   const [step, setStep] = useState(1);
   const [masterKey, setMasterKey] = useState('');
@@ -27,7 +28,14 @@ export const WelcomeView: React.FC<WelcomeViewProps> = ({ onComplete }) => {
         return;
       }
       setError('');
-      setStep(2);
+      setError('');
+
+      // Skip Step 2 if Biometrics NOT supported
+      if (!biometricsSupported) {
+        onComplete(masterKey, false);
+      } else {
+        setStep(2);
+      }
     } else {
       onComplete(masterKey, bioEnabled);
     }

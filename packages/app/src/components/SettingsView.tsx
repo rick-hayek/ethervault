@@ -36,9 +36,10 @@ interface SettingsViewProps {
   settings: AppSettings;
   setSettings: (settings: AppSettings) => void;
   onDataChange: () => void;
+  biometricsSupported?: boolean;
 }
 
-export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSettings, onDataChange }) => {
+export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSettings, onDataChange, biometricsSupported = false }) => {
   const { t, i18n } = useTranslation();
 
   // Modals State
@@ -829,8 +830,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           {/* Access Settings - High Density Grid */}
           <div className="lg:col-span-7 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              <CompactSetting icon={Fingerprint} label={t('settings.option.biometric')} value={settings.biometricsEnabled} onClick={toggleBiometrics} />
-              <CompactSetting icon={Shield} label={t('settings.option.2fa')} value={settings.twoFactorEnabled} />
+              {biometricsSupported && (
+                <CompactSetting icon={Fingerprint} label={t('settings.option.biometric')} value={settings.biometricsEnabled} onClick={toggleBiometrics} />
+              )}
               {/* Lock Timer Dropdown */}
               <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
                 <div className="flex items-center gap-3">

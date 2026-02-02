@@ -3,6 +3,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { logger } from './utils/logger';
 import { IconService } from './utils/IconService';
+import { BiometricService } from './utils/BiometricService'; // Import BiometricService
 import { Layout } from './components/Layout';
 import { VaultView } from './components/VaultView';
 import { SecurityDashboard } from './components/SecurityDashboard';
@@ -74,7 +75,6 @@ const AppContent: React.FC = () => {
     return {
       biometricsEnabled: localStorage.getItem('ethervault_bio') === 'true',
       autoLockTimeout: 15,
-      twoFactorEnabled: true,
       theme: 'system',
       cloudProvider: savedProvider || 'none',
       lastSync: ''
@@ -96,12 +96,16 @@ const AppContent: React.FC = () => {
     }
   }, [settings.cloudProvider]);
 
+  const [bioAvailable, setBioAvailable] = useState(false);
+
   useEffect(() => {
     const initializeApp = async () => {
       try {
-
-
         await CryptoService.init();
+
+        // Check biometrics support
+        const isBio = await BiometricService.isAvailable();
+        setBioAvailable(isBio);
 
         // Check if account is already setup in persistence
         const isSetup = await AuthService.isAccountSetup();
@@ -349,7 +353,21 @@ const AppContent: React.FC = () => {
 
   const handleSetupComplete = async (key: string, bioEnabled: boolean) => {
     await AuthService.setupAccount(key);
-    localStorage.setItem('ethervault_bio', bioEnabled.toString());
+
+    // Save the secret to the secure store if enabled
+    if (bioEnabled) {
+      const saved = await BiometricService.saveSecret(key);
+      if (saved) {
+        localStorage.setItem('ethervault_bio', 'true');
+      } else {
+        console.error('Failed to save biometric secret during setup');
+        // Fallback: Disable it if save failed
+        bioEnabled = false;
+        localStorage.removeItem('ethervault_bio');
+      }
+    } else {
+      localStorage.removeItem('ethervault_bio');
+    }
 
     setIsAuthenticated(true);
     setHasSetup(true);
@@ -391,7 +409,7 @@ const AppContent: React.FC = () => {
   };
 
   if (!hasSetup) {
-    return <WelcomeView onComplete={handleSetupComplete} />;
+    return <WelcomeView onComplete={handleSetupComplete} biometricsSupported={bioAvailable} />;
   }
 
   if (!isAuthenticated) {
@@ -437,6 +455,7 @@ const AppContent: React.FC = () => {
         return <SettingsView
           settings={settings}
           setSettings={(s: any) => setSettings(s)}
+          biometricsSupported={bioAvailable} // Pass availability check
           onDataChange={async () => {
             const entries = await VaultService.getEntries();
             setPasswords(entries);

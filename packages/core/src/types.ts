@@ -24,7 +24,6 @@ export type CloudProvider = 'none' | 'dropbox' | 'google' | 'drive' | 'webdav' |
 export interface AppSettings {
     biometricsEnabled: boolean;
     autoLockTimeout: number;
-    twoFactorEnabled: boolean;
     theme: 'dark' | 'light' | 'system';
     cloudProvider: CloudProvider;
     lastSync: string;
