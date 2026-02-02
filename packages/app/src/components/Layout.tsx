@@ -23,6 +23,7 @@ interface LayoutProps {
   onSearch?: (query: string) => void;
   searchQuery?: string;
   onAddClick?: () => void;
+  useSlider?: boolean; // New prop to disable default scroll/swipe
 }
 
 export const Layout: React.FC<LayoutProps> = ({
@@ -34,7 +35,8 @@ export const Layout: React.FC<LayoutProps> = ({
   onLock,
   onSearch,
   searchQuery = '',
-  onAddClick
+  onAddClick,
+  useSlider = false
 }) => {
   const { t } = useTranslation();
   const [isSearchMode, setIsSearchMode] = useState(false);
@@ -121,8 +123,8 @@ export const Layout: React.FC<LayoutProps> = ({
 
   return (
     <div
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
+      onTouchStart={useSlider ? undefined : handleTouchStart}
+      onTouchEnd={useSlider ? undefined : handleTouchEnd}
       className="h-[100dvh] flex flex-col md:flex-row bg-slate-50 dark:bg-slate-950 transition-colors duration-300 overflow-hidden"
     >
       {/* Sidebar - Desktop/Tablet (Fixed position, non-scrolling) */}
@@ -229,11 +231,15 @@ export const Layout: React.FC<LayoutProps> = ({
       {/* Main Content Area (Independent scroll) */}
       <main
         ref={mainRef}
-        className="flex-1 overflow-y-auto pb-[calc(5rem+env(safe-area-inset-bottom))] relative scrollbar-hide"
+        className={`flex-1 relative scrollbar-hide ${useSlider ? 'overflow-hidden' : 'overflow-y-auto pb-[calc(5rem+env(safe-area-inset-bottom))]'}`}
       >
-        <div className="max-w-6xl mx-auto">
-          {children}
-        </div>
+        {useSlider ? (
+          children // Slider handles its own inner containers
+        ) : (
+          <div className="max-w-6xl mx-auto">
+            {children}
+          </div>
+        )}
       </main>
 
       {/* Mobile Bottom Navigation */}

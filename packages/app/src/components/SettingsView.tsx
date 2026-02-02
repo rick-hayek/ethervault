@@ -23,6 +23,7 @@ import {
   Info,
   ChevronLeft
 } from 'lucide-react';
+import { Portal } from './Portal';
 import { useTranslation } from 'react-i18next';
 import { BiometricService } from '../utils/BiometricService';
 import { AppSettings, CloudProvider, AuthService, VaultService, CloudService, CryptoService, NETWORK_TIMEOUT_MS } from '@ethervault/core';
@@ -208,23 +209,25 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
     if (error) {
       return (
-        <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={onClose}>
-          <div className="bg-white dark:bg-slate-900 w-full max-w-sm rounded-3xl border border-rose-200 dark:border-rose-900/30 shadow-2xl p-6 text-center space-y-4 animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
-            <div className="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-900/20 flex items-center justify-center mx-auto text-rose-500">
-              <Shield className="w-6 h-6" />
+        <Portal>
+          <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={onClose}>
+            <div className="bg-white dark:bg-slate-900 w-full max-w-sm rounded-3xl border border-rose-200 dark:border-rose-900/30 shadow-2xl p-6 text-center space-y-4 animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+              <div className="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-900/20 flex items-center justify-center mx-auto text-rose-500">
+                <Shield className="w-6 h-6" />
+              </div>
+              <div>
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Export Failed</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">{error}</p>
+              </div>
+              <button
+                onClick={onClose}
+                className="w-full py-2.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black rounded-xl uppercase tracking-widest hover:opacity-90 transition-opacity"
+              >
+                Close
+              </button>
             </div>
-            <div>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Export Failed</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">{error}</p>
-            </div>
-            <button
-              onClick={onClose}
-              className="w-full py-2.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black rounded-xl uppercase tracking-widest hover:opacity-90 transition-opacity"
-            >
-              Close
-            </button>
           </div>
-        </div>
+        </Portal>
       );
     }
 
@@ -241,7 +244,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
             let content = '';
 
             if (format === 'json') {
-              content = JSON.stringify(entries, null, 2);
+              const cleanedEntries = entries.map(({ tags, lastUpdated, favorite, ...rest }) => rest);
+              content = JSON.stringify(cleanedEntries, null, 2);
             } else {
               const headers = ['Title', 'Username', 'Password', 'Website', 'Category', 'Notes'];
               const rows = entries.map(e =>
@@ -1035,72 +1039,74 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
         {
           isPasswordModalOpen && (
-            <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-              <div className="relative bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden p-8 animate-in zoom-in-95 duration-200">
+            <Portal>
+              <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+                <div className="relative bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden p-8 animate-in zoom-in-95 duration-200">
 
-                {/* Loading Overlay */}
-                {isChangingPassword && (
-                  <div className="absolute inset-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm flex flex-col items-center justify-center z-50 animate-in fade-in duration-200 p-6 text-center">
-                    <Loader2 className="w-10 h-10 text-indigo-500 animate-spin mb-4" />
-                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{t('settings.processing', 'Processing...')}</h3>
-                    <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">{passwordChangeStatus}</p>
-                  </div>
-                )}
+                  {/* Loading Overlay */}
+                  {isChangingPassword && (
+                    <div className="absolute inset-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm flex flex-col items-center justify-center z-50 animate-in fade-in duration-200 p-6 text-center">
+                      <Loader2 className="w-10 h-10 text-indigo-500 animate-spin mb-4" />
+                      <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{t('settings.processing', 'Processing...')}</h3>
+                      <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">{passwordChangeStatus}</p>
+                    </div>
+                  )}
 
-                <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">{t('settings.password_modal.title')}</h2>
-                <form onSubmit={handlePasswordChange} className="space-y-4">
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.current')}</label>
-                    <input
-                      type="password"
-                      required
-                      value={passwordForm.old}
-                      onChange={e => setPasswordForm({ ...passwordForm, old: e.target.value })}
-                      className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
-                    />
-                  </div>
-                  <div className="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.new')}</label>
-                    <input
-                      type="password"
-                      required
-                      value={passwordForm.new}
-                      onChange={e => setPasswordForm({ ...passwordForm, new: e.target.value })}
-                      className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
-                    />
-                  </div>
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.confirm')}</label>
-                    <input
-                      type="password"
-                      required
-                      value={passwordForm.confirm}
-                      onChange={e => setPasswordForm({ ...passwordForm, confirm: e.target.value })}
-                      className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
-                    />
-                  </div>
+                  <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">{t('settings.password_modal.title')}</h2>
+                  <form onSubmit={handlePasswordChange} className="space-y-4">
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.current')}</label>
+                      <input
+                        type="password"
+                        required
+                        value={passwordForm.old}
+                        onChange={e => setPasswordForm({ ...passwordForm, old: e.target.value })}
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
+                      />
+                    </div>
+                    <div className="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.new')}</label>
+                      <input
+                        type="password"
+                        required
+                        value={passwordForm.new}
+                        onChange={e => setPasswordForm({ ...passwordForm, new: e.target.value })}
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
+                      />
+                    </div>
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.confirm')}</label>
+                      <input
+                        type="password"
+                        required
+                        value={passwordForm.confirm}
+                        onChange={e => setPasswordForm({ ...passwordForm, confirm: e.target.value })}
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
+                      />
+                    </div>
 
-                  {error && <p className="text-rose-500 text-[10px] font-bold uppercase text-center pt-2">{error}</p>}
-                  {success && <p className="text-emerald-500 text-[10px] font-bold uppercase text-center pt-2">{t('settings.success.password')}</p>}
+                    {error && <p className="text-rose-500 text-[10px] font-bold uppercase text-center pt-2">{error}</p>}
+                    {success && <p className="text-emerald-500 text-[10px] font-bold uppercase text-center pt-2">{t('settings.success.password')}</p>}
 
-                  <div className="flex gap-3 pt-6">
-                    <button
-                      type="button"
-                      onClick={() => { setIsPasswordModalOpen(false); setError(null); }}
-                      className="flex-1 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
-                    >
-                      {t('settings.password_modal.cancel')}
-                    </button>
-                    <button
-                      type="submit"
-                      className="flex-1 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black rounded-xl hover:opacity-90 transition-all"
-                    >
-                      {t('settings.password_modal.save')}
-                    </button>
-                  </div>
-                </form>
+                    <div className="flex gap-3 pt-6">
+                      <button
+                        type="button"
+                        onClick={() => { setIsPasswordModalOpen(false); setError(null); }}
+                        className="flex-1 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                      >
+                        {t('settings.password_modal.cancel')}
+                      </button>
+                      <button
+                        type="submit"
+                        className="flex-1 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black rounded-xl hover:opacity-90 transition-all"
+                      >
+                        {t('settings.password_modal.save')}
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </div>
+            </Portal>
           )
         }
 
@@ -1112,55 +1118,57 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
         {
           isBioModalOpen && (
-            <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-              <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden p-8 animate-in zoom-in-95 duration-200">
-                <div className="flex items-center gap-4 mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
-                    <Fingerprint className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <h2 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">{t('settings.biometric_modal.title')}</h2>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{t('settings.biometric_modal.description')}</p>
-                  </div>
-                </div>
-
-                <form onSubmit={handleBioConfirm} className="space-y-4">
-                  <div className="space-y-1.5">
-                    <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('login.master_password')}</label>
-                    <div className="relative">
-                      <input
-                        type="password"
-                        required
-                        value={bioPassword}
-                        onChange={e => setBioPassword(e.target.value)}
-                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3 px-4 outline-none focus:border-indigo-500 transition-all text-sm font-bold"
-                        placeholder={t('login.unlock_placeholder')}
-                        autoFocus
-                      />
-                      <Lock className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <Portal>
+              <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
+                <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden p-8 animate-in zoom-in-95 duration-200">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                      <Fingerprint className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h2 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">{t('settings.biometric_modal.title')}</h2>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{t('settings.biometric_modal.description')}</p>
                     </div>
                   </div>
 
-                  {bioError && <p className="text-rose-500 text-[10px] font-bold uppercase text-center pt-2">{bioError}</p>}
+                  <form onSubmit={handleBioConfirm} className="space-y-4">
+                    <div className="space-y-1.5">
+                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('login.master_password')}</label>
+                      <div className="relative">
+                        <input
+                          type="password"
+                          required
+                          value={bioPassword}
+                          onChange={e => setBioPassword(e.target.value)}
+                          className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3 px-4 outline-none focus:border-indigo-500 transition-all text-sm font-bold"
+                          placeholder={t('login.unlock_placeholder')}
+                          autoFocus
+                        />
+                        <Lock className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                      </div>
+                    </div>
 
-                  <div className="flex gap-3 pt-4">
-                    <button
-                      type="button"
-                      onClick={() => { setIsBioModalOpen(false); setBioError(null); }}
-                      className="flex-1 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
-                    >
-                      {t('common.cancel')}
-                    </button>
-                    <button
-                      type="submit"
-                      className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-black rounded-xl hover:shadow-lg transition-all active:scale-95"
-                    >
-                      {t('settings.biometric_modal.enable')}
-                    </button>
-                  </div>
-                </form>
+                    {bioError && <p className="text-rose-500 text-[10px] font-bold uppercase text-center pt-2">{bioError}</p>}
+
+                    <div className="flex gap-3 pt-4">
+                      <button
+                        type="button"
+                        onClick={() => { setIsBioModalOpen(false); setBioError(null); }}
+                        className="flex-1 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                      >
+                        {t('common.cancel')}
+                      </button>
+                      <button
+                        type="submit"
+                        className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-black rounded-xl hover:shadow-lg transition-all active:scale-95"
+                      >
+                        {t('settings.biometric_modal.enable')}
+                      </button>
+                    </div>
+                  </form>
+                </div>
               </div>
-            </div>
+            </Portal>
           )
         }
 
@@ -1212,77 +1220,79 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
         {
           isActivityModalOpen && (
-            <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-end md:items-center justify-center p-0 md:p-4" onClick={() => setIsActivityModalOpen(false)}>
-              <div className="bg-white dark:bg-slate-900 w-full h-[100dvh] md:h-[600px] md:max-w-2xl flex flex-col rounded-none md:rounded-3xl border-t md:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 md:zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
-                <div className="flex items-center justify-between px-6 md:px-8 pt-[calc(env(safe-area-inset-top)+4px)] pb-4 md:py-6 border-b border-slate-100 dark:border-slate-800">
-                  <div className="flex items-center gap-3">
-                    <div className="hidden md:flex p-2 bg-indigo-50 dark:bg-slate-800 rounded-xl text-indigo-500">
-                      <Activity className="w-5 h-5" />
+            <Portal>
+              <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-end md:items-center justify-center p-0 md:p-4" onClick={() => setIsActivityModalOpen(false)}>
+                <div className="bg-white dark:bg-slate-900 w-full h-[100dvh] md:h-[600px] md:max-w-2xl flex flex-col rounded-none md:rounded-3xl border-t md:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 md:zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+                  <div className="flex items-center justify-between px-6 md:px-8 pt-[calc(env(safe-area-inset-top)+4px)] pb-4 md:py-6 border-b border-slate-100 dark:border-slate-800">
+                    <div className="flex items-center gap-3">
+                      <div className="hidden md:flex p-2 bg-indigo-50 dark:bg-slate-800 rounded-xl text-indigo-500">
+                        <Activity className="w-5 h-5" />
+                      </div>
+
+                      {/* Mobile Back Button */}
+                      <button onClick={() => setIsActivityModalOpen(false)} className="md:hidden p-2 -ml-2 text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800 rounded-full transition-colors">
+                        <ChevronLeft className="w-6 h-6" />
+                      </button>
+
+                      <div>
+                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">{t('settings.activity_modal.title')}</h2>
+                        <p className="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">~/Library/Logs/EtherVault/main.log</p>
+                      </div>
                     </div>
-
-                    {/* Mobile Back Button */}
-                    <button onClick={() => setIsActivityModalOpen(false)} className="md:hidden p-2 -ml-2 text-slate-500 dark:text-slate-400 hover:bg-slate-200/50 dark:hover:bg-slate-800 rounded-full transition-colors">
-                      <ChevronLeft className="w-6 h-6" />
-                    </button>
-
                     <div>
-                      <h2 className="text-lg font-bold text-slate-900 dark:text-white">{t('settings.activity_modal.title')}</h2>
-                      <p className="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">~/Library/Logs/EtherVault/main.log</p>
+                      <button
+                        onClick={() => setIsActivityModalOpen(false)}
+                        className="hidden md:block p-2 text-slate-400 hover:text-rose-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
                     </div>
                   </div>
-                  <div>
+
+                  <div className="flex-1 overflow-auto scrollbar-hide p-6 bg-slate-50 dark:bg-slate-950 font-mono text-[10px] sm:text-xs text-slate-600 dark:text-slate-300 space-y-1">
+                    {activityLogs.length === 0 ? (
+                      <div className="h-full flex flex-col items-center justify-center text-slate-400">
+                        <Activity className="w-12 h-12 mb-4 opacity-20" />
+                        <p>{t('settings.activity_modal.empty')}</p>
+                      </div>
+                    ) : (
+                      activityLogs.map((log, index) => {
+                        let colorClass = "text-slate-600 dark:text-slate-400";
+                        if (log.includes('[error]') || log.includes('error:')) colorClass = "text-rose-500";
+                        if (log.includes('[warn]') || log.includes('warn:')) colorClass = "text-amber-500";
+                        if (log.includes('[info]') || log.includes('info:')) colorClass = "text-emerald-600 dark:text-emerald-400";
+
+                        // Highlight our custom tags
+                        const highlightedLog = log.replace(/(\[AUTH\]|\[VAULT\]|\[DATA\])/g, '<span class="font-bold text-indigo-500">$1</span>');
+
+                        return (
+                          <div key={index} className={`flex items-start gap-3 border-b border-slate-200/50 dark:border-slate-800/50 pb-1 ${colorClass}`}>
+                            <span className="opacity-50 select-none w-6 shrink-0 text-right">{index + 1}</span>
+                            <span className="break-all" dangerouslySetInnerHTML={{ __html: highlightedLog }} />
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+
+                  <div className="hidden md:flex p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 items-center justify-between">
+                    <button
+                      onClick={fetchLogs}
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:text-indigo-400 dark:hover:bg-indigo-500/10 transition-all"
+                    >
+                      <RefreshCcw className="w-4 h-4" />
+                      <span className="text-xs font-bold uppercase tracking-wider">{t('settings.activity_modal.refresh')}</span>
+                    </button>
                     <button
                       onClick={() => setIsActivityModalOpen(false)}
-                      className="hidden md:block p-2 text-slate-400 hover:text-rose-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                      className="px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold rounded-xl hover:opacity-90 transition-all uppercase tracking-wider"
                     >
-                      <X className="w-5 h-5" />
+                      {t('settings.activity_modal.close')}
                     </button>
                   </div>
                 </div>
-
-                <div className="flex-1 overflow-auto scrollbar-hide p-6 bg-slate-50 dark:bg-slate-950 font-mono text-[10px] sm:text-xs text-slate-600 dark:text-slate-300 space-y-1">
-                  {activityLogs.length === 0 ? (
-                    <div className="h-full flex flex-col items-center justify-center text-slate-400">
-                      <Activity className="w-12 h-12 mb-4 opacity-20" />
-                      <p>{t('settings.activity_modal.empty')}</p>
-                    </div>
-                  ) : (
-                    activityLogs.map((log, index) => {
-                      let colorClass = "text-slate-600 dark:text-slate-400";
-                      if (log.includes('[error]') || log.includes('error:')) colorClass = "text-rose-500";
-                      if (log.includes('[warn]') || log.includes('warn:')) colorClass = "text-amber-500";
-                      if (log.includes('[info]') || log.includes('info:')) colorClass = "text-emerald-600 dark:text-emerald-400";
-
-                      // Highlight our custom tags
-                      const highlightedLog = log.replace(/(\[AUTH\]|\[VAULT\]|\[DATA\])/g, '<span class="font-bold text-indigo-500">$1</span>');
-
-                      return (
-                        <div key={index} className={`flex items-start gap-3 border-b border-slate-200/50 dark:border-slate-800/50 pb-1 ${colorClass}`}>
-                          <span className="opacity-50 select-none w-6 shrink-0 text-right">{index + 1}</span>
-                          <span className="break-all" dangerouslySetInnerHTML={{ __html: highlightedLog }} />
-                        </div>
-                      );
-                    })
-                  )}
-                </div>
-
-                <div className="hidden md:flex p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 items-center justify-between">
-                  <button
-                    onClick={fetchLogs}
-                    className="flex items-center gap-2 px-4 py-2 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:text-indigo-400 dark:hover:bg-indigo-500/10 transition-all"
-                  >
-                    <RefreshCcw className="w-4 h-4" />
-                    <span className="text-xs font-bold uppercase tracking-wider">{t('settings.activity_modal.refresh')}</span>
-                  </button>
-                  <button
-                    onClick={() => setIsActivityModalOpen(false)}
-                    className="px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold rounded-xl hover:opacity-90 transition-all uppercase tracking-wider"
-                  >
-                    {t('settings.activity_modal.close')}
-                  </button>
-                </div>
               </div>
-            </div>
+            </Portal>
           )
         }
       </div>

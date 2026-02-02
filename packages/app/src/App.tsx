@@ -12,6 +12,7 @@ import { SettingsView } from './components/SettingsView';
 import { WelcomeView } from './components/WelcomeView';
 import { LoginView } from './components/LoginView';
 import { EntryModal } from './components/EntryModal';
+import { MobilePageSlider } from './components/MobilePageSlider';
 import { VaultService, AuthService, StorageService, CloudService, AppSettings, PasswordEntry, Category, CloudProvider, CryptoService } from '@ethervault/core';
 import { BackHandlerProvider, useBackHandler } from './hooks/useBackHandler';
 import { AlertProvider } from './hooks/useAlert';
@@ -489,22 +490,57 @@ const AppContent: React.FC = () => {
       onSearch={setSearchQuery}
       searchQuery={searchQuery}
       onAddClick={handleOpenAdd}
+      useSlider={isMobile}
     >
       {isMobile ? (
-        <AnimatePresence mode="popLayout" custom={direction} initial={false}>
-          <motion.div
-            key={currentView}
-            custom={direction}
-            variants={variants}
-            initial="enter"
-            animate="center"
-            exit="exit"
-            transition={{ x: { type: "spring", stiffness: 300, damping: 30 } }}
-            className="max-w-7xl mx-auto w-full"
-          >
-            {renderView()}
-          </motion.div>
-        </AnimatePresence>
+        <MobilePageSlider
+          currentIndex={VIEW_ORDER.indexOf(currentView)}
+          onIndexChange={(index) => handleSetView(VIEW_ORDER[index] as any)}
+        >
+          {/* Vault View */}
+          <VaultView
+            passwords={filteredPasswords}
+            activeCategory={activeCategory}
+            onCategoryChange={(cat: any) => setActiveCategory(cat)}
+            onSearch={setSearchQuery}
+            allTags={allTags}
+            activeTag={activeTag}
+            onTagChange={setActiveTag}
+            onEdit={handleOpenEdit}
+            onAdd={handleOpenAdd}
+            onGoToSettings={() => setCurrentView('settings')}
+          />
+
+          {/* Security View */}
+          <SecurityDashboard
+            passwords={passwords}
+            onResolve={(entryId) => {
+              const entry = passwords.find(p => p.id === entryId);
+              if (entry) {
+                setEditingEntry(entry);
+                setIsModalOpen(true);
+              }
+            }}
+            onScan={async () => {
+              const entries = await VaultService.getEntries();
+              setPasswords(entries);
+            }}
+          />
+
+          {/* Generator View */}
+          <GeneratorView />
+
+          {/* Settings View */}
+          <SettingsView
+            settings={settings}
+            setSettings={(s: any) => setSettings(s)}
+            biometricsSupported={bioAvailable}
+            onDataChange={async () => {
+              const entries = await VaultService.getEntries();
+              setPasswords(entries);
+            }}
+          />
+        </MobilePageSlider>
       ) : (
         <div className="max-w-7xl mx-auto w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
           {renderView()}

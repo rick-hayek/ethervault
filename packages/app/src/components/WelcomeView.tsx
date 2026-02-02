@@ -46,7 +46,9 @@ export const WelcomeView: React.FC<WelcomeViewProps> = ({ onComplete, biometrics
         {/* Progress Bar - Reduced margin */}
         <div className="flex gap-2 mb-6 md:mb-8">
           <div className={`h-1 flex-1 rounded-full transition-all duration-700 ${step >= 1 ? 'bg-slate-900 dark:bg-white' : 'bg-slate-200 dark:bg-slate-800'}`} />
-          <div className={`h-1 flex-1 rounded-full transition-all duration-700 ${step >= 2 ? 'bg-slate-900 dark:bg-white' : 'bg-slate-200 dark:bg-slate-800'}`} />
+          {biometricsSupported && (
+            <div className={`h-1 flex-1 rounded-full transition-all duration-700 ${step >= 2 ? 'bg-slate-900 dark:bg-white' : 'bg-slate-200 dark:bg-slate-800'}`} />
+          )}
         </div>
 
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-10 shadow-xl animate-in fade-in zoom-in-95 duration-500">
@@ -131,7 +133,7 @@ export const WelcomeView: React.FC<WelcomeViewProps> = ({ onComplete, biometrics
             onClick={handleNext}
             className="w-full mt-6 md:mt-10 flex items-center justify-center gap-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-3.5 md:py-4 rounded-xl md:rounded-2xl font-bold text-sm md:text-base shadow-xl transition-all active:scale-[0.98] hover:opacity-90"
           >
-            {step === 1 ? t('welcome.next') : t('welcome.start')}
+            {(step === 1 && biometricsSupported) ? t('welcome.next') : t('welcome.start')}
             <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
           </button>
         </div>
