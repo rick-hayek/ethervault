@@ -77,9 +77,62 @@ jobs:
             packages/electron/dist_electron/*.blockmap
           if-no-files-found: error
 
+  build-android:
+    name: Build Android
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.ANDROID_SIGNING_KEY }}" | base64 -d > android-release.jks
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Web Assets
+        env:
+          VITE_GOOGLE_CLIENT_ID: ${{ secrets.VITE_GOOGLE_CLIENT_ID }}
+          VITE_GOOGLE_CLIENT_ID_IOS: ${{ secrets.VITE_GOOGLE_CLIENT_ID_IOS }}
+          VITE_CONTACT_EMAIL: ${{ secrets.VITE_CONTACT_EMAIL }}
+        run: npm run build
+
+      - name: Sync Capacitor
+        run: npx cap sync android
+        working-directory: packages/app
+
+      - name: Build Signed APK
+        run: |
+          cd packages/app/android
+          ./gradlew assembleRelease \
+            -Pandroid.injected.signing.store.file=${{ github.workspace }}/android-release.jks \
+            -Pandroid.injected.signing.store.password=${{ secrets.ANDROID_KEY_STORE_PASSWORD }} \
+            -Pandroid.injected.signing.key.alias=${{ secrets.ANDROID_ALIAS }} \
+            -Pandroid.injected.signing.key.password=${{ secrets.ANDROID_KEY_PASSWORD }}
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-android
+          path: packages/app/android/app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+
   release:
     name: Publish Release
-    needs: build
+    needs: [build, build-android]
     runs-on: ubuntu-latest
     
     steps:
