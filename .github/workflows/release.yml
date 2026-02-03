@@ -5,15 +5,18 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
-  release:
+  build:
+    name: Build ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-    permissions:
-      contents: write
-      
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -34,58 +37,74 @@ jobs:
           VITE_CONTACT_EMAIL: ${{ secrets.VITE_CONTACT_EMAIL }}
         run: npm run build
 
-      - name: Build and Release Base
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          cd packages/electron
-          npm run build
-
-      - name: Release macOS
+      - name: Build Electron (macOS)
         if: matrix.os == 'macos-latest'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd packages/electron
-          npx electron-builder --mac --x64 --arm64 --publish always
+          npm run build
+          npx electron-builder --mac --x64 --arm64 -p never
 
-      - name: Release Windows
+      - name: Build Electron (Windows)
         if: matrix.os == 'windows-latest'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd packages/electron
-          npx electron-builder --win --x64 --publish always
+          npm run build
+          npx electron-builder --win --x64 -p never
 
-      - name: Release Linux
+      - name: Build Electron (Linux)
         if: matrix.os == 'ubuntu-latest'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd packages/electron
-          npx electron-builder --linux --x64 --publish always -c.linux.target=AppImage
+          npm run build
+          npx electron-builder --linux --x64 -p never -c.linux.target=AppImage
 
-      - name: Generate Checksums (Unix)
-        if: matrix.os != 'windows-latest'
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: artifacts-${{ matrix.os }}
+          path: |
+            packages/electron/dist_electron/*.dmg
+            packages/electron/dist_electron/*.zip
+            packages/electron/dist_electron/*.exe
+            packages/electron/dist_electron/*.AppImage
+            packages/electron/dist_electron/*.yml
+            packages/electron/dist_electron/*.blockmap
+          if-no-files-found: error
+
+  release:
+    name: Publish Release
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download All Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: release-artifacts
+          merge-multiple: true
+
+      - name: Generate Checksums
         run: |
-          cd packages/electron/dist_electron
-          shasum -a 256 *.{dmg,zip,AppImage,deb,snap,rpm,exe,blockmap} 2>/dev/null > checksums.txt || true
-          echo "Checksums generated:"
+          cd release-artifacts
+          sha256sum * > checksums.txt
           cat checksums.txt
 
-      - name: Generate Checksums (Windows)
-        if: matrix.os == 'windows-latest'
-        run: |
-          cd packages/electron/dist_electron
-          Get-FileHash * -Algorithm SHA256 | Format-List
-        shell: powershell
-
-      - name: Upload Linux Checksums
-        if: matrix.os == 'ubuntu-latest'
+      - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: packages/electron/dist_electron/*.AppImage
-
-      # Note: Automatic checksum aggregation across matrix jobs is complex. 
-      # For now, we rely on GitHub Release to hold the artifacts.
-      # User can verify individual files if needed.
+          files: |
+            release-artifacts/*
+          draft: false
+          prerelease: false
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
