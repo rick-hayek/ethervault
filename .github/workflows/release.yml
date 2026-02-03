@@ -63,7 +63,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd packages/electron
-          npx electron-builder --linux --x64 --publish always
+          npx electron-builder --linux --x64 --publish always -c.linux.target=AppImage
 
       - name: Generate Checksums (Unix)
         if: matrix.os != 'windows-latest'
