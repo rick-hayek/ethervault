@@ -1,43 +1,69 @@
+import { ICryptoService, IStorageService, IVaultService } from './interfaces';
 import { CryptoService } from './CryptoService';
 import { StorageService } from './StorageService';
-import { VaultService } from './VaultService';
 
-export class AuthService {
-    private static masterKey: Uint8Array | null = null;
-    private static isAuthenticated: boolean = false;
+/**
+ * AuthService implementation with dependency injection.
+ * Use `authService` singleton for production, or create instances with mocks for testing.
+ */
+export class AuthServiceImpl {
+    private masterKey: Uint8Array | null = null;
+    private isAuthenticated: boolean = false;
+    private sodium: any = null;
+    private vaultServiceGetter?: () => IVaultService;
 
-    static async setupAccount(password: string): Promise<void> {
-        const salt = CryptoService.generateSalt();
-        const derivedKey = await CryptoService.deriveKey(password, salt);
+    constructor(
+        private cryptoService: ICryptoService,
+        private storageService: IStorageService,
+        vaultService?: IVaultService | (() => IVaultService)
+    ) {
+        // Support lazy loading to avoid circular dependency
+        if (typeof vaultService === 'function') {
+            this.vaultServiceGetter = vaultService;
+        } else if (vaultService) {
+            this.vaultServiceGetter = () => vaultService;
+        }
+    }
+
+    private getVaultService(): IVaultService {
+        if (!this.vaultServiceGetter) {
+            throw new Error('VaultService not configured');
+        }
+        return this.vaultServiceGetter();
+    }
+
+    async setupAccount(password: string): Promise<void> {
+        const salt = this.cryptoService.generateSalt();
+        const derivedKey = await this.cryptoService.deriveKey(password, salt);
 
         // Store salt
-        await StorageService.setItem('metadata', 'salt', salt);
-        await StorageService.setItem('metadata', 'setup_complete', true);
+        await this.storageService.setItem('metadata', 'salt', salt);
+        await this.storageService.setItem('metadata', 'setup_complete', true);
 
         // Create Verifier (Encrypted string "VALID")
-        const { ciphertext, nonce } = CryptoService.encrypt('VALID', derivedKey);
-        await StorageService.setItem('metadata', 'auth_verifier', { payload: ciphertext, nonce });
+        const { ciphertext, nonce } = this.cryptoService.encrypt('VALID', derivedKey);
+        await this.storageService.setItem('metadata', 'auth_verifier', { payload: ciphertext, nonce });
 
         this.masterKey = derivedKey;
         this.isAuthenticated = true;
     }
 
-    static async setSalt(salt: Uint8Array): Promise<void> {
-        await StorageService.setItem('metadata', 'salt', salt);
+    async setSalt(salt: Uint8Array): Promise<void> {
+        await this.storageService.setItem('metadata', 'salt', salt);
     }
 
-    static async authenticate(password: string): Promise<boolean> {
+    async authenticate(password: string): Promise<boolean> {
         try {
-            const salt = await StorageService.getItem('metadata', 'salt');
+            const salt = await this.storageService.getItem('metadata', 'salt');
             if (!salt) return false;
 
-            const derivedKey = await CryptoService.deriveKey(password, salt);
+            const derivedKey = await this.cryptoService.deriveKey(password, salt);
 
             // 1. Check for Verifier (New Standard)
-            const verifier = await StorageService.getItem('metadata', 'auth_verifier');
+            const verifier = await this.storageService.getItem('metadata', 'auth_verifier');
             if (verifier && verifier.payload && verifier.nonce) {
                 try {
-                    const decrypted = CryptoService.decrypt(verifier.payload, verifier.nonce, derivedKey);
+                    const decrypted = this.cryptoService.decrypt(verifier.payload, verifier.nonce, derivedKey);
                     if (decrypted === 'VALID') {
                         this.masterKey = derivedKey;
                         this.isAuthenticated = true;
@@ -52,14 +78,14 @@ export class AuthService {
 
             // 2. Legacy Fallback (Check against actual Vault Data)
             // If no verifier exists, check if we can decrypt a vault item
-            const vaultItems = await StorageService.getAll('vault');
+            const vaultItems = await this.storageService.getAll('vault');
             if (vaultItems.length > 0) {
                 const testItem = vaultItems[0];
                 try {
-                    CryptoService.decrypt(testItem.payload, testItem.nonce, derivedKey);
+                    this.cryptoService.decrypt(testItem.payload, testItem.nonce, derivedKey);
                     // Success! Migrate to Verifier for future O(1) checks
-                    const { ciphertext, nonce } = CryptoService.encrypt('VALID', derivedKey);
-                    await StorageService.setItem('metadata', 'auth_verifier', { payload: ciphertext, nonce });
+                    const { ciphertext, nonce } = this.cryptoService.encrypt('VALID', derivedKey);
+                    await this.storageService.setItem('metadata', 'auth_verifier', { payload: ciphertext, nonce });
 
                     this.masterKey = derivedKey;
                     this.isAuthenticated = true;
@@ -81,35 +107,35 @@ export class AuthService {
         }
     }
 
-    static async isAccountSetup(): Promise<boolean> {
-        return !!(await StorageService.getItem('metadata', 'setup_complete'));
+    async isAccountSetup(): Promise<boolean> {
+        return !!(await this.storageService.getItem('metadata', 'setup_complete'));
     }
 
-    static lock() {
+    lock() {
         this.masterKey = null;
         this.isAuthenticated = false;
     }
 
-    static getMasterKey(): Uint8Array {
+    getMasterKey(): Uint8Array {
         if (!this.masterKey || !this.isAuthenticated) {
             throw new Error('Vault is locked');
         }
         return this.masterKey;
     }
 
-    static checkAuth(): boolean {
+    checkAuth(): boolean {
         return this.isAuthenticated;
     }
 
-    static async verifyPassword(password: string): Promise<boolean> {
+    async verifyPassword(password: string): Promise<boolean> {
         // 1. If already authenticated, check against in-memory key (Secure & Correct)
         if (this.isAuthenticated && this.masterKey) {
             try {
                 const sodium = await this.getSodium();
-                const salt = await StorageService.getItem('metadata', 'salt');
+                const salt = await this.storageService.getItem('metadata', 'salt');
                 if (!salt) return false;
 
-                const checkKey = await CryptoService.deriveKey(password, salt);
+                const checkKey = await this.cryptoService.deriveKey(password, salt);
                 return sodium.memcmp(checkKey, this.masterKey);
             } catch (e) {
                 console.error('Password verification error:', e);
@@ -122,39 +148,38 @@ export class AuthService {
         return this.authenticate(password);
     }
 
-    static async changeMasterPassword(oldPassword: string, newPassword: string): Promise<boolean> {
+    async changeMasterPassword(oldPassword: string, newPassword: string): Promise<boolean> {
         const sodium = await this.getSodium();
         // 1. Verify old password
-        const salt = await StorageService.getItem('metadata', 'salt');
+        const salt = await this.storageService.getItem('metadata', 'salt');
         if (!salt) throw new Error('Account not set up');
 
-        const currentKey = await CryptoService.deriveKey(oldPassword, salt);
+        const currentKey = await this.cryptoService.deriveKey(oldPassword, salt);
         // Compare against in-memory key
         if (this.masterKey && !sodium.memcmp(currentKey, this.masterKey)) {
             return false;
         }
 
         // 2. Derive new key with new salt
-        const newSalt = CryptoService.generateSalt();
-        const newKey = await CryptoService.deriveKey(newPassword, newSalt);
+        const newSalt = this.cryptoService.generateSalt();
+        const newKey = await this.cryptoService.deriveKey(newPassword, newSalt);
 
         // 3. Re-encrypt all entries
-        await VaultService.reencryptVault(newKey);
+        await this.getVaultService().reencryptVault(newKey);
 
         // 4. Update metadata
-        await StorageService.setItem('metadata', 'salt', newSalt);
+        await this.storageService.setItem('metadata', 'salt', newSalt);
 
         // FIX: Update Verifier with new key
-        const { ciphertext, nonce } = CryptoService.encrypt('VALID', newKey);
-        await StorageService.setItem('metadata', 'auth_verifier', { payload: ciphertext, nonce });
+        const { ciphertext, nonce } = this.cryptoService.encrypt('VALID', newKey);
+        await this.storageService.setItem('metadata', 'auth_verifier', { payload: ciphertext, nonce });
 
         // 5. Update session
         this.masterKey = newKey;
         return true;
     }
 
-    private static sodium: any = null;
-    private static async getSodium() {
+    private async getSodium() {
         if (!this.sodium) {
             const _sodium = (await import('libsodium-wrappers-sumo')).default;
             await _sodium.ready;
@@ -170,7 +195,7 @@ export class AuthService {
      * IMPORTANT: Both salt AND verifier are required. Without a verifier,
      * the user cannot authenticate after salt import.
      */
-    static async importCloudCredentials(saltB64: string, verifierJson: string): Promise<void> {
+    async importCloudCredentials(saltB64: string, verifierJson: string): Promise<void> {
         // Validate verifier is present and valid
         if (!verifierJson || !verifierJson.trim()) {
             throw new Error('MISSING_VERIFIER: Cloud vault has no password verifier. Cannot sync without it.');
@@ -190,8 +215,8 @@ export class AuthService {
         const saltBytes = Uint8Array.from(atob(saltB64), c => c.charCodeAt(0));
 
         // Store both salt and verifier atomically
-        await StorageService.setItem('metadata', 'salt', saltBytes);
-        await StorageService.setItem('metadata', 'auth_verifier', verifier);
+        await this.storageService.setItem('metadata', 'salt', saltBytes);
+        await this.storageService.setItem('metadata', 'auth_verifier', verifier);
 
         // Clear current auth state (force re-login)
         this.masterKey = null;
@@ -203,16 +228,16 @@ export class AuthService {
     /**
      * Derive a key using a specific salt (for decrypting cloud data with cloud password).
      */
-    static async deriveKeyWithSalt(password: string, saltB64: string): Promise<Uint8Array> {
+    async deriveKeyWithSalt(password: string, saltB64: string): Promise<Uint8Array> {
         const saltBytes = Uint8Array.from(atob(saltB64), c => c.charCodeAt(0));
-        return CryptoService.deriveKey(password, saltBytes);
+        return this.cryptoService.deriveKey(password, saltBytes);
     }
 
     /**
      * Get the current salt as base64 string
      */
-    static async getSaltBase64(): Promise<string | null> {
-        const salt = await StorageService.getItem('metadata', 'salt');
+    async getSaltBase64(): Promise<string | null> {
+        const salt = await this.storageService.getItem('metadata', 'salt');
         if (!salt) return null;
 
         let saltArr = salt;
@@ -226,9 +251,104 @@ export class AuthService {
     /**
      * Get the current verifier as JSON string
      */
-    static async getVerifierJson(): Promise<string | null> {
-        const verifier = await StorageService.getItem('metadata', 'auth_verifier');
+    async getVerifierJson(): Promise<string | null> {
+        const verifier = await this.storageService.getItem('metadata', 'auth_verifier');
         if (!verifier) return null;
         return JSON.stringify(verifier);
+    }
+}
+
+// ============================================================================
+// Singleton instance for production use
+// ============================================================================
+
+let _authServiceInstance: AuthServiceImpl | null = null;
+
+/**
+ * Get the singleton AuthService instance.
+ * Uses lazy initialization to allow VaultService to be loaded first.
+ */
+export function getAuthService(): AuthServiceImpl {
+    if (!_authServiceInstance) {
+        // Lazy load VaultService to avoid circular dependency
+        const vaultServiceGetter = () => {
+            const { VaultService } = require('./VaultService');
+            return VaultService;
+        };
+        _authServiceInstance = new AuthServiceImpl(
+            CryptoService,
+            StorageService,
+            vaultServiceGetter
+        );
+    }
+    return _authServiceInstance;
+}
+
+/**
+ * Reset the singleton instance (useful for testing).
+ */
+export function resetAuthService(): void {
+    _authServiceInstance = null;
+}
+
+// ============================================================================
+// Backward compatible static class facade
+// ============================================================================
+
+/**
+ * @deprecated Use `getAuthService()` or inject `AuthServiceImpl` for better testability.
+ * This static class is maintained for backward compatibility.
+ */
+export class AuthService {
+    static async setupAccount(password: string): Promise<void> {
+        return getAuthService().setupAccount(password);
+    }
+
+    static async setSalt(salt: Uint8Array): Promise<void> {
+        return getAuthService().setSalt(salt);
+    }
+
+    static async authenticate(password: string): Promise<boolean> {
+        return getAuthService().authenticate(password);
+    }
+
+    static async isAccountSetup(): Promise<boolean> {
+        return getAuthService().isAccountSetup();
+    }
+
+    static lock(): void {
+        return getAuthService().lock();
+    }
+
+    static getMasterKey(): Uint8Array {
+        return getAuthService().getMasterKey();
+    }
+
+    static checkAuth(): boolean {
+        return getAuthService().checkAuth();
+    }
+
+    static async verifyPassword(password: string): Promise<boolean> {
+        return getAuthService().verifyPassword(password);
+    }
+
+    static async changeMasterPassword(oldPassword: string, newPassword: string): Promise<boolean> {
+        return getAuthService().changeMasterPassword(oldPassword, newPassword);
+    }
+
+    static async importCloudCredentials(saltB64: string, verifierJson: string): Promise<void> {
+        return getAuthService().importCloudCredentials(saltB64, verifierJson);
+    }
+
+    static async deriveKeyWithSalt(password: string, saltB64: string): Promise<Uint8Array> {
+        return getAuthService().deriveKeyWithSalt(password, saltB64);
+    }
+
+    static async getSaltBase64(): Promise<string | null> {
+        return getAuthService().getSaltBase64();
+    }
+
+    static async getVerifierJson(): Promise<string | null> {
+        return getAuthService().getVerifierJson();
     }
 }
