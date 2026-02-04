@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, ChevronLeft, X, Globe, User as UserIcon, Copy, Trash2, ChevronDown, Phone, Mail, MessageSquare } from 'lucide-react';
+import { Lock, ChevronLeft, X, Globe, User as UserIcon, Copy, Trash2, ChevronDown, Phone, Mail, MessageSquare, Eye, EyeOff } from 'lucide-react';
 import { PasswordEntry, SecurityService, Category } from '@ethervault/core';
 import { useTranslation } from 'react-i18next';
 import { CATEGORIES } from '../constants';
@@ -30,6 +30,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
         }
     );
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
     const [showAdditionalFields, setShowAdditionalFields] = useState(
         // Auto-expand if any additional field has content
         !!(entry?.recoveryPhone || entry?.recoveryEmail || entry?.note)
@@ -144,7 +145,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                                 <input
-                                    type="text"
+                                    type={showPassword ? "text" : "password"}
                                     required
                                     value={formData.password}
                                     onChange={e => {
@@ -153,19 +154,28 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                             setFormData({ ...formData, password: val });
                                         }
                                     }}
-                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-12 outline-none focus:border-indigo-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-mono shadow-sm"
+                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-20 outline-none focus:border-indigo-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-mono shadow-sm"
                                     placeholder={t('vault.entry.password_placeholder')}
                                 />
-                                <button
-                                    type="button"
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(formData.password || '');
-                                    }}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-indigo-500 transition-colors"
-                                    title={t('common.copy')}
-                                >
-                                    <Copy className="w-4 h-4" />
-                                </button>
+                                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                        className="p-1.5 text-slate-400 hover:text-indigo-500 transition-colors"
+                                    >
+                                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => {
+                                            navigator.clipboard.writeText(formData.password || '');
+                                        }}
+                                        className="p-1.5 text-slate-400 hover:text-indigo-500 transition-colors"
+                                        title={t('common.copy')}
+                                    >
+                                        <Copy className="w-4 h-4" />
+                                    </button>
+                                </div>
                             </div>
                         </div>
 

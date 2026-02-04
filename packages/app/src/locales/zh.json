@@ -14,7 +14,11 @@
         "cancel": "取消",
         "confirm_delete": "删除",
         "copy": "复制",
-        "copied": "已复制"
+        "copied": "已复制",
+        "processing": "处理中...",
+        "confirm": "确认",
+        "back": "返回",
+        "recommended": "推荐"
     },
     "vault": {
         "title": "您的密码库",
@@ -70,7 +74,6 @@
         "import": "导入",
         "sync_provider": "同步提供商",
         "updating": "更新中...",
-        "force_sync": "强制同步",
         "cloud": {
             "reconnect": "恢复连接",
             "paused": "已暂停",
@@ -268,7 +271,19 @@
             "password_required": "切换前需要云端密码进行验证。"
         },
         "conflict": {
-            "cloud_password_placeholder": "云端主密码"
+            "title": "检测到同步冲突",
+            "description": "您的本地密码库使用的加密密钥与云端不同。",
+            "local_count": "本地：{{count}} 条记录",
+            "merge": "合并密码库",
+            "merge_desc": "合并两个密码库。需要您的云端密码。",
+            "use_cloud": "仅使用云端",
+            "use_cloud_desc": "清除本地数据。永久使用云端密码。",
+            "use_local": "仅使用本地",
+            "use_local_desc": "覆盖云端数据。保留本地密码。",
+            "enter_cloud_password": "输入您的云端密码以解密并合并条目：",
+            "cloud_password_placeholder": "云端主密码",
+            "merging": "合并中...",
+            "merge_now": "立即合并"
         }
     },
     "biometric_prompt": {

@@ -47,7 +47,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin, bioEnabled }) => 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4 relative overflow-hidden titlebar">
       <div className="max-w-md w-full relative z-10 text-center no-drag">
-        <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-900 dark:bg-white rounded-2xl md:rounded-3xl shadow-2xl flex items-center justify-center mx-auto mb-6 md:mb-8 transform -rotate-3 transition-transform duration-500">
+        <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-900 dark:bg-white rounded-2xl md:rounded-3xl shadow-2xl flex items-center justify-center mx-auto mb-6 md:mb-8 transition-transform duration-500">
           <ShieldCheck className="w-8 h-8 md:w-10 md:h-10 text-white dark:text-slate-900" />
         </div>
 

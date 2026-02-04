@@ -14,7 +14,11 @@
         "cancel": "Cancel",
         "confirm_delete": "Delete",
         "copy": "Copy",
-        "copied": "Copied"
+        "copied": "Copied",
+        "processing": "Processing...",
+        "confirm": "Confirm",
+        "back": "Back",
+        "recommended": "RECOMMENDED"
     },
     "vault": {
         "title": "Your Vault",
@@ -69,8 +73,7 @@
         "data_management": "Data Management",
         "import": "Import",
         "sync_provider": "Sync Provider",
-        "updating": "UPDATING...",
-        "force_sync": "FORCE SYNC",
+        "updating": "Updating...",
         "cloud": {
             "reconnect": "Resume Connection",
             "paused": "Paused",
@@ -268,7 +271,19 @@
             "password_required": "Cloud password is required to verify access before switching."
         },
         "conflict": {
-            "cloud_password_placeholder": "Cloud Master Password"
+            "title": "Sync Conflict Detected",
+            "description": "Your local vault uses a different encryption key than the cloud vault.",
+            "local_count": "Local: {{count}} entries",
+            "merge": "Merge Vaults",
+            "merge_desc": "Combine both vaults. Requires your CLOUD password.",
+            "use_cloud": "Use Cloud Only",
+            "use_cloud_desc": "Clear local data. Use CLOUD password permanently.",
+            "use_local": "Use Local",
+            "use_local_desc": "Overwrite cloud. Keep LOCAL password.",
+            "enter_cloud_password": "Enter your CLOUD password to decrypt and merge entries:",
+            "cloud_password_placeholder": "Cloud Master Password",
+            "merging": "Merging...",
+            "merge_now": "Merge Now"
         }
     },
     "biometric_prompt": {
