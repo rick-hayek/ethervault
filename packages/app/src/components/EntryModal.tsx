@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, ChevronLeft, X, Globe, User as UserIcon, Copy, Trash2 } from 'lucide-react';
+import { Lock, ChevronLeft, X, Globe, User as UserIcon, Copy, Trash2, ChevronDown, Phone, Mail, MessageSquare } from 'lucide-react';
 import { PasswordEntry, SecurityService, Category } from '@ethervault/core';
 import { useTranslation } from 'react-i18next';
 import { CATEGORIES } from '../constants';
@@ -23,10 +23,17 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
             category: 'All',
             tags: [],
             strength: 'Medium',
-            lastUpdated: t('vault.just_now', 'Just now')
+            lastUpdated: t('vault.just_now', 'Just now'),
+            recoveryPhone: '',
+            recoveryEmail: '',
+            note: ''
         }
     );
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+    const [showAdditionalFields, setShowAdditionalFields] = useState(
+        // Auto-expand if any additional field has content
+        !!(entry?.recoveryPhone || entry?.recoveryEmail || entry?.note)
+    );
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -159,6 +166,75 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                 >
                                     <Copy className="w-4 h-4" />
                                 </button>
+                            </div>
+                        </div>
+
+                        {/* Collapsible Additional Fields Section */}
+                        <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+                            <button
+                                type="button"
+                                onClick={() => setShowAdditionalFields(!showAdditionalFields)}
+                                className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
+                            >
+                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                    {t('vault.entry.additional_info', 'Additional Information')}
+                                </span>
+                                <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${showAdditionalFields ? 'rotate-180' : ''}`} />
+                            </button>
+
+                            <div className={`overflow-hidden transition-all duration-300 ease-in-out ${showAdditionalFields ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                                <div className="p-4 space-y-4 bg-slate-50/50 dark:bg-slate-950/50">
+                                    {/* Recovery Phone */}
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">
+                                            {t('vault.entry.recovery_phone', 'Recovery Phone')}
+                                        </label>
+                                        <div className="relative">
+                                            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                            <input
+                                                type="tel"
+                                                value={formData.recoveryPhone || ''}
+                                                onChange={e => setFormData({ ...formData, recoveryPhone: e.target.value })}
+                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-indigo-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
+                                                placeholder={t('vault.entry.recovery_phone_placeholder', '+1 234 567 8900')}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Recovery Email */}
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">
+                                            {t('vault.entry.recovery_email', 'Recovery Email')}
+                                        </label>
+                                        <div className="relative">
+                                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                            <input
+                                                type="email"
+                                                value={formData.recoveryEmail || ''}
+                                                onChange={e => setFormData({ ...formData, recoveryEmail: e.target.value })}
+                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-indigo-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
+                                                placeholder={t('vault.entry.recovery_email_placeholder', 'backup@email.com')}
+                                            />
+                                        </div>
+                                    </div>
+
+                                    {/* Note */}
+                                    <div className="space-y-2">
+                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">
+                                            {t('vault.entry.note', 'Note')}
+                                        </label>
+                                        <div className="relative">
+                                            <MessageSquare className="absolute left-4 top-3.5 w-4 h-4 text-slate-400" />
+                                            <textarea
+                                                value={formData.note || ''}
+                                                onChange={e => setFormData({ ...formData, note: e.target.value })}
+                                                rows={3}
+                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-indigo-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm resize-none"
+                                                placeholder={t('vault.entry.note_placeholder', 'Add notes or comments...')}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 

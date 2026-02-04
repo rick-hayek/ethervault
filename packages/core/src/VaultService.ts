@@ -73,7 +73,10 @@ export class VaultServiceImpl implements IVaultService {
             url: newEntry.url,
             notes: newEntry.notes,
             category: newEntry.category,
-            tags: newEntry.tags
+            tags: newEntry.tags,
+            recoveryPhone: newEntry.recoveryPhone,
+            recoveryEmail: newEntry.recoveryEmail,
+            note: newEntry.note
         };
 
         const { ciphertext, nonce } = this.cryptoService.encrypt(JSON.stringify(sensitiveFields), key);
@@ -118,7 +121,10 @@ export class VaultServiceImpl implements IVaultService {
             url: updated.url,
             notes: updated.notes,
             category: updated.category,
-            tags: updated.tags
+            tags: updated.tags,
+            recoveryPhone: updated.recoveryPhone,
+            recoveryEmail: updated.recoveryEmail,
+            note: updated.note
         };
 
         const { ciphertext, nonce } = this.cryptoService.encrypt(JSON.stringify(sensitiveFields), key);
@@ -179,7 +185,10 @@ export class VaultServiceImpl implements IVaultService {
                 url: entry.url,
                 notes: entry.notes,
                 category: entry.category,
-                tags: entry.tags
+                tags: entry.tags,
+                recoveryPhone: entry.recoveryPhone,
+                recoveryEmail: entry.recoveryEmail,
+                note: entry.note
             };
 
             const { ciphertext, nonce } = this.cryptoService.encrypt(JSON.stringify(sensitiveFields), newKey);

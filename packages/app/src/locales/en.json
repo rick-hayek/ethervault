@@ -47,14 +47,21 @@
             "title_placeholder": "Google, Netflix...",
             "website_placeholder": "example.com",
             "username_placeholder": "username or email",
-            "password_placeholder": "Enter password"
+            "password_placeholder": "Enter password",
+            "additional_info": "Additional Information",
+            "recovery_phone": "Recovery Phone",
+            "recovery_phone_placeholder": "+1 234 567 8900",
+            "recovery_email": "Recovery Email",
+            "recovery_email_placeholder": "backup@email.com",
+            "note": "Note",
+            "note_placeholder": "Add notes or comments..."
         }
     },
     "category": {
-        "all": "ALL",
-        "personal": "PERSONAL",
-        "work": "WORK",
-        "others": "OTHERS"
+        "all": "All",
+        "personal": "Personal",
+        "work": "Work",
+        "others": "Others"
     },
     "settings": {
         "title": "Settings",

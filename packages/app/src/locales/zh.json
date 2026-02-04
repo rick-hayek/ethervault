@@ -47,7 +47,14 @@
             "title_placeholder": "Google, Netflix...",
             "website_placeholder": "example.com",
             "username_placeholder": "用户名或邮箱",
-            "password_placeholder": "输入密码"
+            "password_placeholder": "输入密码",
+            "additional_info": "附加信息",
+            "recovery_phone": "备用电话",
+            "recovery_phone_placeholder": "+86 138 0000 0000",
+            "recovery_email": "备用邮箱",
+            "recovery_email_placeholder": "backup@email.com",
+            "note": "备注",
+            "note_placeholder": "添加备注或说明..."
         }
     },
     "category": {

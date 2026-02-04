@@ -15,6 +15,10 @@ export interface PasswordEntry {
     updatedAt: number;
     favorite: boolean;
     icon?: string;
+    // Recovery and additional info
+    recoveryPhone?: string;
+    recoveryEmail?: string;
+    note?: string;
 }
 
 export type Category = 'All' | 'Personal' | 'Work' | 'Others';
