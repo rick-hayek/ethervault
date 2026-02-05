@@ -32,6 +32,7 @@ import { ExportModal } from './ExportModal';
 import { SyncWarningModal } from './SyncWarningModal';
 import { SyncConflictModal, ConflictResolution } from './SyncConflictModal';
 import { AboutModal } from './AboutModal';
+import { PrivacyModal } from './PrivacyModal';
 import { useAlert } from '../hooks/useAlert';
 import { useBackHandler } from '../hooks/useBackHandler';
 import { MobileFileService } from '../utils/MobileFileService';
@@ -51,6 +52,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
+  const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
 
 
   // Sync Warning State
@@ -142,6 +144,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     if (isImportModalOpen) { setIsImportModalOpen(false); return true; }
     if (isSyncWarningModalOpen) { setIsSyncWarningModalOpen(false); return true; }
     if (isConflictModalOpen) { setIsConflictModalOpen(false); return true; }
+    if (isPrivacyModalOpen) { setIsPrivacyModalOpen(false); return true; }
     return false;
   }, true); // Enabled by default
 
@@ -1021,6 +1024,25 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                 </p>
               )}
             </div>
+            {/* Privacy Section */}
+            <button
+              onClick={() => setIsPrivacyModalOpen(true)}
+              className="w-full py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[24px] flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group shadow-sm mb-3"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-900/10 flex items-center justify-center text-emerald-500 group-hover:text-emerald-600 transition-colors">
+                  <Shield className="w-5 h-5" />
+                </div>
+                <div className="text-left">
+                  <h3 className="text-xs font-black tracking-widest text-slate-700 dark:text-slate-200">{t('about.privacy_title', 'Privacy & Security')}</h3>
+                  <p className="text-[10px] font-bold text-slate-400 group-hover:text-slate-500 dark:group-hover:text-slate-400 transition-colors mt-0.5">{t('privacy_view.title', 'Privacy Policy')}</p>
+                </div>
+              </div>
+              <div className="text-slate-300 dark:text-slate-700 group-hover:translate-x-1 transition-transform">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+              </div>
+            </button>
+
             {/* About Section */}
             <button
               onClick={() => setIsAboutModalOpen(true)}
@@ -1323,6 +1345,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
       </div>
 
       <AboutModal isOpen={isAboutModalOpen} onClose={() => setIsAboutModalOpen(false)} appVersion={appVersion} />
+      <PrivacyModal isOpen={isPrivacyModalOpen} onClose={() => setIsPrivacyModalOpen(false)} />
 
       {isCacheConfirmOpen && (
         <Portal>

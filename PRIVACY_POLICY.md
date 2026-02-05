@@ -41,7 +41,7 @@ To improve the user experience, EtherVault may automatically fetch icons (favico
 The App requests the following permissions for specific functions:
 
 *   **Network/Internet Access**: Required for Cloud Synchronization and fetching website icons.
-*   **Biometric Hardware**: Required to enable FaceID/TouchID unlock.
+*   **Biometric Hardware**: Required to enable Fingerprint/FaceID/TouchID unlock.
 *   **Storage/File System**: Required to store your encrypted vault files locally and for Import/Export functionality.
 
 ## 6. Logs & Analytics
