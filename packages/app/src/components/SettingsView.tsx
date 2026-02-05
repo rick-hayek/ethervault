@@ -944,7 +944,17 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   setSettings({ ...settings, theme: next });
                 }}
               />
-              <CompactSetting icon={Languages} label={t('settings.option.language')} value={i18n.language === 'zh' ? '中文' : 'ENGLISH'} type="value" onClick={() => i18n.changeLanguage(i18n.language === 'zh' ? 'en' : 'zh')} />
+              <CompactSetting
+                icon={Languages}
+                label={t('settings.option.language')}
+                value={i18n.language === 'zh' ? '中文' : (i18n.language === 'ja' ? '日本語' : 'ENGLISH')}
+                type="value"
+                onClick={() => {
+                  const current = i18n.language;
+                  const next = current === 'en' ? 'zh' : (current === 'zh' ? 'ja' : 'en');
+                  i18n.changeLanguage(next);
+                }}
+              />
 
               {/* Master Log Settings */}
               <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">

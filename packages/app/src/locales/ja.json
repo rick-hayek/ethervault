@@ -1,0 +1,369 @@
+{
+    "layout": {
+        "nav": {
+            "vault": "保管庫",
+            "security": "セキュリティ",
+            "generator": "作成",
+            "settings": "設定"
+        },
+        "appearance": "外観",
+        "lock_vault": "保管庫をロック",
+        "search_placeholder": "検索..."
+    },
+    "common": {
+        "cancel": "キャンセル",
+        "confirm_delete": "削除",
+        "copy": "コピー",
+        "copied": "コピーしました",
+        "processing": "処理中...",
+        "confirm": "確認",
+        "back": "戻る",
+        "recommended": "推奨"
+    },
+    "vault": {
+        "title": "マイボールト",
+        "subtitle": "業界標準のセキュリティでパスワードを管理",
+        "add": "認証情報を追加",
+        "sync_prompt": {
+            "title": "デバイス間でボールトを同期",
+            "description": "クラウドストレージに接続して、どこからでもパスワードにアクセス。",
+            "action": "同期を設定"
+        },
+        "strength": {
+            "Secure": "安全",
+            "Strong": "強力",
+            "Medium": "中程度",
+            "Weak": "弱い"
+        },
+        "just_now": "たった今",
+        "search": "検索...",
+        "update": "更新",
+        "save": "保存",
+        "edit_credential": "認証情報を編集",
+        "new_credential": "新しい認証情報",
+        "entry": {
+            "username": "ユーザー名",
+            "title": "タイトル",
+            "category": "カテゴリ",
+            "website": "ウェブサイトURL",
+            "username_email": "ユーザー名 / メール",
+            "password": "パスワード",
+            "title_placeholder": "Google, Netflixなど",
+            "website_placeholder": "example.com",
+            "username_placeholder": "ユーザー名またはメール",
+            "password_placeholder": "パスワードを入力",
+            "additional_info": "追加情報",
+            "recovery_phone": "復旧用電話番号",
+            "recovery_phone_placeholder": "+81 90 1234 5678",
+            "recovery_email": "復旧用メール",
+            "recovery_email_placeholder": "backup@email.com",
+            "note": "メモ",
+            "note_placeholder": "メモやコメントを追加..."
+        }
+    },
+    "category": {
+        "all": "すべて",
+        "personal": "個人",
+        "work": "仕事",
+        "others": "その他"
+    },
+    "settings": {
+        "title": "設定",
+        "subtitle": "セキュリティと同期の設定を管理",
+        "data_management": "データ管理",
+        "import": "インポート",
+        "sync_provider": "同期プロバイダー",
+        "updating": "更新中...",
+        "cloud": {
+            "reconnect": "接続を再開",
+            "paused": "一時停止中",
+            "connected": "接続済み",
+            "connected_desc": "ボールトは {{provider}} と安全に同期されています。",
+            "connect_desc": "{{provider}} に接続して、自動クラウドバックアップと同期を有効にします。",
+            "last_synced": "最終同期:",
+            "syncing": "同期中...",
+            "sync_now": "今すぐ同期",
+            "disconnect": "切断",
+            "connect_account": "アカウントを接続",
+            "connection_failed": "接続に失敗しました。ネットワークを確認してください。"
+        },
+        "option": {
+            "biometric": "生体認証 ID",
+            "2fa": "2FA 保護",
+            "lock_timer": "ロックタイマー",
+            "login_alerts": "ログイン通知",
+            "dark_mode": "ダークモード",
+            "language": "言語",
+            "master_log": "マスターログ",
+            "open_log": "ログを開く",
+            "time": {
+                "1m": "1分",
+                "5m": "5分",
+                "15m": "15分",
+                "30m": "30分",
+                "1h": "1時間"
+            },
+            "recent_activity": "最近のアクティビティ",
+            "appearance": "外観"
+        },
+        "theme": {
+            "system": "システム",
+            "light": "ライト",
+            "dark": "ダーク"
+        },
+        "activity_modal": {
+            "title": "システムログ",
+            "empty": "最近のアクティビティはありません。",
+            "refresh": "更新",
+            "close": "閉じる"
+        },
+        "change_password": "マスターパスワードを変更",
+        "encryption": "AES-256 ビット暗号化",
+        "password_modal": {
+            "title": "マスターパスワードの変更",
+            "current": "現在のパスワード",
+            "new": "新しいパスワード",
+            "confirm": "新しいパスワード（確認）",
+            "cancel": "キャンセル",
+            "save": "変更を保存"
+        },
+        "error": {
+            "match": "新しいパスワードが一致しません",
+            "incorrect": "現在のパスワードが正しくありません",
+            "failed": "パスワードの変更に失敗しました"
+        },
+        "success": {
+            "password": "パスワードが正常に変更されました",
+            "cache_cleared": "キャッシュが消去されました！",
+            "biometric_enabled": "生体認証ロック解除が有効になりました"
+        },
+        "status": {
+            "encrypting": "ボールトを再暗号化中...",
+            "updating_bio": "生体認証シークレットを更新中...",
+            "resyncing": "新しいデータをクラウドに同期中...",
+            "done": "完了！"
+        },
+        "export": "エクスポート",
+        "clear_cache": "キャッシュを消去",
+        "clear_cache_desc": "ローカルログと一時データを削除します。ボールトのデータは削除されません。",
+        "biometric_modal": {
+            "title": "生体認証ロック解除を有効化",
+            "description": "マスターパスワードを入力して、デバイスのキーチェーンに安全に保存します。",
+            "enable": "生体認証を有効にする"
+        }
+    },
+    "export": {
+        "title": "ボールトのエクスポート",
+        "warning_title": "セキュリティ警告",
+        "warning_desc": "パスワードをプレーンテキストでエクスポートしようとしています。このファイルを入手した人は誰でもあなたの認証情報を見ることができます。安全に保管してください。",
+        "format": "形式を選択",
+        "preview": "データプレビュー",
+        "download": "ファイルをダウンロード"
+    },
+    "import": {
+        "title": "ボールトのインポート",
+        "drag_drop": "CSV/JSONをここにドラッグ＆ドロップ、またはクリックして選択",
+        "click_to_select": "タップしてCSV/JSONファイルを選択",
+        "formats": "対応形式: .csv, .json",
+        "ready": "{{count}} 件の入力が見つかりました。準備完了！",
+        "error": "インポート失敗",
+        "error_binary": "バイナリファイルが検出されました",
+        "error_invalid_format": "無効なファイル形式",
+        "note_title": "注意",
+        "note_desc": "重複するエントリは、タイムスタンプタグ付きの新しいアイテムとして追加されます。既存のデータは上書きされません。",
+        "action": "データをインポート"
+    },
+    "login": {
+        "locked_local_db": "ロックされたローカルDB",
+        "master_password": "マスターパスワード",
+        "unlock_placeholder": "キーを入力してロック解除",
+        "invalid_key": "無効なアクセスキー",
+        "access_vault": "ボールトにアクセス",
+        "secure_id": "セキュア ID",
+        "system_auth": "システム認証...",
+        "unlock_bio": "生体認証でロック解除"
+    },
+    "security": {
+        "title": "セキュリティ診断",
+        "subtitle": "認証情報ボールトのリアルタイム分析",
+        "scan": "フルスキャン",
+        "scanning": "スキャン中...",
+        "scan_full": "フルスキャンを実行",
+        "score": "スコア",
+        "status": {
+            "title": "保護ステータス",
+            "robust": "デジタルボールトは堅牢です。あらゆる場所で強力な2FAを維持してください。",
+            "decent": "セキュリティは良好ですが、いくつかの改善が必要です。",
+            "weak": "脆弱な認証情報に対して直ちに対処することをお勧めします。"
+        },
+        "stats": {
+            "weak": "弱い",
+            "reused": "使い回し",
+            "safe": "安全",
+            "secure_strong": "セキュア/強力",
+            "other": "その他"
+        },
+        "alerts": {
+            "title": "セキュリティアラート",
+            "action_items": "アクションアイテム",
+            "empty": "セキュリティの問題は見つかりませんでした。素晴らしい！",
+            "resolve": "解決",
+            "weak_title": "弱いパスワード: {{title}}",
+            "weak_description": "このパスワードは短すぎるか、複雑さが不足しています。",
+            "reused_title": "使い回しのパスワード: {{count}} アカウント",
+            "reused_description": "{{titles}} で使用されています。",
+            "reused_description_more": "{{titles}} などで使用されています。"
+        }
+    },
+    "generator": {
+        "title": "パスワード作成",
+        "entropy": "エントロピー: ~{{bits}} ビット",
+        "length": "長さ",
+        "chars": "{{count}} 文字",
+        "options": {
+            "uppercase": "大文字",
+            "lowercase": "小文字",
+            "numbers": "数字",
+            "symbols": "記号"
+        },
+        "info": "エントロピーが高いほど、総当たり攻撃による解読が難しくなります。",
+        "subtitle": "強力で安全なパスワードを作成",
+        "actions": {
+            "regenerate": "再生成"
+        }
+    },
+    "welcome": {
+        "step1": {
+            "title": "ボールトを保護",
+            "subtitle": "データをローカルで暗号化するためのマスターキーを作成します。"
+        },
+        "step2": {
+            "title": "クイックアクセス",
+            "subtitle": "ログイン体験を安全に高速化します。"
+        },
+        "master_key": "マスターキー",
+        "verify_key": "キーを確認",
+        "key_placeholder": "強力なキーを入力",
+        "repeat_placeholder": "マスターキーを再入力",
+        "biometric": "生体認証ロック",
+        "biometric_subtitle": "Face ID / Touch ID",
+        "next": "次のステップ",
+        "start": "始める",
+        "error": {
+            "length": "マスターキーは8文字以上である必要があります。",
+            "weak": "パスワードが弱すぎます。文字、数字、記号を組み合わせてください。",
+            "match": "キーが一致しません。"
+        }
+    },
+    "sync": {
+        "just_now": "たった今",
+        "syncing": "同期中...",
+        "credentials_imported": "クラウドボールトが見つかりました。元のパスワードで再度ログインしてください。",
+        "merge_complete": "クラウドからのエントリを正常にマージしました。",
+        "use_cloud_complete": "クラウドボールトに切り替えました。クラウドパスワードで再度ログインしてください。",
+        "use_local_complete": "クラウドデータはローカルデータで上書きされました。",
+        "salt_updated": "クラウドセキュリティ設定が更新されました。再度ログインする必要があります。",
+        "error": {
+            "missing_verifier": "クラウドボールトにパスワード検証データがありません。クラウドのメタデータを更新するには、まず元のデバイスから同期してください。",
+            "missing_password": "マージにはクラウドパスワードが必要です。",
+            "no_cloud_entries": "マージするクラウドエントリが見つかりません。",
+            "wrong_password": "クラウドパスワードが正しくありません。復号化に失敗しました。",
+            "password_required": "切り替える前にアクセスを確認するには、クラウドパスワードが必要です。"
+        },
+        "conflict": {
+            "title": "同期の競合が検出されました",
+            "description": "ローカルボールトはクラウドボールトとは異なる暗号化キーを使用しています。",
+            "local_count": "ローカル: {{count}} 件のエントリ",
+            "merge": "ボールトをマージ",
+            "merge_desc": "両方のボールトを結合します。クラウドパスワードが必要です。",
+            "use_cloud": "クラウドのみ使用",
+            "use_cloud_desc": "ローカルデータを消去します。クラウドパスワードを永続的に使用します。",
+            "use_local": "ローカルのみ使用",
+            "use_local_desc": "クラウドを上書きします。ローカルパスワードを保持します。",
+            "enter_cloud_password": "エントリを復号化してマージするには、クラウドパスワードを入力してください:",
+            "cloud_password_placeholder": "クラウドマスターパスワード",
+            "merging": "マージ中...",
+            "merge_now": "今すぐマージ"
+        }
+    },
+    "biometric_prompt": {
+        "title": "EtherVault のロック解除",
+        "subtitle": "生体認証IDを使用",
+        "reason": "ボールトのロック解除",
+        "cancel": "キャンセル"
+    },
+    "about": {
+        "title": "について",
+        "description": "プライバシーとシンプルさを追求した、安全なオフラインファーストのクロスプラットフォームパスワードマネージャー。",
+        "opensource": "オープンソース",
+        "privacy_title": "プライバシーとセキュリティ",
+        "privacy_desc": "データはデバイス上でAES-256-GCMを使用して完全に暗号化されます。個人データや分析データは収集しません。",
+        "help_title": "ヘルプとサポート",
+        "contact": "お問い合わせ",
+        "footer": "© 2026 EtherVault"
+    },
+    "privacy_view": {
+        "title": "プライバシーポリシー",
+        "last_updated": "最終更新日: 2026年2月3日",
+        "intro": "EtherVault（「私たち」、「私たちの」、または「アプリ」）は、デジタルプライバシーを尊重し保護するために設計された、オープンソースでプライバシー優先のパスワードマネージャーです。このプライバシーポリシーでは、EtherVaultがデータをどのように扱うかを説明します。",
+        "summary": "要約すると: 私たちはあなたの個人データを収集、保存、販売しません。データはあなた自身のものです。",
+        "sections": {
+            "1": {
+                "title": "1. データの収集と保存",
+                "local_title": "ローカルファースト・アーキテクチャ",
+                "local_desc": "EtherVaultは「ローカルファースト」ベースで動作します。すべての機密データ（ユーザー名、パスワード、メモ、タグ）は、ローカルデバイス（コンピューターまたは携帯電話）に安全に保存されます。このデータは、軍用グレードのAES-256暗号化を使用して暗号化されます。",
+                "server_title": "中央サーバーなし",
+                "server_desc": "ボールトデータを保存するための中央サーバーは運用していません。私たち（EtherVaultの開発者）は、マスターパスワード、保存された認証情報、または暗号化キーにアクセスすることはできません。マスターパスワードを紛失した場合、データを復元することはできません。"
+            },
+            "2": {
+                "title": "2. クラウド同期",
+                "desc": "EtherVaultは、独自のパーソナルクラウドストレージプロバイダー（現在はGoogleドライブ）を使用して、デバイス間でデータを同期するオプション機能を提供します。",
+                "points": [
+                    "同期前の暗号化: すべてのデータは、クラウドにアップロードされる「前」に、デバイス上でローカルに暗号化されます。",
+                    "ユーザーコントロール: 同期はオプションであり、明示的に有効にして認証する必要があります。",
+                    "サードパーティのポリシー: クラウドプロバイダーに保存されたデータは、そのプロバイダーのプライバシーポリシーと利用規約の対象となります。"
+                ]
+            },
+            "3": {
+                "title": "3. 生体認証データ",
+                "desc": "EtherVaultは、生体認証（指紋、TouchID、FaceID）を使用したアプリケーションのロック解除をサポートしています。",
+                "points": [
+                    "ローカル処理: 生体認証は、デバイスのオペレーティングシステムによって完全に処理されます。",
+                    "アクセスなし: EtherVaultは、OSから「成功/失敗」の確認のみを受け取ります。私たちは実際の指紋や顔データにアクセス、収集、保存、または送信しません。"
+                ]
+            },
+            "4": {
+                "title": "4. サードパーティのリクエスト",
+                "desc": "ユーザーエクスペリエンスを向上させるために、EtherVaultはボールトに保存されているWebサイトのアイコン（ファビコン）を自動的に取得する場合があります。",
+                "points": [
+                    "これらのリクエストは、ターゲットWebサイトに直接送信されるか、プライバシーを尊重するファビコンサービス（Google S2、DuckDuckGoなど）を介して送信される場合があります。",
+                    "これらのリクエストは、ブラウザでWebサイトにアクセスするのと同様に、技術的にIPアドレスをコンテンツプロバイダーに公開する可能性があります。"
+                ]
+            },
+            "5": {
+                "title": "5. デバイスの権限",
+                "lists": [
+                    "ネットワーク/インターネットアクセス: クラウド同期およびWebサイトアイコンの取得に必要です。",
+                    "生体認証ハードウェア: 指紋/FaceID/TouchID認証を有効にするために必要です。",
+                    "ストレージ/ファイルシステム: 暗号化されたボールトファイルをローカルに保存し、インポート/エクスポート機能を使用するために必要です。"
+                ]
+            },
+            "6": {
+                "title": "6. ログと分析",
+                "lists": [
+                    "クラッシュレポート: アプリはクラッシュレポートを自動的に送信しません。",
+                    "ローカルログ: 使用ログは、監査およびデバッグの目的でデバイスにローカルに保存されます。手動でエクスポートして共有しない限り、これらのログがデバイス外に出ることはありません。"
+                ]
+            },
+            "7": {
+                "title": "7. ポリシーの変更",
+                "desc": "プライバシーポリシーは随時更新される場合があります。アプリはオープンソースでローカルファーストであるため、データ処理の大幅な変更には通常、ソフトウェアの更新が必要です。"
+            },
+            "8": {
+                "title": "8. お問い合わせ",
+                "desc": "プライバシーポリシーについてご質問やご提案がある場合は、<0>GitHub</0>リポジトリまたはプロジェクトページからお問い合わせください。"
+            }
+        },
+        "footer": "EtherVault — あなたのコード、あなたのデータ、あなたの金庫。"
+    }
+}

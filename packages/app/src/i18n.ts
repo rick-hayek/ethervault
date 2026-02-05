@@ -3,10 +3,13 @@ import { initReactI18next } from 'react-i18next';
 
 import en from './locales/en.json';
 import zh from './locales/zh.json';
+import ja from './locales/ja.json';
 
 const getSystemLanguage = () => {
     const language = navigator.language.toLowerCase();
-    return language.startsWith('zh') ? 'zh' : 'en';
+    if (language.startsWith('zh')) return 'zh';
+    if (language.startsWith('ja')) return 'ja';
+    return 'en';
 };
 
 i18n
@@ -14,7 +17,8 @@ i18n
     .init({
         resources: {
             en: { translation: en },
-            zh: { translation: zh }
+            zh: { translation: zh },
+            ja: { translation: ja }
         },
         lng: getSystemLanguage(),
         fallbackLng: 'en',
