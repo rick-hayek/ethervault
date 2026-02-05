@@ -266,7 +266,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
 
         {/* Password List */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 pb-20 md:pb-0">
-          {passwords.map((entry) => (
+          {[...passwords].sort((a, b) => a.title.localeCompare(b.title)).map((entry) => (
             <React.Fragment key={entry.id}>
               {/* Desktop View Card */}
               <div
