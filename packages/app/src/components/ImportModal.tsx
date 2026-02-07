@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { VaultService, PasswordEntry, SecurityService, Category } from '@ethervault/core';
+import { getVaultService, PasswordEntry, SecurityService, Category } from '@ethervault/core';
 import { useTranslation } from 'react-i18next';
 import { Upload, FileText, Check, AlertCircle, X, Loader2, ChevronLeft } from 'lucide-react';
 import { Capacitor } from '@capacitor/core';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Search, Plus, ExternalLink, Copy, Check, Globe, User as UserIcon, Lock, Edit2, User, Key, LogOut, X } from 'lucide-react';
-import { VaultService, PasswordEntry, CryptoService, SecurityService, VaultStorageItem, Category, CloudService } from '@ethervault/core';
+import { getVaultService, PasswordEntry, getCryptoService, SecurityService, VaultStorageItem, Category, CloudService } from '@ethervault/core';
 import { useTranslation } from 'react-i18next';
 import { CATEGORIES } from '../constants';
 

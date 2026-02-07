@@ -13,7 +13,7 @@ import { WelcomeView } from './components/WelcomeView';
 import { LoginView } from './components/LoginView';
 import { EntryModal } from './components/EntryModal';
 import { MobilePageSlider } from './components/MobilePageSlider';
-import { VaultService, AuthService, StorageService, CloudService, AppSettings, PasswordEntry, Category, CloudProvider, CryptoService } from '@ethervault/core';
+import { getVaultService, getAuthService, StorageService, CloudService, AppSettings, PasswordEntry, Category, CloudProvider, getCryptoService } from '@ethervault/core';
 import { BackHandlerProvider, useBackHandler } from './hooks/useBackHandler';
 import { AlertProvider } from './hooks/useAlert';
 import { App as CapacitorApp } from '@capacitor/app';
@@ -102,19 +102,19 @@ const AppContent: React.FC = () => {
   useEffect(() => {
     const initializeApp = async () => {
       try {
-        await CryptoService.init();
+        await getCryptoService().init();
 
         // Check biometrics support
         const isBio = await BiometricService.isAvailable();
         setBioAvailable(isBio);
 
         // Check if account is already setup in persistence
-        const isSetup = await AuthService.isAccountSetup();
+        const isSetup = await getAuthService().isAccountSetup();
         setHasSetup(isSetup);
 
         // If already authenticated (e.g. from previous session/service state), load entries
-        if (AuthService.checkAuth()) {
-          const entries = await VaultService.getEntries();
+        if (getAuthService().checkAuth()) {
+          const entries = await getVaultService().getEntries();
           setPasswords(entries);
         }
       } catch (error) {
@@ -287,7 +287,7 @@ const AppContent: React.FC = () => {
     }
 
     try {
-      const entries = await VaultService.getEncryptedEntries();
+      const entries = await getVaultService().getEncryptedEntries();
       await CloudService.sync(entries);
       setSettings(prev => ({ ...prev, lastSync: new Date().toLocaleTimeString() }));
       logger.info('[SYNC] Auto-sync completed after local change');
@@ -298,7 +298,7 @@ const AppContent: React.FC = () => {
   };
 
   const handleAddPassword = async (entry: Omit<PasswordEntry, 'id' | 'createdAt' | 'updatedAt'>) => {
-    const newEntry = await VaultService.addEntry(entry);
+    const newEntry = await getVaultService().addEntry(entry);
     setPasswords(prev => [newEntry, ...prev]);
     logger.info('[DATA] Added new password entry');
 
@@ -308,7 +308,7 @@ const AppContent: React.FC = () => {
       IconService.fetchIcon(targetUrl!).then(async (base64Icon) => {
         if (base64Icon) {
           const updated = { ...newEntry, icon: base64Icon };
-          await VaultService.updateEntry(newEntry.id, updated);
+          await getVaultService().updateEntry(newEntry.id, updated);
           setPasswords(prev => prev.map(p => p.id === newEntry.id ? updated : p));
         }
       });
@@ -324,7 +324,7 @@ const AppContent: React.FC = () => {
     const urlChanged = oldEntry && (oldEntry.url !== updatedEntry.url || oldEntry.website !== updatedEntry.website);
     const needsIcon = !updatedEntry.icon || urlChanged;
 
-    const result = await VaultService.updateEntry(updatedEntry.id, updatedEntry);
+    const result = await getVaultService().updateEntry(updatedEntry.id, updatedEntry);
     setPasswords(prev => prev.map(p => p.id === result.id ? result : p));
     logger.info('[DATA] Updated password entry', { id: updatedEntry.id });
 
@@ -333,7 +333,7 @@ const AppContent: React.FC = () => {
       IconService.fetchIcon(targetUrl!).then(async (base64Icon) => {
         if (base64Icon) {
           const finalEntry = { ...result, icon: base64Icon };
-          await VaultService.updateEntry(result.id, finalEntry);
+          await getVaultService().updateEntry(result.id, finalEntry);
           setPasswords(prev => prev.map(p => p.id === result.id ? finalEntry : p));
         }
       });
@@ -344,7 +344,7 @@ const AppContent: React.FC = () => {
   };
 
   const handleDeletePassword = async (id: string) => {
-    await VaultService.deleteEntry(id);
+    await getVaultService().deleteEntry(id);
     setPasswords(prev => prev.filter(p => p.id !== id));
     logger.info('[DATA] Deleted password entry', { id });
 
@@ -353,7 +353,7 @@ const AppContent: React.FC = () => {
   };
 
   const handleSetupComplete = async (key: string, bioEnabled: boolean) => {
-    await AuthService.setupAccount(key);
+    await getAuthService().setupAccount(key);
 
     // Save the secret to the secure store if enabled
     if (bioEnabled) {
@@ -375,16 +375,16 @@ const AppContent: React.FC = () => {
     setSettings(prev => ({ ...prev, biometricsEnabled: bioEnabled }));
 
     // Initial data load after setup
-    const entries = await VaultService.getEntries();
+    const entries = await getVaultService().getEntries();
     setPasswords(entries);
     logger.info('[AUTH] Initial account setup completed.');
   };
 
   const handleLogin = async (key: string) => {
-    const success = await AuthService.authenticate(key);
+    const success = await getAuthService().authenticate(key);
     if (success) {
       setIsAuthenticated(true);
-      const entries = await VaultService.getEntries();
+      const entries = await getVaultService().getEntries();
       setPasswords(entries);
       logger.info('[AUTH] Login successful.');
       return true;
@@ -394,7 +394,7 @@ const AppContent: React.FC = () => {
   };
 
   const handleLock = () => {
-    AuthService.lock();
+    getAuthService().lock();
     setIsAuthenticated(false);
     logger.info('[VAULT] Vault locked.');
   };
@@ -449,7 +449,7 @@ const AppContent: React.FC = () => {
             }
           }}
           onScan={async () => {
-            const entries = await VaultService.getEntries();
+            const entries = await getVaultService().getEntries();
             setPasswords(entries);
           }}
         />;
@@ -461,7 +461,7 @@ const AppContent: React.FC = () => {
           setSettings={(s: any) => setSettings(s)}
           biometricsSupported={bioAvailable} // Pass availability check
           onDataChange={async () => {
-            const entries = await VaultService.getEntries();
+            const entries = await getVaultService().getEntries();
             setPasswords(entries);
           }}
         />;
@@ -531,7 +531,7 @@ const AppContent: React.FC = () => {
               }
             }}
             onScan={async () => {
-              const entries = await VaultService.getEntries();
+              const entries = await getVaultService().getEntries();
               setPasswords(entries);
             }}
           />
@@ -545,7 +545,7 @@ const AppContent: React.FC = () => {
             setSettings={(s: any) => setSettings(s)}
             biometricsSupported={bioAvailable}
             onDataChange={async () => {
-              const entries = await VaultService.getEntries();
+              const entries = await getVaultService().getEntries();
               setPasswords(entries);
             }}
           />

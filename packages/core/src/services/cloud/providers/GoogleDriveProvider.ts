@@ -1,8 +1,8 @@
 /// <reference types="vite/client" />
 import { CloudProviderInterface, SyncResult } from '../models';
 import { VaultStorageItem, Logger } from '../../../types';
-import { AuthService } from '../../../AuthService';
-import { StorageService } from '../../../StorageService';
+import { getAuthService } from '../../../AuthService';
+import { getStorageService } from '../../../StorageService';
 import { NETWORK_TIMEOUT_MS } from '../../../constants';
 import { Browser } from '@capacitor/browser';
 import { Capacitor } from '@capacitor/core';
@@ -791,7 +791,7 @@ export class GoogleDriveProvider implements CloudProviderInterface {
 
     private async syncMetadata(): Promise<boolean> {
         try {
-            const localSalt = await StorageService.getItem('metadata', 'salt');
+            const localSalt = await getStorageService().getItem('metadata', 'salt');
             // If local salt is an object (raw) or buffer, handle correct type.
             // StorageService returns what was stored. It's usually Uint8Array or object resembling it.
             // If it's a "buffer" from JSON reload, it might need conversion. 
@@ -806,7 +806,7 @@ export class GoogleDriveProvider implements CloudProviderInterface {
             const localSaltB64 = localSaltArr ? this.uint8ToBase64(localSaltArr) : null;
 
             // #17: Get local verifier for cloud storage
-            const localVerifier = await StorageService.getItem('metadata', 'auth_verifier');
+            const localVerifier = await getStorageService().getItem('metadata', 'auth_verifier');
             const verifierB64 = localVerifier ? JSON.stringify(localVerifier) : null;
 
             const fileId = await this.findFileId('metadata');
@@ -816,7 +816,7 @@ export class GoogleDriveProvider implements CloudProviderInterface {
                 if (remoteData && remoteData.salt) {
                     if (remoteData.salt !== localSaltB64) {
                         // Fix #1: Check if we have local vault data that would become unreadable
-                        const localVaultItems = await StorageService.getAll('vault');
+                        const localVaultItems = await getStorageService().getAll('vault');
                         if (localVaultItems.length > 0) {
                             this.log('error', '[GoogleDrive] CRITICAL: Salt mismatch with existing local data!');
                             this.log('error', '[GoogleDrive] Local vault has ' + localVaultItems.length + ' items that will become unreadable.');
@@ -827,13 +827,13 @@ export class GoogleDriveProvider implements CloudProviderInterface {
 
                         this.log('warn', '[GoogleDrive] Adopting remote salt (no local data to lose).');
                         const newSalt = this.base64ToUint8(remoteData.salt);
-                        await AuthService.setSalt(newSalt);
+                        await getAuthService().setSalt(newSalt);
 
                         // #17: Also adopt remote verifier if available
                         if (remoteData.verifier) {
                             try {
                                 const verifierObj = JSON.parse(remoteData.verifier);
-                                await StorageService.setItem('metadata', 'auth_verifier', verifierObj);
+                                await getStorageService().setItem('metadata', 'auth_verifier', verifierObj);
                                 this.log('info', '[GoogleDrive] Adopted remote verifier for password validation.');
                             } catch (e) {
                                 this.log('warn', '[GoogleDrive] Failed to parse remote verifier');
@@ -868,7 +868,7 @@ export class GoogleDriveProvider implements CloudProviderInterface {
         const saltUpdated = await this.syncMetadata();
         if (saltUpdated) {
             this.log('warn', '[GoogleDrive] CRITICAL: Encryption Salt updated. Session invalid.');
-            AuthService.lock();
+            getAuthService().lock();
             throw new Error('SALT_UPDATED');
             // Calling code (SettingsView) must catch this and prompt re-login.
         }

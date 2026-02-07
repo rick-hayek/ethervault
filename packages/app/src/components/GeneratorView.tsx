@@ -2,7 +2,7 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { RefreshCw, Copy, Check, Info, Type, Hash, Code } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { CryptoService } from '@ethervault/core';
+import { getCryptoService } from '@ethervault/core';
 
 export const GeneratorView: React.FC = () => {
   const { t } = useTranslation();
@@ -17,7 +17,7 @@ export const GeneratorView: React.FC = () => {
   });
 
   const generatePassword = useCallback(() => {
-    const result = CryptoService.generatePassword(length, options);
+    const result = getCryptoService().generatePassword(length, options);
     setPassword(result);
   }, [length, options]);
 

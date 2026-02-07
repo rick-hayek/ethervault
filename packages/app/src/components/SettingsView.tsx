@@ -26,7 +26,7 @@ import {
 import { Portal } from './Portal';
 import { useTranslation } from 'react-i18next';
 import { BiometricService } from '../utils/BiometricService';
-import { AppSettings, CloudProvider, AuthService, VaultService, CloudService, CryptoService, NETWORK_TIMEOUT_MS, SecurityService } from '@ethervault/core';
+import { AppSettings, CloudProvider, getAuthService, getVaultService, CloudService, getCryptoService, NETWORK_TIMEOUT_MS, SecurityService } from '@ethervault/core';
 import { ImportModal } from './ImportModal';
 import { ExportModal } from './ExportModal';
 import { SyncWarningModal } from './SyncWarningModal';
@@ -198,7 +198,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     const [error, setError] = useState<string | null>(null);
 
     React.useEffect(() => {
-      VaultService.getEntries()
+      getVaultService().getEntries()
         .then(data => {
           setEntries(data);
           setLoading(false);
@@ -317,7 +317,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     setBioError(null);
 
     // Verify password against current auth
-    const isValid = await AuthService.verifyPassword(bioPassword);
+    const isValid = await getAuthService().verifyPassword(bioPassword);
     if (!isValid) {
       setBioError(t('settings.error.incorrect'));
       return;
@@ -363,11 +363,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
       if (cloudMeta?.salt) {
         // Cloud has data - check if salt matches local
-        const localSalt = await AuthService.getSaltBase64();
+        const localSalt = await getAuthService().getSaltBase64();
 
         if (localSalt && cloudMeta.salt !== localSalt) {
           // Salt mismatch - check if we have local entries
-          const localEntries = await VaultService.getEncryptedEntries();
+          const localEntries = await getVaultService().getEncryptedEntries();
 
           if (localEntries.length > 0) {
             // CONFLICT: Both local and cloud have different salts
@@ -377,7 +377,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
             return;
           } else {
             // No local entries - adopt cloud credentials silently
-            await AuthService.importCloudCredentials(cloudMeta.salt, cloudMeta.verifier);
+            await getAuthService().importCloudCredentials(cloudMeta.salt, cloudMeta.verifier);
             showSuccess(
               t('sync.credentials_imported', 'Cloud vault found. Please log in again with your original password.'),
               undefined,
@@ -392,11 +392,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
       setSettings({ ...settings, cloudProvider: provider, lastSync: t('sync.syncing') });
 
       // Auto-trigger sync after successful connection
-      const entries = await VaultService.getEncryptedEntries();
+      const entries = await getVaultService().getEncryptedEntries();
       const result = await CloudService.sync(entries);
 
       if (result && result.updatedEntries.length > 0) {
-        await VaultService.processCloudEntries(result.updatedEntries);
+        await getVaultService().processCloudEntries(result.updatedEntries);
         onDataChange(); // Refresh UI with new entries
       }
 
@@ -446,7 +446,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           }
 
           // 1. Derive cloud key
-          const cloudKey = await AuthService.deriveKeyWithSalt(cloudPassword, conflictCloudMeta.salt);
+          const cloudKey = await getAuthService().deriveKeyWithSalt(cloudPassword, conflictCloudMeta.salt);
 
           // 2. Download all cloud entries
           const cloudEntries = await CloudService.downloadAllEntries();
@@ -458,7 +458,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           }
 
           // 3. Merge: decrypt with cloud key, re-encrypt with local key
-          const mergedCount = await VaultService.mergeCloudEntries(cloudEntries, cloudKey);
+          const mergedCount = await getVaultService().mergeCloudEntries(cloudEntries, cloudKey);
 
           // CRITICAL: Validate merge succeeded before clearing cloud
           // If cloudEntries existed but mergedCount is 0, decryption failed (wrong password)
@@ -472,7 +472,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           await CloudService.clearRemoteData();
 
           // 5. Trigger full sync to upload merged data
-          const localEntries = await VaultService.getEncryptedEntries();
+          const localEntries = await getVaultService().getEncryptedEntries();
           await CloudService.sync(localEntries);
 
           setSettings({ ...settings, cloudProvider: pendingProvider || settings.cloudProvider, lastSync: t('sync.just_now') });
@@ -493,13 +493,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           }
 
           // Derive key with cloud salt (same as merge case)
-          const useCloudKey = await AuthService.deriveKeyWithSalt(cloudPassword, conflictCloudMeta.salt);
+          const useCloudKey = await getAuthService().deriveKeyWithSalt(cloudPassword, conflictCloudMeta.salt);
 
           // Download cloud entries and try to decrypt one to verify password
           const useCloudEntries = await CloudService.downloadAllEntries();
           if (useCloudEntries.length > 0) {
             try {
-              CryptoService.decrypt(useCloudEntries[0].payload, useCloudEntries[0].nonce, useCloudKey);
+              getCryptoService().decrypt(useCloudEntries[0].payload, useCloudEntries[0].nonce, useCloudKey);
             } catch (e) {
               showError(t('sync.error.wrong_password', 'Incorrect cloud password. Decryption failed.'));
               return;
@@ -507,8 +507,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           }
 
           // Password verified - now safe to clear local and adopt cloud
-          await VaultService.clearLocalVault();
-          await AuthService.importCloudCredentials(conflictCloudMeta.salt, conflictCloudMeta.verifier);
+          await getVaultService().clearLocalVault();
+          await getAuthService().importCloudCredentials(conflictCloudMeta.salt, conflictCloudMeta.verifier);
 
           showSuccess(t('sync.use_cloud_complete', 'Switched to cloud vault. Please log in again with your cloud password.'));
           setIsConflictModalOpen(false);
@@ -521,7 +521,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           await CloudService.clearRemoteData();
 
           // Trigger sync to upload local data
-          const entries = await VaultService.getEncryptedEntries();
+          const entries = await getVaultService().getEncryptedEntries();
           await CloudService.sync(entries);
 
           setSettings({ ...settings, cloudProvider: pendingProvider || settings.cloudProvider, lastSync: t('sync.just_now') });
@@ -557,7 +557,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           return;
         }
 
-        const entries = await VaultService.getEncryptedEntries();
+        const entries = await getVaultService().getEncryptedEntries();
 
         // // Race sync against timeout logic (using shared constant)
         // const syncPromise = CloudService.sync(entries);
@@ -572,7 +572,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
         const result = await CloudService.sync(entries);
 
         if (result && result.updatedEntries.length > 0) {
-          await VaultService.processCloudEntries(result.updatedEntries);
+          await getVaultService().processCloudEntries(result.updatedEntries);
           setSettings({ ...settings, lastSync: t('sync.just_now') }); // Update timestamp
           onDataChange(); // Refresh UI with new entries
         }
@@ -657,7 +657,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
       // Allow UI to update
       await new Promise(r => setTimeout(r, 50));
 
-      const result = await AuthService.changeMasterPassword(passwordForm.old, passwordForm.new);
+      const result = await getAuthService().changeMasterPassword(passwordForm.old, passwordForm.new);
       if (result) {
         // Item 1: Update biometric secret if enabled
         if (settings.biometricsEnabled) {
@@ -681,7 +681,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           try {
             setPasswordChangeStatus(t('settings.status.resyncing', 'Syncing new data to cloud...'));
             await CloudService.clearRemoteData();
-            const entries = await VaultService.getEncryptedEntries();
+            const entries = await getVaultService().getEncryptedEntries();
             await CloudService.sync(entries);
             logger.info('[SettingsView] Cloud data reset and re-synced after password change.');
           } catch (e) {
@@ -1253,7 +1253,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                 // Let the ImportModal handle the try-catch so it can show the error state
                 for (const entry of entries) {
                   const { id, createdAt, updatedAt, ...rest } = entry;
-                  await VaultService.addEntry(rest);
+                  await getVaultService().addEntry(rest);
                 }
                 setIsImportModalOpen(false);
                 setSettings({ ...settings, lastSync: 'Imported just now' });

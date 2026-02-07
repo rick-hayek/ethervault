@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Shield, AlertTriangle } from 'lucide-react';
-import { CloudProvider, AuthService } from '@ethervault/core';
+import { CloudProvider, getAuthService } from '@ethervault/core';
 import { Portal } from './Portal';
 
 interface SyncWarningModalProps {
@@ -23,7 +23,7 @@ export const SyncWarningModal: React.FC<SyncWarningModalProps> = ({ onClose, onC
 
         try {
             // Fix #2: Use verifyPassword (validates against current session) instead of authenticate
-            const isValid = await AuthService.verifyPassword(password);
+            const isValid = await getAuthService().verifyPassword(password);
             if (isValid) {
                 onConfirm();
             } else {
