@@ -115,6 +115,19 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     return () => unsubscribe();
   }, []); // Remove dependencies to avoid stale closures if possible, or verify safe
 
+  // Auto-sync trigger: When navigated from conflict resolution re-login
+  useEffect(() => {
+    const pendingSync = localStorage.getItem('ethervault_pending_sync');
+    if (pendingSync === 'true' && settings.cloudProvider !== 'none') {
+      localStorage.removeItem('ethervault_pending_sync');
+      logger.info('[SettingsView] Pending sync detected, auto-triggering sync.');
+      // Small delay to allow UI to render first
+      setTimeout(() => {
+        handleSync(settings.cloudProvider);
+      }, 500);
+    }
+  }, [settings.cloudProvider]); // Trigger when cloud provider is set
+
   const { showAlert, showSuccess, showError, showWarning, showInfo } = useAlert();
 
   const [passwordForm, setPasswordForm] = useState({ old: '', new: '', confirm: '' });
@@ -381,7 +394,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
             showSuccess(
               t('sync.credentials_imported', 'Cloud vault found. Please log in again with your original password.'),
               undefined,
-              () => window.location.reload()
+              () => {
+                localStorage.setItem('ethervault_pending_sync', 'true');
+                window.location.reload();
+              }
             );
             return;
           }
@@ -513,6 +529,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           showSuccess(t('sync.use_cloud_complete', 'Switched to cloud vault. Please log in again with your cloud password.'));
           setIsConflictModalOpen(false);
           setConflictCloudMeta(null);
+          localStorage.setItem('ethervault_pending_sync', 'true');
           window.location.reload();
           break;
 
@@ -585,7 +602,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           showInfo(
             t('sync.salt_updated') || 'Cloud security settings updated. You must log in again.',
             undefined,
-            () => window.location.reload()
+            () => {
+              localStorage.setItem('ethervault_pending_sync', 'true');
+              window.location.reload();
+            }
           );
           return;
         }

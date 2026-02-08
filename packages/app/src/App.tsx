@@ -387,6 +387,16 @@ const AppContent: React.FC = () => {
       const entries = await getVaultService().getEntries();
       setPasswords(entries);
       logger.info('[AUTH] Login successful.');
+
+      // Check if login was triggered by sync conflict resolution
+      // If so, navigate to Settings to continue sync
+      // Note: The flag is NOT removed here - SettingsView will handle it
+      const pendingSync = localStorage.getItem('ethervault_pending_sync');
+      if (pendingSync === 'true') {
+        setCurrentView('settings');
+        logger.info('[AUTH] Pending sync detected, navigating to Settings.');
+      }
+
       return true;
     }
     logger.warn('[AUTH] Login failed: Invalid credentials.');
