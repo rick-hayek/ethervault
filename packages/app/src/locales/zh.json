@@ -104,12 +104,21 @@
                 "1h": "1 小时"
             },
             "recent_activity": "近期活动",
-            "appearance": "外观"
+            "appearance": "外观",
+            "theme_color": "主题色"
         },
         "theme": {
             "system": "跟随系统",
             "light": "浅色",
             "dark": "深色"
+        },
+        "color": {
+            "blue": "宝石蓝",
+            "emerald": "祖母绿",
+            "violet": "罗兰紫",
+            "amber": "琥珀橘",
+            "rose": "玫瑰红",
+            "fuchsia": "洋红色"
         },
         "activity_modal": {
             "title": "系统日志",

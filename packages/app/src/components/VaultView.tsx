@@ -8,9 +8,9 @@ import { CATEGORIES } from '../constants';
 const CloudSyncPrompt: React.FC<{ onGoToSettings: () => void, onDismiss: () => void }> = ({ onGoToSettings, onDismiss }) => {
   const { t } = useTranslation();
   return (
-    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-indigo-50 dark:bg-indigo-900/10 border border-indigo-100 dark:border-indigo-500/20 p-4 rounded-3xl animate-in fade-in slide-in-from-top-4 duration-500">
+    <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-primary-50 dark:bg-primary-900/10 border border-primary-100 dark:border-primary-500/20 p-4 rounded-3xl animate-in fade-in slide-in-from-top-4 duration-500">
       <div className="flex items-center gap-4">
-        <div className="w-10 h-10 rounded-full bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400 shrink-0">
+        <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-500/20 flex items-center justify-center text-primary-600 dark:text-primary-400 shrink-0">
           <Globe className="w-5 h-5" />
         </div>
         <div>
@@ -31,7 +31,7 @@ const CloudSyncPrompt: React.FC<{ onGoToSettings: () => void, onDismiss: () => v
         </button>
         <button
           onClick={onGoToSettings}
-          className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-medium transition-all shadow-md shadow-indigo-500/20 hover:shadow-indigo-500/30 active:scale-95 whitespace-nowrap"
+          className="px-5 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-xs font-medium transition-all shadow-md shadow-primary-500/20 hover:shadow-primary-500/30 active:scale-95 whitespace-nowrap"
         >
           {t('vault.sync_prompt.action', 'Setup Sync')}
         </button>
@@ -130,7 +130,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
     switch (cat) {
       case 'All': return 'bg-slate-900 text-white dark:bg-white dark:text-slate-900';
       case 'Personal': return 'bg-rose-600 text-white';
-      case 'Work': return 'bg-indigo-600 text-white';
+      case 'Work': return 'bg-primary-600 text-white';
       case 'Others': return 'bg-amber-600 text-white';
       default: return 'bg-slate-600 text-white';
     }
@@ -207,7 +207,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
         <div className="space-y-4 bg-white dark:bg-slate-900 p-1.5 rounded-[20px] border border-slate-200 dark:border-slate-800 shadow-sm">
           <div className="flex flex-col lg:flex-row gap-2 items-center">
             <div className="relative w-full lg:w-80 group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-indigo-500 transition-colors" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 group-focus-within:text-primary-500 transition-colors" />
               <input
                 type="text"
                 placeholder={t('vault.search')}
@@ -290,7 +290,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
                     </div>
                   </div>
                   <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200 transform translate-x-2 group-hover:translate-x-0 shrink-0 ml-2">
-                    <button onClick={() => onEdit(entry)} className="p-2 text-slate-400 hover:text-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-500/10 rounded-xl transition-all"><Edit2 className="w-4 h-4" /></button>
+                    <button onClick={() => onEdit(entry)} className="p-2 text-slate-400 hover:text-primary-500 hover:bg-primary-50 dark:hover:bg-primary-500/10 rounded-xl transition-all"><Edit2 className="w-4 h-4" /></button>
                   </div>
                 </div>
 
@@ -302,7 +302,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
                     </div>
                     <button
                       onClick={() => handleCopy(entry.id, entry.username)}
-                      className="p-1.5 bg-white dark:bg-slate-800 rounded-lg shadow-sm text-slate-400 hover:text-indigo-600 active:scale-90 transition-all"
+                      className="p-1.5 bg-white dark:bg-slate-800 rounded-lg shadow-sm text-slate-400 hover:text-primary-600 active:scale-90 transition-all"
                       title="Copy Username"
                     >
                       {copiedId === entry.id ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
@@ -318,7 +318,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
                     </div>
                     <button
                       onClick={() => handleCopy(`${entry.id}_pwd`, entry.password)}
-                      className="p-1.5 bg-white dark:bg-slate-800 rounded-lg shadow-sm text-slate-400 hover:text-indigo-600 active:scale-90 transition-all"
+                      className="p-1.5 bg-white dark:bg-slate-800 rounded-lg shadow-sm text-slate-400 hover:text-primary-600 active:scale-90 transition-all"
                       title="Copy Password"
                     >
                       {copiedId === `${entry.id}_pwd` ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Lock className="w-3.5 h-3.5" />}

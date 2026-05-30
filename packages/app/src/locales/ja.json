@@ -104,12 +104,21 @@
                 "1h": "1時間"
             },
             "recent_activity": "最近のアクティビティ",
-            "appearance": "外観"
+            "appearance": "外観",
+            "theme_color": "テーマカラー"
         },
         "theme": {
             "system": "システム",
             "light": "ライト",
             "dark": "ダーク"
+        },
+        "color": {
+            "blue": "ブルー",
+            "emerald": "エメラルド",
+            "violet": "バイオレット",
+            "amber": "アンバー",
+            "rose": "ローズ",
+            "fuchsia": "フクシア"
         },
         "activity_modal": {
             "title": "システムログ",

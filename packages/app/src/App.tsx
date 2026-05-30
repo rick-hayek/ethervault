@@ -73,12 +73,14 @@ const AppContent: React.FC = () => {
 
   const [settings, setSettings] = useState<AppSettings>(() => {
     const savedProvider = localStorage.getItem('ethervault_cloud_provider') as CloudProvider | null;
+    const savedThemeColor = localStorage.getItem('ethervault_theme_color') || 'blue';
     return {
       biometricsEnabled: localStorage.getItem('ethervault_bio') === 'true',
       autoLockTimeout: 15,
       theme: 'system',
       cloudProvider: savedProvider || 'none',
-      lastSync: ''
+      lastSync: '',
+      themeColor: savedThemeColor as any
     };
   });
 
@@ -212,6 +214,13 @@ const AppContent: React.FC = () => {
       return () => mediaQuery.removeEventListener('change', handler);
     }
   }, [settings.theme]);
+
+  // Unified Theme Color Effect
+  useEffect(() => {
+    const color = settings.themeColor || 'blue';
+    localStorage.setItem('ethervault_theme_color', color);
+    document.documentElement.setAttribute('data-theme-color', color);
+  }, [settings.themeColor]);
 
   // Handle Android Back Button
   useBackHandler('app-root', async () => {

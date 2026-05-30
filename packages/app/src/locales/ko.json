@@ -104,12 +104,21 @@
                 "1h": "1시간"
             },
             "recent_activity": "최근 활동",
-            "appearance": "외관"
+            "appearance": "외관",
+            "theme_color": "테마 색상"
         },
         "theme": {
             "system": "시스템",
             "light": "라이트",
             "dark": "다크"
+        },
+        "color": {
+            "blue": "블루",
+            "emerald": "에메랄드",
+            "violet": "바이올렛",
+            "amber": "앰버",
+            "rose": "로즈",
+            "fuchsia": "자홍색"
         },
         "activity_modal": {
             "title": "시스템 로그",

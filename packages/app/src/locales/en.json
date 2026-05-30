@@ -104,12 +104,21 @@
                 "1h": "1 HR"
             },
             "recent_activity": "Recent Activity",
-            "appearance": "Appearance"
+            "appearance": "Appearance",
+            "theme_color": "Theme Color"
         },
         "theme": {
             "system": "System",
             "light": "Light",
             "dark": "Dark"
+        },
+        "color": {
+            "blue": "Blue",
+            "emerald": "Emerald",
+            "violet": "Violet",
+            "amber": "Amber",
+            "rose": "Rose",
+            "fuchsia": "Fuchsia"
         },
         "activity_modal": {
             "title": "System Log",

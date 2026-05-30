@@ -41,8 +41,8 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVers
                     {/* Header */}
                     <div className="px-6 md:px-8 pt-[calc(env(safe-area-inset-top)+4px)] pb-4 md:py-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50 shrink-0">
                         <div className="flex items-center gap-3">
-                            <div className="hidden md:flex p-2 bg-indigo-500/10 rounded-xl">
-                                <Info className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                            <div className="hidden md:flex p-2 bg-primary-500/10 rounded-xl">
+                                <Info className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                             </div>
 
                             {/* Mobile Back Button */}
@@ -85,38 +85,38 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVers
                             <div className="space-y-3">
                                 <button
                                     onClick={() => openLink('https://github.com/rick-hayek/ethervault')}
-                                    className="w-full flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-indigo-500 dark:hover:border-indigo-500 transition-all group text-left shadow-sm hover:shadow-md"
+                                    className="w-full flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-primary-500 dark:hover:border-primary-500 transition-all group text-left shadow-sm hover:shadow-md"
                                 >
-                                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-900 dark:text-white group-hover:bg-indigo-50 dark:group-hover:bg-indigo-500/20 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors shadow-sm">
+                                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-900 dark:text-white group-hover:bg-primary-50 dark:group-hover:bg-primary-500/20 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors shadow-sm">
                                         <Github size={20} />
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <div className="text-slate-900 dark:text-white font-bold text-sm"> {t('about.opensource', 'Open Source')}</div>
                                         <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">github.com/rick-hayek/ethervault</div>
                                     </div>
-                                    <ExternalLink size={14} className="text-slate-400 group-hover:text-indigo-500 transition-colors" />
+                                    <ExternalLink size={14} className="text-slate-400 group-hover:text-primary-500 transition-colors" />
                                 </button>
 
                                 <button
                                     onClick={() => openLink(`mailto:${import.meta.env.VITE_CONTACT_EMAIL}`)}
-                                    className="w-full flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-indigo-500 dark:hover:border-indigo-500 transition-all group text-left shadow-sm hover:shadow-md"
+                                    className="w-full flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-primary-500 dark:hover:border-primary-500 transition-all group text-left shadow-sm hover:shadow-md"
                                 >
-                                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-900 dark:text-white group-hover:bg-indigo-50 dark:group-hover:bg-indigo-500/20 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors shadow-sm">
+                                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-900 dark:text-white group-hover:bg-primary-50 dark:group-hover:bg-primary-500/20 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors shadow-sm">
                                         <Mail size={20} />
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <div className="text-slate-900 dark:text-white font-bold text-sm">{t('about.help_title', 'Help & Support')}</div>
                                         <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">{t('about.contact', 'Contact Us')}: {import.meta.env.VITE_CONTACT_EMAIL}</div>
                                     </div>
-                                    <ExternalLink size={14} className="text-slate-400 group-hover:text-indigo-500 transition-colors" />
+                                    <ExternalLink size={14} className="text-slate-400 group-hover:text-primary-500 transition-colors" />
                                 </button>
                             </div>
 
                             {/* Privacy Section */}
-                            <div className="bg-indigo-50 dark:bg-indigo-900/10 p-5 rounded-2xl border border-indigo-100 dark:border-indigo-500/10">
+                            <div className="bg-primary-50 dark:bg-primary-900/10 p-5 rounded-2xl border border-primary-100 dark:border-primary-500/10">
                                 <div className="flex gap-3">
-                                    <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-500/20 flex items-center justify-center shrink-0">
-                                        <Shield size={16} className="text-indigo-600 dark:text-indigo-400" />
+                                    <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-500/20 flex items-center justify-center shrink-0">
+                                        <Shield size={16} className="text-primary-600 dark:text-primary-400" />
                                     </div>
                                     <div className="space-y-1">
                                         <h4 className="text-sm font-bold text-slate-900 dark:text-white">{t('about.privacy_title', 'Privacy & Security')}</h4>

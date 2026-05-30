@@ -86,7 +86,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                     required
                                     value={formData.title}
                                     onChange={e => setFormData({ ...formData, title: e.target.value })}
-                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 px-4 outline-none focus:border-indigo-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
+                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 px-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
                                     placeholder={t('vault.entry.title_placeholder')}
                                 />
                             </div>
@@ -95,7 +95,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                 <select
                                     value={formData.category}
                                     onChange={e => setFormData({ ...formData, category: e.target.value as Category })}
-                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 px-4 outline-none focus:border-indigo-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
+                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 px-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
                                 >
                                     {CATEGORIES.map(c => <option key={c} value={c}>{t(`category.${c.toLowerCase()}`)}</option>)}
                                 </select>
@@ -109,7 +109,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                 <input
                                     value={formData.website}
                                     onChange={e => setFormData({ ...formData, website: e.target.value })}
-                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-4 outline-none focus:border-indigo-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
+                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
                                     placeholder={t('vault.entry.website_placeholder')}
                                 />
                             </div>
@@ -123,7 +123,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                     required
                                     value={formData.username}
                                     onChange={e => setFormData({ ...formData, username: e.target.value })}
-                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-12 outline-none focus:border-indigo-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
+                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-12 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
                                     placeholder={t('vault.entry.username_placeholder')}
                                 />
                                 <button
@@ -132,7 +132,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                         navigator.clipboard.writeText(formData.username || '');
                                         // Optional: Show toast or feedback
                                     }}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-indigo-500 transition-colors"
+                                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-primary-500 transition-colors"
                                     title={t('common.copy')}
                                 >
                                     <Copy className="w-4 h-4" />
@@ -154,14 +154,14 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                             setFormData({ ...formData, password: val });
                                         }
                                     }}
-                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-20 outline-none focus:border-indigo-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-mono shadow-sm"
+                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-20 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-mono shadow-sm"
                                     placeholder={t('vault.entry.password_placeholder')}
                                 />
                                 <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="p-1.5 text-slate-400 hover:text-indigo-500 transition-colors"
+                                        className="p-1.5 text-slate-400 hover:text-primary-500 transition-colors"
                                     >
                                         {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                                     </button>
@@ -170,7 +170,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                         onClick={() => {
                                             navigator.clipboard.writeText(formData.password || '');
                                         }}
-                                        className="p-1.5 text-slate-400 hover:text-indigo-500 transition-colors"
+                                        className="p-1.5 text-slate-400 hover:text-primary-500 transition-colors"
                                         title={t('common.copy')}
                                     >
                                         <Copy className="w-4 h-4" />
@@ -205,7 +205,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                                 type="tel"
                                                 value={formData.recoveryPhone || ''}
                                                 onChange={e => setFormData({ ...formData, recoveryPhone: e.target.value })}
-                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-indigo-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
+                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
                                                 placeholder={t('vault.entry.recovery_phone_placeholder', '+1 234 567 8900')}
                                             />
                                         </div>
@@ -222,7 +222,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                                 type="email"
                                                 value={formData.recoveryEmail || ''}
                                                 onChange={e => setFormData({ ...formData, recoveryEmail: e.target.value })}
-                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-indigo-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
+                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
                                                 placeholder={t('vault.entry.recovery_email_placeholder', 'backup@email.com')}
                                             />
                                         </div>
@@ -239,7 +239,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                                 value={formData.note || ''}
                                                 onChange={e => setFormData({ ...formData, note: e.target.value })}
                                                 rows={3}
-                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-indigo-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm resize-none"
+                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm resize-none"
                                                 placeholder={t('vault.entry.note_placeholder', 'Add notes or comments...')}
                                             />
                                         </div>

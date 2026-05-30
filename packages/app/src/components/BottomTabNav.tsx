@@ -16,25 +16,25 @@ export const BottomTabNav: React.FC<BottomTabNavProps> = ({ currentView, setView
             id: 'vault',
             label: t('layout.nav.vault'),
             icon: Lock,
-            activeClass: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/20',
+            activeClass: 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-500/20',
         },
         {
             id: 'security',
             label: t('layout.nav.security'),
             icon: ShieldCheck,
-            activeClass: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/20',
+            activeClass: 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-500/20',
         },
         {
             id: 'generator',
             label: t('layout.nav.generator'),
             icon: KeyRound,
-            activeClass: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/20',
+            activeClass: 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-500/20',
         },
         {
             id: 'settings',
             label: t('layout.nav.settings'),
             icon: Settings,
-            activeClass: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/20',
+            activeClass: 'text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-500/20',
         },
     ];
 

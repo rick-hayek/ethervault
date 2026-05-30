@@ -32,6 +32,7 @@ export interface AppSettings {
     cloudProvider: CloudProvider;
     lastSync: string;
     masterLogEnabled?: boolean;
+    themeColor?: 'blue' | 'emerald' | 'violet' | 'amber' | 'rose' | 'fuchsia';
 }
 
 export interface VaultStorageItem {

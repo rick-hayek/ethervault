@@ -211,8 +211,8 @@ export const ImportModal: React.FC<ImportModalProps> = ({ onClose, onImport }) =
                 <div className="bg-white dark:bg-slate-900 w-full md:max-w-lg h-[100dvh] md:h-auto md:max-h-[90vh] rounded-none md:rounded-[2rem] border-t md:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 md:zoom-in-95 duration-300 flex flex-col">
                     <div className="px-6 md:px-8 pt-[calc(env(safe-area-inset-top)+4px)] pb-4 md:py-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-900/50 shrink-0">
                         <div className="flex items-center gap-3">
-                            <div className="hidden md:flex p-2 bg-indigo-500/10 rounded-xl">
-                                <Upload className="w-5 h-5 text-indigo-600 dark:text-indigo-400" />
+                            <div className="hidden md:flex p-2 bg-primary-500/10 rounded-xl">
+                                <Upload className="w-5 h-5 text-primary-600 dark:text-primary-400" />
                             </div>
 
                             {/* Mobile Back Button */}
@@ -248,8 +248,8 @@ export const ImportModal: React.FC<ImportModalProps> = ({ onClose, onImport }) =
                                 }
                             }}
                             className={`border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center text-center cursor-pointer transition-all ${isDragOver
-                                ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-500/10'
-                                : 'border-slate-200 dark:border-slate-800 hover:border-indigo-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                                ? 'border-primary-500 bg-primary-50 dark:bg-primary-500/10'
+                                : 'border-slate-200 dark:border-slate-800 hover:border-primary-400 hover:bg-slate-50 dark:hover:bg-slate-800/50'
                                 } ${status === 'importing' ? 'opacity-50 cursor-wait' : ''}`}
                         >
                             <input
@@ -262,7 +262,7 @@ export const ImportModal: React.FC<ImportModalProps> = ({ onClose, onImport }) =
                             />
 
                             {status === 'reading' || status === 'importing' ? (
-                                <Loader2 className="w-10 h-10 text-indigo-500 animate-spin mb-3" />
+                                <Loader2 className="w-10 h-10 text-primary-500 animate-spin mb-3" />
                             ) : status === 'ready' ? (
                                 <Check className="w-10 h-10 text-emerald-500 mb-3" />
                             ) : status === 'error' ? (

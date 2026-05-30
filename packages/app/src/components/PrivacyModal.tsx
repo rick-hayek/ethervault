@@ -111,8 +111,8 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
                             <div className="space-y-4">
                                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">{t('privacy_view.sections.1.title')}</h3>
 
-                                <div className="pl-4 border-l-2 border-indigo-500 space-y-2">
-                                    <h4 className="font-semibold text-sm text-indigo-600 dark:text-indigo-400">{t('privacy_view.sections.1.local_title')}</h4>
+                                <div className="pl-4 border-l-2 border-primary-500 space-y-2">
+                                    <h4 className="font-semibold text-sm text-primary-600 dark:text-primary-400">{t('privacy_view.sections.1.local_title')}</h4>
                                     <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{t('privacy_view.sections.1.local_desc')}</p>
                                 </div>
 
@@ -171,7 +171,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
                                             <button
                                                 key="0"
                                                 onClick={() => openLink('https://github.com/rick-hayek/ethervault')}
-                                                className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline"
+                                                className="text-primary-600 dark:text-primary-400 font-medium hover:underline"
                                             >
                                                 GitHub
                                             </button>

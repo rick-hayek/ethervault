@@ -70,31 +70,31 @@ export const ExportModal: React.FC<ExportModalProps> = ({ entries, onClose, onEx
                                 <button
                                     onClick={() => setFormat('csv')}
                                     className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${format === 'csv'
-                                        ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-500/10 dark:border-indigo-500'
+                                        ? 'border-primary-600 bg-primary-50 dark:bg-primary-500/10 dark:border-primary-500'
                                         : 'border-slate-100 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
                                         }`}
                                 >
-                                    <FileText className={`w-5 h-5 ${format === 'csv' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400'}`} />
+                                    <FileText className={`w-5 h-5 ${format === 'csv' ? 'text-primary-600 dark:text-primary-400' : 'text-slate-400'}`} />
                                     <div className="text-left">
-                                        <span className={`block text-sm font-medium ${format === 'csv' ? 'text-indigo-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}>CSV</span>
+                                        <span className={`block text-sm font-medium ${format === 'csv' ? 'text-primary-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}>CSV</span>
                                         <span className="text-[10px] text-slate-400 font-medium">For Excel/Sheets</span>
                                     </div>
-                                    {format === 'csv' && <Check className="w-4 h-4 text-indigo-600 ml-auto" />}
+                                    {format === 'csv' && <Check className="w-4 h-4 text-primary-600 ml-auto" />}
                                 </button>
 
                                 <button
                                     onClick={() => setFormat('json')}
                                     className={`flex items-center gap-3 p-4 rounded-xl border-2 transition-all ${format === 'json'
-                                        ? 'border-indigo-600 bg-indigo-50 dark:bg-indigo-500/10 dark:border-indigo-500'
+                                        ? 'border-primary-600 bg-primary-50 dark:bg-primary-500/10 dark:border-primary-500'
                                         : 'border-slate-100 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
                                         }`}
                                 >
-                                    <FileJson className={`w-5 h-5 ${format === 'json' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400'}`} />
+                                    <FileJson className={`w-5 h-5 ${format === 'json' ? 'text-primary-600 dark:text-primary-400' : 'text-slate-400'}`} />
                                     <div className="text-left">
-                                        <span className={`block text-sm font-medium ${format === 'json' ? 'text-indigo-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}>JSON</span>
+                                        <span className={`block text-sm font-medium ${format === 'json' ? 'text-primary-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}>JSON</span>
                                         <span className="text-[10px] text-slate-400 font-medium">Full Data Backup</span>
                                     </div>
-                                    {format === 'json' && <Check className="w-4 h-4 text-indigo-600 ml-auto" />}
+                                    {format === 'json' && <Check className="w-4 h-4 text-primary-600 ml-auto" />}
                                 </button>
                             </div>
                         </div>

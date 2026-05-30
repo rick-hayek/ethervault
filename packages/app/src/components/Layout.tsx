@@ -94,30 +94,30 @@ export const Layout: React.FC<LayoutProps> = ({
       id: 'vault',
       label: t('layout.nav.vault'),
       icon: Lock,
-      activeClass: 'bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400',
-      ringClass: 'ring-indigo-500/20'
+      activeClass: 'bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400',
+      ringClass: 'ring-primary-500/20'
     },
     // ... items
     {
       id: 'security',
       label: t('layout.nav.security'),
       icon: ShieldCheck,
-      activeClass: 'bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400',
-      ringClass: 'ring-indigo-500/20'
+      activeClass: 'bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400',
+      ringClass: 'ring-primary-500/20'
     },
     {
       id: 'generator',
       label: t('layout.nav.generator'),
       icon: KeyRound,
-      activeClass: 'bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400',
-      ringClass: 'ring-indigo-500/20'
+      activeClass: 'bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400',
+      ringClass: 'ring-primary-500/20'
     },
     {
       id: 'settings',
       label: t('layout.nav.settings'),
       icon: Settings,
-      activeClass: 'bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400',
-      ringClass: 'ring-indigo-500/20'
+      activeClass: 'bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400',
+      ringClass: 'ring-primary-500/20'
     },
   ];
 

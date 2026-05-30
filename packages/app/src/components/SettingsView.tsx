@@ -21,7 +21,8 @@ import {
   Trash2,
   Loader2,
   Info,
-  ChevronLeft
+  ChevronLeft,
+  Palette
 } from 'lucide-react';
 import { Portal } from './Portal';
 import { useTranslation } from 'react-i18next';
@@ -731,20 +732,20 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   const CompactSetting = ({ icon: Icon, label, value, onClick, type = 'toggle' }: any) => (
     <div
       onClick={type === 'toggle' ? onClick : undefined}
-      className={`bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group transition-all ${type === 'toggle' ? 'cursor-pointer active:scale-[0.99] hover:border-indigo-500/30' : ''}`}
+      className={`bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group transition-all ${type === 'toggle' ? 'cursor-pointer active:scale-[0.99] hover:border-primary-500/30' : ''}`}
     >
       <div className="flex items-center gap-3">
-        <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
+        <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
           <Icon className="w-3.5 h-3.5" />
         </div>
         <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{label}</span>
       </div>
       {type === 'toggle' ? (
-        <div className={`w-10 h-6 rounded-full relative transition-all duration-300 ${value ? 'bg-indigo-600' : 'bg-slate-200 dark:bg-slate-700'}`}>
+        <div className={`w-10 h-6 rounded-full relative transition-all duration-300 ${value ? 'bg-primary-600' : 'bg-slate-200 dark:bg-slate-700'}`}>
           <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all duration-300 shadow-sm ${value ? 'right-1' : 'left-1'}`} />
         </div>
       ) : (
-        <button onClick={(e) => { e.stopPropagation(); onClick?.(); }} disabled={!onClick} className="text-[10px] font-medium text-indigo-600 dark:text-indigo-400 capitalize disabled:cursor-default px-2 py-1">
+        <button onClick={(e) => { e.stopPropagation(); onClick?.(); }} disabled={!onClick} className="text-[10px] font-medium text-primary-600 dark:text-primary-400 capitalize disabled:cursor-default px-2 py-1">
           {value}
         </button>
       )}
@@ -796,7 +797,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <div
                     key={p.id}
                     className={`relative overflow-hidden rounded-2xl border transition-all duration-300 ${isActive
-                      ? 'border-indigo-500/50 bg-indigo-50/50 dark:bg-indigo-500/10 dark:border-indigo-500/30 shadow-md ring-1 ring-indigo-500/20'
+                      ? 'border-primary-500/50 bg-primary-50/50 dark:bg-primary-500/10 dark:border-primary-500/30 shadow-md ring-1 ring-primary-500/20'
                       : 'border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-800 hover:shadow-sm'
                       }`}
                   >
@@ -846,7 +847,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                               <button
                                 onClick={() => handleSync(p.id as CloudProvider)}
                                 disabled={isSyncing}
-                                className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-medium rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2 shadow-sm shadow-indigo-200 dark:shadow-none"
+                                className="flex-1 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-[11px] font-medium rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2 shadow-sm shadow-primary-200 dark:shadow-none"
                               >
                                 <RefreshCcw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
                                 {isSyncing ? t('settings.cloud.syncing') : t('settings.cloud.sync_now')}
@@ -918,7 +919,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
               {/* Lock Timer Dropdown */}
               <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
                 <div className="flex items-center gap-3">
-                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
+                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
                     <Clock className="w-3.5 h-3.5" />
                   </div>
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.lock_timer')}</span>
@@ -926,7 +927,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                 <select
                   value={settings.autoLockTimeout}
                   onChange={(e) => setSettings({ ...settings, autoLockTimeout: Number(e.target.value) })}
-                  className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-medium text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-indigo-500 transition-all cursor-pointer"
+                  className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-medium text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-primary-500 transition-all cursor-pointer"
                 >
                   {[1, 5, 15, 30, 60].map(val => (
                     <option key={val} value={val}>
@@ -938,10 +939,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
               {/* Recent Activity Button */}
               <div
                 onClick={() => setIsActivityModalOpen(true)}
-                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group cursor-pointer hover:border-indigo-500/50 transition-all"
+                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group cursor-pointer hover:border-primary-500/50 transition-all"
               >
                 <div className="flex items-center gap-3">
-                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
+                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
                     <Activity className="w-3.5 h-3.5" />
                   </div>
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.recent_activity')}</span>
@@ -964,10 +965,32 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   setSettings({ ...settings, theme: next });
                 }}
               />
+              {/* Theme Color Selector */}
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
+                <div className="flex items-center gap-3">
+                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
+                    <Palette className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.theme_color', 'Theme Color')}</span>
+                </div>
+                <select
+                  value={settings.themeColor || 'blue'}
+                  onChange={(e) => setSettings({ ...settings, themeColor: e.target.value as any })}
+                  className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-medium text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-primary-500 transition-all cursor-pointer"
+                >
+                  <option value="blue">{t('settings.color.blue', 'Blue')}</option>
+                  <option value="emerald">{t('settings.color.emerald', 'Green')}</option>
+                  <option value="violet">{t('settings.color.violet', 'Violet')}</option>
+                  <option value="amber">{t('settings.color.amber', 'Amber')}</option>
+                  <option value="rose">{t('settings.color.rose', 'Rose')}</option>
+                  <option value="fuchsia">{t('settings.color.fuchsia', 'Fuchsia')}</option>
+                </select>
+              </div>
+
               {/* Language Selector */}
               <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
                 <div className="flex items-center gap-3">
-                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
+                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
                     <Languages className="w-3.5 h-3.5" />
                   </div>
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.language')}</span>
@@ -975,7 +998,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                 <select
                   value={i18n.language}
                   onChange={(e) => i18n.changeLanguage(e.target.value)}
-                  className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-medium text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-indigo-500 transition-all cursor-pointer"
+                  className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-medium text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-primary-500 transition-all cursor-pointer"
                 >
                   <option value="en">English</option>
                   <option value="zh">中文</option>
@@ -987,14 +1010,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
               {/* Master Log Settings */}
               <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
                 <div className="flex items-center gap-3">
-                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
+                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
                     <FileText className="w-3.5 h-3.5" />
                   </div>
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.master_log')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   {(settings.masterLogEnabled ?? true) && window.electronAPI && (
-                    <button onClick={() => logger.openLogFile()} className="text-[9px] font-medium text-slate-400 hover:text-indigo-500 transition-colors px-2">{t('settings.option.open_log')}</button>
+                    <button onClick={() => logger.openLogFile()} className="text-[9px] font-medium text-slate-400 hover:text-primary-500 transition-colors px-2">{t('settings.option.open_log')}</button>
                   )}
                   <button
                     onClick={() => {
@@ -1002,7 +1025,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                       setSettings({ ...settings, masterLogEnabled: newValue });
                       logger.setEnabled(newValue);
                     }}
-                    className={`w-8 h-4 rounded-full relative transition-all ${settings.masterLogEnabled ?? true ? 'bg-indigo-600' : 'bg-slate-200 dark:bg-slate-700'}`}
+                    className={`w-8 h-4 rounded-full relative transition-all ${settings.masterLogEnabled ?? true ? 'bg-primary-600' : 'bg-slate-200 dark:bg-slate-700'}`}
                   >
                     <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${(settings.masterLogEnabled ?? true) ? 'right-0.5' : 'left-0.5'}`} />
                   </button>
@@ -1012,7 +1035,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
             <button
               onClick={() => setIsPasswordModalOpen(true)}
-              className="w-full py-3 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-[11px] font-medium rounded-2xl hover:bg-indigo-100 transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 bg-primary-50 dark:bg-primary-500/10 border border-primary-100 dark:border-primary-500/20 text-primary-600 dark:text-primary-400 text-[11px] font-medium rounded-2xl hover:bg-primary-100 transition-all flex items-center justify-center gap-2"
             >
               <Shield className="w-4 h-4" />
               {t('settings.change_password')}
@@ -1025,20 +1048,20 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
               <div className="grid grid-cols-2 gap-3">
                 <button
                   onClick={() => setIsImportModalOpen(true)}
-                  className="flex flex-col items-center justify-center gap-2 py-4 bg-slate-50 dark:bg-slate-800 rounded-2xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all group"
+                  className="flex flex-col items-center justify-center gap-2 py-4 bg-slate-50 dark:bg-slate-800 rounded-2xl hover:bg-primary-50 dark:hover:bg-primary-500/10 hover:text-primary-600 dark:hover:text-primary-400 transition-all group"
                 >
                   <div className="p-2 bg-white dark:bg-slate-700 rounded-full shadow-sm group-hover:scale-110 transition-transform">
-                    <Database className="w-4 h-4 text-slate-400 group-hover:text-indigo-500" />
+                    <Database className="w-4 h-4 text-slate-400 group-hover:text-primary-500" />
                   </div>
                   <span className="text-[10px] font-medium tracking-wider">{t('settings.import', 'Import')}</span>
                 </button>
 
                 <button
                   onClick={() => setIsExportModalOpen(true)}
-                  className="flex flex-col items-center justify-center gap-2 py-4 bg-slate-50 dark:bg-slate-800 rounded-2xl hover:bg-indigo-50 dark:hover:bg-indigo-500/10 hover:text-indigo-600 dark:hover:text-indigo-400 transition-all group"
+                  className="flex flex-col items-center justify-center gap-2 py-4 bg-slate-50 dark:bg-slate-800 rounded-2xl hover:bg-primary-50 dark:hover:bg-primary-500/10 hover:text-primary-600 dark:hover:text-primary-400 transition-all group"
                 >
                   <div className="p-2 bg-white dark:bg-slate-700 rounded-full shadow-sm group-hover:scale-110 transition-transform">
-                    <FileText className="w-4 h-4 text-slate-400 group-hover:text-indigo-500" />
+                    <FileText className="w-4 h-4 text-slate-400 group-hover:text-primary-500" />
                   </div>
                   <span className="text-[10px] font-medium tracking-wider">{t('settings.export', 'Export')}</span>
                 </button>
@@ -1068,7 +1091,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
               className="w-full py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[24px] flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group shadow-sm mb-3"
             >
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-900/10 flex items-center justify-center text-indigo-500 group-hover:text-indigo-600 transition-colors">
+                <div className="w-10 h-10 rounded-2xl bg-primary-50 dark:bg-primary-900/10 flex items-center justify-center text-primary-500 group-hover:text-primary-600 transition-colors">
                   <Shield className="w-5 h-5" />
                 </div>
                 <div className="text-left">
@@ -1087,7 +1110,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
               className="w-full py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[24px] flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group shadow-sm"
             >
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 group-hover:text-indigo-500 transition-colors">
+                <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 group-hover:text-primary-500 transition-colors">
                   <Info className="w-5 h-5" />
                 </div>
                 <div className="text-left">
@@ -1111,7 +1134,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   {/* Loading Overlay */}
                   {isChangingPassword && (
                     <div className="absolute inset-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm flex flex-col items-center justify-center z-50 animate-in fade-in duration-200 p-6 text-center">
-                      <Loader2 className="w-10 h-10 text-indigo-500 animate-spin mb-4" />
+                      <Loader2 className="w-10 h-10 text-primary-500 animate-spin mb-4" />
                       <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">{t('settings.processing', 'Processing...')}</h3>
                       <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-widest">{passwordChangeStatus}</p>
                     </div>
@@ -1131,7 +1154,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                             setPasswordForm({ ...passwordForm, old: val });
                           }
                         }}
-                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-primary-500 transition-all text-sm"
                       />
                     </div>
                     <div className="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
@@ -1146,7 +1169,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                             setPasswordForm({ ...passwordForm, new: val });
                           }
                         }}
-                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-primary-500 transition-all text-sm"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -1161,7 +1184,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                             setPasswordForm({ ...passwordForm, confirm: val });
                           }
                         }}
-                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-indigo-500 transition-all text-sm"
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-primary-500 transition-all text-sm"
                       />
                     </div>
 
@@ -1202,7 +1225,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
               <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
                 <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden p-8 animate-in zoom-in-95 duration-200">
                   <div className="flex items-center gap-4 mb-6">
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-50 dark:bg-indigo-500/20 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                    <div className="w-12 h-12 rounded-2xl bg-primary-50 dark:bg-primary-500/20 flex items-center justify-center text-primary-600 dark:text-primary-400">
                       <Fingerprint className="w-6 h-6" />
                     </div>
                     <div>
@@ -1225,7 +1248,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                               setBioPassword(val);
                             }
                           }}
-                          className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3 px-4 outline-none focus:border-indigo-500 transition-all text-sm font-medium"
+                          className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3 px-4 outline-none focus:border-primary-500 transition-all text-sm font-medium"
                           placeholder={t('login.unlock_placeholder')}
                           autoFocus
                         />
@@ -1245,7 +1268,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                       </button>
                       <button
                         type="submit"
-                        className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-medium rounded-xl hover:shadow-lg transition-all active:scale-95"
+                        className="flex-1 py-3 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-medium rounded-xl hover:shadow-lg transition-all active:scale-95"
                       >
                         {t('settings.biometric_modal.enable')}
                       </button>
@@ -1310,7 +1333,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                 <div className="bg-white dark:bg-slate-900 w-full h-[100dvh] md:h-[600px] md:max-w-2xl flex flex-col rounded-none md:rounded-3xl border-t md:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 md:zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
                   <div className="flex items-center justify-between px-6 md:px-8 pt-[calc(env(safe-area-inset-top)+4px)] pb-4 md:py-6 border-b border-slate-100 dark:border-slate-800">
                     <div className="flex items-center gap-3">
-                      <div className="hidden md:flex p-2 bg-indigo-50 dark:bg-slate-800 rounded-xl text-indigo-500">
+                      <div className="hidden md:flex p-2 bg-primary-50 dark:bg-slate-800 rounded-xl text-primary-500">
                         <Activity className="w-5 h-5" />
                       </div>
 
@@ -1348,7 +1371,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                         if (log.includes('[info]') || log.includes('info:')) colorClass = "text-emerald-600 dark:text-emerald-400";
 
                         // Highlight our custom tags
-                        const highlightedLog = log.replace(/(\[AUTH\]|\[VAULT\]|\[DATA\])/g, '<span class="font-bold text-indigo-500">$1</span>');
+                        const highlightedLog = log.replace(/(\[AUTH\]|\[VAULT\]|\[DATA\])/g, '<span class="font-bold text-primary-500">$1</span>');
 
                         return (
                           <div key={index} className={`flex items-start gap-3 border-b border-slate-200/50 dark:border-slate-800/50 pb-1 ${colorClass}`}>
@@ -1363,7 +1386,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <div className="hidden md:flex p-4 border-t border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50 items-center justify-between">
                     <button
                       onClick={fetchLogs}
-                      className="flex items-center gap-2 px-4 py-2 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:text-indigo-400 dark:hover:bg-indigo-500/10 transition-all"
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl text-slate-500 hover:text-primary-600 hover:bg-primary-50 dark:text-slate-400 dark:hover:text-primary-400 dark:hover:bg-primary-500/10 transition-all"
                     >
                       <RefreshCcw className="w-4 h-4" />
                       <span className="text-xs font-medium uppercase tracking-wider">{t('settings.activity_modal.refresh')}</span>
