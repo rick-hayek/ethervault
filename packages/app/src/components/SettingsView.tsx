@@ -765,7 +765,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
       <div className="px-4 md:px-8 space-y-4 pb-6 md:pb-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          {/* Cloud Config - Tighter */}
+          {/* Cloud Config - Tighter - Hiding for premium paywall preparation */}
+          {false && (
           <div className="lg:col-span-5 bg-white dark:bg-slate-900 p-6 rounded-[32px] border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
             <div className="flex items-center justify-between mb-1">
               <h2 className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400">{t('settings.sync_provider')}</h2>
@@ -909,9 +910,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
               </button>
             )}
           </div>
+          )}
 
           {/* Access Settings - High Density Grid */}
-          <div className="lg:col-span-7 space-y-4">
+          {/* lg:col-span-7 changed to lg:col-span-12 when cloud config is hidden */}
+          <div className="lg:col-span-12 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {biometricsSupported && (
                 <CompactSetting icon={Fingerprint} label={t('settings.option.biometric')} value={settings.biometricsEnabled} onClick={toggleBiometrics} />

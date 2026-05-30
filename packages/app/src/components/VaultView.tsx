@@ -232,8 +232,8 @@ export const VaultView: React.FC<VaultViewProps> = ({
 
       {/* Main Content */}
       <div className="px-4 pb-4 md:px-8 md:pb-8 space-y-4 md:space-y-6 pt-0 md:pt-2">
-        {/* Synchronize Prompt (One-time) */}
-        {showSyncPrompt && (
+        {/* Synchronize Prompt (One-time) - Hiding for premium paywall preparation */}
+        {showSyncPrompt && false && (
           <CloudSyncPrompt
             onGoToSettings={handleGoToSettings}
             onDismiss={handleDismissPrompt}
