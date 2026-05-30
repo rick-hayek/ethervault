@@ -81,7 +81,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                     <form onSubmit={handleSubmit} className="p-6 md:p-8 space-y-5 overflow-y-auto overscroll-contain pb-safe-area-bottom">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div className="space-y-2">
-                                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.title')}</label>
+                                <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.title')}</label>
                                 <input
                                     required
                                     value={formData.title}
@@ -91,7 +91,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.category')}</label>
+                                <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.category')}</label>
                                 <select
                                     value={formData.category}
                                     onChange={e => setFormData({ ...formData, category: e.target.value as Category })}
@@ -103,7 +103,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.website')}</label>
+                            <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.website')}</label>
                             <div className="relative">
                                 <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                                 <input
@@ -116,7 +116,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.username_email')}</label>
+                            <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.username_email')}</label>
                             <div className="relative">
                                 <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                                 <input
@@ -141,7 +141,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.password')}</label>
+                            <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.password')}</label>
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                                 <input
@@ -186,7 +186,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                 onClick={() => setShowAdditionalFields(!showAdditionalFields)}
                                 className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
                             >
-                                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                <span className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">
                                     {t('vault.entry.additional_info', 'Additional Information')}
                                 </span>
                                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${showAdditionalFields ? 'rotate-180' : ''}`} />
@@ -196,7 +196,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                 <div className="p-4 space-y-4 bg-slate-50/50 dark:bg-slate-950/50">
                                     {/* Recovery Phone */}
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">
+                                        <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">
                                             {t('vault.entry.recovery_phone', 'Recovery Phone')}
                                         </label>
                                         <div className="relative">
@@ -213,7 +213,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
 
                                     {/* Recovery Email */}
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">
+                                        <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">
                                             {t('vault.entry.recovery_email', 'Recovery Email')}
                                         </label>
                                         <div className="relative">
@@ -230,7 +230,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
 
                                     {/* Note */}
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">
+                                        <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">
                                             {t('vault.entry.note', 'Note')}
                                         </label>
                                         <div className="relative">
@@ -254,14 +254,14 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                     <button
                                         type="button"
                                         onClick={() => setShowDeleteConfirm(false)}
-                                        className="flex-1 px-4 py-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all text-sm font-bold"
+                                        className="flex-1 px-4 py-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all text-sm font-medium"
                                     >
                                         {t('common.cancel', 'Cancel')}
                                     </button>
                                     <button
                                         type="button"
                                         onClick={() => onDelete(entry.id)}
-                                        className="flex-1 px-4 py-4 rounded-xl bg-rose-500 text-white hover:bg-rose-600 transition-all text-sm font-bold shadow-lg shadow-rose-500/20"
+                                        className="flex-1 px-4 py-4 rounded-xl bg-rose-500 text-white hover:bg-rose-600 transition-all text-sm font-medium shadow-lg shadow-rose-500/20"
                                     >
                                         {t('common.confirm_delete', 'Delete')}
                                     </button>
@@ -281,14 +281,14 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                     <button
                                         type="button"
                                         onClick={onClose}
-                                        className="px-6 py-4 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
+                                        className="px-6 py-4 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
                                     >
                                         {t('common.cancel', 'Cancel')}
                                     </button>
 
                                     <button
                                         type="submit"
-                                        className="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-4 rounded-xl font-bold shadow-xl hover:opacity-90 active:scale-[0.98] transition-all"
+                                        className="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-4 rounded-xl font-medium shadow-xl hover:opacity-90 active:scale-[0.98] transition-all"
                                     >
                                         {entry ? t('vault.update') : t('vault.save')}
                                     </button>

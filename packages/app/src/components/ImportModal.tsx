@@ -271,7 +271,7 @@ export const ImportModal: React.FC<ImportModalProps> = ({ onClose, onImport }) =
                                 <FileText className="w-10 h-10 text-slate-300 dark:text-slate-600 mb-3" />
                             )}
 
-                            <p className="font-bold text-slate-700 dark:text-slate-200 mb-1">
+                            <p className="font-medium text-slate-700 dark:text-slate-200 mb-1">
                                 {status === 'ready' ? t('import.ready', { count: parsedEntries.length }) :
                                     status === 'importing' ? t('import.importing') :
                                         status === 'error' ? t('import.error') :
@@ -290,14 +290,14 @@ export const ImportModal: React.FC<ImportModalProps> = ({ onClose, onImport }) =
                             <button
                                 onClick={onClose}
                                 disabled={status === 'importing'}
-                                className="px-6 py-4 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all disabled:opacity-50"
+                                className="px-6 py-4 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-all disabled:opacity-50"
                             >
                                 {t('common.cancel', 'Cancel')}
                             </button>
                             <button
                                 disabled={status !== 'ready'}
                                 onClick={handleImportClick}
-                                className="flex-1 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                className="flex-1 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-medium shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 {status === 'importing' ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
                                 {status === 'importing' ? t('import.importing') : t('import.action')}

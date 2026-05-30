@@ -52,7 +52,7 @@ export const SyncWarningModal: React.FC<SyncWarningModalProps> = ({ onClose, onC
                             <p className="text-sm text-slate-500 dark:text-slate-400 mt-2 max-w-sm mx-auto leading-relaxed">
                                 {t('sync.warning.message', `You are about to enable sync with ${providerName}. To access your vault on other devices, you MUST remember your Master Password.`)}
                             </p>
-                            <p className="text-xs font-bold text-amber-600 dark:text-amber-500 mt-2 uppercase tracking-wide">
+                            <p className="text-xs font-semibold text-amber-600 dark:text-amber-500 mt-2 uppercase tracking-wide">
                                 {t('sync.warning.alert', 'We cannot recover your password if you forget it.')}
                             </p>
                         </div>
@@ -60,7 +60,7 @@ export const SyncWarningModal: React.FC<SyncWarningModalProps> = ({ onClose, onC
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div className="space-y-1.5">
-                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">
+                            <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest pl-1">
                                 {t('sync.warning.confirm_password', 'Confirm Master Password')}
                             </label>
                             <input
@@ -80,7 +80,7 @@ export const SyncWarningModal: React.FC<SyncWarningModalProps> = ({ onClose, onC
                         </div>
 
                         {error && (
-                            <div className="flex items-center gap-2 justify-center text-rose-500 text-xs font-bold uppercase animate-in fade-in slide-in-from-top-1">
+                            <div className="flex items-center gap-2 justify-center text-rose-500 text-xs font-medium uppercase animate-in fade-in slide-in-from-top-1">
                                 <Shield className="w-3 h-3" />
                                 {error}
                             </div>
@@ -91,14 +91,14 @@ export const SyncWarningModal: React.FC<SyncWarningModalProps> = ({ onClose, onC
                                 type="button"
                                 onClick={onClose}
                                 disabled={loading}
-                                className="flex-1 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                                className="flex-1 py-3 text-[10px] font-medium text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
                             >
                                 {t('common.cancel', 'Cancel')}
                             </button>
                             <button
                                 type="submit"
                                 disabled={loading || !password}
-                                className="flex-1 py-3 bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-black rounded-xl hover:shadow-lg hover:shadow-amber-500/20 transition-all active:scale-95 disabled:opacity-50 disabled:scale-100"
+                                className="flex-1 py-3 bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-medium rounded-xl hover:shadow-lg hover:shadow-amber-500/20 transition-all active:scale-95 disabled:opacity-50 disabled:scale-100"
                             >
                                 {loading ? t('sync.warning.verifying', 'Verifying...') : t('sync.warning.confirm', 'I Understand, Enable Sync')}
                             </button>

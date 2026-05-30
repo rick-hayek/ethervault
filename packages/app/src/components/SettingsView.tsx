@@ -232,12 +232,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                 <Shield className="w-6 h-6" />
               </div>
               <div>
-                <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">Export Failed</h3>
+                <h3 className="text-sm font-semibold text-slate-900 dark:text-white uppercase tracking-wider">Export Failed</h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">{error}</p>
               </div>
               <button
                 onClick={onClose}
-                className="w-full py-2.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black rounded-xl uppercase tracking-widest hover:opacity-90 transition-opacity"
+                className="w-full py-2.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-medium rounded-xl uppercase tracking-widest hover:opacity-90 transition-opacity"
               >
                 Close
               </button>
@@ -737,14 +737,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
         <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
           <Icon className="w-3.5 h-3.5" />
         </div>
-        <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-tight">{label}</span>
+        <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{label}</span>
       </div>
       {type === 'toggle' ? (
         <div className={`w-10 h-6 rounded-full relative transition-all duration-300 ${value ? 'bg-indigo-600' : 'bg-slate-200 dark:bg-slate-700'}`}>
           <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all duration-300 shadow-sm ${value ? 'right-1' : 'left-1'}`} />
         </div>
       ) : (
-        <button onClick={(e) => { e.stopPropagation(); onClick?.(); }} disabled={!onClick} className="text-[10px] font-black text-indigo-600 dark:text-indigo-400 capitalize disabled:cursor-default px-2 py-1">
+        <button onClick={(e) => { e.stopPropagation(); onClick?.(); }} disabled={!onClick} className="text-[10px] font-medium text-indigo-600 dark:text-indigo-400 capitalize disabled:cursor-default px-2 py-1">
           {value}
         </button>
       )}
@@ -767,8 +767,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           {/* Cloud Config - Tighter */}
           <div className="lg:col-span-5 bg-white dark:bg-slate-900 p-6 rounded-[32px] border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
             <div className="flex items-center justify-between mb-1">
-              <h2 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">{t('settings.sync_provider')}</h2>
-              {settings.lastSync && <span className="text-[8px] text-emerald-500 font-bold uppercase">{settings.lastSync}</span>}
+              <h2 className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400">{t('settings.sync_provider')}</h2>
+              {settings.lastSync && <span className="text-[8px] text-emerald-500 font-medium uppercase">{settings.lastSync}</span>}
             </div>
 
             <div className="space-y-3">
@@ -807,15 +807,15 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
                       <div className="flex-1 min-w-0 pt-0.5">
                         <div className="flex items-center justify-between mb-1">
-                          <h3 className="text-sm font-bold text-slate-900 dark:text-white leading-none">{p.name}</h3>
+                          <h3 className="text-sm font-medium text-slate-900 dark:text-white leading-none">{p.name}</h3>
                           {isActive && cloudConnected && (
-                            <span className="flex items-center gap-1 text-[9px] font-black text-emerald-500 uppercase tracking-wider bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-full">
+                            <span className="flex items-center gap-1 text-[9px] font-medium text-emerald-500 uppercase tracking-wider bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-full">
                               <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                               {t('settings.cloud.connected')}
                             </span>
                           )}
                           {isActive && !cloudConnected && (
-                            <span className="flex items-center gap-1 text-[9px] font-black text-amber-500 uppercase tracking-wider bg-amber-50 dark:bg-amber-500/10 px-2 py-0.5 rounded-full">
+                            <span className="flex items-center gap-1 text-[9px] font-medium text-amber-500 uppercase tracking-wider bg-amber-50 dark:bg-amber-500/10 px-2 py-0.5 rounded-full">
                               <div className="w-1.5 h-1.5 rounded-full bg-amber-500" />
                               {t('settings.cloud.paused', 'Paused')}
                             </span>
@@ -832,7 +832,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                         {isActive && settings.lastSync && (
                           <div className="mt-3 flex items-center gap-1.5 text-[9px] font-medium text-slate-400">
                             <RefreshCcw className="w-3 h-3 text-slate-300" />
-                            {t('settings.cloud.last_synced')} <span className="text-slate-600 dark:text-slate-300 font-bold">
+                            {t('settings.cloud.last_synced')} <span className="text-slate-600 dark:text-slate-300 font-medium">
                               {settings.lastSync === 'Just now' || settings.lastSync === '刚刚'
                                 ? t('sync.just_now')
                                 : settings.lastSync}
@@ -846,7 +846,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                               <button
                                 onClick={() => handleSync(p.id as CloudProvider)}
                                 disabled={isSyncing}
-                                className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-bold rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2 shadow-sm shadow-indigo-200 dark:shadow-none"
+                                className="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white text-[11px] font-medium rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2 shadow-sm shadow-indigo-200 dark:shadow-none"
                               >
                                 <RefreshCcw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
                                 {isSyncing ? t('settings.cloud.syncing') : t('settings.cloud.sync_now')}
@@ -854,7 +854,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                               <button
                                 onClick={() => handleSync('none')} // Disconnect
                                 disabled={isSyncing}
-                                className="px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-rose-500 hover:border-rose-200 dark:hover:border-rose-900/50 text-[11px] font-bold rounded-xl transition-all active:scale-95"
+                                className="px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-rose-500 hover:border-rose-200 dark:hover:border-rose-900/50 text-[11px] font-medium rounded-xl transition-all active:scale-95"
                               >
                                 {t('settings.cloud.disconnect')}
                               </button>
@@ -863,7 +863,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                             <button
                               onClick={() => handleSync(p.id as CloudProvider)} // Will trigger connect flow
                               disabled={isSyncing}
-                              className="w-full py-3 bg-amber-500 text-white text-[11px] font-bold rounded-xl hover:bg-amber-600 transition-all active:scale-95 flex items-center justify-center gap-2 shadow-sm shadow-amber-500/20 disabled:opacity-50 disabled:cursor-wait"
+                              className="w-full py-3 bg-amber-500 text-white text-[11px] font-medium rounded-xl hover:bg-amber-600 transition-all active:scale-95 flex items-center justify-center gap-2 shadow-sm shadow-amber-500/20 disabled:opacity-50 disabled:cursor-wait"
                             >
                               {isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                               {t('settings.cloud.reconnect', 'Resume Connection')}
@@ -872,7 +872,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                             <button
                               onClick={() => handleSync(p.id as CloudProvider)}
                               disabled={isSyncing}
-                              className="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[11px] font-bold rounded-xl hover:shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-wait"
+                              className="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[11px] font-medium rounded-xl hover:shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-wait"
                             >
                               {isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                               {t('settings.cloud.connect_account')}
@@ -902,7 +902,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                     }
                   }
                 }}
-                className="w-full py-2 mt-2 border border-rose-200 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 text-[9px] font-bold rounded-xl uppercase tracking-widest transition-colors"
+                className="w-full py-2 mt-2 border border-rose-200 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-900/20 text-[9px] font-medium rounded-xl uppercase tracking-widest transition-colors"
               >
                 Reset Cloud Data (Dev)
               </button>
@@ -921,12 +921,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
                     <Clock className="w-3.5 h-3.5" />
                   </div>
-                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.lock_timer')}</span>
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.lock_timer')}</span>
                 </div>
                 <select
                   value={settings.autoLockTimeout}
                   onChange={(e) => setSettings({ ...settings, autoLockTimeout: Number(e.target.value) })}
-                  className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-indigo-500 transition-all cursor-pointer"
+                  className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-medium text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-indigo-500 transition-all cursor-pointer"
                 >
                   {[1, 5, 15, 30, 60].map(val => (
                     <option key={val} value={val}>
@@ -944,7 +944,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
                     <Activity className="w-3.5 h-3.5" />
                   </div>
-                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.recent_activity')}</span>
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.recent_activity')}</span>
                 </div>
                 <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400">
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
@@ -970,12 +970,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
                     <Languages className="w-3.5 h-3.5" />
                   </div>
-                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.language')}</span>
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.language')}</span>
                 </div>
                 <select
                   value={i18n.language}
                   onChange={(e) => i18n.changeLanguage(e.target.value)}
-                  className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-bold text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-indigo-500 transition-all cursor-pointer"
+                  className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-medium text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-indigo-500 transition-all cursor-pointer"
                 >
                   <option value="en">English</option>
                   <option value="zh">中文</option>
@@ -990,11 +990,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-indigo-500 transition-colors">
                     <FileText className="w-3.5 h-3.5" />
                   </div>
-                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.master_log')}</span>
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.master_log')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   {(settings.masterLogEnabled ?? true) && window.electronAPI && (
-                    <button onClick={() => logger.openLogFile()} className="text-[9px] font-bold text-slate-400 hover:text-indigo-500 transition-colors px-2">{t('settings.option.open_log')}</button>
+                    <button onClick={() => logger.openLogFile()} className="text-[9px] font-medium text-slate-400 hover:text-indigo-500 transition-colors px-2">{t('settings.option.open_log')}</button>
                   )}
                   <button
                     onClick={() => {
@@ -1012,7 +1012,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
             <button
               onClick={() => setIsPasswordModalOpen(true)}
-              className="w-full py-3 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-[11px] font-black rounded-2xl hover:bg-indigo-100 transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 bg-indigo-50 dark:bg-indigo-500/10 border border-indigo-100 dark:border-indigo-500/20 text-indigo-600 dark:text-indigo-400 text-[11px] font-medium rounded-2xl hover:bg-indigo-100 transition-all flex items-center justify-center gap-2"
             >
               <Shield className="w-4 h-4" />
               {t('settings.change_password')}
@@ -1020,7 +1020,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
             {/* Data Management Section */}
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-[24px] space-y-4">
-              <h3 className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400 pl-1">{t('settings.data_management', 'Data Management')}</h3>
+              <h3 className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">{t('settings.data_management', 'Data Management')}</h3>
 
               <div className="grid grid-cols-2 gap-3">
                 <button
@@ -1030,7 +1030,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <div className="p-2 bg-white dark:bg-slate-700 rounded-full shadow-sm group-hover:scale-110 transition-transform">
                     <Database className="w-4 h-4 text-slate-400 group-hover:text-indigo-500" />
                   </div>
-                  <span className="text-[10px] font-bold tracking-wider">{t('settings.import', 'Import')}</span>
+                  <span className="text-[10px] font-medium tracking-wider">{t('settings.import', 'Import')}</span>
                 </button>
 
                 <button
@@ -1040,7 +1040,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <div className="p-2 bg-white dark:bg-slate-700 rounded-full shadow-sm group-hover:scale-110 transition-transform">
                     <FileText className="w-4 h-4 text-slate-400 group-hover:text-indigo-500" />
                   </div>
-                  <span className="text-[10px] font-bold tracking-wider">{t('settings.export', 'Export')}</span>
+                  <span className="text-[10px] font-medium tracking-wider">{t('settings.export', 'Export')}</span>
                 </button>
               </div>
 
@@ -1052,12 +1052,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <div className="p-1.5 bg-rose-50 dark:bg-rose-900/20 rounded-lg text-rose-400 group-hover:text-rose-500 transition-colors">
                     <Trash2 className="w-3.5 h-3.5" />
                   </div>
-                  <span className="text-xs font-bold text-slate-600 dark:text-slate-300 group-hover:text-rose-600 dark:group-hover:text-rose-400">{t('settings.clear_cache', 'Clear App Cache')}</span>
+                  <span className="text-xs font-medium text-slate-600 dark:text-slate-300 group-hover:text-rose-600 dark:group-hover:text-rose-400">{t('settings.clear_cache', 'Clear App Cache')}</span>
                 </div>
-                <span className="text-[9px] font-black uppercase text-rose-300 group-hover:text-rose-500 tracking-widest">{t('common.clear', 'Clean')}</span>
+                <span className="text-[9px] font-medium uppercase text-rose-300 group-hover:text-rose-500 tracking-widest">{t('common.clear', 'Clean')}</span>
               </button>
               {cacheMessage && (
-                <p className="text-[10px] font-bold text-center text-emerald-500 uppercase tracking-widest animate-in fade-in slide-in-from-bottom-1">
+                <p className="text-[10px] font-medium text-center text-emerald-500 uppercase tracking-widest animate-in fade-in slide-in-from-bottom-1">
                   {cacheMessage}
                 </p>
               )}
@@ -1072,8 +1072,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <Shield className="w-5 h-5" />
                 </div>
                 <div className="text-left">
-                  <h3 className="text-xs font-black tracking-widest text-slate-700 dark:text-slate-200">{t('about.privacy_title', 'Privacy & Security')}</h3>
-                  <p className="text-[10px] font-bold text-slate-400 group-hover:text-slate-500 dark:group-hover:text-slate-400 transition-colors mt-0.5">{t('privacy_view.title', 'Privacy Policy')}</p>
+                  <h3 className="text-xs font-medium tracking-widest text-slate-700 dark:text-slate-200">{t('about.privacy_title', 'Privacy & Security')}</h3>
+                  <p className="text-[10px] font-medium text-slate-400 group-hover:text-slate-500 dark:group-hover:text-slate-400 transition-colors mt-0.5">{t('privacy_view.title', 'Privacy Policy')}</p>
                 </div>
               </div>
               <div className="text-slate-300 dark:text-slate-700 group-hover:translate-x-1 transition-transform">
@@ -1091,8 +1091,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <Info className="w-5 h-5" />
                 </div>
                 <div className="text-left">
-                  <h3 className="text-xs font-black tracking-widest text-slate-700 dark:text-slate-200">{t('about.title', 'About')}</h3>
-                  <p className="text-[10px] font-bold text-slate-400 group-hover:text-slate-500 dark:group-hover:text-slate-400 transition-colors mt-0.5">v{appVersion}</p>
+                  <h3 className="text-xs font-medium tracking-widest text-slate-700 dark:text-slate-200">{t('about.title', 'About')}</h3>
+                  <p className="text-[10px] font-medium text-slate-400 group-hover:text-slate-500 dark:group-hover:text-slate-400 transition-colors mt-0.5">v{appVersion}</p>
                 </div>
               </div>
               <div className="text-slate-300 dark:text-slate-700 group-hover:translate-x-1 transition-transform">
@@ -1112,15 +1112,15 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   {isChangingPassword && (
                     <div className="absolute inset-0 bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm flex flex-col items-center justify-center z-50 animate-in fade-in duration-200 p-6 text-center">
                       <Loader2 className="w-10 h-10 text-indigo-500 animate-spin mb-4" />
-                      <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">{t('settings.processing', 'Processing...')}</h3>
-                      <p className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">{passwordChangeStatus}</p>
+                      <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-2">{t('settings.processing', 'Processing...')}</h3>
+                      <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-widest">{passwordChangeStatus}</p>
                     </div>
                   )}
 
-                  <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">{t('settings.password_modal.title')}</h2>
+                  <h2 className="text-xl font-semibold text-slate-900 dark:text-white mb-6">{t('settings.password_modal.title')}</h2>
                   <form onSubmit={handlePasswordChange} className="space-y-4">
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.current')}</label>
+                      <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.current')}</label>
                       <input
                         type="password"
                         required
@@ -1135,7 +1135,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                       />
                     </div>
                     <div className="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
-                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.new')}</label>
+                      <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.new')}</label>
                       <input
                         type="password"
                         required
@@ -1150,7 +1150,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                       />
                     </div>
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.confirm')}</label>
+                      <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest pl-1">{t('settings.password_modal.confirm')}</label>
                       <input
                         type="password"
                         required
@@ -1165,20 +1165,20 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                       />
                     </div>
 
-                    {error && <p className="text-rose-500 text-[10px] font-bold uppercase text-center pt-2">{error}</p>}
-                    {success && <p className="text-emerald-500 text-[10px] font-bold uppercase text-center pt-2">{t('settings.success.password')}</p>}
+                    {error && <p className="text-rose-500 text-[10px] font-medium uppercase text-center pt-2">{error}</p>}
+                    {success && <p className="text-emerald-500 text-[10px] font-medium uppercase text-center pt-2">{t('settings.success.password')}</p>}
 
                     <div className="flex gap-3 pt-6">
                       <button
                         type="button"
                         onClick={() => { setIsPasswordModalOpen(false); setError(null); }}
-                        className="flex-1 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                        className="flex-1 py-3 text-[10px] font-medium text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
                       >
                         {t('settings.password_modal.cancel')}
                       </button>
                       <button
                         type="submit"
-                        className="flex-1 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-black rounded-xl hover:opacity-90 transition-all"
+                        className="flex-1 py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[10px] font-medium rounded-xl hover:opacity-90 transition-all"
                       >
                         {t('settings.password_modal.save')}
                       </button>
@@ -1191,7 +1191,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
         }
 
         <div className="flex items-center justify-center md:justify-end pt-2 border-t border-slate-100 dark:border-slate-900">
-          <span className="text-[8px] font-black text-slate-300 dark:text-slate-800 uppercase tracking-[0.5em]">{t('settings.encryption')}</span>
+          <span className="text-[8px] font-medium text-slate-300 dark:text-slate-800 uppercase tracking-[0.5em]">{t('settings.encryption')}</span>
         </div>
 
 
@@ -1206,14 +1206,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                       <Fingerprint className="w-6 h-6" />
                     </div>
                     <div>
-                      <h2 className="text-lg font-bold text-slate-900 dark:text-white leading-tight">{t('settings.biometric_modal.title')}</h2>
+                      <h2 className="text-lg font-semibold text-slate-900 dark:text-white leading-tight">{t('settings.biometric_modal.title')}</h2>
                       <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">{t('settings.biometric_modal.description')}</p>
                     </div>
                   </div>
 
                   <form onSubmit={handleBioConfirm} className="space-y-4">
                     <div className="space-y-1.5">
-                      <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest pl-1">{t('login.master_password')}</label>
+                      <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest pl-1">{t('login.master_password')}</label>
                       <div className="relative">
                         <input
                           type="password"
@@ -1225,7 +1225,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                               setBioPassword(val);
                             }
                           }}
-                          className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3 px-4 outline-none focus:border-indigo-500 transition-all text-sm font-bold"
+                          className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3 px-4 outline-none focus:border-indigo-500 transition-all text-sm font-medium"
                           placeholder={t('login.unlock_placeholder')}
                           autoFocus
                         />
@@ -1233,19 +1233,19 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                       </div>
                     </div>
 
-                    {bioError && <p className="text-rose-500 text-[10px] font-bold uppercase text-center pt-2">{bioError}</p>}
+                    {bioError && <p className="text-rose-500 text-[10px] font-medium uppercase text-center pt-2">{bioError}</p>}
 
                     <div className="flex gap-3 pt-4">
                       <button
                         type="button"
                         onClick={() => { setIsBioModalOpen(false); setBioError(null); }}
-                        className="flex-1 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                        className="flex-1 py-3 text-[10px] font-medium text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
                       >
                         {t('common.cancel')}
                       </button>
                       <button
                         type="submit"
-                        className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-black rounded-xl hover:shadow-lg transition-all active:scale-95"
+                        className="flex-1 py-3 bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-medium rounded-xl hover:shadow-lg transition-all active:scale-95"
                       >
                         {t('settings.biometric_modal.enable')}
                       </button>
@@ -1320,7 +1320,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                       </button>
 
                       <div>
-                        <h2 className="text-lg font-bold text-slate-900 dark:text-white">{t('settings.activity_modal.title')}</h2>
+                        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">{t('settings.activity_modal.title')}</h2>
                         <p className="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">~/Library/Logs/EtherVault/main.log</p>
                       </div>
                     </div>
@@ -1366,11 +1366,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                       className="flex items-center gap-2 px-4 py-2 rounded-xl text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 dark:text-slate-400 dark:hover:text-indigo-400 dark:hover:bg-indigo-500/10 transition-all"
                     >
                       <RefreshCcw className="w-4 h-4" />
-                      <span className="text-xs font-bold uppercase tracking-wider">{t('settings.activity_modal.refresh')}</span>
+                      <span className="text-xs font-medium uppercase tracking-wider">{t('settings.activity_modal.refresh')}</span>
                     </button>
                     <button
                       onClick={() => setIsActivityModalOpen(false)}
-                      className="px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold rounded-xl hover:opacity-90 transition-all uppercase tracking-wider"
+                      className="px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-medium rounded-xl hover:opacity-90 transition-all uppercase tracking-wider"
                     >
                       {t('settings.activity_modal.close')}
                     </button>
@@ -1394,7 +1394,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                 <div className="w-12 h-12 bg-rose-50 dark:bg-rose-900/20 rounded-full flex items-center justify-center mx-auto mb-4 text-rose-500">
                   <Trash2 className="w-6 h-6" />
                 </div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white">{t('settings.clear_cache')}?</h3>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{t('settings.clear_cache')}?</h3>
                 <p className="text-sm text-slate-500 dark:text-slate-400">
                   {t('settings.clear_cache_desc', 'This will remove local logs and temporary data. Your vault data will NOT be deleted.')}
                 </p>
@@ -1402,13 +1402,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
               <div className="flex gap-3">
                 <button
                   onClick={() => setIsCacheConfirmOpen(false)}
-                  className="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all font-mono text-sm"
+                  className="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-all font-mono text-sm"
                 >
                   {t('common.cancel')}
                 </button>
                 <button
                   onClick={performClearCache}
-                  className="flex-1 px-4 py-3 rounded-xl bg-rose-500 text-white font-bold hover:bg-rose-600 transition-all shadow-lg shadow-rose-500/20 font-mono text-sm"
+                  className="flex-1 px-4 py-3 rounded-xl bg-rose-500 text-white font-medium hover:bg-rose-600 transition-all shadow-lg shadow-rose-500/20 font-mono text-sm"
                 >
                   {t('common.confirm_delete', 'Confirm')}
                 </button>

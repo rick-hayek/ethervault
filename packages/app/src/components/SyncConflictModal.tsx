@@ -98,9 +98,9 @@ export const SyncConflictModal: React.FC<SyncConflictModalProps> = ({
                                         <Merge className="w-5 h-5" />
                                     </div>
                                     <div className="flex-1">
-                                        <div className="font-semibold text-slate-900 dark:text-white flex items-center gap-2">
+                                        <div className="font-medium text-slate-900 dark:text-white flex items-center gap-2">
                                             {t('sync.conflict.merge', 'Merge Vaults')}
-                                            <span className="text-[10px] bg-emerald-500 text-white px-2 py-0.5 rounded-full font-bold">
+                                            <span className="text-[10px] bg-emerald-500 text-white px-2 py-0.5 rounded-full font-medium">
                                                 {t('common.recommended', 'RECOMMENDED')}
                                             </span>
                                         </div>
@@ -124,7 +124,7 @@ export const SyncConflictModal: React.FC<SyncConflictModalProps> = ({
                                         <CloudDownload className="w-5 h-5" />
                                     </div>
                                     <div className="flex-1">
-                                        <div className="font-semibold text-slate-900 dark:text-white">
+                                        <div className="font-medium text-slate-900 dark:text-white">
                                             {t('sync.conflict.use_cloud', 'Use Cloud Only')}
                                         </div>
                                         <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -147,7 +147,7 @@ export const SyncConflictModal: React.FC<SyncConflictModalProps> = ({
                                         <CloudUpload className="w-5 h-5" />
                                     </div>
                                     <div className="flex-1">
-                                        <div className="font-semibold text-slate-900 dark:text-white">
+                                        <div className="font-medium text-slate-900 dark:text-white">
                                             {t('sync.conflict.use_local', 'Use Local')}
                                         </div>
                                         <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
@@ -161,7 +161,7 @@ export const SyncConflictModal: React.FC<SyncConflictModalProps> = ({
                             <div className="flex gap-3 pt-3">
                                 <button
                                     onClick={() => onResolve('cancel')}
-                                    className="flex-1 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                                    className="flex-1 py-3 text-[10px] font-medium text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
                                 >
                                     {t('common.cancel', 'Cancel')}
                                 </button>
@@ -169,7 +169,7 @@ export const SyncConflictModal: React.FC<SyncConflictModalProps> = ({
                                     <button
                                         onClick={handleConfirm}
                                         disabled={loading}
-                                        className="flex-1 py-3 bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-black rounded-xl hover:shadow-lg hover:shadow-amber-500/20 transition-all active:scale-95 disabled:opacity-50"
+                                        className="flex-1 py-3 bg-amber-500 hover:bg-amber-600 text-white text-[10px] font-medium rounded-xl hover:shadow-lg hover:shadow-amber-500/20 transition-all active:scale-95 disabled:opacity-50"
                                     >
                                         {loading ? t('common.processing', 'Processing...') : t('common.confirm', 'Confirm')}
                                     </button>
@@ -215,14 +215,14 @@ export const SyncConflictModal: React.FC<SyncConflictModalProps> = ({
                             <div className="flex gap-3">
                                 <button
                                     onClick={handleBack}
-                                    className="flex-1 py-3 text-[10px] font-bold text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
+                                    className="flex-1 py-3 text-[10px] font-medium text-slate-500 uppercase tracking-widest hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"
                                 >
                                     {t('common.back', 'Back')}
                                 </button>
                                 <button
                                     onClick={handleConfirm}
                                     disabled={loading || !cloudPassword}
-                                    className={`flex-1 py-3 text-white text-[10px] font-black rounded-xl hover:shadow-lg transition-all active:scale-95 disabled:opacity-50 ${selectedOption === 'merge'
+                                    className={`flex-1 py-3 text-white text-[10px] font-medium rounded-xl hover:shadow-lg transition-all active:scale-95 disabled:opacity-50 ${selectedOption === 'merge'
                                         ? 'bg-emerald-500 hover:bg-emerald-600 hover:shadow-emerald-500/20'
                                         : 'bg-blue-500 hover:bg-blue-600 hover:shadow-blue-500/20'
                                         }`}

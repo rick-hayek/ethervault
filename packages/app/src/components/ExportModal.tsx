@@ -65,7 +65,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({ entries, onClose, onEx
                         </div>
 
                         <div className="space-y-3">
-                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">{t('export.format')}</label>
+                            <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">{t('export.format')}</label>
                             <div className="grid grid-cols-2 gap-3">
                                 <button
                                     onClick={() => setFormat('csv')}
@@ -76,7 +76,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({ entries, onClose, onEx
                                 >
                                     <FileText className={`w-5 h-5 ${format === 'csv' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400'}`} />
                                     <div className="text-left">
-                                        <span className={`block text-sm font-bold ${format === 'csv' ? 'text-indigo-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}>CSV</span>
+                                        <span className={`block text-sm font-medium ${format === 'csv' ? 'text-indigo-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}>CSV</span>
                                         <span className="text-[10px] text-slate-400 font-medium">For Excel/Sheets</span>
                                     </div>
                                     {format === 'csv' && <Check className="w-4 h-4 text-indigo-600 ml-auto" />}
@@ -91,7 +91,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({ entries, onClose, onEx
                                 >
                                     <FileJson className={`w-5 h-5 ${format === 'json' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400'}`} />
                                     <div className="text-left">
-                                        <span className={`block text-sm font-bold ${format === 'json' ? 'text-indigo-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}>JSON</span>
+                                        <span className={`block text-sm font-medium ${format === 'json' ? 'text-indigo-900 dark:text-white' : 'text-slate-600 dark:text-slate-400'}`}>JSON</span>
                                         <span className="text-[10px] text-slate-400 font-medium">Full Data Backup</span>
                                     </div>
                                     {format === 'json' && <Check className="w-4 h-4 text-indigo-600 ml-auto" />}
@@ -100,7 +100,7 @@ export const ExportModal: React.FC<ExportModalProps> = ({ entries, onClose, onEx
                         </div>
 
                         <div className="space-y-3">
-                            <label className="text-[10px] font-bold text-slate-400 uppercase tracking-widest px-1">{t('export.preview')}</label>
+                            <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">{t('export.preview')}</label>
                             <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-4 max-h-48 overflow-y-auto scrollbar-hide">
                                 <pre className="text-[10px] font-mono text-slate-600 dark:text-slate-400 whitespace-pre-wrap break-all">
                                     {preview}
@@ -111,13 +111,13 @@ export const ExportModal: React.FC<ExportModalProps> = ({ entries, onClose, onEx
                         <div className="flex gap-3 pt-2">
                             <button
                                 onClick={onClose}
-                                className="px-6 py-4 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
+                                className="px-6 py-4 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
                             >
                                 {t('common.cancel', 'Cancel')}
                             </button>
                             <button
                                 onClick={() => onExport(format)}
-                                className="flex-1 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-bold shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
+                                className="flex-1 py-4 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl font-medium shadow-lg hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                             >
                                 <Download className="w-4 h-4" />
                                 {t('export.download')}

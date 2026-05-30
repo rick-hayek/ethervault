@@ -91,7 +91,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
 
                             {/* Intro */}
                             <div>
-                                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">{t('privacy_view.last_updated')}</p>
+                                <p className="text-xs font-medium text-slate-400 uppercase tracking-widest mb-4">{t('privacy_view.last_updated')}</p>
                                 <p className="text-sm leading-relaxed text-slate-700 dark:text-slate-300">
                                     {t('privacy_view.intro')}
                                 </p>
@@ -100,7 +100,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
                                         <div className="p-1 bg-emerald-100 dark:bg-emerald-800/50 rounded-lg h-fit">
                                             <Lock className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                                         </div>
-                                        <p className="text-sm font-bold text-emerald-800 dark:text-emerald-300 leading-tight">
+                                        <p className="text-sm font-medium text-emerald-800 dark:text-emerald-300 leading-tight">
                                             {t('privacy_view.summary')}
                                         </p>
                                     </div>
@@ -112,12 +112,12 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
                                 <h3 className="text-lg font-bold text-slate-900 dark:text-white">{t('privacy_view.sections.1.title')}</h3>
 
                                 <div className="pl-4 border-l-2 border-indigo-500 space-y-2">
-                                    <h4 className="font-bold text-sm text-indigo-600 dark:text-indigo-400">{t('privacy_view.sections.1.local_title')}</h4>
+                                    <h4 className="font-semibold text-sm text-indigo-600 dark:text-indigo-400">{t('privacy_view.sections.1.local_title')}</h4>
                                     <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{t('privacy_view.sections.1.local_desc')}</p>
                                 </div>
 
                                 <div className="pl-4 border-l-2 border-slate-300 dark:border-slate-700 space-y-2">
-                                    <h4 className="font-bold text-sm text-slate-700 dark:text-slate-200">{t('privacy_view.sections.1.server_title')}</h4>
+                                    <h4 className="font-semibold text-sm text-slate-700 dark:text-slate-200">{t('privacy_view.sections.1.server_title')}</h4>
                                     <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">{t('privacy_view.sections.1.server_desc')}</p>
                                 </div>
                             </div>
@@ -171,7 +171,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
                                             <button
                                                 key="0"
                                                 onClick={() => openLink('https://github.com/rick-hayek/ethervault')}
-                                                className="text-indigo-600 dark:text-indigo-400 font-bold hover:underline"
+                                                className="text-indigo-600 dark:text-indigo-400 font-medium hover:underline"
                                             >
                                                 GitHub
                                             </button>
@@ -181,7 +181,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
                             </div>
 
                             <div className="text-center pt-8 border-t border-slate-100 dark:border-slate-800">
-                                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                                <p className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">
                                     {t('privacy_view.footer')}
                                 </p>
                             </div>

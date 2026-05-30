@@ -72,7 +72,7 @@ export const AlertDialog: React.FC<AlertDialogProps> = ({
                     <div className="px-6 pb-6">
                         <button
                             onClick={onClose}
-                            className="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-bold rounded-xl hover:opacity-90 transition-all uppercase tracking-wider"
+                            className="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-medium rounded-xl hover:opacity-90 transition-all uppercase tracking-wider"
                         >
                             {t('common.ok', 'OK')}
                         </button>

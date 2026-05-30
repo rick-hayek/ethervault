@@ -42,7 +42,7 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
               }
             }}
             disabled={isScanning}
-            className="hidden md:flex items-center gap-1.5 text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-3 py-1.5 rounded-lg border border-indigo-100 dark:border-indigo-500/20 active:scale-95 transition-all disabled:opacity-50"
+            className="hidden md:flex items-center gap-1.5 text-[10px] font-medium text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-3 py-1.5 rounded-lg border border-indigo-100 dark:border-indigo-500/20 active:scale-95 transition-all disabled:opacity-50"
           >
             <RefreshCcw className={`w-3 h-3 ${isScanning ? 'animate-spin' : ''}`} />
             {isScanning ? t('security.scanning', 'SCANNING...') : t('security.scan')}
@@ -74,14 +74,14 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
                 />
               </svg>
               <div className="absolute text-center">
-                <span className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white block tracking-tighter">{audit.score}</span>
-                <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{t('security.score')}</span>
+                <span className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white block tracking-tighter">{audit.score}</span>
+                <span className="text-[10px] font-medium text-slate-400 uppercase tracking-[0.2em]">{t('security.score')}</span>
               </div>
             </div>
 
             <div className="flex-1 text-center sm:text-left space-y-4">
               <div>
-                <h3 className="text-lg font-bold text-slate-900 dark:text-white">{t('security.status.title')}</h3>
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white">{t('security.status.title')}</h3>
                 <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed max-w-sm mx-auto sm:mx-0 font-medium">
                   {getStatusText(audit.score)}
                 </p>
@@ -89,16 +89,16 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
 
               <div className="grid grid-cols-3 gap-3 max-w-sm mx-auto sm:mx-0">
                 <div className="px-3 py-3 bg-rose-50 dark:bg-rose-500/5 rounded-2xl border border-rose-100 dark:border-rose-500/10 text-center">
-                  <span className="block text-xl font-black text-rose-500">{audit.weakCount}</span>
-                  <span className="text-[9px] font-bold text-rose-400 uppercase tracking-wider">{t('security.stats.weak')}</span>
+                  <span className="block text-xl font-bold text-rose-500">{audit.weakCount}</span>
+                  <span className="text-[9px] font-medium text-rose-400 uppercase tracking-wider">{t('security.stats.weak')}</span>
                 </div>
                 <div className="px-3 py-3 bg-amber-50 dark:bg-amber-500/5 rounded-2xl border border-amber-100 dark:border-amber-500/10 text-center">
-                  <span className="block text-xl font-black text-amber-500">{audit.reusedCount}</span>
-                  <span className="text-[9px] font-bold text-amber-400 uppercase tracking-wider">{t('security.stats.reused')}</span>
+                  <span className="block text-xl font-bold text-amber-500">{audit.reusedCount}</span>
+                  <span className="text-[9px] font-medium text-amber-400 uppercase tracking-wider">{t('security.stats.reused')}</span>
                 </div>
                 <div className="px-3 py-3 bg-emerald-50 dark:bg-emerald-500/5 rounded-2xl border border-emerald-100 dark:border-emerald-500/10 text-center">
-                  <span className="block text-xl font-black text-emerald-500">{audit.secureCount}</span>
-                  <span className="text-[9px] font-bold text-emerald-400 uppercase tracking-wider">{t('security.stats.safe')}</span>
+                  <span className="block text-xl font-bold text-emerald-500">{audit.secureCount}</span>
+                  <span className="text-[9px] font-medium text-emerald-400 uppercase tracking-wider">{t('security.stats.safe')}</span>
                 </div>
               </div>
             </div>
@@ -109,9 +109,9 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
           <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50/50 dark:bg-slate-900/50">
             <div className="flex items-center gap-2">
               <ShieldAlert className="w-4 h-4 text-rose-500" />
-              <span className="text-[10px] font-black text-slate-500 uppercase tracking-[0.2em]">{t('security.alerts.title')}</span>
+              <span className="text-[10px] font-medium text-slate-500 uppercase tracking-[0.2em]">{t('security.alerts.title')}</span>
             </div>
-            <span className="text-[10px] font-bold text-rose-500 bg-rose-50 dark:bg-rose-500/10 px-3 py-1 rounded-full border border-rose-100 dark:border-rose-500/20">{audit.alerts.length} {t('security.alerts.action_items')}</span>
+            <span className="text-[10px] font-medium text-rose-500 bg-rose-50 dark:bg-rose-500/10 px-3 py-1 rounded-full border border-rose-100 dark:border-rose-500/20">{audit.alerts.length} {t('security.alerts.action_items')}</span>
           </div>
 
           <div className="divide-y divide-slate-50 dark:divide-slate-800">
@@ -120,7 +120,7 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
                 <div className="w-16 h-16 bg-indigo-50 dark:bg-indigo-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
                   <ShieldCheck className="w-8 h-8 text-indigo-500" />
                 </div>
-                <h4 className="text-sm font-bold text-slate-900 dark:text-white">{t('security.alerts.empty_title', 'All Clear!')}</h4>
+                <h4 className="text-sm font-medium text-slate-900 dark:text-white">{t('security.alerts.empty_title', 'All Clear!')}</h4>
                 <p className="text-xs font-medium text-slate-400 mt-1">{t('security.alerts.empty')}</p>
               </div>
             ) : (
@@ -132,7 +132,7 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
                       <AlertCircle className="w-5 h-5" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h4 className="text-sm font-bold text-slate-900 dark:text-white truncate">
+                      <h4 className="text-sm font-medium text-slate-900 dark:text-white truncate">
                         {alert.type === 'weak'
                           ? t('security.alerts.weak_title', { title: alert.entryTitle })
                           : alert.type === 'reused'
@@ -152,7 +152,7 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
                   </div>
                   <button
                     onClick={() => alert.entryIds.length > 0 && onResolve(alert.entryIds[0])}
-                    className="shrink-0 text-[10px] font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded-xl shadow-sm shadow-indigo-500/20 active:scale-95 transition-all"
+                    className="shrink-0 text-[10px] font-medium text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded-xl shadow-sm shadow-indigo-500/20 active:scale-95 transition-all"
                   >
                     {t('security.alerts.resolve')}
                   </button>
@@ -173,7 +173,7 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
               }
             }}
             disabled={isScanning}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-500/20 active:scale-95 transition-all disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 py-3 bg-indigo-600 text-white rounded-2xl font-medium shadow-lg shadow-indigo-500/20 active:scale-95 transition-all disabled:opacity-50"
           >
             <RefreshCcw className={`w-4 h-4 ${isScanning ? 'animate-spin' : ''}`} />
             <span className="tracking-wider text-xs">{isScanning ? t('security.scanning', 'Scanning...') : t('security.scan_full', 'Run Full Scan')}</span>
