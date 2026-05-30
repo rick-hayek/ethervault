@@ -22,19 +22,19 @@ export const BottomTabNav: React.FC<BottomTabNavProps> = ({ currentView, setView
             id: 'security',
             label: t('layout.nav.security'),
             icon: ShieldCheck,
-            activeClass: 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/20',
+            activeClass: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/20',
         },
         {
             id: 'generator',
             label: t('layout.nav.generator'),
             icon: KeyRound,
-            activeClass: 'text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-500/20',
+            activeClass: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/20',
         },
         {
             id: 'settings',
             label: t('layout.nav.settings'),
             icon: Settings,
-            activeClass: 'text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-500/20',
+            activeClass: 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/20',
         },
     ];
 

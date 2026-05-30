@@ -1068,7 +1068,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
               className="w-full py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[24px] flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group shadow-sm mb-3"
             >
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-2xl bg-emerald-50 dark:bg-emerald-900/10 flex items-center justify-center text-emerald-500 group-hover:text-emerald-600 transition-colors">
+                <div className="w-10 h-10 rounded-2xl bg-indigo-50 dark:bg-indigo-900/10 flex items-center justify-center text-indigo-500 group-hover:text-indigo-600 transition-colors">
                   <Shield className="w-5 h-5" />
                 </div>
                 <div className="text-left">

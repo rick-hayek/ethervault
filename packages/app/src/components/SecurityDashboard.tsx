@@ -42,7 +42,7 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
               }
             }}
             disabled={isScanning}
-            className="hidden md:flex items-center gap-1.5 text-[10px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-100 dark:border-emerald-500/20 active:scale-95 transition-all disabled:opacity-50"
+            className="hidden md:flex items-center gap-1.5 text-[10px] font-bold text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-500/10 px-3 py-1.5 rounded-lg border border-indigo-100 dark:border-indigo-500/20 active:scale-95 transition-all disabled:opacity-50"
           >
             <RefreshCcw className={`w-3 h-3 ${isScanning ? 'animate-spin' : ''}`} />
             {isScanning ? t('security.scanning', 'SCANNING...') : t('security.scan')}
@@ -53,7 +53,7 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
       <div className="px-4 md:px-8 space-y-4 pb-6 md:pb-8">
 
         <div className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-[32px] border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2" />
 
           <div className="flex flex-col sm:flex-row items-center gap-8 relative">
             <div className="relative w-40 h-40 md:w-44 md:h-44 flex items-center justify-center shrink-0 p-2">
@@ -70,7 +70,7 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
                   strokeDasharray={2 * Math.PI * 44}
                   strokeDashoffset={2 * Math.PI * 44 * (1 - audit.score / 100)}
                   strokeLinecap="round"
-                  className="text-emerald-500 transition-all duration-1000 ease-out shadow-sm drop-shadow-md"
+                  className="text-indigo-500 transition-all duration-1000 ease-out shadow-sm drop-shadow-md"
                 />
               </svg>
               <div className="absolute text-center">
@@ -117,8 +117,8 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
           <div className="divide-y divide-slate-50 dark:divide-slate-800">
             {audit.alerts.length === 0 ? (
               <div className="p-12 text-center">
-                <div className="w-16 h-16 bg-emerald-50 dark:bg-emerald-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <ShieldCheck className="w-8 h-8 text-emerald-500" />
+                <div className="w-16 h-16 bg-indigo-50 dark:bg-indigo-500/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <ShieldCheck className="w-8 h-8 text-indigo-500" />
                 </div>
                 <h4 className="text-sm font-bold text-slate-900 dark:text-white">{t('security.alerts.empty_title', 'All Clear!')}</h4>
                 <p className="text-xs font-medium text-slate-400 mt-1">{t('security.alerts.empty')}</p>
@@ -152,7 +152,7 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
                   </div>
                   <button
                     onClick={() => alert.entryIds.length > 0 && onResolve(alert.entryIds[0])}
-                    className="shrink-0 text-[10px] font-bold text-white bg-emerald-500 hover:bg-emerald-600 px-3 py-2 rounded-xl shadow-sm shadow-emerald-500/20 active:scale-95 transition-all"
+                    className="shrink-0 text-[10px] font-bold text-white bg-indigo-600 hover:bg-indigo-700 px-3 py-2 rounded-xl shadow-sm shadow-indigo-500/20 active:scale-95 transition-all"
                   >
                     {t('security.alerts.resolve')}
                   </button>
@@ -173,7 +173,7 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
               }
             }}
             disabled={isScanning}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-emerald-500 text-white rounded-2xl font-bold shadow-lg shadow-emerald-500/20 active:scale-95 transition-all disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2 py-3 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg shadow-indigo-500/20 active:scale-95 transition-all disabled:opacity-50"
           >
             <RefreshCcw className={`w-4 h-4 ${isScanning ? 'animate-spin' : ''}`} />
             <span className="tracking-wider text-xs">{isScanning ? t('security.scanning', 'Scanning...') : t('security.scan_full', 'Run Full Scan')}</span>
