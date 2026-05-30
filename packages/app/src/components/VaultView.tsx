@@ -127,13 +127,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
   }
 
   const getCategoryColor = (cat: Category) => {
-    switch (cat) {
-      case 'All': return 'bg-slate-900 text-white dark:bg-white dark:text-slate-900';
-      case 'Personal': return 'bg-rose-600 text-white';
-      case 'Work': return 'bg-primary-600 text-white';
-      case 'Others': return 'bg-amber-600 text-white';
-      default: return 'bg-slate-600 text-white';
-    }
+    return 'bg-primary-600 text-white';
   }
 
   return (
@@ -254,7 +248,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
                 key={cat}
                 onClick={() => onCategoryChange(cat)}
                 className={`px-5 py-2.5 rounded-full text-xs font-medium uppercase tracking-wider whitespace-nowrap transition-all border shadow-sm active:scale-95 ${activeCategory === cat
-                  ? `${getCategoryColor(cat)} border-transparent shadow-md ring-2 ring-offset-2 ring-offset-slate-50 dark:ring-offset-slate-950 ${cat === 'All' ? 'ring-slate-900 dark:ring-slate-100' : ''}`
+                  ? `${getCategoryColor(cat)} border-transparent shadow-md`
                   : 'bg-white dark:bg-slate-900/50 text-slate-500 dark:text-slate-400 border-slate-200 dark:border-slate-800'
                   }`}
               >

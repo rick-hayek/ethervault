@@ -144,7 +144,7 @@ export const Layout: React.FC<LayoutProps> = ({
               key={item.id}
               onClick={() => setView(item.id)}
               className={`w-full flex items-center justify-start gap-3 px-3 py-3 rounded-xl transition-all duration-300 group ${currentView === item.id
-                ? `${item.activeClass} font-semibold shadow-sm ring-1 ${item.ringClass}`
+                ? `${item.activeClass} font-normal shadow-sm ring-1 ${item.ringClass}`
                 : 'text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'
                 }`}
             >

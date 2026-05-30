@@ -50,7 +50,7 @@ export const BottomTabNav: React.FC<BottomTabNavProps> = ({ currentView, setView
                 <div className={`p-1.5 rounded-xl transition-all duration-300 ${isActive ? 'scale-110' : ''}`}>
                     <item.icon className="w-5 h-5" strokeWidth={isActive ? 2.5 : 2} />
                 </div>
-                <span className={`text-[9px] font-bold uppercase tracking-wider transition-all duration-300 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 absolute bottom-2'
+                <span className={`text-[9px] font-normal uppercase tracking-wider transition-all duration-300 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 absolute bottom-2'
                     }`}>
                     {item.label}
                 </span>
@@ -68,7 +68,7 @@ export const BottomTabNav: React.FC<BottomTabNavProps> = ({ currentView, setView
                         onClick={onAddClick}
                         className="flex items-center justify-center w-12 h-12 rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-lg shadow-slate-900/10 dark:shadow-white/10 active:scale-95 transition-all"
                     >
-                        <Plus className="w-4 h-4" />
+                        <Plus className="w-7 h-7" />
                     </button>
                 )}
 
