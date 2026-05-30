@@ -3,11 +3,6 @@
 EtherVault is a modern, cross-platform password manager designed for industrial-grade security and a seamless user experience. It supports Web, Desktop (Electron), and Mobile (Android/iOS) platforms, helping you securely store, manage, and sync your sensitive credentials.
 
 
-<sub> 
-我开发这个小工具的初衷是自己的各种密码挺多了，维护起来比较麻烦，就想有个跨平台的工具保存密码。现有的密码类软件各种商店都有很多，但主要密码比较敏感，用别人的不太放心，就想着自己写一个。再开源出来，别人想用可以从这里下载工具，也可以下载代码自己build，安全性自己把控，也比较放心。
-</sub>
-
-
 ## 📖 Project Overview
 
 EtherVault is built using a Monorepo architecture, with core business logic separated from the UI layer to ensure high code reusability and consistency across platforms. The project features built-in robust local encryption (AES-256), supports end-to-end encrypted synchronization with major cloud storage services (like Google Drive), and integrates advanced features such as biometric unlock and password health analysis. It is dedicated to creating the most secure digital vault for users.
