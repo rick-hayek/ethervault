@@ -4,7 +4,7 @@ EtherVault is a modern, cross-platform password manager designed for industrial-
 
 [English](./README.md) | [中文](./README.zh.md) 
 
-![preview](./screenshot/EtherVault-Showcase-1024x500.png)
+![preview](./screenshots/EtherVault-Showcase-1024x500.png)
 
 ## 📖 Project Overview
 

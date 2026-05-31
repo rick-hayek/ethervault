@@ -4,7 +4,7 @@ EtherVault 是一款现代化的跨平台密码管理器，专为工业级安全
 
 [English](./README.md) | [中文](./README.zh.md) 
 
-![preview](./screenshot/EtherVault-Showcase-1024x500.png)
+![preview](./screenshots/EtherVault-Showcase-1024x500.png)
 
 ## 📖 项目概述
 
