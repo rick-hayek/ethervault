@@ -2,7 +2,7 @@
 
 EtherVault is a modern, cross-platform password manager designed for industrial-grade security and a seamless user experience. It supports Web, Desktop (Electron), and Mobile (Android/iOS) platforms, helping you securely store, manage, and sync your sensitive credentials.
 
-[English](./README.md) | [中文](./README.zh.md) 
+English | [中文](./README.zh.md) 
 
 ![preview](./screenshots/EtherVault-Showcase-1024x500.png)
 
