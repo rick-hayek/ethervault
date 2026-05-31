@@ -201,7 +201,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     // 3. Clear State immediately
     setActivityLogs([]);
 
-    // 4. Show Feedback
+    // 4. Close the confirmation modal
+    setIsCacheConfirmOpen(false);
+
+    // 5. Show Feedback
     setCacheMessage(t('settings.success.cache_cleared') || 'Cache Cleared!');
     setTimeout(() => setCacheMessage(null), 2000);
   };
