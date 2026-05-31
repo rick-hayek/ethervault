@@ -26,8 +26,10 @@
         "add": "添加凭据",
         "sync_prompt": {
             "title": "跨设备同步您的保险库",
+            "title_premium": "跨设备同步您的保险库（Premium）",
             "description": "连接云存储，随时随地访问您的密码。",
-            "action": "设置同步"
+            "action": "设置同步",
+            "action_premium": "获取 Premium"
         },
         "strength": {
             "Secure": "安全",
@@ -85,7 +87,8 @@
             "sync_now": "立即同步",
             "disconnect": "断开连接",
             "connect_account": "连接账户",
-            "connection_failed": "连接失败，请检查网络设置。"
+            "connection_failed": "连接失败，请检查网络设置。",
+            "unlock_premium": "解锁 Premium 专享同步"
         },
         "option": {
             "biometric": "生物识别",
@@ -378,5 +381,63 @@
             }
         },
         "footer": "EtherVault — 您的代码，您的数据，您的金库。"
+    },
+    "premium": {
+        "paywall": {
+            "title": "EtherVault Premium",
+            "subtitle": "解锁多设备同步和自动云端备份。",
+            "connecting": "正在安全连接应用商店...",
+            "authorizing": "正在授权交易...",
+            "verifying": "正在验证加密凭证...",
+            "processing": "正在处理安全付款",
+            "restoring": "正在恢复购买",
+            "checking_receipts": "正在查询应用商店收据...",
+            "validating": "正在验证数字签名...",
+            "license_empty": "请输入许可密钥。",
+            "license_invalid": "许可密钥无效。请检查并重试。"
+        },
+        "plan": {
+            "monthly_title": "按月订阅",
+            "monthly_period": "/ 月",
+            "monthly_desc": "计划灵活，可随时取消。",
+            "annual_title": "按年订阅",
+            "annual_period": "/ 年",
+            "annual_desc": "相比按月订阅可节省 50%。",
+            "lifetime_title": "终身授权",
+            "lifetime_period": "一次性付款",
+            "lifetime_desc": "一次付款，终身解锁。",
+            "lifetime_badge": "最划算"
+        },
+        "feature": {
+            "sync_title": "多设备云同步",
+            "sync_desc": "通过 Google Drive 在所有设备上安全同步您加密的保险库。",
+            "backup_title": "安全云端备份",
+            "backup_desc": "再也不用担心数据库丢失。自动备份加密日志。",
+            "crossplatform_title": "跨平台访问",
+            "crossplatform_desc": "在 Android、iOS、Windows、macOS 和 Linux 上无缝访问。"
+        },
+        "actions": {
+            "subscribe": "立即订阅并解锁",
+            "restore": "恢复购买",
+            "license": "兑换许可密钥"
+        },
+        "success": {
+            "title": "Premium 已激活！",
+            "message": "非常感谢您的支持！您的账户已升级，云同步功能现已完全解锁。"
+        },
+        "license": {
+            "title": "兑换许可",
+            "description": "请在下方输入您的 24 位许可密钥以激活 Premium。"
+        },
+        "banner": {
+            "upgrade_title": "升级至 Premium",
+            "upgrade_desc": "解锁通过 Google Drive 进行的跨设备同步，随时随地在手机与电脑上访问您的保险库。",
+            "get_premium": "获取 Premium",
+            "active_title": "EtherVault Premium 已激活",
+            "active_desc": "感谢您的支持！您已拥有跨设备同步和自动云端备份的完整访问权限。",
+            "mock_refund": "模拟退款 / 降级"
+        },
+        "coming_soon_title": "敬请期待",
+        "coming_soon": "应用内购买和同步订阅功能即将上线！"
     }
 }

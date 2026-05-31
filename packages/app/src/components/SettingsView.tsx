@@ -4,6 +4,7 @@ import { logger } from '../utils/logger';
 import {
   Fingerprint,
   Shield,
+  Sparkles,
   Clock,
   Moon,
   Smartphone,
@@ -43,9 +44,10 @@ interface SettingsViewProps {
   setSettings: (settings: AppSettings) => void;
   onDataChange: () => void;
   biometricsSupported?: boolean;
+  onUnlockPremium?: () => void;
 }
 
-export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSettings, onDataChange, biometricsSupported = false }) => {
+export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSettings, onDataChange, biometricsSupported = false, onUnlockPremium }) => {
   const { t, i18n } = useTranslation();
 
   // Modals State
@@ -74,6 +76,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   // Password Change State
   const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [passwordChangeStatus, setPasswordChangeStatus] = useState('');
+
+  // Premium Banner Hidden State
+  const [isPremiumBannerDismissed, setIsPremiumBannerDismissed] = useState(() => {
+    return localStorage.getItem('ethervault_hide_premium_banner') === 'true';
+  });
 
   // Use Ref to track mounting state to prevent auto-sync on view load
   const isMountingRef = React.useRef(true);
@@ -561,6 +568,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     }
   };
 
+  const handleSyncClick = (provider: CloudProvider) => {
+    if (provider !== 'none' && !settings.isPremium) {
+      onUnlockPremium?.();
+      return;
+    }
+    handleSync(provider);
+  };
+
   const handleSync = async (provider: CloudProvider) => {
     // If same provider, Force Sync
     if (settings.cloudProvider === provider) {
@@ -757,16 +772,98 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
       <div className="sticky top-0 z-30 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm px-4 pt-[calc(env(safe-area-inset-top)+4px)] pb-2 md:sticky md:px-8 md:pt-8 md:pb-4 transition-all">
         <div className="flex items-center justify-between">
           <div className="block">
-            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{t('settings.title')}</h1>
+            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
+              {t('settings.title')}
+              {!import.meta.env.DEV && settings.isPremium && (
+                <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-500 bg-emerald-500/10 border border-emerald-500/30 px-2 py-0.5 rounded-full flex items-center gap-1 select-none">
+                  <Sparkles className="w-2.5 h-2.5 text-emerald-500 animate-pulse animate-duration-1000" />
+                  Premium
+                </span>
+              )}
+            </h1>
             <p className="hidden md:block text-slate-500 dark:text-slate-400 text-xs mt-0.5">{t('settings.subtitle')}</p>
           </div>
         </div>
       </div>
 
       <div className="px-4 md:px-8 space-y-4 pb-6 md:pb-8">
+        {/* Premium Status Banner */}
+        {settings.isPremium ? (
+          import.meta.env.DEV && (
+            <div className="bg-gradient-to-r from-slate-900 via-primary-950/10 to-slate-900 border border-primary-500/20 p-5 rounded-[24px] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm">
+              <div className="flex items-center gap-4 text-left">
+                <div className="p-3 bg-primary-500/10 border border-primary-500/20 rounded-2xl text-primary-400 shrink-0">
+                  <Sparkles className="w-5 h-5 animate-pulse" />
+                </div>
+                <div className="flex-1 text-left">
+                  <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
+                    {t('premium.banner.active_title', 'EtherVault Premium Active')}
+                    <span className="text-[8px] font-extrabold uppercase tracking-wider text-emerald-400 bg-emerald-400/10 border border-emerald-400/30 px-1.5 py-0.5 rounded">
+                      ACTIVE
+                    </span>
+                  </h3>
+                  <p className="text-[10px] text-slate-400 mt-1 leading-relaxed">
+                    {t('premium.banner.active_desc', 'Thank you for supporting us! You have full access to cross-device synchronization and automatic cloud backups.')}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => {
+                  localStorage.removeItem('ethervault_premium');
+                  localStorage.removeItem('ethervault_hide_premium_banner');
+                  setIsPremiumBannerDismissed(false);
+                  setSettings({ ...settings, isPremium: false });
+                  showSuccess('Premium status removed. Sync provider will disconnect.');
+                }}
+                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-350 text-xs font-semibold rounded-xl transition-all self-end sm:self-auto border border-slate-700/50 hover:border-slate-600 shrink-0"
+              >
+                {t('premium.banner.mock_refund', 'Mock Refund / Downgrade')}
+              </button>
+            </div>
+          )
+        ) : (
+          !isPremiumBannerDismissed && (
+            <div className="bg-gradient-to-r from-slate-900 via-amber-950/20 to-slate-900 border border-amber-500/25 p-5 rounded-[24px] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 shadow-sm relative overflow-hidden">
+              {/* Ambient gold glow */}
+              <div className="absolute right-0 top-0 w-32 h-32 bg-amber-500/5 blur-3xl rounded-full pointer-events-none" />
+
+              {/* Dismiss button */}
+              <button
+                onClick={() => {
+                  localStorage.setItem('ethervault_hide_premium_banner', 'true');
+                  setIsPremiumBannerDismissed(true);
+                }}
+                className="absolute top-3 right-3 text-slate-500 hover:text-slate-200 transition-colors p-1.5 rounded-full hover:bg-white/5 z-20"
+                title={t('common.dismiss', 'Dismiss')}
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+
+              <div className="flex items-center gap-4 text-left relative z-10">
+                <div className="p-3 bg-amber-500/10 border border-amber-500/25 rounded-2xl text-amber-400 shrink-0">
+                  <Sparkles className="w-5 h-5 animate-pulse" />
+                </div>
+                <div className="flex-1 text-left pr-4">
+                  <h3 className="text-sm font-bold bg-gradient-to-r from-white via-amber-200 to-amber-100 bg-clip-text text-transparent">
+                    {t('premium.banner.upgrade_title', 'Upgrade to Premium')}
+                  </h3>
+                  <p className="text-[10px] text-slate-400 mt-1 leading-relaxed">
+                    {t('premium.banner.upgrade_desc', 'Unlock secure multi-device synchronization via Google Drive to access your vault on mobile and desktop anytime.')}
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => onUnlockPremium?.()}
+                className="px-5 py-2.5 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 text-xs font-black rounded-xl transition-all active:scale-[0.98] shadow-md shadow-amber-500/20 self-end sm:self-auto shrink-0 relative z-10"
+              >
+                {t('premium.banner.get_premium', 'Get Premium')}
+              </button>
+            </div>
+          )
+        )}
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          {/* Cloud Config - Tighter - Hiding for premium paywall preparation */}
-          {false && (
+          {/* Cloud Config - Tighter */}
           <div className="lg:col-span-5 bg-white dark:bg-slate-900 p-6 rounded-[32px] border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
             <div className="flex items-center justify-between mb-1">
               <h2 className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400">{t('settings.sync_provider')}</h2>
@@ -800,7 +897,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                     className={`relative overflow-hidden rounded-2xl border transition-all duration-300 ${isActive
                       ? 'border-primary-500/50 bg-primary-50/50 dark:bg-primary-500/10 dark:border-primary-500/30 shadow-md ring-1 ring-primary-500/20'
                       : 'border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 hover:bg-white dark:hover:bg-slate-800 hover:shadow-sm'
-                      }`}
+                      } ${!settings.isPremium ? 'opacity-80 border-dashed hover:border-slate-300 dark:hover:border-slate-700' : ''}`}
                   >
                     <div className="p-4 flex items-start gap-4">
                       <div className={`p-2.5 rounded-xl shrink-0 ${isActive ? 'bg-white dark:bg-slate-800 shadow-sm' : 'bg-white dark:bg-slate-800'}`}>
@@ -809,7 +906,15 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
                       <div className="flex-1 min-w-0 pt-0.5">
                         <div className="flex items-center justify-between mb-1">
-                          <h3 className="text-sm font-medium text-slate-900 dark:text-white leading-none">{p.name}</h3>
+                          <div className="flex items-center gap-1.5">
+                            <h3 className="text-sm font-medium text-slate-900 dark:text-white leading-none">{p.name}</h3>
+                            {!settings.isPremium && (
+                              <span className="text-[7.5px] font-extrabold uppercase tracking-wider text-primary-400 border border-primary-500/30 px-1.5 py-0.5 rounded bg-primary-500/10 flex items-center gap-0.5 select-none">
+                                <Lock className="w-2 h-2 shrink-0" />
+                                PREMIUM
+                              </span>
+                            )}
+                          </div>
                           {isActive && cloudConnected && (
                             <span className="flex items-center gap-1 text-[9px] font-medium text-emerald-500 uppercase tracking-wider bg-emerald-50 dark:bg-emerald-500/10 px-2 py-0.5 rounded-full">
                               <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
@@ -846,7 +951,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                           {isActive && cloudConnected ? (
                             <>
                               <button
-                                onClick={() => handleSync(p.id as CloudProvider)}
+                                onClick={() => handleSyncClick(p.id as CloudProvider)}
                                 disabled={isSyncing}
                                 className="flex-1 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-[11px] font-medium rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2 shadow-sm shadow-primary-200 dark:shadow-none"
                               >
@@ -854,7 +959,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                                 {isSyncing ? t('settings.cloud.syncing') : t('settings.cloud.sync_now')}
                               </button>
                               <button
-                                onClick={() => handleSync('none')} // Disconnect
+                                onClick={() => handleSyncClick('none')} // Disconnect
                                 disabled={isSyncing}
                                 className="px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-rose-500 hover:border-rose-200 dark:hover:border-rose-900/50 text-[11px] font-medium rounded-xl transition-all active:scale-95"
                               >
@@ -863,7 +968,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                             </>
                           ) : isActive && !cloudConnected ? (
                             <button
-                              onClick={() => handleSync(p.id as CloudProvider)} // Will trigger connect flow
+                              onClick={() => handleSyncClick(p.id as CloudProvider)} // Will trigger connect flow
                               disabled={isSyncing}
                               className="w-full py-3 bg-amber-500 text-white text-[11px] font-medium rounded-xl hover:bg-amber-600 transition-all active:scale-95 flex items-center justify-center gap-2 shadow-sm shadow-amber-500/20 disabled:opacity-50 disabled:cursor-wait"
                             >
@@ -872,12 +977,19 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                             </button>
                           ) : (
                             <button
-                              onClick={() => handleSync(p.id as CloudProvider)}
+                              onClick={() => handleSyncClick(p.id as CloudProvider)}
                               disabled={isSyncing}
                               className="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[11px] font-medium rounded-xl hover:shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-wait"
                             >
                               {isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                              {t('settings.cloud.connect_account')}
+                              {!settings.isPremium ? (
+                                <>
+                                  <Lock className="w-3.5 h-3.5 mr-1" />
+                                  {t('settings.cloud.unlock_premium', 'Unlock with Premium')}
+                                </>
+                              ) : (
+                                t('settings.cloud.connect_account')
+                              )}
                             </button>
                           )}
                         </div>
@@ -910,11 +1022,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
               </button>
             )}
           </div>
-          )}
 
           {/* Access Settings - High Density Grid */}
-          {/* lg:col-span-7 changed to lg:col-span-12 when cloud config is hidden */}
-          <div className="lg:col-span-12 space-y-4">
+          <div className="lg:col-span-7 space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {biometricsSupported && (
                 <CompactSetting icon={Fingerprint} label={t('settings.option.biometric')} value={settings.biometricsEnabled} onClick={toggleBiometrics} />

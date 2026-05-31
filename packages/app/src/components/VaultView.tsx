@@ -5,17 +5,30 @@ import { useTranslation } from 'react-i18next';
 import { CATEGORIES } from '../constants';
 
 // One-time prompt component
-const CloudSyncPrompt: React.FC<{ onGoToSettings: () => void, onDismiss: () => void }> = ({ onGoToSettings, onDismiss }) => {
+const CloudSyncPrompt: React.FC<{
+  onGoToSettings: () => void;
+  onDismiss: () => void;
+  isPremium: boolean;
+  onUnlockPremium?: () => void;
+}> = ({ onGoToSettings, onDismiss, isPremium, onUnlockPremium }) => {
   const { t } = useTranslation();
   return (
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-primary-50 dark:bg-primary-900/10 border border-primary-100 dark:border-primary-500/20 p-4 rounded-3xl animate-in fade-in slide-in-from-top-4 duration-500">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 text-left">
         <div className="w-10 h-10 rounded-full bg-primary-100 dark:bg-primary-500/20 flex items-center justify-center text-primary-600 dark:text-primary-400 shrink-0">
           <Globe className="w-5 h-5" />
         </div>
         <div>
-          <h3 className="text-sm font-medium text-slate-900 dark:text-white">
-            {t('vault.sync_prompt.title', 'Sync your vault across devices')}
+          <h3 className="text-sm font-medium text-slate-900 dark:text-white flex items-center gap-1.5">
+            {isPremium
+              ? t('vault.sync_prompt.title', 'Sync your vault across devices')
+              : t('vault.sync_prompt.title_premium', 'Sync your vault across devices (Premium)')}
+            {!isPremium && (
+              <span className="text-[7.5px] font-extrabold uppercase tracking-wider text-primary-400 border border-primary-500/30 px-1.5 py-0.5 rounded bg-primary-500/10 flex items-center gap-0.5 select-none shrink-0">
+                <Lock className="w-2.5 h-2.5 shrink-0" />
+                PREMIUM
+              </span>
+            )}
           </h3>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             {t('vault.sync_prompt.description', 'Connect to cloud storage to access your passwords anywhere.')}
@@ -29,12 +42,21 @@ const CloudSyncPrompt: React.FC<{ onGoToSettings: () => void, onDismiss: () => v
         >
           {t('common.dismiss', 'Dismiss')}
         </button>
-        <button
-          onClick={onGoToSettings}
-          className="px-5 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-xs font-medium transition-all shadow-md shadow-primary-500/20 hover:shadow-primary-500/30 active:scale-95 whitespace-nowrap"
-        >
-          {t('vault.sync_prompt.action', 'Setup Sync')}
-        </button>
+        {isPremium ? (
+          <button
+            onClick={onGoToSettings}
+            className="px-5 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-xs font-medium transition-all shadow-md shadow-primary-500/20 hover:shadow-primary-500/30 active:scale-95 whitespace-nowrap"
+          >
+            {t('vault.sync_prompt.action', 'Setup Sync')}
+          </button>
+        ) : (
+          <button
+            onClick={onUnlockPremium}
+            className="px-5 py-2 bg-gradient-to-r from-primary-600 to-indigo-600 hover:from-primary-700 hover:to-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-primary-500/10 active:scale-95 whitespace-nowrap"
+          >
+            {t('vault.sync_prompt.action_premium', 'Get Premium')}
+          </button>
+        )}
       </div>
     </div>
   );
@@ -54,6 +76,8 @@ interface VaultViewProps {
   onLock: () => void;
   searchQuery: string;
   isSyncEnabled: boolean;
+  isPremium?: boolean;
+  onUnlockPremium?: () => void;
 }
 
 export const VaultView: React.FC<VaultViewProps> = ({
@@ -69,7 +93,9 @@ export const VaultView: React.FC<VaultViewProps> = ({
   onGoToSettings,
   onLock,
   searchQuery,
-  isSyncEnabled
+  isSyncEnabled,
+  isPremium = false,
+  onUnlockPremium
 }) => {
   const { t } = useTranslation();
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -232,11 +258,13 @@ export const VaultView: React.FC<VaultViewProps> = ({
 
       {/* Main Content */}
       <div className="px-4 pb-4 md:px-8 md:pb-8 space-y-4 md:space-y-6 pt-0 md:pt-2">
-        {/* Synchronize Prompt (One-time) - Hiding for premium paywall preparation */}
-        {showSyncPrompt && false && (
+        {/* Synchronize Prompt (One-time) */}
+        {showSyncPrompt && (
           <CloudSyncPrompt
             onGoToSettings={handleGoToSettings}
             onDismiss={handleDismissPrompt}
+            isPremium={isPremium}
+            onUnlockPremium={onUnlockPremium}
           />
         )}
 

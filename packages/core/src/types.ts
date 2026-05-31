@@ -33,6 +33,7 @@ export interface AppSettings {
     lastSync: string;
     masterLogEnabled?: boolean;
     themeColor?: 'blue' | 'emerald' | 'violet' | 'amber' | 'rose' | 'fuchsia';
+    isPremium: boolean;
 }
 
 export interface VaultStorageItem {

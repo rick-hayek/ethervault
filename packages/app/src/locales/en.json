@@ -26,8 +26,10 @@
         "add": "ADD CREDENTIAL",
         "sync_prompt": {
             "title": "Sync your vault across devices",
+            "title_premium": "Sync your vault across devices (Premium)",
             "description": "Connect to cloud storage to access your passwords anywhere.",
-            "action": "Setup Sync"
+            "action": "Setup Sync",
+            "action_premium": "Get Premium"
         },
         "strength": {
             "Secure": "SECURE",
@@ -85,7 +87,8 @@
             "sync_now": "Sync Now",
             "disconnect": "Disconnect",
             "connect_account": "Connect Account",
-            "connection_failed": "Connection failed. Please check your network."
+            "connection_failed": "Connection failed. Please check your network.",
+            "unlock_premium": "Unlock with Premium"
         },
         "option": {
             "biometric": "Biometric ID",
@@ -378,5 +381,63 @@
             }
         },
         "footer": "EtherVault — Your Code, Your Data, Your Vault."
+    },
+    "premium": {
+        "paywall": {
+            "title": "EtherVault Premium",
+            "subtitle": "Unlock multi-device synchronization and automatic cloud backups.",
+            "connecting": "Securing connection to App Store...",
+            "authorizing": "Authorizing transaction...",
+            "verifying": "Verifying cryptographic receipt...",
+            "processing": "Processing Secure Checkout",
+            "restoring": "Restoring Purchase",
+            "checking_receipts": "Checking native store receipts...",
+            "validating": "Validating digital purchase signature...",
+            "license_empty": "Please enter a license key.",
+            "license_invalid": "Invalid license key. Please check and try again."
+        },
+        "plan": {
+            "monthly_title": "Monthly",
+            "monthly_period": "/ month",
+            "monthly_desc": "Flexible plan, cancel anytime.",
+            "annual_title": "Annual",
+            "annual_period": "/ year",
+            "annual_desc": "Save 50% compared to monthly.",
+            "lifetime_title": "Lifetime",
+            "lifetime_period": "one-time",
+            "lifetime_desc": "Pay once, unlock forever.",
+            "lifetime_badge": "BEST VALUE"
+        },
+        "feature": {
+            "sync_title": "Multi-Device Cloud Sync",
+            "sync_desc": "Synchronize your encrypted vault securely via Google Drive across all devices.",
+            "backup_title": "Secure Cloud Backups",
+            "backup_desc": "Never worry about losing your database. Automatically back up encrypted logs.",
+            "crossplatform_title": "Cross-Platform Access",
+            "crossplatform_desc": "Access your vault on Android, iOS, Windows, macOS, and Linux seamlessly."
+        },
+        "actions": {
+            "subscribe": "Subscribe & Unlock Now",
+            "restore": "Restore Purchase",
+            "license": "Redeem License Key"
+        },
+        "success": {
+            "title": "Premium Activated!",
+            "message": "Thank you! Your account is upgraded. Cloud sync is now fully unlocked."
+        },
+        "license": {
+            "title": "Redeem License",
+            "description": "Enter your 24-character alphanumeric license key below to activate premium."
+        },
+        "banner": {
+            "upgrade_title": "Upgrade to Premium",
+            "upgrade_desc": "Unlock secure multi-device synchronization via Google Drive to access your vault on mobile and desktop anytime.",
+            "get_premium": "Get Premium",
+            "active_title": "EtherVault Premium Active",
+            "active_desc": "Thank you for supporting us! You have full access to cross-device synchronization and automatic cloud backups.",
+            "mock_refund": "Mock Refund / Downgrade"
+        },
+        "coming_soon_title": "Coming Soon",
+        "coming_soon": "In-app purchases and sync subscriptions are coming soon!"
     }
 }

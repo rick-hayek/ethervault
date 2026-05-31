@@ -13,9 +13,11 @@ import { WelcomeView } from './components/WelcomeView';
 import { LoginView } from './components/LoginView';
 import { EntryModal } from './components/EntryModal';
 import { MobilePageSlider } from './components/MobilePageSlider';
+import { PaywallModal } from './components/PaywallModal';
 import { getVaultService, getAuthService, StorageService, CloudService, AppSettings, PasswordEntry, Category, CloudProvider, getCryptoService } from '@ethervault/core';
 import { BackHandlerProvider, useBackHandler } from './hooks/useBackHandler';
-import { AlertProvider } from './hooks/useAlert';
+import { AlertProvider, useAlert } from './hooks/useAlert';
+import { useTranslation } from 'react-i18next';
 import { App as CapacitorApp } from '@capacitor/app';
 
 
@@ -45,6 +47,19 @@ const variants = {
 };
 
 const AppContent: React.FC = () => {
+  const { t } = useTranslation();
+  const { showInfo } = useAlert();
+
+  const handleUnlockPremium = () => {
+    // Intercept with a Coming Soon alert instead of opening the mock paywall
+    showInfo(
+      t('premium.coming_soon', 'In-app purchases and sync subscriptions are coming soon! The current flow is a demo, please stay tuned for upcoming version updates.'),
+      t('premium.coming_soon_title', 'Coming Soon')
+    );
+    // Original demo checkout flow (kept but temporarily disabled):
+    // setIsPaywallOpen(true);
+  };
+
   // const [isDarkMode, setIsDarkMode] = useState<boolean>(true); // Removed redundant state
   const [currentView, setCurrentView] = useState<'vault' | 'security' | 'generator' | 'settings'>('vault');
   const [direction, setDirection] = useState(0);
@@ -80,9 +95,20 @@ const AppContent: React.FC = () => {
       theme: 'system',
       cloudProvider: savedProvider || 'none',
       lastSync: '',
-      themeColor: savedThemeColor as any
+      themeColor: savedThemeColor as any,
+      isPremium: localStorage.getItem('ethervault_premium') === 'true'
     };
   });
+
+  const [isPaywallOpen, setIsPaywallOpen] = useState(false);
+
+  // Enforce premium sync restriction guard
+  useEffect(() => {
+    if (!settings.isPremium && settings.cloudProvider !== 'none') {
+      logger.info('[PREMIUM] Non-premium user. Disconnecting cloud provider.');
+      setSettings(prev => ({ ...prev, cloudProvider: 'none' }));
+    }
+  }, [settings.isPremium, settings.cloudProvider]);
 
   // Persist cloud provider to localStorage and initialize CloudService when it changes
   useEffect(() => {
@@ -97,9 +123,7 @@ const AppContent: React.FC = () => {
         logger.warn('[App] Failed to disconnect cloud provider', e);
       });
     }
-  }, [settings.cloudProvider]);
-
-  const [bioAvailable, setBioAvailable] = useState(false);
+  }, [settings.cloudProvider]);  const [bioAvailable, setBioAvailable] = useState(false);
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -454,6 +478,8 @@ const AppContent: React.FC = () => {
             onLock={handleLock}
             searchQuery={searchQuery}
             isSyncEnabled={settings.cloudProvider !== 'none'}
+            isPremium={settings.isPremium}
+            onUnlockPremium={() => setIsPaywallOpen(true)}
           />
         );
       case 'security':
@@ -483,6 +509,7 @@ const AppContent: React.FC = () => {
             const entries = await getVaultService().getEntries();
             setPasswords(entries);
           }}
+          onUnlockPremium={handleUnlockPremium}
         />;
       default:
         return <VaultView
@@ -499,6 +526,8 @@ const AppContent: React.FC = () => {
           onLock={handleLock}
           searchQuery={searchQuery}
           isSyncEnabled={settings.cloudProvider !== 'none'}
+          isPremium={settings.isPremium}
+          onUnlockPremium={handleUnlockPremium}
         />;
     }
   };
@@ -537,6 +566,8 @@ const AppContent: React.FC = () => {
             onLock={handleLock}
             searchQuery={searchQuery}
             isSyncEnabled={settings.cloudProvider !== 'none'}
+            isPremium={settings.isPremium}
+            onUnlockPremium={handleUnlockPremium}
           />
 
           {/* Security View */}
@@ -567,6 +598,7 @@ const AppContent: React.FC = () => {
               const entries = await getVaultService().getEntries();
               setPasswords(entries);
             }}
+            onUnlockPremium={handleUnlockPremium}
           />
         </MobilePageSlider>
       ) : (
@@ -588,6 +620,14 @@ const AppContent: React.FC = () => {
             handleDeletePassword(id);
             setIsModalOpen(false);
           }}
+        />
+      )}
+
+      {isPaywallOpen && (
+        <PaywallModal
+          isOpen={isPaywallOpen}
+          onClose={() => setIsPaywallOpen(false)}
+          onPurchaseSuccess={() => setSettings(prev => ({ ...prev, isPremium: true }))}
         />
       )}
     </Layout>

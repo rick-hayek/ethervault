@@ -26,8 +26,10 @@
         "add": "자격 증명 추가",
         "sync_prompt": {
             "title": "기기 간 보관함 동기화",
+            "title_premium": "기기 간 보관함 동기화 (Premium)",
             "description": "클라우드 스토리지에 연결하여 어디서나 비밀번호에 액세스하세요.",
-            "action": "동기화 설정"
+            "action": "동기화 설정",
+            "action_premium": "Premium 받기"
         },
         "strength": {
             "Secure": "안전",
@@ -85,7 +87,8 @@
             "sync_now": "지금 동기화",
             "disconnect": "연결 해제",
             "connect_account": "계정 연결",
-            "connection_failed": "연결에 실패했습니다. 네트워크를 확인하세요."
+            "connection_failed": "연결에 실패했습니다. 네트워크를 확인하세요。",
+            "unlock_premium": "Premium 동기화 활성화"
         },
         "option": {
             "biometric": "생체 인식 ID",
@@ -378,5 +381,63 @@
             }
         },
         "footer": "EtherVault — 당신의 코드, 당신의 데이터, 당신의 금고."
+    },
+    "premium": {
+        "paywall": {
+            "title": "EtherVault Premium",
+            "subtitle": "기기 간 동기화 및 자동 클라우드 백업을 잠금 해제하세요.",
+            "connecting": "앱 스토어에 안전하게 연결 중...",
+            "authorizing": "결제 승인 중...",
+            "verifying": "암호화 영수증 확인 중...",
+            "processing": "안전한 결제 처리 중",
+            "restoring": "구매 복원 중",
+            "checking_receipts": "앱 스토어 구매 내역 확인 중...",
+            "validating": "디지털 서명 검증 중...",
+            "license_empty": "라이선스 키를 입력해 주세요.",
+            "license_invalid": "올바르지 않은 라이선스 키입니다. 다시 확인해 주세요."
+        },
+        "plan": {
+            "monthly_title": "월간 구독",
+            "monthly_period": "/ 월",
+            "monthly_desc": "유연한 요금제, 언제든 취소 가능.",
+            "annual_title": "연간 구독",
+            "annual_period": "/ 년",
+            "annual_desc": "월간 구독 대비 50% 할인.",
+            "lifetime_title": "평생 라이선스",
+            "lifetime_period": "1회 결제",
+            "lifetime_desc": "한 번 결제로 평생 잠금 해제.",
+            "lifetime_badge": "최고의 선택"
+        },
+        "feature": {
+            "sync_title": "기기 간 클라우드 동기화",
+            "sync_desc": "Google Drive를 통해 모든 기기 간에 암호화된 보관함을 안전하게 동기화합니다.",
+            "backup_title": "안전한 클라우드 백업",
+            "backup_desc": "데이터베이스 손실 걱정 없이 클라우드에 암호화된 로그가 자동 백업됩니다.",
+            "crossplatform_title": "크로스 플랫폼 지원",
+            "crossplatform_desc": "Android, iOS, Windows, macOS, Linux에서 원활하게 액세스하세요."
+        },
+        "actions": {
+            "subscribe": "지금 구독하고 잠금 해제",
+            "restore": "구매 내역 복원",
+            "license": "라이선스 키 등록"
+        },
+        "success": {
+            "title": "Premium 활성화 완료!",
+            "message": "구독해 주셔서 감사합니다! Premium이 활성화되었으며 클라우드 동기화 기능이 완전히 잠금 해제되었습니다."
+        },
+        "license": {
+            "title": "라이선스 등록",
+            "description": "아래에 24자리 라이선스 키를 입력하여 Premium을 활성화하세요."
+        },
+        "banner": {
+            "upgrade_title": "Premium으로 업그레이드",
+            "upgrade_desc": "Google Drive를 통한 안전한 다중 기기 동기화를 잠금 해제하여 모바일과 데스크톱에서 언제든지 비밀번호 보관소에 액세스하세요.",
+            "get_premium": "Premium 구매",
+            "active_title": "EtherVault Premium 활성화됨",
+            "active_desc": "구독해 주셔서 감사합니다! 다중 기기 동기화 및 자동 클라우드 백업을 완전히 사용하실 수 있습니다.",
+            "mock_refund": "시뮬레이션 환불 / 다운그레이드"
+        },
+        "coming_soon_title": "준비 중",
+        "coming_soon": "앱 내 구매 및 동기화 구독 기능이 곧 출시됩니다!"
     }
 }
