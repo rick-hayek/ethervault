@@ -1,6 +1,6 @@
 # EtherVault
 
-EtherVault 是一款现代化的跨平台密码管理器，专为工业级安全和无缝用户体验而设计。它支持 Web、桌面端 (Electron) 以及移动端 (Android/iOS) 平台，帮助您安全地存储、管理和同步敏感凭证。
+EtherVault 是一款现代化的跨平台密码管理器，专为工业级安全和无缝用户体验而设计。它支持桌面端以及移动端 (Android/iOS) 平台，帮助您安全地存储、管理和同步敏感凭证。
 
 [English](./README.md) | 中文
 
