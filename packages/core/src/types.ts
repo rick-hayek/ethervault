@@ -32,7 +32,7 @@ export interface AppSettings {
     cloudProvider: CloudProvider;
     lastSync: string;
     masterLogEnabled?: boolean;
-    themeColor?: 'blue' | 'emerald' | 'violet' | 'amber' | 'rose' | 'fuchsia';
+    themeColor?: 'blue' | 'emerald' | 'violet' | 'amber' | 'rose' | 'pink' | 'lightgrey' | 'silver' | 'ivory';
     isPremium: boolean;
 }
 

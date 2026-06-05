@@ -30,6 +30,7 @@ export interface IStorageService {
     getAll(storeName: string): Promise<any[]>;
     deleteItem(storeName: string, key: string): Promise<void>;
     clear(storeName: string): Promise<void>;
+    close(): Promise<void>;
 }
 
 export interface IAuthService {

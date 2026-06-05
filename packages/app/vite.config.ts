@@ -18,6 +18,9 @@ export default defineConfig(({ mode }) => {
     define: {
       '__APP_VERSION__': JSON.stringify(packageJson.version)
     },
+    optimizeDeps: {
+      entries: ['index.html', 'src/**/*.{ts,tsx,js,jsx}'],
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),

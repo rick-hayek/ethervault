@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Plus, ExternalLink, Copy, Check, Globe, User as UserIcon, Lock, Edit2, User, Key, LogOut, X } from 'lucide-react';
+import { Search, Plus, ExternalLink, Copy, Check, Globe, User as UserIcon, Lock, Edit2, User, Key, LogOut, X, Sparkles } from 'lucide-react';
 import { getVaultService, PasswordEntry, getCryptoService, SecurityService, VaultStorageItem, Category, CloudService } from '@ethervault/core';
 import { useTranslation } from 'react-i18next';
 import { CATEGORIES } from '../constants';
@@ -12,6 +12,49 @@ const CloudSyncPrompt: React.FC<{
   onUnlockPremium?: () => void;
 }> = ({ onGoToSettings, onDismiss, isPremium, onUnlockPremium }) => {
   const { t } = useTranslation();
+
+  if (!isPremium) {
+    return (
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-gradient-to-r from-slate-900 via-amber-950/20 to-slate-900 border border-amber-500/25 p-4 rounded-3xl animate-in fade-in slide-in-from-top-4 duration-500 relative overflow-hidden">
+        {/* Ambient gold glow */}
+        <div className="absolute right-0 top-0 w-32 h-32 bg-amber-500/5 blur-3xl rounded-full pointer-events-none" />
+
+        <div className="flex items-center gap-4 text-left relative z-10">
+          <div className="w-10 h-10 rounded-full bg-amber-500/10 border border-amber-500/25 flex items-center justify-center text-amber-400 shrink-0">
+            <Sparkles className="w-5 h-5 animate-pulse" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold bg-gradient-to-r from-white via-amber-200 to-amber-100 bg-clip-text text-transparent flex items-center gap-1.5">
+              {t('vault.sync_prompt.title_premium', 'Sync your vault across devices (Premium)')}
+              <span className="text-[7.5px] font-extrabold uppercase tracking-wider text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded bg-amber-500/10 flex items-center gap-0.5 select-none shrink-0">
+                <Lock className="w-2.5 h-2.5 shrink-0" />
+                PREMIUM
+              </span>
+            </h3>
+            <p className="text-xs text-slate-200 mt-0.5">
+              {t('vault.sync_prompt.description', 'Connect to cloud storage to access your passwords anywhere.')}
+            </p>
+          </div>
+        </div>
+        <div className="flex items-center gap-3 w-full md:w-auto justify-end relative z-10">
+          <button
+            onClick={onDismiss}
+            className="px-4 py-2 text-xs font-medium text-slate-500 hover:text-slate-200 transition-colors uppercase tracking-wider"
+          >
+            {t('common.dismiss', 'Dismiss')}
+          </button>
+          <button
+            onClick={onUnlockPremium}
+            className="px-5 py-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 rounded-xl text-xs font-black transition-all shadow-md shadow-amber-500/20 active:scale-95 whitespace-nowrap"
+          >
+            {t('vault.sync_prompt.action_premium', 'Get Premium')}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // Active premium version (Setup Sync) - keeps the dynamic primary theme color
   return (
     <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-primary-50 dark:bg-primary-900/10 border border-primary-100 dark:border-primary-500/20 p-4 rounded-3xl animate-in fade-in slide-in-from-top-4 duration-500">
       <div className="flex items-center gap-4 text-left">
@@ -20,17 +63,9 @@ const CloudSyncPrompt: React.FC<{
         </div>
         <div>
           <h3 className="text-sm font-medium text-slate-900 dark:text-white flex items-center gap-1.5">
-            {isPremium
-              ? t('vault.sync_prompt.title', 'Sync your vault across devices')
-              : t('vault.sync_prompt.title_premium', 'Sync your vault across devices (Premium)')}
-            {!isPremium && (
-              <span className="text-[7.5px] font-extrabold uppercase tracking-wider text-primary-400 border border-primary-500/30 px-1.5 py-0.5 rounded bg-primary-500/10 flex items-center gap-0.5 select-none shrink-0">
-                <Lock className="w-2.5 h-2.5 shrink-0" />
-                PREMIUM
-              </span>
-            )}
+            {t('vault.sync_prompt.title', 'Sync your vault across devices')}
           </h3>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
+          <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
             {t('vault.sync_prompt.description', 'Connect to cloud storage to access your passwords anywhere.')}
           </p>
         </div>
@@ -42,21 +77,12 @@ const CloudSyncPrompt: React.FC<{
         >
           {t('common.dismiss', 'Dismiss')}
         </button>
-        {isPremium ? (
-          <button
-            onClick={onGoToSettings}
-            className="px-5 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-xs font-medium transition-all shadow-md shadow-primary-500/20 hover:shadow-primary-500/30 active:scale-95 whitespace-nowrap"
-          >
-            {t('vault.sync_prompt.action', 'Setup Sync')}
-          </button>
-        ) : (
-          <button
-            onClick={onUnlockPremium}
-            className="px-5 py-2 bg-gradient-to-r from-primary-600 to-indigo-600 hover:from-primary-700 hover:to-indigo-700 text-white rounded-xl text-xs font-bold transition-all shadow-md shadow-primary-500/10 active:scale-95 whitespace-nowrap"
-          >
-            {t('vault.sync_prompt.action_premium', 'Get Premium')}
-          </button>
-        )}
+        <button
+          onClick={onGoToSettings}
+          className="px-5 py-2 bg-primary-600 hover:bg-primary-700 text-white rounded-xl text-xs font-medium transition-all shadow-md shadow-primary-500/20 hover:shadow-primary-500/30 active:scale-95 whitespace-nowrap"
+        >
+          {t('vault.sync_prompt.action', 'Setup Sync')}
+        </button>
       </div>
     </div>
   );

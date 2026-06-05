@@ -805,7 +805,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                       ACTIVE
                     </span>
                   </h3>
-                  <p className="text-[10px] text-slate-400 mt-1 leading-relaxed">
+                  <p className="text-[10px] text-slate-200 mt-1 leading-relaxed">
                     {t('premium.banner.active_desc', 'Thank you for supporting us! You have full access to cross-device synchronization and automatic cloud backups.')}
                   </p>
                 </div>
@@ -850,7 +850,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <h3 className="text-sm font-bold bg-gradient-to-r from-white via-amber-200 to-amber-100 bg-clip-text text-transparent">
                     {t('premium.banner.upgrade_title', 'Upgrade to Premium')}
                   </h3>
-                  <p className="text-[10px] text-slate-400 mt-1 leading-relaxed">
+                  <p className="text-[10px] text-slate-200 mt-1 leading-relaxed">
                     {t('premium.banner.upgrade_desc', 'Unlock secure multi-device synchronization via Google Drive to access your vault on mobile and desktop anytime.')}
                   </p>
                 </div>
@@ -1090,16 +1090,19 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.theme_color', 'Theme Color')}</span>
                 </div>
                 <select
-                  value={settings.themeColor || 'blue'}
+                  value={settings.themeColor || 'silver'}
                   onChange={(e) => setSettings({ ...settings, themeColor: e.target.value as any })}
                   className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-medium text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-primary-500 transition-all cursor-pointer"
                 >
+                  <option value="silver">{t('settings.color.silver', 'Silver')}</option>
                   <option value="blue">{t('settings.color.blue', 'Blue')}</option>
                   <option value="emerald">{t('settings.color.emerald', 'Green')}</option>
                   <option value="violet">{t('settings.color.violet', 'Violet')}</option>
                   <option value="amber">{t('settings.color.amber', 'Amber')}</option>
                   <option value="rose">{t('settings.color.rose', 'Rose')}</option>
-                  <option value="fuchsia">{t('settings.color.fuchsia', 'Fuchsia')}</option>
+                  <option value="pink">{t('settings.color.pink', 'Sakura Pink')}</option>
+                  <option value="lightgrey">{t('settings.color.lightgrey', 'Cashmere Grey')}</option>
+                  <option value="ivory">{t('settings.color.ivory', 'Ivory')}</option>
                 </select>
               </div>
 

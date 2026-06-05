@@ -121,7 +121,10 @@
             "violet": "罗兰紫",
             "amber": "琥珀橘",
             "rose": "玫瑰红",
-            "fuchsia": "洋红色"
+            "pink": "樱花粉",
+            "lightgrey": "羊绒灰",
+            "silver": "太空银",
+            "ivory": "月影白"
         },
         "activity_modal": {
             "title": "系统日志",
@@ -193,7 +196,38 @@
         "access_vault": "进入密码库",
         "secure_id": "安全 ID",
         "system_auth": "系统验证...",
-        "unlock_bio": "使用生物识别解锁"
+        "unlock_bio": "使用生物识别解锁",
+        "forgot_password": "忘记密码？",
+        "reset_modal": {
+            "title": "忘记主密码？",
+            "warning_title": "安全警告",
+            "warning_desc": "EtherVault 是一款零知识、本地优先的密码管理器。我们不会在任何服务器上存储您的主密码。如果您忘记了它，我们无法为您恢复或重置。重置操作将永久清除此本地保险库中存储的所有数据！",
+            "steps_title": "如何重置 / 重新开始",
+            "step1": "进入您手机的系统设置（System Settings）。",
+            "step2": "前往 应用管理 > EtherVault > 存储 (Apps > EtherVault > Storage)。",
+            "step3": "点击“清除存储空间”或“清除数据”（Clear Storage / Clear Data）以删除数据库文件。",
+            "step4": "重新打开应用，重新设置新的主密码。",
+            "android_step1": "进入您手机的系统设置（System Settings）。",
+            "android_step2": "前往 应用管理 > EtherVault > 存储 (Apps > EtherVault > Storage)。",
+            "android_step3": "点击“清除存储空间”或“清除数据”（Clear Storage / Clear Data）以删除数据库文件。",
+            "android_step4": "重新打开应用，重新设置新的主密码。",
+            "ios_step1": "在主屏幕上长按 EtherVault 应用图标。",
+            "ios_step2": "点击“移除应用”，然后选择“删除应用”以清除所有本地数据。",
+            "ios_step3": "从 App Store 重新下载并安装 EtherVault。",
+            "ios_step4": "重新打开应用，重新设置新的主密码。",
+            "desktop_step1": "关闭 EtherVault 应用程序。",
+            "desktop_step2": "前往应用数据文件夹（macOS: '~/Library/Application Support/EtherVault', Windows: '%APPDATA%\\EtherVault'）。",
+            "desktop_step3": "删除整个 'EtherVault' 文件夹以清除本地数据库和设置。",
+            "desktop_step4": "重新启动应用，设置新的主密码。",
+            "web_step1": "打开您浏览器的开发者工具 (F12 或 右键点击 > 检查)。",
+            "web_step2": "进入“应用 (Application)”或“存储 (Storage)”选项卡。",
+            "web_step3": "展开 IndexedDB，选中 'EtherVaultDB' 并点击“删除数据库”，随后清除 Local Storage。",
+            "web_step4": "刷新页面即可重新设置新的主密码。",
+            "action_reset": "一键重置（清除所有数据）",
+            "confirm_reset": "警告：这会永久删除所有本地保存的账户密码并重置 App，该操作不可逆！您确定要继续吗？",
+            "reset_failed": "自动重置失败，请使用上方的平台手动步骤进行重置。",
+            "support_title": "寻求帮助？"
+        }
     },
     "security": {
         "title": "安全状况",

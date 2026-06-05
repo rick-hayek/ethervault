@@ -99,6 +99,14 @@ export class StorageServiceImpl implements IStorageService {
             request.onerror = () => reject(request.error);
         });
     }
+
+    async close(): Promise<void> {
+        if (this.dbPromise) {
+            const db = await this.dbPromise;
+            db.close();
+            this.dbPromise = null;
+        }
+    }
 }
 
 // =============================================================================
@@ -156,5 +164,9 @@ export class StorageService {
 
     static async clear(storeName: string): Promise<void> {
         return getStorageService().clear(storeName);
+    }
+
+    static async close(): Promise<void> {
+        return getStorageService().close();
     }
 }

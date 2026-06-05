@@ -14,7 +14,7 @@ import { LoginView } from './components/LoginView';
 import { EntryModal } from './components/EntryModal';
 import { MobilePageSlider } from './components/MobilePageSlider';
 import { PaywallModal } from './components/PaywallModal';
-import { getVaultService, getAuthService, StorageService, CloudService, AppSettings, PasswordEntry, Category, CloudProvider, getCryptoService } from '@ethervault/core';
+import { getVaultService, getAuthService, CloudService, AppSettings, PasswordEntry, Category, CloudProvider, getCryptoService } from '@ethervault/core';
 import { BackHandlerProvider, useBackHandler } from './hooks/useBackHandler';
 import { AlertProvider, useAlert } from './hooks/useAlert';
 import { useTranslation } from 'react-i18next';
@@ -91,7 +91,7 @@ const AppContent: React.FC = () => {
 
   const [settings, setSettings] = useState<AppSettings>(() => {
     const savedProvider = localStorage.getItem('ethervault_cloud_provider') as CloudProvider | null;
-    const savedThemeColor = localStorage.getItem('ethervault_theme_color') || 'blue';
+    const savedThemeColor = localStorage.getItem('ethervault_theme_color') || 'silver';
     return {
       biometricsEnabled: localStorage.getItem('ethervault_bio') === 'true',
       autoLockTimeout: 15,
@@ -126,7 +126,7 @@ const AppContent: React.FC = () => {
         logger.warn('[App] Failed to disconnect cloud provider', e);
       });
     }
-  }, [settings.cloudProvider]);  const [bioAvailable, setBioAvailable] = useState(false);
+  }, [settings.cloudProvider]); const [bioAvailable, setBioAvailable] = useState(false);
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -275,7 +275,7 @@ const AppContent: React.FC = () => {
 
   // Unified Theme Color Effect
   useEffect(() => {
-    const color = settings.themeColor || 'blue';
+    const color = settings.themeColor || 'silver';
     localStorage.setItem('ethervault_theme_color', color);
     document.documentElement.setAttribute('data-theme-color', color);
   }, [settings.themeColor]);
