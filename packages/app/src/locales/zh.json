@@ -421,6 +421,7 @@
             "title": "EtherVault Premium",
             "subtitle": "解锁多设备同步和自动云端备份。",
             "connecting": "正在安全连接应用商店...",
+            "connecting_google": "正在安全连接 Google Play 商店...",
             "authorizing": "正在授权交易...",
             "verifying": "正在验证加密凭证...",
             "processing": "正在处理安全付款",
@@ -428,7 +429,8 @@
             "checking_receipts": "正在查询应用商店收据...",
             "validating": "正在验证数字签名...",
             "license_empty": "请输入许可密钥。",
-            "license_invalid": "许可密钥无效。请检查并重试。"
+            "license_invalid": "许可密钥无效。请检查并重试。",
+            "already_active_restore_hint": "请点击“恢复购买”按钮以重新获取您的 Premium 权限。"
         },
         "plan": {
             "monthly_title": "按月订阅",

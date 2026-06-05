@@ -54,7 +54,7 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
 
     return (
         <Portal>
-            <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-end md:items-center justify-center p-0 md:p-4 animate-in fade-in duration-200">
+            <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[110] flex items-end md:items-center justify-center p-0 md:p-4 animate-in fade-in duration-200">
                 <div className="bg-white dark:bg-slate-900 w-full md:max-w-2xl h-[100dvh] md:h-auto md:max-h-[90vh] rounded-none md:rounded-[2rem] border-t md:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 md:zoom-in-95 duration-300 flex flex-col">
 
                     {/* Header */}

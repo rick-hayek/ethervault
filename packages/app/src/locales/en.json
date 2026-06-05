@@ -421,6 +421,7 @@
             "title": "EtherVault Premium",
             "subtitle": "Unlock multi-device synchronization and automatic cloud backups.",
             "connecting": "Securing connection to App Store...",
+            "connecting_google": "Securing connection to Google Play...",
             "authorizing": "Authorizing transaction...",
             "verifying": "Verifying cryptographic receipt...",
             "processing": "Processing Secure Checkout",
@@ -428,7 +429,8 @@
             "checking_receipts": "Checking native store receipts...",
             "validating": "Validating digital purchase signature...",
             "license_empty": "Please enter a license key.",
-            "license_invalid": "Invalid license key. Please check and try again."
+            "license_invalid": "Invalid license key. Please check and try again.",
+            "already_active_restore_hint": "Please tap \"Restore Purchase\" to retrieve your premium status."
         },
         "plan": {
             "monthly_title": "Monthly",

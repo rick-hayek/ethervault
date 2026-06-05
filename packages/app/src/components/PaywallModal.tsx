@@ -168,7 +168,19 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ isOpen, onClose, onP
         logger.error('[PREMIUM] Real purchase failed:', err);
         setPaymentState('idle');
         if (!err.userCancelled) {
-          showError(err.message || t('premium.paywall.purchase_failed', 'Purchase failed. Please try again.'));
+          let errMsg = err.message || t('premium.paywall.purchase_failed', 'Purchase failed. Please try again.');
+          const isAlreadyActive = 
+            (typeof err.message === 'string' && (
+              err.message.toLowerCase().includes('already active') || 
+              err.message.toLowerCase().includes('already owned')
+            )) || 
+            err.code === 7 || 
+            err.code === '7';
+
+          if (isAlreadyActive) {
+            errMsg = `${errMsg} ${t('premium.paywall.already_active_restore_hint', 'Please tap "Restore Purchase" to recover your premium status.')}`;
+          }
+          showError(errMsg);
         }
       }
     } else {

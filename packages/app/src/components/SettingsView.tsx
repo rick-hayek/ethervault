@@ -1032,6 +1032,26 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
               {biometricsSupported && (
                 <CompactSetting icon={Fingerprint} label={t('settings.option.biometric')} value={settings.biometricsEnabled} onClick={toggleBiometrics} />
               )}
+              {/* Language Selector */}
+              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
+                <div className="flex items-center gap-3">
+                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
+                    <Languages className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.language')}</span>
+                </div>
+                <select
+                  value={i18n.language}
+                  onChange={(e) => i18n.changeLanguage(e.target.value)}
+                  className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-medium text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-primary-500 transition-all cursor-pointer"
+                >
+                  <option value="en">English</option>
+                  <option value="zh">中文</option>
+                  <option value="ja">日本語</option>
+                  <option value="ko">한국어</option>
+                </select>
+              </div>
+
               {/* Lock Timer Dropdown */}
               <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
                 <div className="flex items-center gap-3">
@@ -1052,21 +1072,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   ))}
                 </select>
               </div>
-              {/* Recent Activity Button */}
-              <div
-                onClick={() => setIsActivityModalOpen(true)}
-                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group cursor-pointer hover:border-primary-500/50 transition-all"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
-                    <Activity className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.recent_activity')}</span>
-                </div>
-                <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
-                </div>
-              </div>
+
               <CompactSetting
                 icon={Moon}
                 label={t('settings.option.appearance', 'Appearance')}
@@ -1106,26 +1112,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                 </select>
               </div>
 
-              {/* Language Selector */}
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
-                <div className="flex items-center gap-3">
-                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
-                    <Languages className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.language')}</span>
-                </div>
-                <select
-                  value={i18n.language}
-                  onChange={(e) => i18n.changeLanguage(e.target.value)}
-                  className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-medium text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-primary-500 transition-all cursor-pointer"
-                >
-                  <option value="en">English</option>
-                  <option value="zh">中文</option>
-                  <option value="ja">日本語</option>
-                  <option value="ko">한국어</option>
-                </select>
-              </div>
-
               {/* Master Log Settings */}
               <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
                 <div className="flex items-center gap-3">
@@ -1148,6 +1134,22 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   >
                     <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${(settings.masterLogEnabled ?? true) ? 'right-0.5' : 'left-0.5'}`} />
                   </button>
+                </div>
+              </div>
+
+              {/* Recent Activity Button */}
+              <div
+                onClick={() => setIsActivityModalOpen(true)}
+                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group cursor-pointer hover:border-primary-500/50 transition-all"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
+                    <Activity className="w-3.5 h-3.5" />
+                  </div>
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.recent_activity')}</span>
+                </div>
+                <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
                 </div>
               </div>
             </div>
@@ -1204,24 +1206,6 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                 </p>
               )}
             </div>
-            {/* Privacy Section */}
-            <button
-              onClick={() => setIsPrivacyModalOpen(true)}
-              className="w-full py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[24px] flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group shadow-sm mb-3"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-2xl bg-primary-50 dark:bg-primary-900/10 flex items-center justify-center text-primary-500 group-hover:text-primary-600 transition-colors">
-                  <Shield className="w-5 h-5" />
-                </div>
-                <div className="text-left">
-                  <h3 className="text-xs font-medium tracking-widest text-slate-700 dark:text-slate-200">{t('about.privacy_title', 'Privacy & Security')}</h3>
-                  <p className="text-[10px] font-medium text-slate-400 group-hover:text-slate-500 dark:group-hover:text-slate-400 transition-colors mt-0.5">{t('privacy_view.title', 'Privacy Policy')}</p>
-                </div>
-              </div>
-              <div className="text-slate-300 dark:text-slate-700 group-hover:translate-x-1 transition-transform">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-              </div>
-            </button>
 
             {/* About Section */}
             <button
@@ -1524,7 +1508,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
         }
       </div>
 
-      <AboutModal isOpen={isAboutModalOpen} onClose={() => setIsAboutModalOpen(false)} appVersion={appVersion} />
+      <AboutModal isOpen={isAboutModalOpen} onClose={() => setIsAboutModalOpen(false)} appVersion={appVersion} onOpenPrivacy={() => setIsPrivacyModalOpen(true)} />
       <PrivacyModal isOpen={isPrivacyModalOpen} onClose={() => setIsPrivacyModalOpen(false)} />
 
       {isCacheConfirmOpen && (

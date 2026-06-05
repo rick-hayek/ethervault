@@ -10,9 +10,10 @@ interface AboutModalProps {
     isOpen: boolean;
     onClose: () => void;
     appVersion: string;
+    onOpenPrivacy: () => void;
 }
 
-export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVersion }) => {
+export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVersion, onOpenPrivacy }) => {
     const { t } = useTranslation();
 
     const openLink = (url: string) => {
@@ -118,11 +119,20 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVers
                                     <div className="w-8 h-8 rounded-full bg-primary-100 dark:bg-primary-500/20 flex items-center justify-center shrink-0">
                                         <Shield size={16} className="text-primary-600 dark:text-primary-400" />
                                     </div>
-                                    <div className="space-y-1">
+                                    <div className="space-y-1 text-left">
                                         <h4 className="text-sm font-bold text-slate-900 dark:text-white">{t('about.privacy_title', 'Privacy & Security')}</h4>
                                         <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                                             {t('about.privacy_desc', 'Your data is encrypted with AES-256-GCM purely on your device. We do not collect any personal data or analytics.')}
                                         </p>
+                                        <div className="pt-2">
+                                            <button
+                                                onClick={onOpenPrivacy}
+                                                className="inline-flex items-center gap-1 text-xs font-semibold text-primary-600 dark:text-primary-400 hover:underline active:scale-95 transition-all"
+                                            >
+                                                <span>{t('privacy_view.title', 'Privacy Policy')}</span>
+                                                <ExternalLink size={12} />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

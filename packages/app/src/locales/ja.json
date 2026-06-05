@@ -421,6 +421,7 @@
             "title": "EtherVault プレミアム",
             "subtitle": "デバイス間の同期と自動クラウドバックアップをアンロック。",
             "connecting": "アプリストアに安全に接続中...",
+            "connecting_google": "Google Play ストアに安全に接続中...",
             "authorizing": "支払いを処理中...",
             "verifying": "暗号化レシートを確認中...",
             "processing": "安全な決済を処理中",
@@ -428,7 +429,8 @@
             "checking_receipts": "ストアの購入履歴を確認中...",
             "validating": "デジタル署名を検証中...",
             "license_empty": "ライセンスキーを入力してください。",
-            "license_invalid": "無効なライセンスキーです。確認して再試行してください。"
+            "license_invalid": "無効なライセンスキーです。確認して再試行してください。",
+            "already_active_restore_hint": "プレミアム特典を復元するには「購入履歴を復元」をタップしてください。"
         },
         "plan": {
             "monthly_title": "月間プラン",
