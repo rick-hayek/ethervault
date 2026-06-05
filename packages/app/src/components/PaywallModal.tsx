@@ -5,6 +5,8 @@ import { Portal } from './Portal';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../utils/logger';
 import { useAlert } from '../hooks/useAlert';
+import { Capacitor } from '@capacitor/core';
+import { Purchases, PurchasesPackage } from '@revenuecat/purchases-capacitor';
 
 interface PaywallModalProps {
   isOpen: boolean;
@@ -19,15 +21,57 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ isOpen, onClose, onP
   const { t } = useTranslation();
   const { showSuccess, showError } = useAlert();
 
-  const [selectedPlan, setSelectedPlan] = useState<PlanType>('annual');
+  const [selectedPlan, setSelectedPlan] = useState<PlanType>('lifetime');
   const [paymentState, setPaymentState] = useState<PaymentState>('idle');
   const [processingStep, setProcessingStep] = useState(0);
   const [licenseKey, setLicenseKey] = useState('');
   const [licenseError, setLicenseError] = useState<string | null>(null);
 
+  const isAndroid = Capacitor.getPlatform() === 'android';
+  const [androidPackage, setAndroidPackage] = useState<PurchasesPackage | null>(null);
+  const [isLoadingAndroidProduct, setIsLoadingAndroidProduct] = useState(false);
+  const [productError, setProductError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function loadAndroidOfferings() {
+      if (!isAndroid) return;
+      setIsLoadingAndroidProduct(true);
+      try {
+        const offerings = await Purchases.getOfferings();
+        logger.info('[PREMIUM] Loaded offerings from RevenueCat:', offerings);
+        if (offerings.current !== null) {
+          const ltPkg = offerings.current.lifetime;
+          if (ltPkg) {
+            setAndroidPackage(ltPkg);
+          } else {
+            const foundLt = offerings.current.availablePackages.find(
+              (pkg) => pkg.packageType === 'LIFETIME' || pkg.identifier === '$lifetime'
+            );
+            if (foundLt) {
+              setAndroidPackage(foundLt);
+            } else if (offerings.current.availablePackages.length > 0) {
+              setAndroidPackage(offerings.current.availablePackages[0]);
+            }
+          }
+        }
+      } catch (e: any) {
+        logger.error('[PREMIUM] Failed to load offerings:', e);
+        setProductError(t('premium.paywall.load_offerings_failed', 'Error occurs, please try again later.'));
+      } finally {
+        setIsLoadingAndroidProduct(false);
+      }
+    }
+
+    if (isOpen) {
+      loadAndroidOfferings();
+    }
+  }, [isOpen]);
+
   // Steps for payment processing mock
   const paymentSteps = [
-    t('premium.paywall.connecting', 'Securing connection to App Store...'),
+    isAndroid
+      ? t('premium.paywall.connecting_google', 'Securing connection to Google Play...')
+      : t('premium.paywall.connecting', 'Securing connection to App Store...'),
     t('premium.paywall.authorizing', 'Authorizing transaction...'),
     t('premium.paywall.verifying', 'Verifying cryptographic receipt...'),
   ];
@@ -39,6 +83,8 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ isOpen, onClose, onP
   ];
 
   useEffect(() => {
+    if (isAndroid) return; // Real transactions manage state transition on Android
+
     let interval: any;
     if (paymentState === 'processing') {
       setProcessingStep(0);
@@ -100,14 +146,61 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ isOpen, onClose, onP
 
   if (!isOpen) return null;
 
-  const handlePurchase = () => {
-    logger.info(`[PREMIUM] User initiated mock purchase for plan: ${selectedPlan}`);
-    setPaymentState('processing');
+  const handlePurchase = async () => {
+    if (isAndroid) {
+      if (!androidPackage) {
+        showError(t('premium.paywall.product_not_loaded', 'Product not loaded. Please wait or retry.'));
+        return;
+      }
+      logger.info(`[PREMIUM] User initiated real purchase on Android:`, androidPackage);
+      setPaymentState('processing');
+      try {
+        const { customerInfo } = await Purchases.purchasePackage({ aPackage: androidPackage });
+        const hasPremium = customerInfo.entitlements.active['premium_access'] !== undefined;
+        if (hasPremium) {
+          setPaymentState('success');
+          localStorage.setItem('ethervault_premium', 'true');
+          onPurchaseSuccess();
+        } else {
+          throw new Error('Entitlement not active after purchase.');
+        }
+      } catch (err: any) {
+        logger.error('[PREMIUM] Real purchase failed:', err);
+        setPaymentState('idle');
+        if (!err.userCancelled) {
+          showError(err.message || t('premium.paywall.purchase_failed', 'Purchase failed. Please try again.'));
+        }
+      }
+    } else {
+      logger.info(`[PREMIUM] User initiated mock purchase for plan: ${selectedPlan}`);
+      setPaymentState('processing');
+    }
   };
 
-  const handleRestore = () => {
-    logger.info('[PREMIUM] User initiated mock restore purchases flow.');
-    setPaymentState('restoring');
+  const handleRestore = async () => {
+    if (isAndroid) {
+      logger.info('[PREMIUM] User initiated real restore purchases flow on Android.');
+      setPaymentState('restoring');
+      try {
+        const { customerInfo } = await Purchases.restorePurchases();
+        const hasPremium = customerInfo.entitlements.active['premium_access'] !== undefined;
+        if (hasPremium) {
+          setPaymentState('success');
+          localStorage.setItem('ethervault_premium', 'true');
+          onPurchaseSuccess();
+        } else {
+          setPaymentState('idle');
+          showError(t('premium.paywall.no_active_subscriptions', 'No active subscriptions found to restore.'));
+        }
+      } catch (err: any) {
+        logger.error('[PREMIUM] Real restore failed:', err);
+        setPaymentState('idle');
+        showError(err.message || t('premium.paywall.restore_failed', 'Restore failed. Please try again.'));
+      }
+    } else {
+      logger.info('[PREMIUM] User initiated mock restore purchases flow.');
+      setPaymentState('restoring');
+    }
   };
 
   const handleLicenseSubmit = (e: React.FormEvent) => {
@@ -130,30 +223,13 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ isOpen, onClose, onP
 
   const plans = [
     {
-      id: 'monthly' as PlanType,
-      title: t('premium.plan.monthly_title', 'Monthly'),
-      price: '$1.99',
-      period: t('premium.plan.monthly_period', '/ month'),
-      badge: null,
-      desc: t('premium.plan.monthly_desc', 'Flexible plan, cancel anytime.')
-    },
-    {
-      id: 'annual' as PlanType,
-      title: t('premium.plan.annual_title', 'Annual'),
-      price: '$11.99',
-      period: t('premium.plan.annual_period', '/ year'),
-      badge: t('common.recommended', 'RECOMMENDED'),
-      badgeColor: 'bg-primary-500 text-white',
-      desc: t('premium.plan.annual_desc', 'Save 50% compared to monthly.')
-    },
-    {
       id: 'lifetime' as PlanType,
-      title: t('premium.plan.lifetime_title', 'Lifetime'),
-      price: '$29.99',
+      title: t('premium.plan.lifetime_title', 'Lifetime Pro'),
+      price: isAndroid && androidPackage ? androidPackage.product.priceString : '$0.99',
       period: t('premium.plan.lifetime_period', 'one-time'),
       badge: t('premium.plan.lifetime_badge', 'BEST VALUE'),
       badgeColor: 'bg-emerald-500 text-white',
-      desc: t('premium.plan.lifetime_desc', 'Pay once, unlock forever.')
+      desc: isAndroid && androidPackage ? androidPackage.product.description : t('premium.plan.lifetime_desc', 'Pay once, unlock forever.')
     }
   ];
 
@@ -228,18 +304,17 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ isOpen, onClose, onP
               </div>
 
               {/* Plan Cards */}
-              <div className="grid grid-cols-3 gap-2.5">
+              <div className="grid grid-cols-1 max-w-xs mx-auto w-full gap-2.5">
                 {plans.map((p) => {
                   const isSelected = selectedPlan === p.id;
                   return (
                     <div
                       key={p.id}
                       onClick={() => setSelectedPlan(p.id)}
-                      className={`relative flex flex-col p-3 rounded-2xl border transition-all duration-300 cursor-pointer select-none ${
-                        isSelected
+                      className={`relative flex flex-col p-3 rounded-2xl border transition-all duration-300 cursor-pointer select-none ${isSelected
                           ? 'border-primary-500 bg-primary-950/20 ring-1 ring-primary-500/30'
                           : 'border-slate-800 bg-slate-900/50 hover:bg-slate-800/40'
-                      }`}
+                        }`}
                     >
                       {p.badge && (
                         <span className={`absolute -top-2 left-1/2 -translate-x-1/2 text-[7px] font-black tracking-wider px-1.5 py-0.5 rounded-full ${p.badgeColor}`}>
@@ -257,14 +332,27 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ isOpen, onClose, onP
                 })}
               </div>
 
+              {productError && (
+                <div className="text-[10px] text-rose-400 text-center font-medium bg-rose-500/10 border border-rose-500/20 py-2 px-3 rounded-xl mt-1">
+                  {productError}
+                </div>
+              )}
+
               {/* Actions Area */}
               <div className="space-y-3 pt-2">
                 <button
                   onClick={handlePurchase}
-                  className="w-full py-3.5 bg-gradient-to-r from-primary-600 to-indigo-600 hover:from-primary-700 hover:to-indigo-700 text-white text-xs font-bold rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-primary-500/10 flex items-center justify-center gap-2"
+                  disabled={isAndroid && (isLoadingAndroidProduct || !androidPackage)}
+                  className="w-full py-3.5 bg-gradient-to-r from-primary-600 to-indigo-600 hover:from-primary-700 hover:to-indigo-700 text-white text-xs font-bold rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-primary-500/10 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <CreditCard className="w-4 h-4" />
-                  {t('premium.actions.subscribe', 'Subscribe & Unlock Now')}
+                  {isAndroid && isLoadingAndroidProduct ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <CreditCard className="w-4 h-4" />
+                  )}
+                  {isAndroid && isLoadingAndroidProduct
+                    ? t('premium.paywall.loading_product', 'Loading Product...')
+                    : t('premium.actions.subscribe', 'Buy Pro & Unlock Now')}
                 </button>
 
                 <div className={`flex items-center px-2 text-[10px] text-slate-400 ${import.meta.env.DEV ? 'justify-between' : 'justify-center'}`}>

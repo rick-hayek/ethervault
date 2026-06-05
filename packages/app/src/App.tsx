@@ -19,7 +19,8 @@ import { BackHandlerProvider, useBackHandler } from './hooks/useBackHandler';
 import { AlertProvider, useAlert } from './hooks/useAlert';
 import { useTranslation } from 'react-i18next';
 import { App as CapacitorApp } from '@capacitor/app';
-
+import { Capacitor } from '@capacitor/core';
+import { Purchases, LOG_LEVEL } from '@revenuecat/purchases-capacitor';
 
 // ... existing imports ...
 
@@ -51,13 +52,15 @@ const AppContent: React.FC = () => {
   const { showInfo } = useAlert();
 
   const handleUnlockPremium = () => {
-    // Intercept with a Coming Soon alert instead of opening the mock paywall
-    showInfo(
-      t('premium.coming_soon', 'In-app purchases and sync subscriptions are coming soon! The current flow is a demo, please stay tuned for upcoming version updates.'),
-      t('premium.coming_soon_title', 'Coming Soon')
-    );
-    // Original demo checkout flow (kept but temporarily disabled):
-    // setIsPaywallOpen(true);
+    if (Capacitor.getPlatform() === 'android') {
+      setIsPaywallOpen(true);
+    } else {
+      // Intercept with a Coming Soon alert instead of opening the mock paywall
+      showInfo(
+        t('premium.coming_soon', 'In-app purchases and sync subscriptions are coming soon! The current flow is a demo, please stay tuned for upcoming version updates.'),
+        t('premium.coming_soon_title', 'Coming Soon')
+      );
+    }
   };
 
   // const [isDarkMode, setIsDarkMode] = useState<boolean>(true); // Removed redundant state
@@ -142,6 +145,37 @@ const AppContent: React.FC = () => {
         if (getAuthService().checkAuth()) {
           const entries = await getVaultService().getEntries();
           setPasswords(entries);
+        }
+
+        // Initialize RevenueCat for Android
+        if (Capacitor.getPlatform() === 'android') {
+          try {
+            if (import.meta.env.DEV) {
+              await Purchases.setLogLevel({ level: LOG_LEVEL.DEBUG });
+            }
+
+            const apiKey = import.meta.env.VITE_REVENUECAT_ANDROID_API_KEY || 'goog_placeholder_api_key';
+
+            let anonId = localStorage.getItem('ethervault_anon_user_id');
+            if (!anonId) {
+              anonId = `ethervault_${crypto.randomUUID()}`;
+              localStorage.setItem('ethervault_anon_user_id', anonId);
+            }
+
+            await Purchases.configure({
+              apiKey: apiKey,
+              appUserID: anonId
+            });
+
+            // Sync active entitlement status
+            const { customerInfo } = await Purchases.getCustomerInfo();
+            const hasPremium = customerInfo.entitlements.active['premium_access'] !== undefined;
+            localStorage.setItem('ethervault_premium', hasPremium ? 'true' : 'false');
+            setSettings(prev => ({ ...prev, isPremium: hasPremium }));
+            logger.info('[PREMIUM] RevenueCat initialized on Android. Active premium status:', hasPremium);
+          } catch (rcError) {
+            logger.error('[PREMIUM] Failed to initialize RevenueCat:', rcError);
+          }
         }
       } catch (error) {
         console.error('Failed to initialize app:', error);
@@ -479,7 +513,7 @@ const AppContent: React.FC = () => {
             searchQuery={searchQuery}
             isSyncEnabled={settings.cloudProvider !== 'none'}
             isPremium={settings.isPremium}
-            onUnlockPremium={() => setIsPaywallOpen(true)}
+            onUnlockPremium={handleUnlockPremium}
           />
         );
       case 'security':
