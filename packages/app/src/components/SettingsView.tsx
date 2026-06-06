@@ -43,6 +43,105 @@ import { useAlert } from '../hooks/useAlert';
 import { useBackHandler } from '../hooks/useBackHandler';
 import { MobileFileService } from '../utils/MobileFileService';
 
+interface DropdownOption {
+  value: string | number;
+  label: string;
+  dotColor?: string;
+}
+
+interface CustomDropdownProps {
+  value: string | number;
+  onChange: (value: any) => void;
+  options: DropdownOption[];
+}
+
+const CustomDropdown: React.FC<CustomDropdownProps> = ({ value, onChange, options }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState<'down' | 'up'>('down');
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen && dropdownRef.current) {
+      const rect = dropdownRef.current.getBoundingClientRect();
+      const spaceBelow = window.innerHeight - rect.bottom;
+      const spaceAbove = rect.top;
+      // Estimated height of the open dropdown menu (300px is safe threshold)
+      if (spaceBelow < 300 && spaceAbove > spaceBelow) {
+        setDropdownPosition('up');
+      } else {
+        setDropdownPosition('down');
+      }
+    }
+  }, [isOpen]);
+
+  const selectedOption = options.find(opt => opt.value === value) || options[0];
+
+  return (
+    <div className="relative" ref={dropdownRef}>
+      <button
+        type="button"
+        onClick={() => setIsOpen(!isOpen)}
+        className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-semibold text-slate-700 dark:text-slate-300 uppercase rounded-xl py-1.5 px-3 outline-none hover:border-primary-500/50 dark:hover:border-primary-500/50 transition-all flex items-center gap-1.5 select-none"
+      >
+        {selectedOption.dotColor && (
+          <span className={`w-1.5 h-1.5 rounded-full ${selectedOption.dotColor} shrink-0`} />
+        )}
+        <span>{selectedOption.label}</span>
+        <svg className={`w-3 h-3 text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+
+      {isOpen && (
+        <div className={`absolute right-0 z-50 w-44 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-xl overflow-hidden py-1 animate-in fade-in duration-150 ${
+          dropdownPosition === 'up'
+            ? 'bottom-full mb-2 slide-in-from-bottom-2'
+            : 'top-full mt-2 slide-in-from-top-2'
+        }`}>
+          {options.map((opt, index) => {
+            const isSelected = opt.value === value;
+            return (
+              <button
+                key={opt.value}
+                type="button"
+                onClick={() => {
+                  onChange(opt.value);
+                  setIsOpen(false);
+                }}
+                className={`w-full flex items-center justify-between px-4 py-2.5 text-left text-[11px] font-medium transition-colors ${
+                  isSelected
+                    ? 'bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 font-semibold'
+                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50'
+                } ${index > 0 ? 'border-t border-slate-50 dark:border-slate-850' : ''}`}
+              >
+                <div className="flex items-center gap-2">
+                  {opt.dotColor && (
+                    <span className={`w-1.5 h-1.5 rounded-full ${opt.dotColor} shrink-0`} />
+                  )}
+                  <span>{opt.label}</span>
+                </div>
+                {isSelected && (
+                  <Check className="w-3.5 h-3.5 text-primary-500 shrink-0" />
+                )}
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+};
+
 interface SettingsViewProps {
   settings: AppSettings;
   setSettings: (settings: AppSettings) => void;
@@ -1135,16 +1234,16 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   </div>
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.language')}</span>
                 </div>
-                <select
+                <CustomDropdown
                   value={i18n.language}
-                  onChange={(e) => i18n.changeLanguage(e.target.value)}
-                  className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-medium text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-primary-500 transition-all cursor-pointer"
-                >
-                  <option value="en">English</option>
-                  <option value="zh">中文</option>
-                  <option value="ja">日本語</option>
-                  <option value="ko">한국어</option>
-                </select>
+                  onChange={(val) => i18n.changeLanguage(val)}
+                  options={[
+                    { value: 'en', label: 'English' },
+                    { value: 'zh', label: '中文' },
+                    { value: 'ja', label: '日本語' },
+                    { value: 'ko', label: '한국어' }
+                  ]}
+                />
               </div>
 
               {/* Lock Timer Dropdown */}
@@ -1155,17 +1254,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   </div>
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.lock_timer')}</span>
                 </div>
-                <select
+                <CustomDropdown
                   value={settings.autoLockTimeout}
-                  onChange={(e) => setSettings({ ...settings, autoLockTimeout: Number(e.target.value) })}
-                  className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-medium text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-primary-500 transition-all cursor-pointer"
-                >
-                  {[1, 5, 15, 30, 60].map(val => (
-                    <option key={val} value={val}>
-                      {val === 60 ? t('settings.option.time.1h') : t(`settings.option.time.${val}m`)}
-                    </option>
-                  ))}
-                </select>
+                  onChange={(val) => setSettings({ ...settings, autoLockTimeout: Number(val) })}
+                  options={[1, 5, 15, 30, 60].map(val => ({
+                    value: val,
+                    label: val === 60 ? t('settings.option.time.1h') : t(`settings.option.time.${val}m`)
+                  }))}
+                />
               </div>
 
               <CompactSetting
@@ -1190,21 +1286,21 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   </div>
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.theme_color', 'Theme Color')}</span>
                 </div>
-                <select
+                <CustomDropdown
                   value={settings.themeColor || 'silver'}
-                  onChange={(e) => setSettings({ ...settings, themeColor: e.target.value as any })}
-                  className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-medium text-slate-700 dark:text-slate-300 uppercase rounded-lg py-1 px-2 outline-none focus:border-primary-500 transition-all cursor-pointer"
-                >
-                  <option value="silver">{t('settings.color.silver', 'Silver')}</option>
-                  <option value="blue">{t('settings.color.blue', 'Blue')}</option>
-                  <option value="emerald">{t('settings.color.emerald', 'Green')}</option>
-                  <option value="violet">{t('settings.color.violet', 'Violet')}</option>
-                  <option value="amber">{t('settings.color.amber', 'Amber')}</option>
-                  <option value="rose">{t('settings.color.rose', 'Rose')}</option>
-                  <option value="pink">{t('settings.color.pink', 'Sakura Pink')}</option>
-                  <option value="lightgrey">{t('settings.color.lightgrey', 'Cashmere Grey')}</option>
-                  <option value="ivory">{t('settings.color.ivory', 'Ivory')}</option>
-                </select>
+                  onChange={(val) => setSettings({ ...settings, themeColor: val as any })}
+                  options={[
+                    { value: 'silver', label: t('settings.color.silver', 'Silver'), dotColor: 'bg-slate-400 dark:bg-slate-500' },
+                    { value: 'blue', label: t('settings.color.blue', 'Blue'), dotColor: 'bg-blue-500' },
+                    { value: 'emerald', label: t('settings.color.emerald', 'Green'), dotColor: 'bg-emerald-500' },
+                    { value: 'violet', label: t('settings.color.violet', 'Violet'), dotColor: 'bg-violet-500' },
+                    { value: 'amber', label: t('settings.color.amber', 'Amber'), dotColor: 'bg-amber-500' },
+                    { value: 'rose', label: t('settings.color.rose', 'Rose'), dotColor: 'bg-rose-500' },
+                    { value: 'pink', label: t('settings.color.pink', 'Sakura Pink'), dotColor: 'bg-pink-400' },
+                    { value: 'lightgrey', label: t('settings.color.lightgrey', 'Cashmere Grey'), dotColor: 'bg-slate-300 dark:bg-slate-600' },
+                    { value: 'ivory', label: t('settings.color.ivory', 'Ivory'), dotColor: 'bg-amber-100 dark:bg-amber-200' }
+                  ]}
+                />
               </div>
 
             </div>
