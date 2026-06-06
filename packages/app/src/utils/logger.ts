@@ -3,7 +3,7 @@
 
 const LOG_STORAGE_KEY = 'ethervault_logs';
 const MAX_LOG_LINES = 50;
-let isLoggingEnabled = true;
+let isLoggingEnabled = localStorage.getItem('ethervault_master_log') === 'true';
 
 const saveToLocalLog = (level: string, ...args: any[]) => {
     if (!isLoggingEnabled) return;

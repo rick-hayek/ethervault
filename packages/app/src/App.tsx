@@ -99,7 +99,8 @@ const AppContent: React.FC = () => {
       cloudProvider: savedProvider || 'none',
       lastSync: '',
       themeColor: savedThemeColor as any,
-      isPremium: localStorage.getItem('ethervault_premium') === 'true'
+      isPremium: localStorage.getItem('ethervault_premium') === 'true',
+      masterLogEnabled: localStorage.getItem('ethervault_master_log') === 'true'
     };
   });
 
@@ -279,6 +280,13 @@ const AppContent: React.FC = () => {
     localStorage.setItem('ethervault_theme_color', color);
     document.documentElement.setAttribute('data-theme-color', color);
   }, [settings.themeColor]);
+
+  // Master Log Persistence Effect
+  useEffect(() => {
+    const enabled = settings.masterLogEnabled ?? false;
+    localStorage.setItem('ethervault_master_log', enabled ? 'true' : 'false');
+    logger.setEnabled(enabled);
+  }, [settings.masterLogEnabled]);
 
   // Handle Android Back Button
   useBackHandler('app-root', async () => {

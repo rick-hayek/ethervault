@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { BiometricService } from '../utils/BiometricService';
 import { Capacitor } from '@capacitor/core';
 import { getStorageService } from '@ethervault/core';
+import appLogo from '../../assets/logo.png';
 
 interface LoginViewProps {
   onLogin: (masterKey: string) => Promise<boolean> | boolean;
@@ -117,9 +118,11 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin, bioEnabled }) => 
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950 flex flex-col items-center justify-center p-4 relative overflow-hidden titlebar">
       <div className="max-w-md w-full relative z-10 text-center no-drag">
-        <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-900 dark:bg-white rounded-2xl md:rounded-3xl shadow-2xl flex items-center justify-center mx-auto mb-6 md:mb-8 transition-transform duration-500">
-          <ShieldCheck className="w-8 h-8 md:w-10 md:h-10 text-white dark:text-slate-900" />
-        </div>
+        <img
+          src={appLogo}
+          alt="EtherVault Logo"
+          className="w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl shadow-2xl mx-auto mb-6 md:mb-8 transition-transform duration-500"
+        />
 
         <h1 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-1.5 tracking-tighter">EtherVault</h1>
         <p className="text-slate-500 dark:text-slate-400 mb-6 md:mb-10 text-[10px] md:text-xs font-medium uppercase tracking-widest">{t('login.locked_local_db')}</p>
@@ -129,7 +132,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin, bioEnabled }) => 
             <div className="space-y-1.5 text-left">
               <label className="text-[9px] md:text-[10px] font-medium text-slate-400 uppercase tracking-[0.2em] px-1">{t('login.master_password')}</label>
               <div className="relative group">
-                <Lock className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors ${error ? 'text-rose-500' : 'text-slate-400 group-focus-within:text-slate-900 dark:group-focus-within:text-white'}`} />
+                <Lock className={`absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 transition-colors ${error ? 'text-rose-500' : 'text-slate-400 group-focus-within:text-primary-500'}`} />
                 <input
                   type={showKey ? "text" : "password"}
                   value={key}
@@ -141,7 +144,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin, bioEnabled }) => 
                   }}
                   placeholder={t('login.unlock_placeholder')}
                   autoFocus
-                  className="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl md:rounded-2xl py-3.5 md:py-4 pl-12 pr-12 outline-none focus:border-slate-400 transition-all text-slate-900 dark:text-white font-medium text-center tracking-widest text-sm md:text-base"
+                  className="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl md:rounded-2xl py-3.5 md:py-4 pl-12 pr-12 outline-none focus:border-primary-500 transition-all text-slate-900 dark:text-white font-medium text-center tracking-widest text-sm md:text-base"
                 />
                 <button
                   type="button"
@@ -169,7 +172,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin, bioEnabled }) => 
 
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-3.5 md:py-4 rounded-xl md:rounded-2xl font-medium text-sm md:text-base shadow-xl transition-all active:scale-[0.98] hover:opacity-90"
+              className="w-full flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white py-3.5 md:py-4 rounded-xl md:rounded-2xl font-medium text-sm md:text-base shadow-xl shadow-primary-500/20 transition-all active:scale-[0.98] hover:opacity-90"
             >
               {t('login.access_vault')}
               <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />
@@ -187,7 +190,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin, bioEnabled }) => 
               <button
                 onClick={handleBioAuth}
                 disabled={isBioLoading}
-                className="w-full flex items-center justify-center gap-3 py-3 md:py-4 rounded-xl md:rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-500 text-slate-900 dark:text-white font-medium text-sm md:text-base transition-all active:scale-[0.98] group"
+                className="w-full flex items-center justify-center gap-3 py-3 md:py-4 rounded-xl md:rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-primary-500/50 dark:hover:border-primary-500/50 text-slate-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 font-medium text-sm md:text-base transition-all active:scale-[0.98] group"
               >
                 <Fingerprint className={`w-5 h-5 md:w-6 md:h-6 ${isBioLoading ? 'animate-pulse' : ''}`} />
                 {isBioLoading ? t('login.system_auth') : t('login.unlock_bio')}

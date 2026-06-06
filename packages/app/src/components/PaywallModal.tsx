@@ -178,7 +178,7 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ isOpen, onClose, onP
             err.code === '7';
 
           if (isAlreadyActive) {
-            errMsg = `${errMsg} ${t('premium.paywall.already_active_restore_hint', 'Please tap "Restore Purchase" to recover your premium status.')}`;
+            errMsg = t('premium.paywall.already_active_restore_hint', 'You have already purchased this entitlement. Please tap "Restore Purchase" to retrieve your premium status.');
           }
           showError(errMsg);
         }

@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { BottomTabNav } from './BottomTabNav';
+import appLogo from '../../assets/logo.png';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -130,9 +131,11 @@ export const Layout: React.FC<LayoutProps> = ({
       {/* Sidebar - Desktop/Tablet (Fixed position, non-scrolling) */}
       <aside className="hidden md:flex flex-col md:w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 h-full shrink-0 z-20">
         <div className="p-4 md:p-8 flex items-center justify-start gap-3 titlebar">
-          <div className="p-2 bg-slate-900 dark:bg-white rounded-xl shadow-lg shrink-0">
-            <ShieldCheck className="w-5 h-5 md:w-6 md:h-6 text-white dark:text-slate-900" />
-          </div>
+          <img
+            src={appLogo}
+            alt="EtherVault Logo"
+            className="w-8 h-8 rounded-xl shadow-md shrink-0"
+          />
           <span className="md:block text-xl font-bold text-slate-900 dark:text-white truncate">
             EtherVault
           </span>

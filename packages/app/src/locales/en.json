@@ -226,7 +226,7 @@
             "web_step3": "Select IndexedDB, find 'EtherVaultDB', and click 'Delete database', then clear Local Storage.",
             "web_step4": "Reload the webpage to set up a new master password.",
             "action_reset": "One-Click Reset (Destructive)",
-            "confirm_reset": "WARNING: This will permanently delete all your local credentials and reset the app. This cannot be undone! Are you absolutely sure?",
+            "confirm_reset": "WARNING: This will permanently delete all your credentials stored in this app and reset the app. This cannot be undone! Are you absolutely sure?",
             "reset_failed": "Automatic reset failed. Please use the manual steps instead.",
             "support_title": "Need Assistance?"
         }
@@ -432,7 +432,7 @@
             "validating": "Validating digital purchase signature...",
             "license_empty": "Please enter a license key.",
             "license_invalid": "Invalid license key. Please check and try again.",
-            "already_active_restore_hint": "Please tap \"Restore Purchase\" to retrieve your premium status."
+            "already_active_restore_hint": "You have already purchased this entitlement. Please tap \"Restore Purchase\" to retrieve your premium status."
         },
         "plan": {
             "monthly_title": "Monthly",

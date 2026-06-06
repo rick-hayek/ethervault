@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { ShieldCheck, Key, Fingerprint, ChevronRight, Lock, Eye, EyeOff } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { SecurityService } from '@ethervault/core';
+import appLogo from '../../assets/logo.png';
 
 interface WelcomeViewProps {
   onComplete: (masterKey: string, bioEnabled: boolean) => void;
@@ -61,9 +62,11 @@ export const WelcomeView: React.FC<WelcomeViewProps> = ({ onComplete, biometrics
 
         <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2rem] md:rounded-[2.5rem] p-6 md:p-10 shadow-xl animate-in fade-in zoom-in-95 duration-500">
           <div className="mb-6 md:mb-8 text-center">
-            <div className="w-16 h-16 md:w-20 md:h-20 bg-slate-900 dark:bg-white rounded-2xl md:rounded-3xl shadow-lg flex items-center justify-center mx-auto mb-4 md:mb-6 transition-transform duration-500">
-              <ShieldCheck className="w-8 h-8 md:w-10 md:h-10 text-white dark:text-slate-900" />
-            </div>
+            <img
+              src={appLogo}
+              alt="EtherVault Logo"
+              className="w-16 h-16 md:w-20 md:h-20 rounded-2xl md:rounded-3xl shadow-lg mx-auto mb-4 md:mb-6 transition-transform duration-500"
+            />
             <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white mb-1.5 tracking-tight">
               {step === 1 ? t('welcome.step1.title') : t('welcome.step2.title')}
             </h1>

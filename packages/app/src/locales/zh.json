@@ -226,7 +226,7 @@
             "web_step3": "展开 IndexedDB，选中 'EtherVaultDB' 并点击“删除数据库”，随后清除 Local Storage。",
             "web_step4": "刷新页面即可重新设置新的主密码。",
             "action_reset": "一键重置（清除所有数据）",
-            "confirm_reset": "警告：这会永久删除所有本地保存的账户密码并重置 App，该操作不可逆！您确定要继续吗？",
+            "confirm_reset": "警告：这会永久删除所有保存在本 App 中的密码并重置 App，该操作不可逆！您确定要继续吗？",
             "reset_failed": "自动重置失败，请使用上方的平台手动步骤进行重置。",
             "support_title": "寻求帮助？"
         }
@@ -432,7 +432,7 @@
             "validating": "正在验证数字签名...",
             "license_empty": "请输入许可密钥。",
             "license_invalid": "许可密钥无效。请检查并重试。",
-            "already_active_restore_hint": "请点击“恢复购买”按钮以重新获取您的 Premium 权限。"
+            "already_active_restore_hint": "您已购买过该权限。请点击“恢复购买”按钮以重新获取您的 Premium 权限。"
         },
         "plan": {
             "monthly_title": "按月订阅",

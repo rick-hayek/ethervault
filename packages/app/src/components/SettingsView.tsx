@@ -1346,24 +1346,24 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.master_log')}</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  {(settings.masterLogEnabled ?? true) && window.electronAPI && (
+                  {(settings.masterLogEnabled ?? false) && window.electronAPI && (
                     <button onClick={() => logger.openLogFile()} className="text-[9px] font-medium text-slate-400 hover:text-primary-500 transition-colors px-2">{t('settings.option.open_log')}</button>
                   )}
                   <button
                     onClick={() => {
-                      const newValue = !(settings.masterLogEnabled ?? true);
+                      const newValue = !(settings.masterLogEnabled ?? false);
                       setSettings({ ...settings, masterLogEnabled: newValue });
                       logger.setEnabled(newValue);
                     }}
-                    className={`w-8 h-4 rounded-full relative transition-all ${settings.masterLogEnabled ?? true ? 'bg-primary-600' : 'bg-slate-200 dark:bg-slate-700'}`}
+                    className={`w-8 h-4 rounded-full relative transition-all ${settings.masterLogEnabled ?? false ? 'bg-primary-600' : 'bg-slate-200 dark:bg-slate-700'}`}
                   >
-                    <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${(settings.masterLogEnabled ?? true) ? 'right-0.5' : 'left-0.5'}`} />
+                    <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${(settings.masterLogEnabled ?? false) ? 'right-0.5' : 'left-0.5'}`} />
                   </button>
                 </div>
               </div>
 
               {/* Recent Activity Button */}
-              {(settings.masterLogEnabled ?? true) && (
+              {(settings.masterLogEnabled ?? false) && (
                 <div
                   onClick={() => setIsActivityModalOpen(true)}
                   className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800/80 p-3 rounded-2xl flex items-center justify-between group cursor-pointer hover:border-primary-500/50 transition-all"
@@ -1381,7 +1381,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
               )}
 
               {/* Clear Cache Button */}
-              {(settings.masterLogEnabled ?? true) && (
+              {(settings.masterLogEnabled ?? false) && (
                 <button
                   onClick={() => setIsCacheConfirmOpen(true)}
                   className="w-full flex items-center justify-between p-3 rounded-xl border border-rose-100 dark:border-rose-900/30 hover:bg-rose-50 dark:hover:bg-rose-900/10 transition-colors group bg-slate-50 dark:bg-slate-800/50"
@@ -1395,7 +1395,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <span className="text-[9px] font-medium uppercase text-rose-300 group-hover:text-rose-500 tracking-widest">{t('common.clear', 'Clean')}</span>
                 </button>
               )}
-              {(settings.masterLogEnabled ?? true) && cacheMessage && (
+              {(settings.masterLogEnabled ?? false) && cacheMessage && (
                 <p className="text-[10px] font-medium text-center text-emerald-500 uppercase tracking-widest animate-in fade-in slide-in-from-bottom-1">
                   {cacheMessage}
                 </p>
