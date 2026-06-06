@@ -1,5 +1,6 @@
-import { app, BrowserWindow, Tray, Menu, nativeImage, globalShortcut, ipcMain, shell } from 'electron';
+import { app, BrowserWindow, Tray, Menu, nativeImage, globalShortcut, ipcMain, shell, dialog } from 'electron';
 import * as path from 'path';
+import * as zlib from 'zlib';
 import log from 'electron-log/main';
 
 // Initialize logger
@@ -354,6 +355,46 @@ ipcMain.handle('app-clear-cache', async () => {
 
 ipcMain.handle('app-get-version', () => {
     return app.getVersion();
+});
+
+ipcMain.handle('log-send-report', async (event, email: string) => {
+    try {
+        const logPath = log.transports.file.getFile().path;
+        if (!fs.existsSync(logPath)) {
+            log.error('Log file does not exist at:', logPath);
+            return false;
+        }
+
+        const logData = await fs.promises.readFile(logPath);
+        const compressedData = zlib.gzipSync(logData);
+
+        const focusedWindow = BrowserWindow.getFocusedWindow();
+        const saveOptions = {
+            title: 'Save Log Report',
+            defaultPath: 'ethervault-logs.gz',
+            filters: [
+                { name: 'Gzipped Log File', extensions: ['gz'] }
+            ]
+        };
+        const result = focusedWindow
+            ? await dialog.showSaveDialog(focusedWindow, saveOptions)
+            : await dialog.showSaveDialog(saveOptions);
+
+        if (result.canceled || !result.filePath) {
+            return false;
+        }
+
+        await fs.promises.writeFile(result.filePath, compressedData);
+        shell.showItemInFolder(result.filePath);
+
+        const mailtoUrl = `mailto:${email}?subject=${encodeURIComponent('EtherVault Log Report')}&body=${encodeURIComponent('Please attach the saved ethervault-logs.gz file to this email.')}`;
+        await shell.openExternal(mailtoUrl);
+
+        return true;
+    } catch (error) {
+        log.error('Failed to generate log report:', error);
+        return false;
+    }
 });
 
 // Biometric / SafeStorage IPC

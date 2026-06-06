@@ -73,6 +73,7 @@
         "title": "设置",
         "subtitle": "管理您的安全和同步偏好",
         "data_management": "数据管理",
+        "log_management": "日志管理",
         "import": "导入",
         "sync_provider": "同步提供商",
         "updating": "更新中...",
@@ -97,7 +98,7 @@
             "login_alerts": "登录提醒",
             "dark_mode": "深色模式",
             "language": "语言",
-            "master_log": "主日志",
+            "master_log": "日志",
             "open_log": "打开日志",
             "time": {
                 "1m": "1 分钟",
@@ -161,6 +162,7 @@
         "export": "导出",
         "clear_cache": "清除缓存",
         "clear_cache_desc": "这将清除本地日志和临时数据，但不会删除您的密码数据。",
+        "send_log": "发送日志",
         "biometric_modal": {
             "title": "启用生物识别解锁",
             "description": "请输入您的主密码以便将其安全存储在设备钥匙串中。",

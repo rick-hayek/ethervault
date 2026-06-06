@@ -23,8 +23,12 @@ import {
   Loader2,
   Info,
   ChevronLeft,
-  Palette
+  Palette,
+  Send
 } from 'lucide-react';
+import { Filesystem, Directory } from '@capacitor/filesystem';
+import { Share } from '@capacitor/share';
+import { Capacitor } from '@capacitor/core';
 import { Portal } from './Portal';
 import { useTranslation } from 'react-i18next';
 import { BiometricService } from '../utils/BiometricService';
@@ -145,6 +149,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   const [activityLogs, setActivityLogs] = useState<string[]>([]);
   const [cacheMessage, setCacheMessage] = useState<string | null>(null);
   const [appVersion, setAppVersion] = useState<string>(__APP_VERSION__);
+  const [isSendingLogs, setIsSendingLogs] = useState(false);
 
   // Conflict Resolution State
   const [isConflictModalOpen, setIsConflictModalOpen] = useState(false);
@@ -184,6 +189,96 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     if (logger.getRecentLogs) {
       const logs = await logger.getRecentLogs();
       setActivityLogs(logs);
+    }
+  };
+
+  const handleSendLogReport = async () => {
+    setIsSendingLogs(true);
+    try {
+      const email = import.meta.env.VITE_CONTACT_EMAIL || 'support@ethervault.app';
+
+      // 1. Electron Desktop Environment
+      if (window.electronAPI?.sendLogReport) {
+        const result = await window.electronAPI.sendLogReport(email);
+        if (result) {
+          showSuccess(t('settings.success.log_report_sent', 'Log report save prompted successfully!'));
+        }
+        return;
+      }
+
+      // 2. Mobile (Capacitor Native) Environment
+      if (Capacitor.isNativePlatform()) {
+        const logs = await logger.getRecentLogs();
+        const logContent = logs.length > 0 ? [...logs].reverse().join('\n') : 'No logs recorded.';
+        
+        // Compress using CompressionStream
+        const blob = new Blob([logContent], { type: 'text/plain;charset=utf-8' });
+        const compressionStream = new CompressionStream('gzip');
+        const compressedStream = blob.stream().pipeThrough(compressionStream);
+        const compressedBlob = await new Response(compressedStream).blob();
+
+        // Convert Blob to base64
+        const blobToBase64 = (b: Blob): Promise<string> => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              const res = reader.result as string;
+              resolve(res.substring(res.indexOf(',') + 1));
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(b);
+          });
+        };
+
+        const base64Data = await blobToBase64(compressedBlob);
+        const filename = 'ethervault-logs.gz';
+
+        // Write file to Cache directory
+        const fileResult = await Filesystem.writeFile({
+          path: filename,
+          data: base64Data,
+          directory: Directory.Cache
+        });
+
+        // Share the file
+        await Share.share({
+          title: 'EtherVault Logs',
+          text: 'Support Report: Logs from EtherVault.',
+          url: fileResult.uri,
+          dialogTitle: 'Share Log Report'
+        });
+
+        showSuccess(t('settings.success.log_report_shared', 'Logs compressed and ready to share!'));
+        return;
+      }
+
+      // 3. Web (Browser) Fallback
+      const logs = await logger.getRecentLogs();
+      const logContent = logs.length > 0 ? [...logs].reverse().join('\n') : 'No logs recorded.';
+      
+      const blob = new Blob([logContent], { type: 'text/plain;charset=utf-8' });
+      const compressedBlob = await new Response(blob.stream().pipeThrough(new CompressionStream('gzip'))).blob();
+
+      // Download file
+      const url = URL.createObjectURL(compressedBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'ethervault-logs.gz';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      // Open mailto link
+      const mailtoUrl = `mailto:${email}?subject=${encodeURIComponent('EtherVault Log Report')}&body=${encodeURIComponent('Please attach the downloaded ethervault-logs.gz file to this email.')}`;
+      window.open(mailtoUrl, '_blank');
+
+      showSuccess(t('settings.success.log_report_downloaded', 'Logs downloaded. Please attach them to the support email.'));
+    } catch (e: any) {
+      console.error('Failed to send log report:', e);
+      showError(t('settings.error.log_report_failed', `Failed to send log report: ${e.message || e}`));
+    } finally {
+      setIsSendingLogs(false);
     }
   };
 
@@ -1112,55 +1207,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                 </select>
               </div>
 
-              {/* Master Log Settings */}
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
-                <div className="flex items-center gap-3">
-                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
-                    <FileText className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.master_log')}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  {(settings.masterLogEnabled ?? true) && window.electronAPI && (
-                    <button onClick={() => logger.openLogFile()} className="text-[9px] font-medium text-slate-400 hover:text-primary-500 transition-colors px-2">{t('settings.option.open_log')}</button>
-                  )}
-                  <button
-                    onClick={() => {
-                      const newValue = !(settings.masterLogEnabled ?? true);
-                      setSettings({ ...settings, masterLogEnabled: newValue });
-                      logger.setEnabled(newValue);
-                    }}
-                    className={`w-8 h-4 rounded-full relative transition-all ${settings.masterLogEnabled ?? true ? 'bg-primary-600' : 'bg-slate-200 dark:bg-slate-700'}`}
-                  >
-                    <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${(settings.masterLogEnabled ?? true) ? 'right-0.5' : 'left-0.5'}`} />
-                  </button>
-                </div>
-              </div>
-
-              {/* Recent Activity Button */}
-              <div
-                onClick={() => setIsActivityModalOpen(true)}
-                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group cursor-pointer hover:border-primary-500/50 transition-all"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
-                    <Activity className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.recent_activity')}</span>
-                </div>
-                <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400">
-                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
-                </div>
-              </div>
             </div>
 
-            <button
-              onClick={() => setIsPasswordModalOpen(true)}
-              className="w-full py-3 bg-primary-50 dark:bg-primary-500/10 border border-primary-100 dark:border-primary-500/20 text-primary-600 dark:text-primary-400 text-[11px] font-medium rounded-2xl hover:bg-primary-100 transition-all flex items-center justify-center gap-2"
-            >
-              <Shield className="w-4 h-4" />
-              {t('settings.change_password')}
-            </button>
 
             {/* Data Management Section */}
             <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-[24px] space-y-4">
@@ -1187,25 +1235,84 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   <span className="text-[10px] font-medium tracking-wider">{t('settings.export', 'Export')}</span>
                 </button>
               </div>
+            </div>
 
-              <button
-                onClick={() => setIsCacheConfirmOpen(true)}
-                className="w-full flex items-center justify-between p-3 rounded-xl border border-rose-100 dark:border-rose-900/30 hover:bg-rose-50 dark:hover:bg-rose-900/10 transition-colors group"
-              >
+            {/* Log Management Section */}
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-[24px] space-y-4">
+              <h3 className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">{t('settings.log_management', 'Log Management')}</h3>
+
+              {/* Master Log Settings */}
+              <div className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800/80 p-3 rounded-2xl flex items-center justify-between group">
                 <div className="flex items-center gap-3">
-                  <div className="p-1.5 bg-rose-50 dark:bg-rose-900/20 rounded-lg text-rose-400 group-hover:text-rose-500 transition-colors">
-                    <Trash2 className="w-3.5 h-3.5" />
+                  <div className="p-1.5 bg-white dark:bg-slate-850 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
+                    <FileText className="w-3.5 h-3.5" />
                   </div>
-                  <span className="text-xs font-medium text-slate-600 dark:text-slate-300 group-hover:text-rose-600 dark:group-hover:text-rose-400">{t('settings.clear_cache', 'Clear App Cache')}</span>
+                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.master_log')}</span>
                 </div>
-                <span className="text-[9px] font-medium uppercase text-rose-300 group-hover:text-rose-500 tracking-widest">{t('common.clear', 'Clean')}</span>
-              </button>
-              {cacheMessage && (
+                <div className="flex items-center gap-2">
+                  {(settings.masterLogEnabled ?? true) && window.electronAPI && (
+                    <button onClick={() => logger.openLogFile()} className="text-[9px] font-medium text-slate-400 hover:text-primary-500 transition-colors px-2">{t('settings.option.open_log')}</button>
+                  )}
+                  <button
+                    onClick={() => {
+                      const newValue = !(settings.masterLogEnabled ?? true);
+                      setSettings({ ...settings, masterLogEnabled: newValue });
+                      logger.setEnabled(newValue);
+                    }}
+                    className={`w-8 h-4 rounded-full relative transition-all ${settings.masterLogEnabled ?? true ? 'bg-primary-600' : 'bg-slate-200 dark:bg-slate-700'}`}
+                  >
+                    <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${(settings.masterLogEnabled ?? true) ? 'right-0.5' : 'left-0.5'}`} />
+                  </button>
+                </div>
+              </div>
+
+              {/* Recent Activity Button */}
+              {(settings.masterLogEnabled ?? true) && (
+                <div
+                  onClick={() => setIsActivityModalOpen(true)}
+                  className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800/80 p-3 rounded-2xl flex items-center justify-between group cursor-pointer hover:border-primary-500/50 transition-all"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="p-1.5 bg-slate-50 dark:bg-slate-850 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
+                      <Activity className="w-3.5 h-3.5" />
+                    </div>
+                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.recent_activity')}</span>
+                  </div>
+                  <div className="p-1.5 bg-slate-50 dark:bg-slate-850 rounded-lg text-slate-400">
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
+                  </div>
+                </div>
+              )}
+
+              {/* Clear Cache Button */}
+              {(settings.masterLogEnabled ?? true) && (
+                <button
+                  onClick={() => setIsCacheConfirmOpen(true)}
+                  className="w-full flex items-center justify-between p-3 rounded-xl border border-rose-100 dark:border-rose-900/30 hover:bg-rose-50 dark:hover:bg-rose-900/10 transition-colors group bg-slate-50 dark:bg-slate-800/50"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="p-1.5 bg-rose-50 dark:bg-rose-900/20 rounded-lg text-rose-400 group-hover:text-rose-500 transition-colors">
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </div>
+                    <span className="text-xs font-medium text-slate-650 dark:text-slate-300 group-hover:text-rose-600 dark:group-hover:text-rose-400">{t('settings.clear_cache', 'Clear App Cache')}</span>
+                  </div>
+                  <span className="text-[9px] font-medium uppercase text-rose-300 group-hover:text-rose-500 tracking-widest">{t('common.clear', 'Clean')}</span>
+                </button>
+              )}
+              {(settings.masterLogEnabled ?? true) && cacheMessage && (
                 <p className="text-[10px] font-medium text-center text-emerald-500 uppercase tracking-widest animate-in fade-in slide-in-from-bottom-1">
                   {cacheMessage}
                 </p>
               )}
             </div>
+
+            <button
+              onClick={() => setIsPasswordModalOpen(true)}
+              className="w-full py-3 bg-primary-50 dark:bg-primary-500/10 border border-primary-100 dark:border-primary-500/20 text-primary-600 dark:text-primary-400 text-[11px] font-medium rounded-2xl hover:bg-primary-100 transition-all flex items-center justify-center gap-2"
+            >
+              <Shield className="w-4 h-4" />
+              {t('settings.change_password')}
+            </button>
 
             {/* About Section */}
             <button
@@ -1450,7 +1557,25 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                         <p className="text-[10px] md:text-xs text-slate-500 dark:text-slate-400 font-mono mt-0.5">~/Library/Logs/EtherVault/main.log</p>
                       </div>
                     </div>
-                    <div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={handleSendLogReport}
+                        disabled={isSendingLogs}
+                        className="text-xs font-semibold text-primary-600 dark:text-primary-400 hover:underline flex items-center gap-1.5 px-3 py-1.5 rounded-lg hover:bg-primary-50 dark:hover:bg-primary-500/10 transition-all disabled:opacity-50"
+                      >
+                        {isSendingLogs ? (
+                          <>
+                            <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                            <span className="hidden sm:inline">{t('common.processing', 'Sending...')}</span>
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-3.5 h-3.5" />
+                            <span>{t('settings.send_log', 'Send Log')}</span>
+                          </>
+                        )}
+                      </button>
+
                       <button
                         onClick={() => setIsActivityModalOpen(false)}
                         className="hidden md:block p-2 text-slate-400 hover:text-rose-500 hover:bg-slate-50 dark:hover:bg-slate-800 rounded-xl transition-all"

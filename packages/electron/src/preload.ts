@@ -28,6 +28,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
     onDeepLink: (callback: (url: string) => void) => ipcRenderer.on('deep-link', (event, url) => callback(url)),
     openExternal: (url: string) => ipcRenderer.invoke('app-open-external', url),
     isPackaged: () => ipcRenderer.invoke('app-is-packaged'),
+    sendLogReport: (email: string) => ipcRenderer.invoke('log-send-report', email),
 });
 
 console.log('EtherVault Preload Script Loaded');

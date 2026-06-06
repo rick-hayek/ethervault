@@ -73,6 +73,7 @@
         "title": "設定",
         "subtitle": "セキュリティと同期の設定を管理",
         "data_management": "データ管理",
+        "log_management": "ログ管理",
         "import": "インポート",
         "sync_provider": "同期プロバイダー",
         "updating": "更新中...",
@@ -97,7 +98,7 @@
             "login_alerts": "ログイン通知",
             "dark_mode": "ダークモード",
             "language": "言語",
-            "master_log": "マスターログ",
+            "master_log": "ログ",
             "open_log": "ログを開く",
             "time": {
                 "1m": "1分",
@@ -161,6 +162,7 @@
         "export": "エクスポート",
         "clear_cache": "キャッシュを消去",
         "clear_cache_desc": "ローカルログと一時データを削除します。ボールトのデータは削除されません。",
+        "send_log": "ログを送信",
         "biometric_modal": {
             "title": "生体認証ロック解除を有効化",
             "description": "マスターパスワードを入力して、デバイスのキーチェーンに安全に保存します。",

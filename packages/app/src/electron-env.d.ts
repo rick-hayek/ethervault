@@ -20,6 +20,7 @@ declare global {
             };
             clearCache?: () => Promise<boolean>;
             getVersion?: () => Promise<string>;
+            sendLogReport?: (email: string) => Promise<boolean>;
             utils?: {
                 fetchIcon: (url: string) => Promise<string | null>;
                 getRedirectUrl?: (url: string) => Promise<string | null>;

@@ -73,6 +73,7 @@
         "title": "Settings",
         "subtitle": "Manage your security and synchronization preferences",
         "data_management": "Data Management",
+        "log_management": "Log Management",
         "import": "Import",
         "sync_provider": "Sync Provider",
         "updating": "Updating...",
@@ -97,7 +98,7 @@
             "login_alerts": "Login Alerts",
             "dark_mode": "Dark Mode",
             "language": "Language",
-            "master_log": "Master Log",
+            "master_log": "Log",
             "open_log": "Open Log",
             "time": {
                 "1m": "1 MIN",
@@ -161,6 +162,7 @@
         "export": "Export",
         "clear_cache": "Clear Cache",
         "clear_cache_desc": "This will remove local logs and temporary data. Your vault data will NOT be deleted.",
+        "send_log": "Send Log",
         "biometric_modal": {
             "title": "Enable Biometric Unlock",
             "description": "Enter your master password to securely store it in your device's keychain.",

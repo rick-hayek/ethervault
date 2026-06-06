@@ -73,6 +73,7 @@
         "title": "설정",
         "subtitle": "보안 및 동기화 환경설정 관리",
         "data_management": "데이터 관리",
+        "log_management": "로그 관리",
         "import": "가져오기",
         "sync_provider": "동기화 제공자",
         "updating": "업데이트 중...",
@@ -97,7 +98,7 @@
             "login_alerts": "로그인 알림",
             "dark_mode": "다크 모드",
             "language": "언어",
-            "master_log": "마스터 로그",
+            "master_log": "로그",
             "open_log": "로그 열기",
             "time": {
                 "1m": "1분",
@@ -161,6 +162,7 @@
         "export": "내보내기",
         "clear_cache": "캐시 지우기",
         "clear_cache_desc": "로컬 로그 및 임시 데이터가 제거됩니다. 보관함 데이터는 삭제되지 않습니다.",
+        "send_log": "로그 보내기",
         "biometric_modal": {
             "title": "생체 인식 잠금 해제 활성화",
             "description": "마스터 비밀번호를 입력하여 기기의 키체인에 안전하게 저장하세요.",
