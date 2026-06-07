@@ -18,7 +18,8 @@
         "processing": "Processing...",
         "confirm": "Confirm",
         "back": "Back",
-        "recommended": "RECOMMENDED"
+        "recommended": "RECOMMENDED",
+        "dismiss": "Dismiss"
     },
     "vault": {
         "title": "Your Vault",
@@ -302,6 +303,13 @@
             "length": "Master Key must be at least 8 characters.",
             "weak": "Password is too weak. Use a mix of letters, numbers, and symbols.",
             "match": "Keys do not match."
+        },
+        "warning_modal": {
+            "title": "Master Password Warning",
+            "warning_title": "Security Warning",
+            "warning_desc": "EtherVault is a zero-knowledge, local-first password manager. We do not store your master password on any servers. If you forget it, we cannot recover or reset it for you. Please make sure you have memorized your master password.",
+            "action_back": "Go Back",
+            "action_continue": "Continue"
         }
     },
     "sync": {
@@ -328,7 +336,7 @@
             "use_cloud": "Use Cloud Only",
             "use_cloud_desc": "Clear local data. Switch to cloud vault.",
             "use_local": "Use Local",
-            "use_local_desc": "Overwrite cloud with local data.",
+            "use_local_desc": "Clear cloud data. Overwrite with local data.",
             "enter_cloud_password": "Enter the password from your original device to decrypt and merge entries:",
             "enter_cloud_password_verify": "Enter the password from your original device to verify access:",
             "cloud_password_placeholder": "Original Master Password",
@@ -336,6 +344,15 @@
             "merging": "Merging...",
             "merge_now": "Merge Now",
             "use_cloud_now": "Switch to Cloud"
+        },
+        "warning": {
+            "title": "Important Security Warning",
+            "message": "You are about to enable sync with {{providerName}}. To access your vault on other devices, you MUST remember your Master Password.",
+            "alert": "We cannot recover your password if you forget it.",
+            "confirm_password": "Confirm Master Password",
+            "placeholder": "Enter Master Password to continue",
+            "verifying": "Verifying...",
+            "confirm": "I Understand, Enable Sync"
         }
     },
     "biometric_prompt": {

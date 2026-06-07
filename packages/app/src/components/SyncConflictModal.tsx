@@ -127,8 +127,9 @@ export const SyncConflictModal: React.FC<SyncConflictModalProps> = ({
                                         <div className="font-medium text-slate-900 dark:text-white">
                                             {t('sync.conflict.use_cloud', 'Use Cloud Only')}
                                         </div>
-                                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                                            {t('sync.conflict.use_cloud_desc', 'Clear local data. Use CLOUD password permanently.')}
+                                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-start gap-1">
+                                            <AlertTriangle className="w-3.5 h-3.5 text-rose-500 shrink-0 mt-0.5" />
+                                            <span>{t('sync.conflict.use_cloud_desc', 'Clear local data. Use CLOUD password permanently.')}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -150,8 +151,9 @@ export const SyncConflictModal: React.FC<SyncConflictModalProps> = ({
                                         <div className="font-medium text-slate-900 dark:text-white">
                                             {t('sync.conflict.use_local', 'Use Local')}
                                         </div>
-                                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                                            {t('sync.conflict.use_local_desc', 'Overwrite cloud. Keep LOCAL password.')}
+                                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex items-start gap-1">
+                                            <AlertTriangle className="w-3.5 h-3.5 text-rose-500 shrink-0 mt-0.5" />
+                                            <span>{t('sync.conflict.use_local_desc', 'Overwrite cloud. Keep LOCAL password.')}</span>
                                         </p>
                                     </div>
                                 </div>

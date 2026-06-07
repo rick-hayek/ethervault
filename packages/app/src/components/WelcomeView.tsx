@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { ShieldCheck, Key, Fingerprint, ChevronRight, Lock, Eye, EyeOff } from 'lucide-react';
+import { ShieldCheck, Key, Fingerprint, ChevronRight, Lock, Eye, EyeOff, X, AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { SecurityService } from '@ethervault/core';
 import appLogo from '../../assets/logo.png';
@@ -18,6 +18,7 @@ export const WelcomeView: React.FC<WelcomeViewProps> = ({ onComplete, biometrics
   const [bioEnabled, setBioEnabled] = useState(false);
   const [showKey, setShowKey] = useState(false);
   const [error, setError] = useState('');
+  const [isWarningModalOpen, setIsWarningModalOpen] = useState(false);
 
   const handleNext = () => {
     if (step === 1) {
@@ -38,14 +39,18 @@ export const WelcomeView: React.FC<WelcomeViewProps> = ({ onComplete, biometrics
       }
       setError('');
 
-      // Skip Step 2 if Biometrics NOT supported
-      if (!biometricsSupported) {
-        onComplete(masterKey, false);
-      } else {
-        setStep(2);
-      }
+      setIsWarningModalOpen(true);
     } else {
       onComplete(masterKey, bioEnabled);
+    }
+  };
+
+  const handleConfirmWarning = () => {
+    setIsWarningModalOpen(false);
+    if (!biometricsSupported) {
+      onComplete(masterKey, false);
+    } else {
+      setStep(2);
     }
   };
 
@@ -159,6 +164,60 @@ export const WelcomeView: React.FC<WelcomeViewProps> = ({ onComplete, biometrics
           </button>
         </div>
       </div>
+
+      {isWarningModalOpen && (
+        <div className="fixed inset-0 bg-slate-950/75 backdrop-blur-md z-[100] flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 w-full max-w-md rounded-[2.5rem] shadow-2xl p-6 relative overflow-hidden text-white flex flex-col space-y-5">
+            {/* Top gradient glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-12 bg-amber-500/10 blur-2xl rounded-full pointer-events-none" />
+
+            {/* Close Button */}
+            <button
+              onClick={() => setIsWarningModalOpen(false)}
+              className="absolute top-4 right-4 p-2 text-slate-400 hover:text-white rounded-full hover:bg-slate-800/80 transition-all active:scale-90"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Title Header */}
+            <div className="text-center space-y-2 mt-2">
+              <div className="inline-flex p-2.5 bg-amber-500/10 border border-amber-500/20 rounded-2xl text-amber-400 mb-2">
+                <AlertTriangle className="w-6 h-6 animate-pulse" />
+              </div>
+              <h2 className="text-lg font-bold bg-gradient-to-r from-white via-amber-200 to-amber-100 bg-clip-text text-transparent">
+                {t('welcome.warning_modal.title', 'Master Password Warning')}
+              </h2>
+            </div>
+
+            {/* Warning Message */}
+            <div className="p-4 bg-amber-500/10 border border-amber-500/20 rounded-2xl text-left">
+              <h4 className="text-xs font-bold text-amber-400 uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                <AlertTriangle className="w-3.5 h-3.5" />
+                {t('welcome.warning_modal.warning_title', 'Security Warning')}
+              </h4>
+              <p className="text-[10.5px] text-slate-350 leading-relaxed font-medium">
+                {t('welcome.warning_modal.warning_desc', 'EtherVault is a zero-knowledge, local-first password manager. We do not store your master password on any servers. If you forget it, we cannot recover or reset it for you. Please make sure you have memorized your master password.')}
+              </p>
+            </div>
+
+            {/* Action buttons */}
+            <div className="flex gap-3 mt-2">
+              <button
+                onClick={() => setIsWarningModalOpen(false)}
+                className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-xl transition-all active:scale-[0.98]"
+              >
+                {t('welcome.warning_modal.action_back', 'Go Back')}
+              </button>
+              <button
+                onClick={handleConfirmWarning}
+                className="flex-1 py-3 bg-amber-500 hover:bg-amber-600 text-slate-950 text-xs font-bold rounded-xl transition-all active:scale-[0.98] shadow-lg shadow-amber-500/20"
+              >
+                {t('welcome.warning_modal.action_continue', 'Continue')}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

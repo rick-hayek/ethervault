@@ -18,7 +18,8 @@
         "processing": "처리 중...",
         "confirm": "확인",
         "back": "뒤로",
-        "recommended": "추천"
+        "recommended": "추천",
+        "dismiss": "닫기"
     },
     "vault": {
         "title": "내 보관함",
@@ -302,6 +303,13 @@
             "length": "마스터 키는 최소 8자 이상이어야 합니다.",
             "weak": "비밀번호가 너무 약합니다. 문자, 숫자, 기호를 조합하세요.",
             "match": "키가 일치하지 않습니다."
+        },
+        "warning_modal": {
+            "title": "마스터 비밀번호 경고",
+            "warning_title": "보안 경고",
+            "warning_desc": "EtherVault는 영지식(Zero-Knowledge), 로컬 우선 비밀번호 관리자입니다. 당사 서버에는 마스터 비밀번호가 저장되지 않습니다. 비밀번호를 분실한 경우, 복구 또는 재설정을 도와드릴 수 없습니다. 마스터 비밀번호를 기억해 두었는지 확인하십시오.",
+            "action_back": "뒤로",
+            "action_continue": "계속"
         }
     },
     "sync": {
@@ -328,7 +336,7 @@
             "use_cloud": "클라우드만 사용",
             "use_cloud_desc": "로컬 데이터를 지웁니다. 클라우드 보관함으로 전환합니다.",
             "use_local": "로컬만 사용",
-            "use_local_desc": "클라우드를 로컬 데이터로 덮어씁니다.",
+            "use_local_desc": "클라우드 데이터를 지웁니다. 로컬 데이터로 덮어씁니다.",
             "enter_cloud_password": "항목을 복호화하고 병합하려면 원래 기기의 비밀번호를 입력하세요:",
             "enter_cloud_password_verify": "액세스를 확인하려면 원래 기기의 비밀번호를 입력하세요:",
             "cloud_password_placeholder": "원래 기기 마스터 비밀번호",
@@ -336,6 +344,15 @@
             "merging": "병합 중...",
             "merge_now": "지금 병합",
             "use_cloud_now": "클라우드로 전환"
+        },
+        "warning": {
+            "title": "중요한 보안 경고",
+            "message": "{{providerName}} 동기화를 활성화하려고 합니다. 다른 기기에서 보관함에 액세스하려면 마스터 비밀번호를 반드시 기억해야 합니다.",
+            "alert": "비밀번호를 분실할 경우 당사에서는 복구해 드릴 수 없습니다.",
+            "confirm_password": "마스터 비밀번호 확인",
+            "placeholder": "계속하려면 마스터 비밀번호를 입력하세요",
+            "verifying": "확인 중...",
+            "confirm": "이해했으며, 동기화 활성화"
         }
     },
     "biometric_prompt": {

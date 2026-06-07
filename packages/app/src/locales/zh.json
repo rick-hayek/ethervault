@@ -18,7 +18,8 @@
         "processing": "处理中...",
         "confirm": "确认",
         "back": "返回",
-        "recommended": "推荐"
+        "recommended": "推荐",
+        "dismiss": "忽略"
     },
     "vault": {
         "title": "您的密码库",
@@ -302,6 +303,13 @@
             "length": "主密钥必须至少 8 个字符。",
             "weak": "密码太弱。请使用字母、数字和符号的组合。",
             "match": "密钥不匹配。"
+        },
+        "warning_modal": {
+            "title": "主密码安全警告",
+            "warning_title": "安全警告",
+            "warning_desc": "EtherVault 是一款零知识、本地优先的密码管理器。我们不会在任何服务器上存储您的主密码。如果您忘记了它，我们无法为您恢复或重置。请确保您已经记住 master password。",
+            "action_back": "返回",
+            "action_continue": "继续"
         }
     },
     "sync": {
@@ -328,7 +336,7 @@
             "use_cloud": "仅使用云端",
             "use_cloud_desc": "清除本地数据。切换到云端密码库。",
             "use_local": "仅使用本地",
-            "use_local_desc": "用本地数据覆盖云端。",
+            "use_local_desc": "清除云端数据。用本地数据覆盖。",
             "enter_cloud_password": "输入原设备的密码以解密并合并条目：",
             "enter_cloud_password_verify": "输入原设备的密码以验证访问权限：",
             "cloud_password_placeholder": "原设备主密码",
@@ -336,6 +344,15 @@
             "merging": "合并中...",
             "merge_now": "立即合并",
             "use_cloud_now": "切换到云端"
+        },
+        "warning": {
+            "title": "重要安全提示",
+            "message": "您即将启用与 {{providerName}} 的同步。为了在其他设备上访问您的保险库，您必须记住您的大师密码。",
+            "alert": "如果您忘记密码，我们将无法为您找回。",
+            "confirm_password": "确认大师密码",
+            "placeholder": "输入大师密码以继续",
+            "verifying": "正在验证...",
+            "confirm": "我已了解，启用同步"
         }
     },
     "biometric_prompt": {
