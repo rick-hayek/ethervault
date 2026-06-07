@@ -37,8 +37,10 @@ import { ImportModal } from './ImportModal';
 import { ExportModal } from './ExportModal';
 import { SyncWarningModal } from './SyncWarningModal';
 import { SyncConflictModal, ConflictResolution } from './SyncConflictModal';
+import { CloudVaultFoundModal } from './CloudVaultFoundModal';
 import { AboutModal } from './AboutModal';
 import { PrivacyModal } from './PrivacyModal';
+import { FAQModal } from './FAQModal';
 import { useAlert } from '../hooks/useAlert';
 import { useBackHandler } from '../hooks/useBackHandler';
 import { MobileFileService } from '../utils/MobileFileService';
@@ -159,6 +161,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+  const [isFAQModalOpen, setIsFAQModalOpen] = useState(false);
 
 
   // Sync Warning State
@@ -255,6 +258,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   const [conflictCloudMeta, setConflictCloudMeta] = useState<{ salt: string; verifier: string } | null>(null);
   const [localEntryCount, setLocalEntryCount] = useState(0);
 
+  // Cloud Vault Found State (Empty Local Vault case)
+  const [isCloudVaultFoundModalOpen, setIsCloudVaultFoundModalOpen] = useState(false);
+  const [foundCloudMeta, setFoundCloudMeta] = useState<{ salt: string; verifier: string } | null>(null);
+  const [foundProvider, setFoundProvider] = useState<CloudProvider | null>(null);
+
   // Biometric Modal State
   const [isBioModalOpen, setIsBioModalOpen] = useState(false);
   const [bioPassword, setBioPassword] = useState('');
@@ -269,7 +277,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     if (isImportModalOpen) { setIsImportModalOpen(false); return true; }
     if (isSyncWarningModalOpen) { setIsSyncWarningModalOpen(false); return true; }
     if (isConflictModalOpen) { setIsConflictModalOpen(false); return true; }
+    if (isCloudVaultFoundModalOpen) { setIsCloudVaultFoundModalOpen(false); return true; }
     if (isPrivacyModalOpen) { setIsPrivacyModalOpen(false); return true; }
+    if (isFAQModalOpen) { setIsFAQModalOpen(false); return true; }
     return false;
   }, true); // Enabled by default
 
@@ -594,16 +604,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
             setIsConflictModalOpen(true);
             return;
           } else {
-            // No local entries - adopt cloud credentials silently
-            await getAuthService().importCloudCredentials(cloudMeta.salt, cloudMeta.verifier);
-            showSuccess(
-              t('sync.credentials_imported', 'Cloud vault found. Please log in again with your original password.'),
-              undefined,
-              () => {
-                localStorage.setItem('ethervault_pending_sync', 'true');
-                window.location.reload();
-              }
-            );
+            // No local entries - show confirmation modal to prevent lockouts
+            setFoundCloudMeta(cloudMeta);
+            setFoundProvider(provider);
+            setIsCloudVaultFoundModalOpen(true);
             return;
           }
         }
@@ -763,6 +767,38 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
       setIsSyncing(false);
       // NOTE: Do NOT clear conflictCloudMeta here, as we might be in a retry-able error state (wrong password)
     }
+  };
+
+  const handleCloudVaultFoundConfirm = async () => {
+    if (!foundCloudMeta || !foundProvider) return;
+    setIsSyncing(true);
+    setIsCloudVaultFoundModalOpen(false);
+    try {
+      await getAuthService().importCloudCredentials(foundCloudMeta.salt, foundCloudMeta.verifier);
+      setSettings({ ...settings, cloudProvider: foundProvider, lastSync: t('sync.just_now') });
+      
+      showSuccess(
+        t('sync.credentials_imported', 'Cloud vault found. Please log in again with your original password.'),
+        undefined,
+        () => {
+          localStorage.setItem('ethervault_pending_sync', 'true');
+          window.location.reload();
+        }
+      );
+    } catch (e: any) {
+      console.error('Failed to import cloud credentials:', e);
+      showError(t('settings.error.failed'));
+    } finally {
+      setIsSyncing(false);
+      setFoundCloudMeta(null);
+      setFoundProvider(null);
+    }
+  };
+
+  const handleCloudVaultFoundCancel = () => {
+    setIsCloudVaultFoundModalOpen(false);
+    setFoundCloudMeta(null);
+    setFoundProvider(null);
   };
 
   const handleSyncClick = (provider: CloudProvider) => {
@@ -1729,8 +1765,15 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
         }
       </div>
 
-      <AboutModal isOpen={isAboutModalOpen} onClose={() => setIsAboutModalOpen(false)} appVersion={appVersion} onOpenPrivacy={() => setIsPrivacyModalOpen(true)} />
+      <AboutModal isOpen={isAboutModalOpen} onClose={() => setIsAboutModalOpen(false)} appVersion={appVersion} onOpenPrivacy={() => setIsPrivacyModalOpen(true)} onOpenFAQ={() => setIsFAQModalOpen(true)} />
       <PrivacyModal isOpen={isPrivacyModalOpen} onClose={() => setIsPrivacyModalOpen(false)} />
+      <FAQModal isOpen={isFAQModalOpen} onClose={() => setIsFAQModalOpen(false)} />
+      {isCloudVaultFoundModalOpen && (
+        <CloudVaultFoundModal
+          onClose={handleCloudVaultFoundCancel}
+          onConfirm={handleCloudVaultFoundConfirm}
+        />
+      )}
 
       {isCacheConfirmOpen && (
         <Portal>

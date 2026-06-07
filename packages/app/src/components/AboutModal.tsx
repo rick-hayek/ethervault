@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { X, Github, Mail, Shield, Info, ExternalLink, Globe, ChevronLeft } from 'lucide-react';
+import { X, Github, Mail, Shield, Info, ExternalLink, Globe, ChevronLeft, HelpCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useBackHandler } from '../hooks/useBackHandler';
@@ -11,9 +11,10 @@ interface AboutModalProps {
     onClose: () => void;
     appVersion: string;
     onOpenPrivacy: () => void;
+    onOpenFAQ: () => void;
 }
 
-export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVersion, onOpenPrivacy }) => {
+export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVersion, onOpenPrivacy, onOpenFAQ }) => {
     const { t } = useTranslation();
 
     const openLink = (url: string) => {
@@ -99,6 +100,20 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVers
                                 </button>
 
                                 <button
+                                    onClick={onOpenFAQ}
+                                    className="w-full flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-primary-500 dark:hover:border-primary-500 transition-all group text-left shadow-sm hover:shadow-md"
+                                >
+                                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-900 dark:text-white group-hover:bg-primary-50 dark:group-hover:bg-primary-500/20 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors shadow-sm">
+                                        <HelpCircle size={20} />
+                                    </div>
+                                    <div className="flex-1 min-w-0">
+                                        <div className="text-slate-900 dark:text-white font-bold text-sm">{t('about.faq_title', 'Frequently Asked Questions')}</div>
+                                        <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">{t('about.faq_desc', 'Read our FAQ for quick solutions.')}</div>
+                                    </div>
+                                    <ExternalLink size={14} className="text-slate-400 group-hover:text-primary-500 transition-colors" />
+                                </button>
+
+                                <button
                                     onClick={() => openLink(`mailto:${import.meta.env.VITE_CONTACT_EMAIL}`)}
                                     className="w-full flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-primary-500 dark:hover:border-primary-500 transition-all group text-left shadow-sm hover:shadow-md"
                                 >
@@ -136,6 +151,8 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVers
                                     </div>
                                 </div>
                             </div>
+
+
 
                             <div className="text-center pt-4 pb-2">
                                 <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">

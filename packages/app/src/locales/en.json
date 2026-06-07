@@ -345,6 +345,13 @@
             "merge_now": "Merge Now",
             "use_cloud_now": "Switch to Cloud"
         },
+        "found_modal": {
+            "title": "Cloud Vault Found",
+            "description": "An existing encrypted vault was found in your cloud storage. To sync, we must import the security settings and key from the cloud.",
+            "warning_label": "Security Notice",
+            "warning_text": "Once imported, you must log in with the password used on the cloud vault. If you forgot the cloud password, select Cancel now. Check our Help/FAQ on how to clear cloud data to start a new sync.",
+            "confirm": "Connect & Import"
+        },
         "warning": {
             "title": "Important Security Warning",
             "message": "You are about to enable sync with {{providerName}}. To access your vault on other devices, you MUST remember your Master Password.",
@@ -367,9 +374,48 @@
         "opensource": "Open Source",
         "privacy_title": "Privacy & Security",
         "privacy_desc": "Your data is encrypted with AES-256-GCM purely on your device. We do not collect any personal data or analytics.",
+        "faq_title": "Frequently Asked Questions",
+        "faq_desc": "Find quick answers to common questions",
+        "faq_button": "View FAQ",
         "help_title": "Help & Support",
         "contact": "Contact Us",
         "footer": "© 2026 EtherVault"
+    },
+    "faq_view": {
+        "title": "Frequently Asked Questions",
+        "last_updated": "Last updated: June 2026",
+        "sections": {
+            "1": {
+                "title": "1. Master Password Security",
+                "desc": "EtherVault is a zero-knowledge, local-first password manager. We do not store your master password on any servers. If you forget it, we cannot recover or reset it for you. Please make sure you have memorized your master password."
+            },
+            "2": {
+                "title": "2. Cloud Sync & Data Privacy",
+                "access_title": "Isolated App Access Only",
+                "access_desc": "EtherVault uses a dedicated sandboxed folder for syncing. We do not have, and cannot request, permission to access any other files, folders, or personal data stored in your cloud drive.",
+                "view_data_title": "How to View App Data in Google Drive",
+                "view_data_desc": "On Google Drive, EtherVault stores encrypted files in a hidden AppData folder to prevent accidental deletion. To view or manage it, go to Google Drive Web > Settings (gear icon) > Settings > Manage Apps. You will see EtherVault listed under your authorized applications."
+            },
+            "3": {
+                "title": "3. Forgot Cloud Password & Clearing Sync Data",
+                "desc": "Because EtherVault is a zero-knowledge password manager, we cannot recover your master password. If you forgot the cloud password, the cloud backup cannot be decrypted. You must clear the cloud data to start syncing again. Choose one of the following methods:",
+                "method1_title": "Method 1: Manually Delete via Google Drive Settings",
+                "method1_steps": [
+                    "Open Google Drive in your web browser.",
+                    "Click the gear icon in the top right and select Settings.",
+                    "Click Manage Apps in the left sidebar.",
+                    "Locate EtherVault, click Options, and select Delete hidden app data."
+                ],
+                "method2_title": "Method 2: Force Overwrite via Sync Conflict",
+                "method2_steps": [
+                    "Ensure you have at least one credential entry in your local vault (if empty, create a temporary one).",
+                    "Go to Settings > Sync Provider, and reconnect your cloud provider.",
+                    "The app will detect different keys and display the 'Sync Conflict Detected' window.",
+                    "Select 'Use Local' to overwrite the cloud vault with your current local password and settings."
+                ]
+            }
+        },
+        "footer": "EtherVault Help Center — Keep your vault secure, always."
     },
     "privacy_view": {
         "title": "Privacy Policy",
