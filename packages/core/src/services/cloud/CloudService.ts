@@ -126,7 +126,7 @@ class CloudServiceManager {
     /**
      * Fetch cloud metadata (salt + verifier) without full sync.
      */
-    async fetchMetadata(): Promise<{ salt: string; verifier: string } | null> {
+    async fetchMetadata(): Promise<{ salt: string; verifier: string; opslimit?: number; memlimit?: number } | null> {
         if (!this.provider) return null;
         return (this.provider as any).fetchMetadata?.() ?? null;
     }

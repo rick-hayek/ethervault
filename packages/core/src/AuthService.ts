@@ -33,11 +33,14 @@ export class AuthServiceImpl {
     }
 
     async setupAccount(password: string): Promise<void> {
+        const params = await this.cryptoService.getPreferredKdfParams();
         const salt = this.cryptoService.generateSalt();
-        const derivedKey = await this.cryptoService.deriveKey(password, salt);
+        const derivedKey = await this.cryptoService.deriveKey(password, salt, params.opslimit, params.memlimit);
 
-        // Store salt
+        // Store salt and parameters
         await this.storageService.setItem('metadata', 'salt', salt);
+        await this.storageService.setItem('metadata', 'pwhash_opslimit', params.opslimit);
+        await this.storageService.setItem('metadata', 'pwhash_memlimit', params.memlimit);
         await this.storageService.setItem('metadata', 'setup_complete', true);
 
         // Create Verifier (Encrypted string "VALID")
@@ -57,7 +60,10 @@ export class AuthServiceImpl {
             const salt = await this.storageService.getItem('metadata', 'salt');
             if (!salt) return false;
 
-            const derivedKey = await this.cryptoService.deriveKey(password, salt);
+            const opslimit = await this.storageService.getItem('metadata', 'pwhash_opslimit');
+            const memlimit = await this.storageService.getItem('metadata', 'pwhash_memlimit');
+
+            const derivedKey = await this.cryptoService.deriveKey(password, salt, opslimit, memlimit);
 
             // 1. Check for Verifier (New Standard)
             const verifier = await this.storageService.getItem('metadata', 'auth_verifier');
@@ -135,7 +141,10 @@ export class AuthServiceImpl {
                 const salt = await this.storageService.getItem('metadata', 'salt');
                 if (!salt) return false;
 
-                const checkKey = await this.cryptoService.deriveKey(password, salt);
+                const opslimit = await this.storageService.getItem('metadata', 'pwhash_opslimit');
+                const memlimit = await this.storageService.getItem('metadata', 'pwhash_memlimit');
+
+                const checkKey = await this.cryptoService.deriveKey(password, salt, opslimit, memlimit);
                 return sodium.memcmp(checkKey, this.masterKey);
             } catch (e) {
                 console.error('Password verification error:', e);
@@ -154,21 +163,27 @@ export class AuthServiceImpl {
         const salt = await this.storageService.getItem('metadata', 'salt');
         if (!salt) throw new Error('Account not set up');
 
-        const currentKey = await this.cryptoService.deriveKey(oldPassword, salt);
+        const opslimit = await this.storageService.getItem('metadata', 'pwhash_opslimit');
+        const memlimit = await this.storageService.getItem('metadata', 'pwhash_memlimit');
+
+        const currentKey = await this.cryptoService.deriveKey(oldPassword, salt, opslimit, memlimit);
         // Compare against in-memory key
         if (this.masterKey && !sodium.memcmp(currentKey, this.masterKey)) {
             return false;
         }
 
         // 2. Derive new key with new salt
+        const params = await this.cryptoService.getPreferredKdfParams();
         const newSalt = this.cryptoService.generateSalt();
-        const newKey = await this.cryptoService.deriveKey(newPassword, newSalt);
+        const newKey = await this.cryptoService.deriveKey(newPassword, newSalt, params.opslimit, params.memlimit);
 
         // 3. Re-encrypt all entries
         await this.getVaultService().reencryptVault(newKey);
 
         // 4. Update metadata
         await this.storageService.setItem('metadata', 'salt', newSalt);
+        await this.storageService.setItem('metadata', 'pwhash_opslimit', params.opslimit);
+        await this.storageService.setItem('metadata', 'pwhash_memlimit', params.memlimit);
 
         // FIX: Update Verifier with new key
         const { ciphertext, nonce } = this.cryptoService.encrypt('VALID', newKey);
@@ -195,7 +210,12 @@ export class AuthServiceImpl {
      * IMPORTANT: Both salt AND verifier are required. Without a verifier,
      * the user cannot authenticate after salt import.
      */
-    async importCloudCredentials(saltB64: string, verifierJson: string): Promise<void> {
+    async importCloudCredentials(
+        saltB64: string,
+        verifierJson: string,
+        opslimit?: number,
+        memlimit?: number
+    ): Promise<void> {
         // Validate verifier is present and valid
         if (!verifierJson || !verifierJson.trim()) {
             throw new Error('MISSING_VERIFIER: Cloud vault has no password verifier. Cannot sync without it.');
@@ -218,6 +238,19 @@ export class AuthServiceImpl {
         await this.storageService.setItem('metadata', 'salt', saltBytes);
         await this.storageService.setItem('metadata', 'auth_verifier', verifier);
 
+        // Store or clear parameters based on existence
+        if (opslimit !== undefined) {
+            await this.storageService.setItem('metadata', 'pwhash_opslimit', opslimit);
+        } else {
+            await this.storageService.deleteItem('metadata', 'pwhash_opslimit');
+        }
+
+        if (memlimit !== undefined) {
+            await this.storageService.setItem('metadata', 'pwhash_memlimit', memlimit);
+        } else {
+            await this.storageService.deleteItem('metadata', 'pwhash_memlimit');
+        }
+
         // Clear current auth state (force re-login)
         this.masterKey = null;
         this.isAuthenticated = false;
@@ -228,9 +261,9 @@ export class AuthServiceImpl {
     /**
      * Derive a key using a specific salt (for decrypting cloud data with cloud password).
      */
-    async deriveKeyWithSalt(password: string, saltB64: string): Promise<Uint8Array> {
+    async deriveKeyWithSalt(password: string, saltB64: string, opslimit?: number, memlimit?: number): Promise<Uint8Array> {
         const saltBytes = Uint8Array.from(atob(saltB64), c => c.charCodeAt(0));
-        return this.cryptoService.deriveKey(password, saltBytes);
+        return this.cryptoService.deriveKey(password, saltBytes, opslimit, memlimit);
     }
 
     /**
@@ -336,12 +369,12 @@ export class AuthService {
         return getAuthService().changeMasterPassword(oldPassword, newPassword);
     }
 
-    static async importCloudCredentials(saltB64: string, verifierJson: string): Promise<void> {
-        return getAuthService().importCloudCredentials(saltB64, verifierJson);
+    static async importCloudCredentials(saltB64: string, verifierJson: string, opslimit?: number, memlimit?: number): Promise<void> {
+        return getAuthService().importCloudCredentials(saltB64, verifierJson, opslimit, memlimit);
     }
 
-    static async deriveKeyWithSalt(password: string, saltB64: string): Promise<Uint8Array> {
-        return getAuthService().deriveKeyWithSalt(password, saltB64);
+    static async deriveKeyWithSalt(password: string, saltB64: string, opslimit?: number, memlimit?: number): Promise<Uint8Array> {
+        return getAuthService().deriveKeyWithSalt(password, saltB64, opslimit, memlimit);
     }
 
     static async getSaltBase64(): Promise<string | null> {

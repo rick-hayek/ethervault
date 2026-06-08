@@ -3,6 +3,17 @@ import { Share } from '@capacitor/share';
 import { Capacitor } from '@capacitor/core';
 import { FilePicker } from '@capawesome/capacitor-file-picker';
 
+function uint8ArrayToBase64(arr: Uint8Array): string {
+    let binary = '';
+    const len = arr.byteLength;
+    const chunkSize = 8192;
+    for (let i = 0; i < len; i += chunkSize) {
+        const chunk = arr.subarray(i, i + chunkSize);
+        binary += String.fromCharCode.apply(null, chunk as any);
+    }
+    return btoa(binary);
+}
+
 export const MobileFileService = {
     /**
      * Export content to a file.
@@ -14,6 +25,41 @@ export const MobileFileService = {
         }
         // Direct fallback to manual save as requested
         return await this.saveAsFile(filename, content);
+    },
+
+    /**
+     * Save binary content to device storage (Downloads on Android, Documents on iOS)
+     */
+    async saveBinaryFile(filename: string, data: Uint8Array): Promise<boolean> {
+        if (!Capacitor.isNativePlatform()) {
+            return false;
+        }
+        try {
+            const base64Data = uint8ArrayToBase64(data);
+            const platform = Capacitor.getPlatform();
+
+            if (platform === 'android') {
+                // Android: Save to 'Download' folder in External Storage
+                await Filesystem.writeFile({
+                    path: 'Download/' + filename,
+                    data: base64Data,
+                    directory: Directory.ExternalStorage,
+                    recursive: true
+                });
+                return true;
+            } else {
+                // iOS: Save to Documents (accessible via Files app)
+                await Filesystem.writeFile({
+                    path: filename,
+                    data: base64Data,
+                    directory: Directory.Documents
+                });
+                return true;
+            }
+        } catch (e: any) {
+            console.error('[MobileFileService] Save binary failed', e);
+            throw new Error(e.message);
+        }
     },
 
     /**

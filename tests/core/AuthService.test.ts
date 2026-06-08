@@ -35,12 +35,15 @@ describe('AuthServiceImpl', () => {
             );
         });
 
-        it('should derive key from password and salt', async () => {
+        it('should derive key from password, salt, and KDF parameters', async () => {
             await authService.setupAccount('TestPassword123');
 
+            expect(mockCrypto.getPreferredKdfParams).toHaveBeenCalled();
             expect(mockCrypto.deriveKey).toHaveBeenCalledWith(
                 'TestPassword123',
-                expect.any(Uint8Array)
+                expect.any(Uint8Array),
+                3,
+                65536
             );
         });
 
@@ -51,6 +54,21 @@ describe('AuthServiceImpl', () => {
                 'metadata',
                 'setup_complete',
                 true
+            );
+        });
+
+        it('should store KDF parameters in metadata', async () => {
+            await authService.setupAccount('TestPassword123');
+
+            expect(mockStorage.setItem).toHaveBeenCalledWith(
+                'metadata',
+                'pwhash_opslimit',
+                3
+            );
+            expect(mockStorage.setItem).toHaveBeenCalledWith(
+                'metadata',
+                'pwhash_memlimit',
+                65536
             );
         });
 
@@ -392,6 +410,24 @@ describe('AuthServiceImpl', () => {
                 expect.any(Uint8Array)
             );
         });
+
+        it('should update KDF parameters in metadata on password change', async () => {
+            await authService.setupAccount('OldPassword');
+            vi.mocked(mockStorage.setItem).mockClear();
+
+            await authService.changeMasterPassword('OldPassword', 'NewPassword');
+
+            expect(mockStorage.setItem).toHaveBeenCalledWith(
+                'metadata',
+                'pwhash_opslimit',
+                3
+            );
+            expect(mockStorage.setItem).toHaveBeenCalledWith(
+                'metadata',
+                'pwhash_memlimit',
+                65536
+            );
+        });
     });
 
     // =========================================================================
@@ -433,6 +469,33 @@ describe('AuthServiceImpl', () => {
             );
         });
 
+        it('should store salt, verifier, and KDF parameters on valid import when provided', async () => {
+            const verifier = JSON.stringify({ payload: 'enc', nonce: 'n' });
+
+            await authService.importCloudCredentials('c2FsdA==', verifier, 4, 262144);
+
+            expect(mockStorage.setItem).toHaveBeenCalledWith(
+                'metadata',
+                'salt',
+                expect.any(Uint8Array)
+            );
+            expect(mockStorage.setItem).toHaveBeenCalledWith(
+                'metadata',
+                'auth_verifier',
+                { payload: 'enc', nonce: 'n' }
+            );
+            expect(mockStorage.setItem).toHaveBeenCalledWith(
+                'metadata',
+                'pwhash_opslimit',
+                4
+            );
+            expect(mockStorage.setItem).toHaveBeenCalledWith(
+                'metadata',
+                'pwhash_memlimit',
+                262144
+            );
+        });
+
         it('should clear auth state after import', async () => {
             await authService.setupAccount('TestPassword');
             expect(authService.checkAuth()).toBe(true);
@@ -453,7 +516,21 @@ describe('AuthServiceImpl', () => {
 
             expect(mockCrypto.deriveKey).toHaveBeenCalledWith(
                 'password',
-                expect.any(Uint8Array)
+                expect.any(Uint8Array),
+                undefined,
+                undefined
+            );
+            expect(result).toBeInstanceOf(Uint8Array);
+        });
+
+        it('should derive key using provided salt and KDF parameters', async () => {
+            const result = await authService.deriveKeyWithSalt('password', 'c2FsdA==', 4, 262144);
+
+            expect(mockCrypto.deriveKey).toHaveBeenCalledWith(
+                'password',
+                expect.any(Uint8Array),
+                4,
+                262144
             );
             expect(result).toBeInstanceOf(Uint8Array);
         });

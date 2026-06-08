@@ -575,7 +575,7 @@ export class GoogleDriveProvider implements CloudProviderInterface {
      * Fetch cloud metadata (salt + verifier) without full sync.
      * Used to check if cloud has existing data before enabling sync.
      */
-    async fetchMetadata(): Promise<{ salt: string; verifier: string } | null> {
+    async fetchMetadata(): Promise<{ salt: string; verifier: string; opslimit?: number; memlimit?: number } | null> {
         if (!this.connected || !this.accessToken) return null;
 
         try {
@@ -586,7 +586,9 @@ export class GoogleDriveProvider implements CloudProviderInterface {
             if (data && data.salt) {
                 return {
                     salt: data.salt,
-                    verifier: data.verifier || ''
+                    verifier: data.verifier || '',
+                    opslimit: data.opslimit,
+                    memlimit: data.memlimit
                 };
             }
             return null;
@@ -888,6 +890,20 @@ export class GoogleDriveProvider implements CloudProviderInterface {
                                 this.log('warn', '[GoogleDrive] Failed to parse remote verifier');
                             }
                         }
+
+                        // Adopt remote KDF parameters
+                        if (remoteData.opslimit !== undefined) {
+                            await getStorageService().setItem('metadata', 'pwhash_opslimit', remoteData.opslimit);
+                        } else {
+                            await getStorageService().deleteItem('metadata', 'pwhash_opslimit');
+                        }
+
+                        if (remoteData.memlimit !== undefined) {
+                            await getStorageService().setItem('metadata', 'pwhash_memlimit', remoteData.memlimit);
+                        } else {
+                            await getStorageService().deleteItem('metadata', 'pwhash_memlimit');
+                        }
+
                         return true; // Salt Changed
                     }
                 }
@@ -895,10 +911,16 @@ export class GoogleDriveProvider implements CloudProviderInterface {
                 // Upload local salt to cloud as source of truth
                 if (localSaltB64) {
                     this.log('info', '[GoogleDrive] Initializing cloud metadata...');
+                    // Get local KDF params
+                    const localOpslimit = await getStorageService().getItem('metadata', 'pwhash_opslimit');
+                    const localMemlimit = await getStorageService().getItem('metadata', 'pwhash_memlimit');
+
                     // #17: Include verifier in metadata for new device password validation
                     await this.uploadJson('metadata', {
                         salt: localSaltB64,
-                        verifier: verifierB64
+                        verifier: verifierB64,
+                        opslimit: localOpslimit,
+                        memlimit: localMemlimit
                     });
                 }
             }

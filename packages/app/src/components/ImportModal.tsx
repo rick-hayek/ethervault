@@ -257,7 +257,12 @@ export const ImportModal: React.FC<ImportModalProps> = ({ onClose, onImport }) =
                                 ref={fileInputRef}
                                 className="hidden"
                                 accept=".csv,.json"
-                                onChange={(e) => e.target.files?.[0] && processFile(e.target.files[0])}
+                                onChange={(e) => {
+                                    if (e.target.files?.[0]) {
+                                        processFile(e.target.files[0]);
+                                        e.target.value = '';
+                                    }
+                                }}
                                 disabled={status === 'importing'}
                             />
 

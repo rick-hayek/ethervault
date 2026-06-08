@@ -78,6 +78,26 @@ describe('CryptoServiceImpl', () => {
             const key2 = await cryptoService.deriveKey('password', salt2);
             expect(key1).not.toEqual(key2);
         });
+
+        it('should produce different keys when opslimit or memlimit changes', async () => {
+            const salt = cryptoService.generateSalt();
+            const keyDefault = await cryptoService.deriveKey('password', salt);
+            const keyCustom = await cryptoService.deriveKey('password', salt, 3, 65536 * 2);
+            expect(keyDefault).not.toEqual(keyCustom);
+        });
+    });
+
+    // =========================================================================
+    // 3.5. Preferred KDF Parameters Tests
+    // =========================================================================
+    describe('getPreferredKdfParams', () => {
+        it('should return valid opslimit and memlimit', async () => {
+            const params = await cryptoService.getPreferredKdfParams();
+            expect(params).toHaveProperty('opslimit');
+            expect(params).toHaveProperty('memlimit');
+            expect(typeof params.opslimit).toBe('number');
+            expect(typeof params.memlimit).toBe('number');
+        });
     });
 
     // =========================================================================

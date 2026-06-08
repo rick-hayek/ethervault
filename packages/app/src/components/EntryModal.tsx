@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { CATEGORIES } from '../constants';
 import { Portal } from './Portal';
 import { CustomDropdown } from './CustomDropdown';
+import { Capacitor } from '@capacitor/core';
+import { MobileFileService } from '../utils/MobileFileService';
 
 export interface EntryModalProps {
     entry: PasswordEntry | null;
@@ -68,6 +70,9 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
         const file = e.target.files?.[0];
         if (!file) return;
 
+        // Reset file input value to allow selecting/uploading the same file again
+        e.target.value = '';
+
         if (file.size > 10 * 1024 * 1024) {
             alert(t('vault.attachment.error_size', 'File size exceeds 10MB limit.'));
             return;
@@ -100,16 +105,21 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
             setIsDownloadingAttachment(attachmentId);
             const { metadata, data } = await getVaultService().getAttachment(formData.id!, attachmentId);
 
-            const blob = new Blob([data], { type: metadata.mimeType });
-            const url = URL.createObjectURL(blob);
+            if (Capacitor.isNativePlatform()) {
+                await MobileFileService.saveBinaryFile(metadata.name, data);
+                alert(t('vault.attachment.download_success', 'Attachment saved to device storage: ') + metadata.name);
+            } else {
+                const blob = new Blob([data], { type: metadata.mimeType });
+                const url = URL.createObjectURL(blob);
 
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = metadata.name;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = metadata.name;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
         } catch (e: any) {
             alert(t('vault.attachment.download_failed', 'Failed to download attachment: ') + e.message);
         } finally {

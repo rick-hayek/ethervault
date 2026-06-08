@@ -10,6 +10,7 @@ export function createMockCryptoService(
     return {
         generateSalt: vi.fn().mockReturnValue(mockSalt),
         deriveKey: vi.fn().mockResolvedValue(mockKey),
+        getPreferredKdfParams: vi.fn().mockResolvedValue({ opslimit: 3, memlimit: 65536 }),
         encrypt: vi.fn().mockReturnValue({
             ciphertext: 'encrypted_data_base64',
             nonce: 'nonce_base64'

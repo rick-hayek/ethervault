@@ -16,7 +16,8 @@ export interface PasswordGeneratorOptions {
 
 export interface ICryptoService {
     init(): Promise<void>;
-    deriveKey(password: string, salt: Uint8Array): Promise<Uint8Array>;
+    deriveKey(password: string, salt: Uint8Array, opslimit?: number, memlimit?: number): Promise<Uint8Array>;
+    getPreferredKdfParams(): Promise<{ opslimit: number; memlimit: number }>;
     generateSalt(): Uint8Array;
     encrypt(message: string, key: Uint8Array): { ciphertext: string; nonce: string };
     decrypt(ciphertextBase64: string, nonceBase64: string, key: Uint8Array): string;

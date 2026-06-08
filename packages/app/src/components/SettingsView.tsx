@@ -157,12 +157,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
   // Conflict Resolution State
   const [isConflictModalOpen, setIsConflictModalOpen] = useState(false);
-  const [conflictCloudMeta, setConflictCloudMeta] = useState<{ salt: string; verifier: string } | null>(null);
+  const [conflictCloudMeta, setConflictCloudMeta] = useState<{ salt: string; verifier: string; opslimit?: number; memlimit?: number } | null>(null);
   const [localEntryCount, setLocalEntryCount] = useState(0);
 
   // Cloud Vault Found State (Empty Local Vault case)
   const [isCloudVaultFoundModalOpen, setIsCloudVaultFoundModalOpen] = useState(false);
-  const [foundCloudMeta, setFoundCloudMeta] = useState<{ salt: string; verifier: string } | null>(null);
+  const [foundCloudMeta, setFoundCloudMeta] = useState<{ salt: string; verifier: string; opslimit?: number; memlimit?: number } | null>(null);
   const [foundProvider, setFoundProvider] = useState<CloudProvider | null>(null);
 
   // Biometric Modal State
@@ -573,7 +573,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           }
 
           // 1. Derive cloud key
-          const cloudKey = await getAuthService().deriveKeyWithSalt(cloudPassword, conflictCloudMeta.salt);
+          const cloudKey = await getAuthService().deriveKeyWithSalt(cloudPassword, conflictCloudMeta.salt, conflictCloudMeta.opslimit, conflictCloudMeta.memlimit);
 
           // 2. Download all cloud entries
           const cloudEntries = await CloudService.downloadAllEntries();
@@ -620,7 +620,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           }
 
           // Derive key with cloud salt (same as merge case)
-          const useCloudKey = await getAuthService().deriveKeyWithSalt(cloudPassword, conflictCloudMeta.salt);
+          const useCloudKey = await getAuthService().deriveKeyWithSalt(cloudPassword, conflictCloudMeta.salt, conflictCloudMeta.opslimit, conflictCloudMeta.memlimit);
 
           // Download cloud entries and try to decrypt one to verify password
           const useCloudEntries = await CloudService.downloadAllEntries();
@@ -635,7 +635,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
           // Password verified - now safe to clear local and adopt cloud
           await getVaultService().clearLocalVault();
-          await getAuthService().importCloudCredentials(conflictCloudMeta.salt, conflictCloudMeta.verifier);
+          await getAuthService().importCloudCredentials(conflictCloudMeta.salt, conflictCloudMeta.verifier, conflictCloudMeta.opslimit, conflictCloudMeta.memlimit);
 
           showSuccess(t('sync.use_cloud_complete', 'Switched to cloud vault. Please log in again with your cloud password.'));
           setIsConflictModalOpen(false);
@@ -676,7 +676,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     setIsSyncing(true);
     setIsCloudVaultFoundModalOpen(false);
     try {
-      await getAuthService().importCloudCredentials(foundCloudMeta.salt, foundCloudMeta.verifier);
+      await getAuthService().importCloudCredentials(foundCloudMeta.salt, foundCloudMeta.verifier, foundCloudMeta.opslimit, foundCloudMeta.memlimit);
       setSettings({ ...settings, cloudProvider: foundProvider, lastSync: t('sync.just_now') });
 
       showSuccess(
