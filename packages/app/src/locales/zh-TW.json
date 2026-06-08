@@ -1,0 +1,546 @@
+{
+    "layout": {
+        "nav": {
+            "vault": "密碼庫",
+            "security": "安全",
+            "generator": "產生器",
+            "settings": "設定"
+        },
+        "appearance": "外觀",
+        "lock_vault": "鎖定庫",
+        "search_placeholder": "搜尋..."
+    },
+    "common": {
+        "cancel": "取消",
+        "confirm_delete": "刪除",
+        "copy": "複製",
+        "copied": "已複製",
+        "processing": "處理中...",
+        "confirm": "確認",
+        "back": "返回",
+        "recommended": "推薦",
+        "dismiss": "忽略"
+    },
+    "vault": {
+        "title": "您的密碼庫",
+        "subtitle": "使用工業級安全標準管理您的憑證",
+        "add": "新增憑證",
+        "sync_prompt": {
+            "title": "跨裝置同步您的保險庫",
+            "title_premium": "跨裝置同步您的保險庫（Premium）",
+            "description": "連接雲端儲存，隨時隨地存取您的密碼。",
+            "action": "設定同步",
+            "action_premium": "獲取 Premium"
+        },
+        "strength": {
+            "Secure": "安全",
+            "Strong": "強",
+            "Medium": "中等",
+            "Weak": "弱"
+        },
+        "just_now": "剛剛",
+        "search": "搜尋...",
+        "update": "更新",
+        "save": "儲存",
+        "edit_credential": "編輯憑證",
+        "new_credential": "新建憑證",
+        "entry": {
+            "username": "使用者名稱",
+            "title": "標題",
+            "category": "分類",
+            "website": "網站網址",
+            "username_email": "使用者名稱 / 信箱",
+            "password": "密碼",
+            "title_placeholder": "Google, Netflix...",
+            "website_placeholder": "example.com",
+            "username_placeholder": "使用者名稱或信箱",
+            "password_placeholder": "輸入密碼",
+            "additional_info": "附加資訊",
+            "recovery_phone": "備用電話",
+            "recovery_phone_placeholder": "+886 900 000 000",
+            "recovery_email": "備用信箱",
+            "recovery_email_placeholder": "backup@email.com",
+            "note": "備註",
+            "note_placeholder": "新增備註或說明..."
+        }
+    },
+    "category": {
+        "all": "全部",
+        "personal": "個人",
+        "work": "工作",
+        "others": "其他"
+    },
+    "settings": {
+        "title": "設定",
+        "subtitle": "管理您的安全和同步偏好",
+        "data_management": "資料管理",
+        "log_management": "日誌管理",
+        "import": "匯入",
+        "sync_provider": "同步提供商",
+        "updating": "更新中...",
+        "cloud": {
+            "reconnect": "恢復連線",
+            "paused": "已暫停",
+            "connected": "已連線",
+            "connected_desc": "您的密碼庫已與 {{provider}} 同步。",
+            "connect_desc": "連線到 {{provider}} 以開啟自動雲端備份和同步。",
+            "last_synced": "上次同步：",
+            "syncing": "同步中...",
+            "sync_now": "立即同步",
+            "disconnect": "斷開連線",
+            "connect_account": "連線帳戶",
+            "connection_failed": "連線失敗，請檢查網路設定。",
+            "unlock_premium": "解鎖 Premium 專享同步"
+        },
+        "option": {
+            "biometric": "生物識別",
+            "2fa": "雙重驗證",
+            "lock_timer": "鎖定計時",
+            "login_alerts": "登入提醒",
+            "dark_mode": "深色模式",
+            "language": "語言",
+            "master_log": "日誌",
+            "open_log": "開啟日誌",
+            "time": {
+                "1m": "1 分鐘",
+                "5m": "5 分鐘",
+                "15m": "15 分鐘",
+                "30m": "30 分鐘",
+                "1h": "1 小時"
+            },
+            "recent_activity": "近期活動",
+            "appearance": "外觀",
+            "theme_color": "主題色"
+        },
+        "theme": {
+            "system": "跟隨系統",
+            "light": "淺色",
+            "dark": "深色"
+        },
+        "color": {
+            "blue": "寶石藍",
+            "emerald": "祖母綠",
+            "violet": "羅蘭紫",
+            "amber": "琥珀橘",
+            "rose": "玫瑰紅",
+            "pink": "櫻花粉",
+            "lightgrey": "羊絨灰",
+            "silver": "太空銀",
+            "ivory": "月影白"
+        },
+        "activity_modal": {
+            "title": "系統日誌",
+            "empty": "暫無近期活動。",
+            "refresh": "重新整理",
+            "close": "關閉"
+        },
+        "change_password": "修改主密碼",
+        "encryption": "AES-256 位加密",
+        "password_modal": {
+            "title": "修改主密碼",
+            "current": "當前密碼",
+            "new": "新密碼",
+            "confirm": "確認新密碼",
+            "cancel": "取消",
+            "save": "儲存更改"
+        },
+        "error": {
+            "match": "新密碼不匹配",
+            "incorrect": "原密碼錯誤",
+            "failed": "修改密碼失敗"
+        },
+        "success": {
+            "password": "密碼修改成功",
+            "cache_cleared": "快取已清理!",
+            "biometric_enabled": "生物識別解鎖已啟用"
+        },
+        "status": {
+            "encrypting": "正在重新加密密碼庫...",
+            "updating_bio": "正在更新生物識別金鑰...",
+            "resyncing": "正在同步新資料到雲端...",
+            "done": "完成！"
+        },
+        "export": "匯出",
+        "clear_cache": "清除快取",
+        "clear_cache_desc": "這將清除本地日誌和暫存資料，但不会刪除您的密碼資料。",
+        "send_log": "傳送日誌",
+        "biometric_modal": {
+            "title": "啟用生物識別解鎖",
+            "description": "請輸入您的主密碼以便將其安全儲存在裝置鑰匙圈中。",
+            "enable": "啟用"
+        }
+    },
+    "export": {
+        "title": "匯出密碼庫",
+        "warning_title": "安全警告",
+        "warning_desc": "您即將以明文形式匯出密碼。任何擁有此檔案的人都可以查看您的憑證，請安全儲存。",
+        "format": "選擇格式",
+        "preview": "資料預覽",
+        "download": "下載檔案"
+    },
+    "import": {
+        "title": "匯入密碼庫",
+        "drag_drop": "拖曳 CSV/JSON 到此處或點擊此處選擇檔案",
+        "click_to_select": "點擊選擇 CSV/JSON 檔案",
+        "formats": "支援格式: .csv, .json",
+        "ready": "發現 {{count}} 條資料。準備就緒！",
+        "error": "匯入失敗",
+        "error_binary": "檢測到二進位檔案",
+        "error_invalid_format": "無效的檔案格式",
+        "note_title": "注意",
+        "note_desc": "重複的資料將作為新條目新增，並帶有時間戳標籤。不會覆蓋任何現有資料。",
+        "action": "匯入資料"
+    },
+    "login": {
+        "locked_local_db": "已鎖定本地資料庫",
+        "master_password": "主密碼",
+        "unlock_placeholder": "輸入金鑰解鎖",
+        "invalid_key": "無效的存取金鑰",
+        "access_vault": "進入密碼庫",
+        "secure_id": "安全 ID",
+        "system_auth": "系統驗證...",
+        "unlock_bio": "使用生物識別解鎖",
+        "forgot_password": "忘記密碼？",
+        "reset_modal": {
+            "title": "忘記主密碼？",
+            "warning_title": "安全警告",
+            "warning_desc": "EtherVault 是一款零知識、本地優先的密碼管理器。我們不會在任何伺服器上儲存您的主密碼。如果您忘記了它，我們無法為您恢復或重置。重置操作將永久清除此本地保險庫中儲存的所有資料！",
+            "steps_title": "如何重置 / 重新開始",
+            "step1": "進入您裝置的系統設定（System Settings）。",
+            "step2": "前往 應用程式管理 > EtherVault > 儲存 (Apps > EtherVault > Storage)。",
+            "step3": "點擊「清除儲存空間」或「清除資料」（Clear Storage / Clear Data）以刪除資料庫檔案。",
+            "step4": "重新打開應用，重新設定新的主密碼。",
+            "android_step1": "進入您裝置的系統設定（System Settings）。",
+            "android_step2": "前往 應用程式管理 > EtherVault > 儲存 (Apps > EtherVault > Storage)。",
+            "android_step3": "點擊「清除儲存空間」或「清除資料」（Clear Storage / Clear Data）以刪除資料庫檔案。",
+            "android_step4": "重新打開應用，重新設定新的主密碼。",
+            "ios_step1": "在主螢幕上長按 EtherVault 應用圖示。",
+            "ios_step2": "點擊「移除應用」，然後選擇「刪除應用」以清除所有本地資料。",
+            "ios_step3": "從 App Store 重新下載並安裝 EtherVault。",
+            "ios_step4": "重新打開應用，重新設定新的主密碼。",
+            "desktop_step1": "關閉 EtherVault 應用程式。",
+            "desktop_step2": "前往應用資料資料夾（macOS: '~/Library/Application Support/EtherVault', Windows: '%APPDATA%\\EtherVault'）。",
+            "desktop_step3": "刪除整個 'EtherVault' 資料夾以清除本地資料庫和設定。",
+            "desktop_step4": "重新啟動應用，設定新的主密碼。",
+            "web_step1": "打開您瀏覽器的開發者工具 (F12 或 右鍵點擊 > 檢查)。",
+            "web_step2": "進入「應用程式 (Application)」或「儲存 (Storage)」索引標籤。",
+            "web_step3": "展開 IndexedDB，選中 'EtherVaultDB' 並點擊「刪除資料庫」，隨後清除 Local Storage。",
+            "web_step4": "重新整理頁面即可重新設定新的主密碼。",
+            "action_reset": "一鍵重置（清除所有資料）",
+            "confirm_reset": "警告：這會永久刪除所有保存在本 App 中的密碼並重置 App，該操作不可逆！您確定要繼續嗎？",
+            "reset_failed": "自動重置失敗，請使用上方的平台手動步驟進行重置。",
+            "support_title": "尋求協助？"
+        }
+    },
+    "security": {
+        "title": "安全狀況",
+        "subtitle": "針對您密碼庫的即時安全分析",
+        "scan": "全面掃描",
+        "scanning": "掃描中...",
+        "scan_full": "執行全面掃描",
+        "score": "評分",
+        "status": {
+            "title": "保護狀態",
+            "robust": "您的數位金庫非常堅固。請繼續保持開啟雙重驗證。",
+            "decent": "您的安全性尚可，但仍需改進。",
+            "weak": "建議立即處理弱密碼。"
+        },
+        "stats": {
+            "weak": "弱密碼",
+            "reused": "重複使用",
+            "safe": "安全",
+            "secure_strong": "安全/強",
+            "other": "其他"
+        },
+        "alerts": {
+            "title": "安全警報",
+            "action_items": "個待處理項",
+            "empty_title": "一切正常",
+            "empty": "未發現安全問題。幹得漂亮！",
+            "resolve": "解決",
+            "weak_title": "弱密碼: {{title}}",
+            "weak_description": "此密碼過短或複雜度不足。",
+            "reused_title": "重複密碼: {{count}} 個帳戶",
+            "reused_description": "用於 {{titles}}。",
+            "reused_description_more": "用於 {{titles}} 等。"
+        }
+    },
+    "generator": {
+        "title": "產生器",
+        "entropy": "熵值: ~{{bits}} bits",
+        "length": "長度",
+        "chars": "{{count}} 字元",
+        "options": {
+            "uppercase": "大寫字母",
+            "lowercase": "小写字母",
+            "numbers": "數字",
+            "symbols": "符號"
+        },
+        "info": "更高的熵值使密碼更難被暴力破解。",
+        "subtitle": "建立強大且安全的密碼",
+        "actions": {
+            "regenerate": "重新產生"
+        }
+    },
+    "welcome": {
+        "step1": {
+            "title": "保護您的密碼庫",
+            "subtitle": "建立一個主金鑰以在本地加密您的資料。"
+        },
+        "step2": {
+            "title": "快速存取",
+            "subtitle": "安全地加速您的登入體驗。"
+        },
+        "master_key": "主金鑰",
+        "verify_key": "驗證金鑰",
+        "key_placeholder": "輸入強金鑰",
+        "repeat_placeholder": "重複主金鑰",
+        "biometric": "生物識別鎖定",
+        "biometric_subtitle": "Face ID / Touch ID",
+        "next": "下一步",
+        "start": "開始使用",
+        "error": {
+            "length": "主金鑰必須至少 8 個字元。",
+            "weak": "密碼太弱。請使用字母、數字和符號的組合。",
+            "match": "金鑰不匹配。"
+        },
+        "warning_modal": {
+            "title": "主密碼安全警告",
+            "warning_title": "安全警告",
+            "warning_desc": "EtherVault 是一款零知識、本地優先的密碼管理器。我們不會在任何伺服器上儲存您的主密碼。如果您忘記了它，我們無法為您恢復或重置。請確保您已經記住 master password。",
+            "action_back": "返回",
+            "action_continue": "繼續"
+        }
+    },
+    "sync": {
+        "just_now": "剛剛",
+        "syncing": "同步中...",
+        "credentials_imported": "發現雲端密碼庫。請使用原裝置的密碼登入（这可能與您當前密碼相同）。",
+        "merge_complete": "成功合併雲端條目。",
+        "use_cloud_complete": "已切換至雲端密碼庫。請使用您的雲端密碼重新登入。",
+        "use_local_complete": "雲端資料已被本地資料覆蓋。",
+        "salt_updated": "雲端安全設定已更新。您必須重新登入。",
+        "error": {
+            "missing_verifier": "雲端密碼庫缺少密碼驗證資料。請先從原始裝置同步以更新雲端元資料。",
+            "missing_password": "合併需要雲端密碼。",
+            "no_cloud_entries": "未找到可合併的雲端條目。",
+            "wrong_password": "雲端密碼錯誤。解密失敗。",
+            "password_required": "切換前需要雲端密碼進行驗證。"
+        },
+        "conflict": {
+            "title": "檢測到同步衝突",
+            "description": "此裝置與雲端密碼庫是分別設定的。兩者可能使用相同的密碼，但加密金鑰不同。",
+            "local_count": "本地：{{count}} 條記錄",
+            "merge": "合併密碼庫",
+            "merge_desc": "合併兩個密碼庫。使用原裝置的密碼。",
+            "use_cloud": "僅使用雲端",
+            "use_cloud_desc": "清除本地資料。切換到雲端密碼庫。",
+            "use_local": "僅使用本地",
+            "use_local_desc": "清除雲端資料。用本地資料覆蓋。",
+            "enter_cloud_password": "輸入原裝置的密碼以解密並合併條目：",
+            "enter_cloud_password_verify": "輸入原裝置的密碼以驗證存取權限：",
+            "cloud_password_placeholder": "原裝置主密碼",
+            "password_hint": "这可能與您在此裝置上使用的密碼相同。",
+            "merging": "合併中...",
+            "merge_now": "立即合併",
+            "use_cloud_now": "切換到雲端"
+        },
+        "found_modal": {
+            "title": "檢測到雲端密碼庫",
+            "description": "您的雲端儲存中已存在一個加密密碼庫。要開始同步，我們需要從雲端匯入安全設定與金鑰。",
+            "warning_label": "安全提示",
+            "warning_text": "一旦匯入，您必須使用該雲端密碼庫的密碼進行登入。如果您忘記了雲端密碼，請立即選擇「取消」。您可以查閱「關於」頁面的幫助/常見問題（FAQ）瞭解如何清理雲端資料並重新開始同步。",
+            "confirm": "連線並匯入"
+        },
+        "warning": {
+            "title": "重要安全提示",
+            "message": "您即將啟用與 {{providerName}} 的同步。為了在其他裝置上存取您的保險庫，您必須記住您的大師密碼。",
+            "alert": "如果您忘記密碼，我們將無法為您找回。",
+            "confirm_password": "確認大師密碼",
+            "placeholder": "輸入大師密碼以繼續",
+            "verifying": "正在驗證...",
+            "confirm": "我已瞭解，啟用同步"
+        }
+    },
+    "biometric_prompt": {
+        "title": "解鎖 EtherVault",
+        "subtitle": "使用您的生物識別 ID",
+        "reason": "解鎖密碼庫",
+        "cancel": "取消"
+    },
+    "about": {
+        "title": "關於",
+        "description": "一款為隱私和簡潔而生，安全、離線優先的跨平台密碼管理器。",
+        "opensource": "開源專案",
+        "privacy_title": "隱私與安全",
+        "privacy_desc": "您的資料僅在本地裝置上使用 AES-256-GCM 加密。我們不收集任何個人資料或分析資料。",
+        "faq_title": "常見問題",
+        "faq_desc": "快速尋找常見問題的解答",
+        "faq_button": "查看常見問題 (FAQ)",
+        "help_title": "幫助與支援",
+        "contact": "聯絡我們",
+        "footer": "© 2026 EtherVault"
+    },
+    "faq_view": {
+        "title": "常見問題",
+        "last_updated": "最後更新：2026年6月",
+        "sections": {
+            "1": {
+                "title": "1. 主密碼安全",
+                "desc": "EtherVault 是一款零知識、本地優先的密碼管理器。我們不會在任何伺服器上儲存您的主密碼。如果您忘記了它，我們無法為您恢復或重置。請確保您已經記住 master password。"
+            },
+            "2": {
+                "title": "2. 雲端同步與資料隱私",
+                "access_title": "僅限隔離的應用專屬目錄存取",
+                "access_desc": "EtherVault 僅使用專門的沙盒資料夾進行資料同步。我們沒有權限，不會申請存取您雲端硬碟（如 Google Drive）中儲存的任何其他檔案、資料夾或個人資料。",
+                "view_data_title": "如何在 Google Drive 中查看本應用的資料",
+                "view_data_desc": "在 Google Drive 中，EtherVault 將加密後的資料庫保存在隱藏的 AppData 資料夾中以防止被誤刪。要查看或管理它，您可以登入網頁版 Google Drive > 點擊右上角齒輪「設定」 > 設定 > 管理應用。您將在此列表中看到 EtherVault 及其占用的儲存空間。"
+            },
+            "3": {
+                "title": "3. 忘記雲端密碼與清除同步資料",
+                "desc": "由於 EtherVault 是零知識的本地優先密碼管理器，我們無法為您恢復主密碼。如果您忘記了雲端密碼，由於無法對雲端備份進行解密，您必須清除雲端資料後才能重新開啟同步。您可以選擇以下兩種方法之一來清除資料：",
+                "method1_title": "方法一：通過 Google Drive 設定手動刪除隱藏資料",
+                "method1_steps": [
+                    "在網頁瀏覽器中登入您的 Google Drive 帳戶。",
+                    "點擊右上角的齒輪圖示並選擇「設定」。",
+                    "在左側邊欄中點擊「管理應用」。",
+                    "找到 EtherVault，點擊右側的「選項」，然後選擇「刪除隱藏的應用資料」。"
+                ],
+                "method2_title": "方法二：在本地新建憑證，強行覆蓋雲端（觸發同步衝突）",
+                "method2_steps": [
+                    "確保您當前本地的保險庫中至少存有一條密碼記錄（若為空，請新建一個臨時記錄）。",
+                    "前往「設定」 > 「同步提供商」，重新連線您的雲端儲存帳戶。",
+                    "由於本地與雲端的金鑰鹽不一致（因為密碼不同），系統將彈出「檢測到同步衝突」的提示框。",
+                    "選擇「僅使用本地」選項。這會安全地清空舊的雲端資料，並以您當前本地裝置的密碼和加密金鑰重寫覆蓋雲端資料。"
+                ]
+            }
+        },
+        "footer": "EtherVault 幫助中心 — 始終保障您的密碼庫安全。"
+    },
+    "privacy_view": {
+        "title": "隱私政策",
+        "last_updated": "最後更新：2026年2月3日",
+        "intro": "EtherVault（“我們”、“我們的”或“本應用”）是一款開源、隱私優先的密碼管理器，旨在尊重和保護您的數位隱私。本隱私政策說明了 EtherVault 如何處理您的資料。",
+        "summary": "簡而言之：我們不收集、不儲存、不出售您的個人資料。資料完全屬於您自己。",
+        "sections": {
+            "1": {
+                "title": "1. 資料收集與儲存",
+                "local_title": "本地優先架構",
+                "local_desc": "EtherVault 基於“本地優先”原則運行。您的所有敏感資料（使用者名稱、密碼、備註、標籤）均安全地儲存在您的本地裝置（電腦或手機）上。這些資料使用軍用級 AES-256 進行加密。",
+                "server_title": "無中央伺服器",
+                "server_desc": "我們不運營中央伺服器來儲存您的密碼庫資料。我們（EtherVault 開發者）無法存取您的主密碼、儲存的憑證或加密金鑰。如果您丟失了主密碼，我們將無法為您恢復資料。"
+            },
+            "2": {
+                "title": "2. 雲同步",
+                "desc": "EtherVault 提供可選功能，利用您個人的雲端儲存提供商（目前支援 Google Drive）在裝置間同步資料。",
+                "points": [
+                    "同步前加密：所有資料在上傳到雲端之前，都會在您的裝置上進行本地加密。",
+                    "使用者控制：同步功能是可選的，必須由您顯式開啟並授權。",
+                    "第三方政策：儲存在雲提供商處的資料受該提供商的隱私政策和服務條款約束。"
+                ]
+            },
+            "3": {
+                "title": "3. 生物識別資料",
+                "desc": "EtherVault 支援使用生物識別（指紋、TouchID、FaceID）解鎖應用。",
+                "points": [
+                    "本地處理：生物識別驗證完全由您裝置的作業系統處理。",
+                    "無存取權：EtherVault 僅從作業系統接收“通過/失敗”的確認。我們不會存取、收集、儲存或傳輸您的實際指紋或面部資料。"
+                ]
+            },
+            "4": {
+                "title": "4. 第三方請求",
+                "desc": "為了改善使用者體驗，EtherVault 可能會自動為您儲存的網站獲取圖示（Favicons）。",
+                "points": [
+                    "這些請求可能會直接傳送到目標網站，或通過注重隱私的圖示服務（如 Google S2, DuckDuckGo）傳送。",
+                    "這些請求在技術上可能會向內容提供商暴露您的 IP 地址，類似於在瀏覽器中存取該網站。"
+                ]
+            },
+            "5": {
+                "title": "5. 裝置權限",
+                "lists": [
+                    "網路/網際網路存取：用於雲同步和獲取網站圖示。",
+                    "生物識別硬體：用於啟用 指紋/FaceID/TouchID 解鎖。",
+                    "儲存/檔案系統：用於在本地儲存加密的密碼庫檔案以及匯入/匯出功能。"
+                ]
+            },
+            "6": {
+                "title": "6. 日志與分析",
+                "lists": [
+                    "崩潰報告：本應用不會自動向我們傳送崩潰報告。",
+                    "本地日誌：使用日誌儲存在您的本地裝置上，用於您自己的審計和調試。除非您手動匯出並分享，否則這些日誌永遠不会離開您的裝置。"
+                ]
+            },
+            "7": {
+                "title": "7. 政策變更",
+                "desc": "我們要可能會不時更新隱私政策。由於本應用是開源且本地優先的，資料處理方式的重大變更通常需要通過軟體更新進行。"
+            },
+            "8": {
+                "title": "8. 聯絡我們",
+                "desc": "如果您对我們的隱私政策有任何疑問或建議，可以通過我們的 <0>GitHub</0> 專案或專案頁面聯絡我們。"
+            }
+        }
+    },
+    "premium": {
+        "paywall": {
+            "title": "EtherVault Premium",
+            "subtitle": "解鎖多裝置同步與自動雲端備份。",
+            "connecting": "正在建立安全連線...",
+            "connecting_google": "正在建立與 Google Play 的安全連線...",
+            "authorizing": "授權交易中...",
+            "verifying": "驗證憑證中...",
+            "processing": "處理安全結帳中",
+            "restoring": "恢復購買中",
+            "checking_receipts": "檢查應用程式商店憑證中...",
+            "validating": "驗證數位購買簽名中...",
+            "license_empty": "請輸入許可金鑰。",
+            "license_invalid": "無效的許可金鑰。",
+            "already_active_restore_hint": "您已經擁有此權益。請點擊「恢復購買」以恢復您的 Premium 狀態。",
+            "load_offerings_failed": "此付費功能在您的帳號或地區可能不可用。請稍後再試。"
+        },
+        "plan": {
+            "monthly_title": "按月",
+            "monthly_period": "/ 月",
+            "monthly_desc": "彈性方案，隨時取消。",
+            "annual_title": "按年",
+            "annual_period": "/ 年",
+            "annual_desc": "較月付方案省下 50%。",
+            "lifetime_title": "終身",
+            "lifetime_period": "一次性付款",
+            "lifetime_desc": "一次付清，永久解鎖。",
+            "lifetime_badge": "最划算"
+        },
+        "feature": {
+            "sync_title": "多裝置雲端同步",
+            "sync_desc": "透過 Google Drive 在您的所有裝置之間安全同步加密的保險庫。",
+            "backup_title": "安全雲端備份",
+            "backup_desc": "無須擔心資料庫遺失。自動備份加密日誌。",
+            "crossplatform_title": "跨平台存取",
+            "crossplatform_desc": "在 Android、iOS、Windows、macOS 和 Linux 上無縫存取您的密碼。",
+            "attachments_title": "加密檔案附件",
+            "attachments_desc": "上傳並加密個人檔案、密鑰和圖片，安全地關聯至您的憑證。"
+        },
+        "actions": {
+            "subscribe": "立即訂閱並解鎖",
+            "restore": "恢復購買",
+            "license": "兌換許可金鑰"
+        },
+        "success": {
+            "title": "Premium 已啟用！",
+            "message": "感謝您！您的帳戶已升級。雲端同步現已完全解鎖。"
+        },
+        "license": {
+            "title": "兌换許可證",
+            "description": "在下方輸入您的 24 位字母數字許可金鑰以啟用 premium。"
+        },
+        "banner": {
+            "upgrade_title": "升級至 Premium",
+            "upgrade_desc": "解鎖安全的多裝置 Google Drive 同步，以便隨時在行動裝置和桌上型電腦存取您的保險庫。",
+            "get_premium": "獲取 Premium",
+            "active_title": "EtherVault Premium 已啟用",
+            "active_desc": "感謝您的支持！您已獲得跨裝置同步和自動雲端備份的完全存取權限。",
+            "mock_refund": "模擬退款 / 降級"
+        },
+        "coming_soon_title": "敬請期待",
+        "coming_soon": "應用內購買與同步訂閱即將推出！"
+    }
+}

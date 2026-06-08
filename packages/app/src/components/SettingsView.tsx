@@ -221,7 +221,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
       if (Capacitor.isNativePlatform()) {
         const logs = await logger.getRecentLogs();
         const logContent = logs.length > 0 ? [...logs].reverse().join('\n') : 'No logs recorded.';
-        
+
         // Compress using CompressionStream
         const blob = new Blob([logContent], { type: 'text/plain;charset=utf-8' });
         const compressionStream = new CompressionStream('gzip');
@@ -266,7 +266,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
       // 3. Web (Browser) Fallback
       const logs = await logger.getRecentLogs();
       const logContent = logs.length > 0 ? [...logs].reverse().join('\n') : 'No logs recorded.';
-      
+
       const blob = new Blob([logContent], { type: 'text/plain;charset=utf-8' });
       const compressedBlob = await new Response(blob.stream().pipeThrough(new CompressionStream('gzip'))).blob();
 
@@ -678,7 +678,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     try {
       await getAuthService().importCloudCredentials(foundCloudMeta.salt, foundCloudMeta.verifier);
       setSettings({ ...settings, cloudProvider: foundProvider, lastSync: t('sync.just_now') });
-      
+
       showSuccess(
         t('sync.credentials_imported', 'Cloud vault found. Please log in again with your original password.'),
         undefined,
@@ -1177,9 +1177,13 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   onChange={(val) => i18n.changeLanguage(val)}
                   options={[
                     { value: 'en', label: 'English' },
-                    { value: 'zh', label: '中文' },
+                    { value: 'es', label: 'Español' },
+                    { value: 'fr', label: 'Français' },
                     { value: 'ja', label: '日本語' },
-                    { value: 'ko', label: '한국어' }
+                    { value: 'ko', label: '한국어' },
+                    { value: 'pt', label: 'Português' },
+                    { value: 'zh', label: '简体中文' },
+                    { value: 'zh-TW', label: '繁體中文' }
                   ]}
                 />
               </div>

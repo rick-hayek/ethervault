@@ -1,0 +1,544 @@
+{
+    "layout": {
+        "nav": {
+            "vault": "Bóveda",
+            "security": "Seguridad",
+            "generator": "Generador",
+            "settings": "Ajustes"
+        },
+        "appearance": "Apariencia",
+        "lock_vault": "Bloquear Bóveda",
+        "search_placeholder": "Buscar..."
+    },
+    "common": {
+        "cancel": "Cancelar",
+        "confirm_delete": "Eliminar",
+        "copy": "Copiar",
+        "copied": "Copiado",
+        "processing": "Procesando...",
+        "confirm": "Confirmar",
+        "back": "Atrás",
+        "recommended": "RECOMENDADO",
+        "dismiss": "Descartar"
+    },
+    "vault": {
+        "title": "Su Bóveda",
+        "subtitle": "Gestione sus credenciales con seguridad de nivel industrial",
+        "add": "AÑADIR CREDENCIAL",
+        "sync_prompt": {
+            "title": "Sincronice su bóveda entre dispositivos",
+            "title_premium": "Sincronice su bóveda entre dispositivos (Premium)",
+            "description": "Conéctese al almacenamiento en la nube para acceder a sus contraseñas en cualquier lugar.",
+            "action": "Configurar Sincronización",
+            "action_premium": "Obtener Premium"
+        },
+        "strength": {
+            "Secure": "SEGURO",
+            "Strong": "FUERTE",
+            "Medium": "MEDIO",
+            "Weak": "DÉBIL"
+        },
+        "just_now": "Ahora mismo",
+        "search": "Buscar...",
+        "update": "Actualizar",
+        "save": "Guardar",
+        "edit_credential": "Editar Credencial",
+        "new_credential": "Nueva Credencial",
+        "entry": {
+            "username": "Usuario",
+            "title": "Título",
+            "category": "Categoría",
+            "website": "URL del sitio web",
+            "username_email": "Usuario / Correo electrónico",
+            "password": "Contraseña",
+            "title_placeholder": "Google, Netflix...",
+            "website_placeholder": "ejemplo.com",
+            "username_placeholder": "usuario o correo electrónico",
+            "password_placeholder": "Introducir contraseña",
+            "additional_info": "Información Adicional",
+            "recovery_phone": "Teléfono de Recuperación",
+            "recovery_phone_placeholder": "+1 234 567 8900",
+            "recovery_email": "Correo de Recuperación",
+            "recovery_email_placeholder": "respaldo@email.com",
+            "note": "Nota",
+            "note_placeholder": "Añadir notas o comentarios..."
+        }
+    },
+    "category": {
+        "all": "Todos",
+        "personal": "Personal",
+        "work": "Trabajo",
+        "others": "Otros"
+    },
+    "settings": {
+        "title": "Ajustes",
+        "subtitle": "Gestione sus preferencias de seguridad y sincronización",
+        "data_management": "Gestión de Datos",
+        "log_management": "Gestión de Registros",
+        "import": "Importar",
+        "sync_provider": "Proveedor de Sincronización",
+        "updating": "Actualizando...",
+        "cloud": {
+            "reconnect": "Reanudar Conexión",
+            "paused": "Pausado",
+            "connected": "Conectado",
+            "connected_desc": "La bóveda se ha sincronizado de forma segura con {{provider}}.",
+            "connect_desc": "Conéctese a {{provider}} para habilitar la copia de seguridad y sincronización automáticas en la nube.",
+            "last_synced": "Última sincronización:",
+            "syncing": "Sincronizando...",
+            "sync_now": "Sincronizar ahora",
+            "disconnect": "Desconectar",
+            "connect_account": "Conectar Cuenta",
+            "connection_failed": "Error de conexión. Compruebe su red.",
+            "unlock_premium": "Desbloquear con Premium"
+        },
+        "option": {
+            "biometric": "ID Biométrico",
+            "2fa": "Protección 2FA",
+            "lock_timer": "Temporizador de Bloqueo",
+            "login_alerts": "Alertas de Inicio de Sesión",
+            "dark_mode": "Modo Oscuro",
+            "language": "Idioma",
+            "master_log": "Registro",
+            "open_log": "Abrir Registro",
+            "time": {
+                "1m": "1 MIN",
+                "5m": "5 MINS",
+                "15m": "15 MINS",
+                "30m": "30 MINS",
+                "1h": "1 HR"
+            },
+            "recent_activity": "Actividad Reciente",
+            "appearance": "Apariencia",
+            "theme_color": "Color del Tema"
+        },
+        "theme": {
+            "system": "Sistema",
+            "light": "Claro",
+            "dark": "Oscuro"
+        },
+        "color": {
+            "blue": "Azul",
+            "emerald": "Esmeralda",
+            "violet": "Violeta",
+            "amber": "Ámbar",
+            "rose": "Rosa",
+            "pink": "Sakura",
+            "lightgrey": "Cashmere",
+            "silver": "Plata",
+            "ivory": "Marfil"
+        },
+        "activity_modal": {
+            "title": "Registro del Sistema",
+            "empty": "No se encontró actividad reciente.",
+            "refresh": "Actualizar",
+            "close": "Cerrar"
+        },
+        "change_password": "CAMBIAR CONTRASEÑA MAESTRA",
+        "encryption": "Cifrado AES de 256 bits",
+        "password_modal": {
+            "title": "Cambiar Contraseña Maestra",
+            "current": "Contraseña Actual",
+            "new": "Nueva Contraseña",
+            "confirm": "Confirmar Nueva Contraseña",
+            "cancel": "Cancelar",
+            "save": "Guardar Cambios"
+        },
+        "error": {
+            "match": "Las nuevas contraseñas no coinciden",
+            "incorrect": "Contraseña original incorrecta",
+            "failed": "Error al cambiar la contraseña"
+        },
+        "success": {
+            "password": "Contraseña cambiada con éxito",
+            "cache_cleared": "¡Caché borrada!",
+            "biometric_enabled": "Desbloqueo biométrico habilitado"
+        },
+        "status": {
+            "encrypting": "Cifrando de nuevo la bóveda...",
+            "updating_bio": "Actualizando secreto biométrico...",
+            "resyncing": "Sincronizando nuevos datos en la nube...",
+            "done": "¡Hecho!"
+        },
+        "export": "Exportar",
+        "clear_cache": "Borrar Caché",
+        "clear_cache_desc": "Esto eliminará los registros locales y los datos temporales. Los datos de su bóveda NO se eliminarán.",
+        "send_log": "Enviar Registro",
+        "biometric_modal": {
+            "title": "Habilitar Desbloqueo Biométrico",
+            "description": "Introduzca su contraseña maestra para guardarla de forma segura en el llavero de su dispositivo.",
+            "enable": "Habilitar Biometría"
+        }
+    },
+    "export": {
+        "title": "Exportar Bóveda",
+        "warning_title": "Advertencia de Seguridad",
+        "warning_desc": "Está a punto de exportar sus contraseñas en texto plano. Cualquier persona con este archivo podrá ver sus credenciales. Guárdelo en un lugar seguro.",
+        "format": "Seleccionar Formato",
+        "preview": "Vista Previa de Datos",
+        "download": "Descargar Archivo"
+    },
+    "import": {
+        "title": "Importar Bóveda",
+        "drag_drop": "Arrastre y suelte CSV/JSON aquí o haga clic para seleccionar",
+        "click_to_select": "Toque para seleccionar un archivo CSV/JSON",
+        "formats": "Formatos compatibles: .csv, .json",
+        "ready": "Se encontraron {{count}} entradas. ¡Listo!",
+        "error": "Error al importar",
+        "error_binary": "Archivo binario detectado",
+        "error_invalid_format": "Formato de archivo no válido",
+        "note_title": "Nota",
+        "note_desc": "Las entradas duplicadas se añadirán como nuevos elementos con una etiqueta de marca de tiempo. No se sobrescribirá ningún dato existente.",
+        "action": "Importar Datos"
+    },
+    "login": {
+        "locked_local_db": "Base de Datos Local Bloqueada",
+        "master_password": "Contraseña Maestra",
+        "unlock_placeholder": "Introduzca la clave para desbloquear",
+        "invalid_key": "Clave de Acceso No Válida",
+        "access_vault": "Acceder a la Bóveda",
+        "secure_id": "ID SEGURO",
+        "system_auth": "AUTENTICACIÓN DEL SISTEMA...",
+        "unlock_bio": "Desbloquear con ID Biométrico",
+        "forgot_password": "¿Olvidó su contraseña?",
+        "reset_modal": {
+            "title": "¿Olvidó su contraseña maestra?",
+            "warning_title": "Advertencia de Seguridad",
+            "warning_desc": "EtherVault es un gestor de contraseñas de conocimiento cero y local primero. No almacenamos su contraseña maestra en ningún servidor. Si la olvida, no podremos recuperarla ni restablecerla. TODAS las credenciales almacenadas en esta bóveda local se perderán permanentemente si la restablece.",
+            "steps_title": "Cómo restablecer / Comenzar de nuevo",
+            "step1": "Vaya a los Ajustes del Sistema de su dispositivo.",
+            "step2": "Navegue a Aplicaciones > EtherVault > Almacenamiento.",
+            "step3": "Toque 'Borrar almacenamiento' o 'Borrar datos' para eliminar la base de datos.",
+            "step4": "Vuelva a iniciar la aplicación para configurar una nueva contraseña maestra.",
+            "android_step1": "Vaya a los Ajustes del Sistema de su dispositivo.",
+            "android_step2": "Navegue a Aplicaciones > EtherVault > Almacenamiento.",
+            "android_step3": "Toque 'Borrar almacenamiento' o 'Borrar datos' para eliminar la base de datos.",
+            "android_step4": "Vuelva a iniciar la aplicación para configurar una nueva contraseña maestra.",
+            "ios_step1": "Mantenga presionado el icono de EtherVault en su pantalla de inicio.",
+            "ios_step2": "Toque 'Eliminar aplicación' para desinstalar y borrar todo el almacenamiento local.",
+            "ios_step3": "Vuelva a instalar EtherVault desde la App Store.",
+            "ios_step4": "Vuelva a iniciar la aplicación para configurar una nueva contraseña maestra.",
+            "desktop_step1": "Cierre la aplicación EtherVault.",
+            "desktop_step2": "Vaya a la carpeta AppData: macOS: '~/Library/Application Support/EtherVault', Windows: '%APPDATA%\\EtherVault'.",
+            "desktop_step3": "Elimine la carpeta completa 'EtherVault' para borrar la base de datos y los ajustes.",
+            "desktop_step4": "Vuelva a iniciar la aplicación para configurar una nueva contraseña maestra.",
+            "web_step1": "Abra las Herramientas de Desarrollo de su navegador (F12).",
+            "web_step2": "Vaya a la pestaña Aplicación o Almacenamiento.",
+            "web_step3": "Seleccione IndexedDB, busque 'EtherVaultDB' y haga clic en 'Eliminar base de datos', luego borre el Almacenamiento Local.",
+            "web_step4": "Recargue la página web para configurar una nueva contraseña maestra.",
+            "action_reset": "Restablecimiento en un clic (Destructivo)",
+            "confirm_reset": "ADVERTENCIA: Esto eliminará permanentemente todas sus credenciales almacenadas en esta aplicación y la restablecerá. ¡Esto no se puede deshacer! ¿Está absolutamente seguro?",
+            "reset_failed": "El restablecimiento automático falló. Use los pasos manuales en su lugar.",
+            "support_title": "¿Necesita ayuda?"
+        }
+    },
+    "security": {
+        "title": "Estado de Seguridad",
+        "subtitle": "Análisis en tiempo real de su bóveda de credenciales",
+        "scan": "ESCANEO COMPLETO",
+        "scanning": "Escaneando...",
+        "scan_full": "Ejecutar Escaneo Completo",
+        "score": "Puntuación",
+        "status": {
+            "title": "Estado de Protección",
+            "robust": "Su bóveda digital es sólida. Mantenga un 2FA fuerte en todas partes.",
+            "decent": "Su seguridad es aceptable, pero se necesitan algunas mejoras.",
+            "weak": "Acción inmediata recomendada para credenciales débiles."
+        },
+        "stats": {
+            "weak": "Débil",
+            "reused": "Reutilizada",
+            "safe": "Segura",
+            "secure_strong": "Segura/Fuerte",
+            "other": "Otro"
+        },
+        "alerts": {
+            "title": "Alertas de Seguridad",
+            "action_items": "Elementos de Acción",
+            "empty_title": "Todo despejado",
+            "empty": "No se encontraron problemas de seguridad. ¡Buen trabajo!",
+            "resolve": "Resolver",
+            "weak_title": "Contraseña Débil: {{title}}",
+            "weak_description": "Esta contraseña es demasiado corta o carece de complejidad.",
+            "reused_title": "Contraseña Reutilizada: {{count}} Cuentas",
+            "reused_description": "Usada para {{titles}}.",
+            "reused_description_more": "Usada para {{titles}} y más."
+        }
+    },
+    "generator": {
+        "title": "Generador",
+        "entropy": "Entropía: ~{{bits}} bits",
+        "length": "Longitud",
+        "chars": "{{count}} caracteres",
+        "options": {
+            "uppercase": "Mayúsculas",
+            "lowercase": "Minúsculas",
+            "numbers": "Números",
+            "symbols": "Símbolos"
+        },
+        "info": "Una mayor entropía hace que las contraseñas sean más difíciles de descifrar mediante fuerza bruta.",
+        "subtitle": "Cree contraseñas fuertes y seguras",
+        "actions": {
+            "regenerate": "Regenerar"
+        }
+    },
+    "welcome": {
+        "step1": {
+            "title": "Proteja su Bóveda",
+            "subtitle": "Cree una clave maestra para cifrar sus datos localmente."
+        },
+        "step2": {
+            "title": "Acceso Rápido",
+            "subtitle": "Acelere su experiencia de inicio de sesión de forma segura."
+        },
+        "master_key": "Clave Maestra",
+        "verify_key": "Verificar Clave",
+        "key_placeholder": "Introduzca una clave fuerte",
+        "repeat_placeholder": "Repita la clave maestra",
+        "biometric": "Bloqueo Biométrico",
+        "biometric_subtitle": "Face ID / Touch ID",
+        "next": "Siguiente Paso",
+        "start": "Comenzar",
+        "error": {
+            "length": "La Clave Maestra debe tener al menos 8 caracteres.",
+            "weak": "La contraseña es demasiado débil. Use una mezcla de letras, números y símbolos.",
+            "match": "Las claves no coinciden."
+        },
+        "warning_modal": {
+            "title": "Advertencia sobre la Contraseña Maestra",
+            "warning_title": "Advertencia de Seguridad",
+            "warning_desc": "EtherVault es un gestor de contraseñas de conocimiento cero y local primero. No almacenamos su contraseña maestra en ningún servidor. Si la olvida, no podremos recuperarla ni restablecerla. Asegúrese de haber memorizado su contraseña maestra.",
+            "action_back": "Volver",
+            "action_continue": "Continuar"
+        }
+    },
+    "sync": {
+        "just_now": "Ahora mismo",
+        "syncing": "Sincronizando...",
+        "credentials_imported": "Bóveda en la nube encontrada. Inicie sesión con la contraseña de su dispositivo original.",
+        "merge_complete": "Bóvedas combinadas correctamente desde la nube.",
+        "use_cloud_complete": "Cambiado a la bóveda en la nube. Inicie sesión de nuevo con su contraseña de la nube.",
+        "use_local_complete": "La nube se ha sobrescrito con los datos locales.",
+        "salt_updated": "Configuración de seguridad en la nube actualizada. Debe iniciar sesión de nuevo.",
+        "error": {
+            "missing_verifier": "Faltan datos de verificación en la nube. Sincronice desde el dispositivo original primero.",
+            "missing_password": "Se requiere la contraseña de la nube para combinar.",
+            "no_cloud_entries": "No se encontraron entradas en la nube para combinar.",
+            "wrong_password": "Contraseña de la nube incorrecta. Error de descifrado.",
+            "password_required": "Se requiere la contraseña de la nube para verificar el acceso antes de cambiar."
+        },
+        "conflict": {
+            "title": "Conflicto de Sincronización Detectado",
+            "description": "Este dispositivo se configuró de forma independiente a la bóveda en la nube. Ambos pueden usar la misma contraseña, pero con diferentes claves de cifrado.",
+            "local_count": "Local: {{count}} entradas",
+            "merge": "Combinar Bóvedas",
+            "merge_desc": "Combine ambas bóvedas. Utiliza su contraseña original.",
+            "use_cloud": "Usar Solo la Nube",
+            "use_cloud_desc": "Borrar datos locales. Cambiar a la bóveda en la nube.",
+            "use_local": "Usar Local",
+            "use_local_desc": "Borrar datos de la nube. Sobrescribir con datos locales.",
+            "enter_cloud_password": "Introduzca la contraseña de su dispositivo original para descifrar y combinar entradas:",
+            "enter_cloud_password_verify": "Introduzca la contraseña de su dispositivo original para verificar el acceso:",
+            "cloud_password_placeholder": "Contraseña Maestra Original",
+            "password_hint": "Esta puede ser la misma contraseña que usa en este dispositivo.",
+            "merging": "Combinando...",
+            "merge_now": "Combinar ahora",
+            "use_cloud_now": "Cambiar a la nube"
+        },
+        "found_modal": {
+            "title": "Bóveda en la Nube Encontrada",
+            "description": "Se encontró una bóveda cifrada en su almacenamiento en la nube. Para sincronizar, debemos importar la configuración de seguridad y la clave.",
+            "warning_label": "Aviso de Seguridad",
+            "warning_text": "Una vez importada, deberá iniciar sesión con la contraseña de la bóveda en la nube. Si la olvidó, seleccione Cancelar ahora.",
+            "confirm": "Conectar e Importar"
+        },
+        "warning": {
+            "title": "Advertencia de Seguridad Importante",
+            "message": "Está a punto de habilitar la sincronización con {{providerName}}. Para acceder a su bóveda en otros dispositivos, DEBE recordar su Contraseña Maestra.",
+            "alert": "No podemos recuperar su contraseña si la olvida.",
+            "confirm_password": "Confirmar Contraseña Maestra",
+            "placeholder": "Introduzca la Contraseña Maestra para continuar",
+            "verifying": "Verificando...",
+            "confirm": "Entiendo, habilitar sincronización"
+        }
+    },
+    "biometric_prompt": {
+        "title": "Desbloquear EtherVault",
+        "subtitle": "Use su ID biométrico",
+        "reason": "Desbloquear Bóveda",
+        "cancel": "Cancelar"
+    },
+    "about": {
+        "title": "Acerca de",
+        "description": "Un gestor de contraseñas seguro, local primero y multiplataforma, diseñado para la privacidad y la sencillez.",
+        "opensource": "Código Abierto",
+        "privacy_title": "Privacidad y Seguridad",
+        "privacy_desc": "Sus datos se cifran con AES-256-GCM puramente en su dispositivo. No recopilamos datos personales ni análisis.",
+        "faq_title": "Preguntas Frecuentes",
+        "faq_desc": "Encuentre respuestas rápidas a preguntas comunes",
+        "faq_button": "Ver FAQ",
+        "help_title": "Ayuda y Soporte",
+        "contact": "Contacto",
+        "footer": "© 2026 EtherVault"
+    },
+    "faq_view": {
+        "title": "Preguntas Frecuentes",
+        "last_updated": "Última actualización: Junio de 2026",
+        "sections": {
+            "1": {
+                "title": "1. Seguridad de la Contraseña Maestra",
+                "desc": "EtherVault es un gestor de contraseñas de conocimiento cero y local primero. No almacenamos su contraseña maestra en ningún servidor. Si la olvida, no podremos recuperarla ni restablecerla. Asegúrese de haber memorizado su contraseña maestra."
+            },
+            "2": {
+                "title": "2. Sincronización en la Nube y Privacidad de Datos",
+                "access_title": "Acceso Solo a la Aplicación Aislada",
+                "access_desc": "EtherVault utiliza una carpeta dedicada aislada para la sincronización. No tenemos y no podemos solicitar permiso para acceder a ningún otro archivo o carpeta.",
+                "view_data_title": "Cómo ver los datos de la aplicación en Google Drive",
+                "view_data_desc": "En Google Drive, EtherVault almacena archivos cifrados en una carpeta AppData oculta. Para gestionarla, vaya a la configuración de Google Drive Web > Gestionar aplicaciones."
+            },
+            "3": {
+                "title": "3. Contraseña de la Nube Olvidada y Borrado de Sincronización",
+                "desc": "Dado que no podemos recuperar su contraseña, si la olvidó, la bóveda no se podrá descifrar. Debe borrar los datos de la nube para comenzar de nuevo:",
+                "method1_title": "Método 1: Eliminar manualmente a través de los Ajustes de Google Drive",
+                "method1_steps": [
+                    "Abra Google Drive en su navegador web.",
+                    "Haga clic en el engranaje de Configuración > Ajustes.",
+                    "Haga clic en Gestionar aplicaciones en la barra lateral izquierda.",
+                    "Busque EtherVault, haga clic en Opciones y seleccione Eliminar datos ocultos de la aplicación."
+                ],
+                "method2_title": "Método 2: Forzar sobrescritura mediante conflicto de sincronización",
+                "method2_steps": [
+                    "Asegúrese de tener al menos una credencial en su bóveda local.",
+                    "Vaya a Ajustes > Proveedor de sincronización y vuelva a conectar.",
+                    "Seleccione 'Usar Local' para sobrescribir los datos de la nube con su contraseña y ajustes actuales."
+                ]
+            }
+        },
+        "footer": "Centro de Ayuda de EtherVault — Mantenga su bóveda segura, siempre."
+    },
+    "privacy_view": {
+        "title": "Política de Privacidad",
+        "last_updated": "Última actualización: 3 de febrero de 2026",
+        "intro": "EtherVault (\"nosotros\", \"nuestro\" o \"la Aplicación\") es un gestor de contraseñas de código abierto y privacidad primero.",
+        "summary": "En resumen: No recopilamos, almacenamos ni vendemos sus datos personales. Sus datos le pertenecen.",
+        "sections": {
+            "1": {
+                "title": "1. Recopilación y Almacenamiento de Datos",
+                "local_title": "Arquitectura Local Primero",
+                "local_desc": "EtherVault funciona de manera local primero. Todos sus datos sensibles se almacenan de forma segura en su dispositivo local cifrados mediante AES-256.",
+                "server_title": "Sin Servidor Central",
+                "server_desc": "No operamos ningún servidor central. No tenemos acceso a su contraseña maestra ni a sus datos."
+            },
+            "2": {
+                "title": "2. Sincronización en la Nube",
+                "desc": "La sincronización es opcional y se realiza directamente en su propia cuenta de la nube.",
+                "points": [
+                    "Cifrado antes de la sincronización: Todos los datos se cifran localmente ANTES de subirse a la nube.",
+                    "Control del usuario: La sincronización es opcional y debe ser activada por usted."
+                ]
+            },
+            "3": {
+                "title": "3. Datos Biométricos",
+                "desc": "El desbloqueo biométrico es procesado íntegramente por el sistema operativo de su dispositivo.",
+                "points": [
+                    "Procesamiento local: La verificación se realiza localmente.",
+                    "Sin acceso: Solo recibimos una confirmación de éxito o fracaso."
+                ]
+            },
+            "4": {
+                "title": "4. Solicitudes de Terceros",
+                "desc": "Podemos obtener iconos de los sitios web guardados para mejorar la experiencia visual.",
+                "points": [
+                    "Las solicitudes pueden enviarse al sitio web de destino o a un servicio de favicons.",
+                    "Esto puede exponer su dirección IP al proveedor."
+                ]
+            },
+            "5": {
+                "title": "5. Permisos del Dispositivo",
+                "lists": [
+                    "Acceso a Internet: Requerido para la sincronización y obtención de iconos.",
+                    "Hardware Biométrico: Requerido para habilitar el desbloqueo biométrico.",
+                    "Almacenamiento: Requerido para importar, exportar y guardar archivos de la bóveda localmente."
+                ]
+            },
+            "6": {
+                "title": "6. Registros y Análisis",
+                "lists": [
+                    "Informes de errores: La aplicación no envía informes automáticos.",
+                    "Registros locales: Los registros se guardan únicamente en su dispositivo."
+                ]
+            },
+            "7": {
+                "title": "7. Cambios en esta Política",
+                "desc": "Podemos actualizar nuestra Política de Privacidad de vez en cuando."
+            },
+            "8": {
+                "title": "8. Contacto",
+                "desc": "Si tiene preguntas, puede contactarnos a través de GitHub."
+            }
+        }
+    },
+    "premium": {
+        "paywall": {
+            "title": "EtherVault Premium",
+            "subtitle": "Desbloquee la sincronización en múltiples dispositivos y copias de seguridad automáticas.",
+            "connecting": "Estableciendo conexión segura...",
+            "connecting_google": "Estableciendo conexión con Google Play...",
+            "authorizing": "Autorizando transacción...",
+            "verifying": "Verificando recibo...",
+            "processing": "Procesando pago seguro",
+            "restoring": "Restaurando compra",
+            "checking_receipts": "Comprobando recibos de la tienda...",
+            "validating": "Validando firma digital...",
+            "license_empty": "Introduzca una clave de licencia.",
+            "license_invalid": "Clave de licencia no válida.",
+            "already_active_restore_hint": "Ya ha adquirido esta suscripción. Pulse Restaurar Compra.",
+            "load_offerings_failed": "Es posible que esta función premium no esté disponible para su cuenta o región. Por favor, inténtelo de nuevo más tarde."
+        },
+        "plan": {
+            "monthly_title": "Mensual",
+            "monthly_period": "/ mes",
+            "monthly_desc": "Plan flexible, cancele cuando quiera.",
+            "annual_title": "Anual",
+            "annual_period": "/ año",
+            "annual_desc": "Ahorre un 50% en comparación con el mensual.",
+            "lifetime_title": "Vitalicia",
+            "lifetime_period": "pago único",
+            "lifetime_desc": "Pague una vez, desbloquee para siempre.",
+            "lifetime_badge": "MEJOR VALOR"
+        },
+        "feature": {
+            "sync_title": "Sincronización en la Nube",
+            "sync_desc": "Sincronice su bóveda cifrada de forma segura a través de Google Drive.",
+            "backup_title": "Copias de Seguridad",
+            "backup_desc": "Haga copias de seguridad de sus datos cifrados automáticamente en la nube.",
+            "crossplatform_title": "Acceso Multiplataforma",
+            "crossplatform_desc": "Acceda a su bóveda en Android, iOS, Windows, macOS y Linux.",
+            "attachments_title": "Archivos Adjuntos Cifrados",
+            "attachments_desc": "Suba y cifre archivos, claves y fotos vinculados de forma segura a sus credenciales."
+        },
+        "actions": {
+            "subscribe": "Suscribirse y Desbloquear",
+            "restore": "Restaurar Compra",
+            "license": "Canjear Licencia"
+        },
+        "success": {
+            "title": "¡Premium Activado!",
+            "message": "¡Gracias! Su cuenta ha sido mejorada."
+        },
+        "license": {
+            "title": "Canjear Licencia",
+            "description": "Introduzca su clave de licencia de 24 caracteres."
+        },
+        "banner": {
+            "upgrade_title": "Mejorar a Premium",
+            "upgrade_desc": "Desbloquee la sincronización segura en múltiples dispositivos a través de Google Drive.",
+            "get_premium": "Obtener Premium",
+            "active_title": "EtherVault Premium Activo",
+            "active_desc": "¡Gracias por su apoyo! Tiene acceso completo a todas las funciones premium.",
+            "mock_refund": "Reembolso / Degradación de Prueba"
+        },
+        "coming_soon_title": "Próximamente",
+        "coming_soon": "Las compras integradas en la aplicación estarán disponibles pronto."
+    }
+}

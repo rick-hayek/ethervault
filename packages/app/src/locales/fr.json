@@ -1,0 +1,544 @@
+{
+    "layout": {
+        "nav": {
+            "vault": "Coffre",
+            "security": "Sécurité",
+            "generator": "Générateur",
+            "settings": "Paramètres"
+        },
+        "appearance": "Apparence",
+        "lock_vault": "Verrouiller le coffre",
+        "search_placeholder": "Rechercher..."
+    },
+    "common": {
+        "cancel": "Annuler",
+        "confirm_delete": "Supprimer",
+        "copy": "Copier",
+        "copied": "Copié",
+        "processing": "Traitement...",
+        "confirm": "Confirmer",
+        "back": "Retour",
+        "recommended": "RECOMMANDÉ",
+        "dismiss": "Ignorer"
+    },
+    "vault": {
+        "title": "Votre Coffre",
+        "subtitle": "Gérez vos identifiants avec une sécurité de niveau industriel",
+        "add": "AJOUTER UN IDENTIFIANT",
+        "sync_prompt": {
+            "title": "Synchronisez votre coffre sur tous les appareils",
+            "title_premium": "Synchronisez votre coffre sur tous les appareils (Premium)",
+            "description": "Connectez-vous au stockage cloud pour accéder à vos mots de passe n'importe où.",
+            "action": "Configurer la Synchro",
+            "action_premium": "Devenir Premium"
+        },
+        "strength": {
+            "Secure": "SÉCURISÉ",
+            "Strong": "FORT",
+            "Medium": "MOYEN",
+            "Weak": "FAIBLE"
+        },
+        "just_now": "À l'instant",
+        "search": "Rechercher...",
+        "update": "Mettre à jour",
+        "save": "Enregistrer",
+        "edit_credential": "Modifier l'identifiant",
+        "new_credential": "Nouvel identifiant",
+        "entry": {
+            "username": "Utilisateur",
+            "title": "Titre",
+            "category": "Catégorie",
+            "website": "URL du site",
+            "username_email": "Utilisateur / E-mail",
+            "password": "Mot de passe",
+            "title_placeholder": "Google, Netflix...",
+            "website_placeholder": "exemple.com",
+            "username_placeholder": "nom d'utilisateur ou e-mail",
+            "password_placeholder": "Entrez le mot de passe",
+            "additional_info": "Informations Complémentaires",
+            "recovery_phone": "Téléphone de Récupération",
+            "recovery_phone_placeholder": "+1 234 567 8900",
+            "recovery_email": "E-mail de Récupération",
+            "recovery_email_placeholder": "secours@email.com",
+            "note": "Note",
+            "note_placeholder": "Ajouter des notes ou des commentaires..."
+        }
+    },
+    "category": {
+        "all": "Tous",
+        "personal": "Personnel",
+        "work": "Travail",
+        "others": "Autres"
+    },
+    "settings": {
+        "title": "Paramètres",
+        "subtitle": "Gérez vos préférences de sécurité et de synchronisation",
+        "data_management": "Gestion des Données",
+        "log_management": "Gestion des Journaux",
+        "import": "Importer",
+        "sync_provider": "Fournisseur de Synchro",
+        "updating": "Mise à jour...",
+        "cloud": {
+            "reconnect": "Reprendre la Connexion",
+            "paused": "En pause",
+            "connected": "Connecté",
+            "connected_desc": "Le coffre est synchronisé en toute sécurité avec {{provider}}.",
+            "connect_desc": "Connectez-vous à {{provider}} pour activer la sauvegarde et la synchronisation automatiques sur le cloud.",
+            "last_synced": "Dernière synchro :",
+            "syncing": "Synchronisation...",
+            "sync_now": "Synchroniser maintenant",
+            "disconnect": "Déconnecter",
+            "connect_account": "Connecter le Compte",
+            "connection_failed": "Échec de connexion. Vérifiez votre réseau.",
+            "unlock_premium": "Déverrouiller avec Premium"
+        },
+        "option": {
+            "biometric": "ID Biométrique",
+            "2fa": "Protection 2FA",
+            "lock_timer": "Minuteur de Verrouillage",
+            "login_alerts": "Alertes de Connexion",
+            "dark_mode": "Mode Sombre",
+            "language": "Langue",
+            "master_log": "Journal",
+            "open_log": "Ouvrir le Journal",
+            "time": {
+                "1m": "1 MIN",
+                "5m": "5 MIN",
+                "15m": "15 MIN",
+                "30m": "30 MIN",
+                "1h": "1 H"
+            },
+            "recent_activity": "Activité Récente",
+            "appearance": "Apparence",
+            "theme_color": "Couleur du Thème"
+        },
+        "theme": {
+            "system": "Système",
+            "light": "Clair",
+            "dark": "Sombre"
+        },
+        "color": {
+            "blue": "Bleu",
+            "emerald": "Émeraude",
+            "violet": "Violet",
+            "amber": "Ambre",
+            "rose": "Rose",
+            "pink": "Sakura",
+            "lightgrey": "Cachemire",
+            "silver": "Argent",
+            "ivory": "Ivoire"
+        },
+        "activity_modal": {
+            "title": "Journal Système",
+            "empty": "Aucune activité récente trouvée.",
+            "refresh": "Actualiser",
+            "close": "Fermer"
+        },
+        "change_password": "MODIFIER LE MOT DE PASSE MAÎTRE",
+        "encryption": "Chiffrement AES 256 bits",
+        "password_modal": {
+            "title": "Modifier le Mot de Passe Maître",
+            "current": "Mot de Passe Actuel",
+            "new": "Nouveau Mot de Passe",
+            "confirm": "Confirmer le Nouveau Mot de Passe",
+            "cancel": "Annuler",
+            "save": "Enregistrer les Modifications"
+        },
+        "error": {
+            "match": "Les nouveaux mots de passe ne correspondent pas",
+            "incorrect": "Mot de passe d'origine incorrect",
+            "failed": "Échec de la modification du mot de passe"
+        },
+        "success": {
+            "password": "Mot de passe modifié avec succès",
+            "cache_cleared": "Cache effacé !",
+            "biometric_enabled": "Déverrouillage biométrique activé"
+        },
+        "status": {
+            "encrypting": "Rechiffrement du coffre...",
+            "updating_bio": "Mise à jour du secret biométrique...",
+            "resyncing": "Synchronisation des nouvelles données sur le cloud...",
+            "done": "Terminé !"
+        },
+        "export": "Exporter",
+        "clear_cache": "Effacer le Cache",
+        "clear_cache_desc": "Cela supprimera les journaux locaux et les données temporaires. Vos données de coffre ne seront PAS supprimées.",
+        "send_log": "Envoyer le Journal",
+        "biometric_modal": {
+            "title": "Activer le Déverrouillage Biométrique",
+            "description": "Entrez votre mot de passe maître pour l'enregistrer en toute sécurité dans le trousseau d'accès de votre appareil.",
+            "enable": "Activer la Biométrie"
+        }
+    },
+    "export": {
+        "title": "Exporter le Coffre",
+        "warning_title": "Avertissement de Sécurité",
+        "warning_desc": "Vous êtes sur le point d'exporter vos mots de passe en texte clair. Toute personne ayant ce fichier pourra voir vos identifiants. Conservez-le en lieu sûr.",
+        "format": "Sélectionner le Format",
+        "preview": "Aperçu des Données",
+        "download": "Télécharger le Fichier"
+    },
+    "import": {
+        "title": "Importer le Coffre",
+        "drag_drop": "Glissez-déposez le fichier CSV/JSON ici ou cliquez pour sélectionner",
+        "click_to_select": "Appuyez pour sélectionner un fichier CSV/JSON",
+        "formats": "Formats pris en charge : .csv, .json",
+        "ready": "{{count}} entrées trouvées. Prêt !",
+        "error": "Échec de l'importation",
+        "error_binary": "Fichier binaire détecté",
+        "error_invalid_format": "Format de fichier non valide",
+        "note_title": "Note",
+        "note_desc": "Les entrées en double seront ajoutées en tant que nouveaux éléments avec un horodatage. Aucune donnée existante ne sera écrasée.",
+        "action": "Importer des Données"
+    },
+    "login": {
+        "locked_local_db": "Base de Données Locale Verrouillée",
+        "master_password": "Mot de Passe Maître",
+        "unlock_placeholder": "Entrez la clé pour déverrouiller",
+        "invalid_key": "Clave d'Accès Non Valide",
+        "access_vault": "Accéder au Coffre",
+        "secure_id": "ID SÉCURISÉ",
+        "system_auth": "AUTHENTIFICATION SYSTEME...",
+        "unlock_bio": "Déverrouiller avec Bio ID",
+        "forgot_password": "Mot de passe oublié ?",
+        "reset_modal": {
+            "title": "Mot de passe maître oublié ?",
+            "warning_title": "Avertissement de Sécurité",
+            "warning_desc": "EtherVault est un gestionnaire de mots de passe sans connaissance (zero-knowledge) et local-first. Nous ne stockons votre mot de passe maître sur aucun serveur. Si vous l'oubliez, nous ne pouvons pas le récupérer ni le réinitialiser. TOUTES les données stockées dans ce coffre local seront définitivement perdues si vous le réinitialisez.",
+            "steps_title": "Comment réinitialiser / Recommencer à zéro",
+            "step1": "Accédez aux Paramètres Système de votre appareil.",
+            "step2": "Allez dans Applications > EtherVault > Stockage.",
+            "step3": "Appuyez sur 'Effacer le stockage' ou 'Effacer les données'.",
+            "step4": "Relancez l'application pour configurer un nouveau mot de passe maître.",
+            "android_step1": "Accédez aux Paramètres Système de votre appareil.",
+            "android_step2": "Allez dans Applications > EtherVault > Stockage.",
+            "android_step3": "Appuyez sur 'Effacer le stockage' ou 'Effacer les données'.",
+            "android_step4": "Relancez l'application pour configurer un nouveau mot de passe maître.",
+            "ios_step1": "Maintenez l'icône d'EtherVault enfoncée sur votre écran d'accueil.",
+            "ios_step2": "Appuyez sur 'Supprimer l'app' pour désinstaller et effacer tout le stockage local.",
+            "ios_step3": "Réinstallez EtherVault depuis l'App Store.",
+            "ios_step4": "Relancez l'application pour configurer un nouveau mot de passe maître.",
+            "desktop_step1": "Fermez l'application EtherVault.",
+            "desktop_step2": "Allez dans le dossier AppData : macOS: '~/Library/Application Support/EtherVault', Windows: '%APPDATA%\\EtherVault'.",
+            "desktop_step3": "Supprimez le dossier complet 'EtherVault' pour effacer la base de données et les paramètres.",
+            "desktop_step4": "Relancez l'application pour configurer un nouveau mot de passe maître.",
+            "web_step1": "Ouvrez les Outils de Développement de votre navigateur (F12).",
+            "web_step2": "Allez dans l'onglet Application ou Stockage.",
+            "web_step3": "Sélectionnez IndexedDB, cherchez 'EtherVaultDB', cliquez sur 'Supprimer la base de données', puis effacez le stockage local.",
+            "web_step4": "Rechargez la page pour configurer un nouveau mot de passe maître.",
+            "action_reset": "Réinitialisation en un clic (Destructif)",
+            "confirm_reset": "ATTENTION : Cela supprimera définitivement tous vos identifiants stockés et réinitialisera l'application. Cette action est irréversible ! Êtes-vous absolument sûr ?",
+            "reset_failed": "La réinitialisation automatique a échoué. Veuillez suivre les étapes manuelles.",
+            "support_title": "Besoin d'aide ?"
+        }
+    },
+    "security": {
+        "title": "Santé de la Sécurité",
+        "subtitle": "Analyse en temps réel de votre coffre d'identifiants",
+        "scan": "ANALYSE COMPLÈTE",
+        "scanning": "Analyse en cours...",
+        "scan_full": "Lancer l'Analyse Complète",
+        "score": "Score",
+        "status": {
+            "title": "Statut de Protection",
+            "robust": "Votre coffre numérique est robuste. Maintenez une 2FA forte partout.",
+            "decent": "Votre sécurité est correcte, mais des améliorations sont nécessaires.",
+            "weak": "Action immédiate recommandée pour les identifiants faibles."
+        },
+        "stats": {
+            "weak": "Faible",
+            "reused": "Réutilisé",
+            "safe": "Sécurisé",
+            "secure_strong": "Sécurisé/Fort",
+            "other": "Autre"
+        },
+        "alerts": {
+            "title": "Alertes de Sécurité",
+            "action_items": "Actions requises",
+            "empty_title": "Rien à signaler",
+            "empty": "Aucun problème de sécurité trouvé. Excellent travail !",
+            "resolve": "Résoudre",
+            "weak_title": "Mot de Passe Faible : {{title}}",
+            "weak_description": "Ce mot de passe est trop court ou manque de complexité.",
+            "reused_title": "Mot de Passe Réutilisé : {{count}} Comptes",
+            "reused_description": "Utilisé pour {{titles}}.",
+            "reused_description_more": "Utilisé pour {{titles}} et plus."
+        }
+    },
+    "generator": {
+        "title": "Générateur",
+        "entropy": "Entropie : ~{{bits}} bits",
+        "length": "Longueur",
+        "chars": "{{count}} carac.",
+        "options": {
+            "uppercase": "Majuscules",
+            "lowercase": "Minuscules",
+            "numbers": "Chiffres",
+            "symbols": "Symboles"
+        },
+        "info": "Une entropie plus élevée rend les mots de passe plus difficiles à forcer.",
+        "subtitle": "Créez des mots de passe forts et sécurisés",
+        "actions": {
+            "regenerate": "Régénérer"
+        }
+    },
+    "welcome": {
+        "step1": {
+            "title": "Sécurisez votre Coffre",
+            "subtitle": "Créez une clé maître pour chiffrer vos données localement."
+        },
+        "step2": {
+            "title": "Accès Rapide",
+            "subtitle": "Accélérez votre connexion en toute sécurité."
+        },
+        "master_key": "Clé Maître",
+        "verify_key": "Vérifier la Clé",
+        "key_placeholder": "Entrez une clé forte",
+        "repeat_placeholder": "Répétez la clé maître",
+        "biometric": "Verrouillage Biométrique",
+        "biometric_subtitle": "Face ID / Touch ID",
+        "next": "Étape Suivante",
+        "start": "Démarrer",
+        "error": {
+            "length": "La clé maître doit contenir au moins 8 caractères.",
+            "weak": "Le mot de passe est trop faible. Utilisez un mélange de lettres, chiffres et symboles.",
+            "match": "Les clés ne correspondent pas."
+        },
+        "warning_modal": {
+            "title": "Avertissement sur le Mot de Passe Maître",
+            "warning_title": "Avertissement de Sécurité",
+            "warning_desc": "EtherVault est un gestionnaire de mots de passe zero-knowledge et local-first. Nous ne stockons pas votre mot de passe maître. Si vous l'oubliez, nous ne pouvons pas le récupérer. Assurez-vous de bien l'avoir mémorisé.",
+            "action_back": "Retour",
+            "action_continue": "Continuer"
+        }
+    },
+    "sync": {
+        "just_now": "À l'instant",
+        "syncing": "Synchronisation...",
+        "credentials_imported": "Coffre cloud trouvé. Veuillez vous connecter avec le mot de passe de votre appareil d'origine.",
+        "merge_complete": "Fusion des données effectuée depuis le cloud.",
+        "use_cloud_complete": "Passage au coffre du cloud. Veuillez vous reconnecter.",
+        "use_local_complete": "Le cloud a été écrasé par les données locales.",
+        "salt_updated": "Paramètres de sécurité cloud mis à jour. Veuillez vous reconnecter.",
+        "error": {
+            "missing_verifier": "Le coffre cloud manque de données de vérification. Synchronisez d'abord depuis l'appareil d'origine.",
+            "missing_password": "Le mot de passe du cloud est requis pour la fusion.",
+            "no_cloud_entries": "Aucune entrée cloud trouvée pour la fusion.",
+            "wrong_password": "Mot de passe cloud incorrect. Échec du déchiffrement.",
+            "password_required": "Le mot de passe cloud est requis pour vérifier l'accès avant de changer."
+        },
+        "conflict": {
+            "title": "Conflit de Synchro Détecté",
+            "description": "Cet appareil a été configuré indépendamment du coffre cloud. Ils peuvent utiliser le même mot de passe mais des clés de chiffrement différentes.",
+            "local_count": "Local : {{count}} entrées",
+            "merge": "Fusionner les Coffres",
+            "merge_desc": "Combinez les deux coffres. Utilise votre mot de passe d'origine.",
+            "use_cloud": "Utiliser le Cloud Uniquement",
+            "use_cloud_desc": "Effacer les données locales. Passer au coffre cloud.",
+            "use_local": "Utiliser le Coffre Local",
+            "use_local_desc": "Effacer les données du cloud. Écraser avec les données locales.",
+            "enter_cloud_password": "Entrez le mot de passe de votre appareil d'origine pour déchiffrer et fusionner les entrées :",
+            "enter_cloud_password_verify": "Entrez le mot de passe de votre appareil d'origine pour vérifier l'accès :",
+            "cloud_password_placeholder": "Mot de Passe Maître d'Origine",
+            "password_hint": "Il peut s'agir du même mot de passe que celui utilisé sur cet appareil.",
+            "merging": "Fusion...",
+            "merge_now": "Fusionner maintenant",
+            "use_cloud_now": "Passer au cloud"
+        },
+        "found_modal": {
+            "title": "Coffre Cloud Trouvé",
+            "description": "Un coffre chiffré existant a été trouvé sur votre espace cloud. Pour synchroniser, nous devons importer les paramètres de sécurité et la clé.",
+            "warning_label": "Avis de Sécurité",
+            "warning_text": "Une fois importé, vous devrez utiliser le mot de passe du coffre cloud. Si vous l'avez oublié, sélectionnez Annuler maintenant.",
+            "confirm": "Connecter & Importer"
+        },
+        "warning": {
+            "title": "Avertissement de Sécurité Important",
+            "message": "Vous êtes sur le point d'activer la synchronisation avec {{providerName}}. Pour accéder à votre coffre sur d'autres appareils, vous DEVEZ retenir votre Mot de Passe Maître.",
+            "alert": "Nous ne pourrons pas récupérer votre mot de passe si vous l'oubliez.",
+            "confirm_password": "Confirmer le Mot de Passe Maître",
+            "placeholder": "Entrez le Mot de Passe Maître pour continuer",
+            "verifying": "Vérification...",
+            "confirm": "Je comprends, activer la synchro"
+        }
+    },
+    "biometric_prompt": {
+        "title": "Déverrouiller EtherVault",
+        "subtitle": "Utilisez votre identifiant biométrique",
+        "reason": "Déverrouiller le Coffre",
+        "cancel": "Annuler"
+    },
+    "about": {
+        "title": "À propos",
+        "description": "Un gestionnaire de mots de passe sécurisé, local-first et multiplateforme conçu pour le respect de la vie privée.",
+        "opensource": "Open Source",
+        "privacy_title": "Confidentialité & Sécurité",
+        "privacy_desc": "Vos données sont chiffrées avec AES-256-GCM uniquement sur votre appareil. Nous ne collectons aucune donnée personnelle.",
+        "faq_title": "Foire Aux Questions",
+        "faq_desc": "Trouvez des réponses rapides aux questions courantes",
+        "faq_button": "Voir la FAQ",
+        "help_title": "Aide & Support",
+        "contact": "Contactez-nous",
+        "footer": "© 2026 EtherVault"
+    },
+    "faq_view": {
+        "title": "Foire Aux Questions",
+        "last_updated": "Dernière mise à jour : Juin 2026",
+        "sections": {
+            "1": {
+                "title": "1. Sécurité du Mot de Passe Maître",
+                "desc": "EtherVault est un gestionnaire de mots de passe zero-knowledge et local-first. Nous ne stockons pas votre mot de passe maître sur aucun serveur. Si vous l'oubliez, nous ne pouvons pas le récupérer. Assurez-vous de bien l'avoir mémorisé."
+            },
+            "2": {
+                "title": "2. Synchronisation Cloud et Confidentialité",
+                "access_title": "Accès Isolé à l'Application Uniquement",
+                "access_desc": "EtherVault utilise un dossier isolé dédié pour la synchronisation. Nous n'avons pas, et ne pouvons pas demander, la permission d'accéder à d'autres fichiers de votre cloud.",
+                "view_data_title": "Comment afficher les données sur Google Drive",
+                "view_data_desc": "Sur Google Drive, EtherVault stocke les fichiers cryptés dans un dossier AppData masqué. Pour le gérer, allez sur Google Drive Web > Paramètres > Gérer les applications."
+            },
+            "3": {
+                "title": "3. Mot de passe cloud oublié & Effacement de la synchro",
+                "desc": "Puisque nous ne pouvons pas récupérer votre mot de passe, si vous l'avez oublié, le coffre cloud ne peut pas être déchiffré. Vous devez effacer les données cloud pour recommencer :",
+                "method1_title": "Méthode 1 : Supprimer manuellement via les paramètres de Google Drive",
+                "method1_steps": [
+                    "Ouvrez Google Drive dans votre navigateur.",
+                    "Cliquez sur l'engrenage des Paramètres > Paramètres.",
+                    "Cliquez sur Gérer les applications dans la barre latérale.",
+                    "Trouvez EtherVault, cliquez sur Options et sélectionnez Supprimer les données d'application masquées."
+                ],
+                "method2_title": "Méthode 2 : Forcer l'écriture via le conflit de synchro",
+                "method2_steps": [
+                    "Assurez-vous d'avoir au moins un identifiant local.",
+                    "Allez dans Paramètres > Fournisseur de synchro, et reconnectez.",
+                    "Sélectionnez 'Utiliser le Coffre Local' pour écraser les données du cloud."
+                ]
+            }
+        },
+        "footer": "Centre d'aide EtherVault — Gardez votre coffre toujours sécurisé."
+    },
+    "privacy_view": {
+        "title": "Politique de Confidentialité",
+        "last_updated": "Dernière mise à jour : 3 février 2026",
+        "intro": "EtherVault (\"nous\", \"notre\" ou \"l'Application\") est un gestionnaire de mots de passe open source axé sur la vie privée.",
+        "summary": "En bref : Nous ne collectons, ne stockons et ne vendons pas vos données personnelles. Vos données vous appartiennent.",
+        "sections": {
+            "1": {
+                "title": "1. Collecte et Stockage des Données",
+                "local_title": "Architecture Local-First",
+                "local_desc": "Toutes vos données sensibles sont stockées localement sur votre appareil et cryptées avec AES-256.",
+                "server_title": "Pas de Serveur Central",
+                "server_desc": "Nous ne gérons aucun serveur central. Nous n'avons pas accès à votre mot de passe maître."
+            },
+            "2": {
+                "title": "2. Synchronisation Cloud",
+                "desc": "La synchronisation est optionnelle et s'effectue directement sur votre compte cloud personnel.",
+                "points": [
+                    "Chiffrement avant synchro : Les données sont chiffrées localement AVANT d'être envoyées sur le cloud.",
+                    "Contrôle utilisateur : C'est vous qui décidez d'activer ou non la synchronisation."
+                ]
+            },
+            "3": {
+                "title": "3. Données Biométriques",
+                "desc": "Le déverrouillage biométrique est géré entièrement par le système d'exploitation de votre appareil.",
+                "points": [
+                    "Traitement local : La vérification est locale.",
+                    "Aucun accès : Nous recevons uniquement une confirmation de succès ou d'échec."
+                ]
+            },
+            "4": {
+                "title": "4. Requêtes de Tiers",
+                "desc": "Nous pouvons charger les icônes des sites enregistrés pour une meilleure expérience visuelle.",
+                "points": [
+                    "Les requêtes sont envoyées au site cible ou à un service tiers d'icônes.",
+                    "Cela peut exposer votre adresse IP au fournisseur."
+                ]
+            },
+            "5": {
+                "title": "5. Autorisations de l'Appareil",
+                "lists": [
+                    "Accès Internet : Nécessaire pour la synchronisation et le chargement des icônes.",
+                    "Matériel Biométrique : Nécessaire pour le déverrouillage biométrique.",
+                    "Stockage : Nécessaire pour importer, exporter et stocker les fichiers de coffre localement."
+                ]
+            },
+            "6": {
+                "title": "6. Journaux et Rapports",
+                "lists": [
+                    "Rapports de plantage : L'application n'envoie pas de rapports automatiques.",
+                    "Journaux locaux : Les rapports d'activité restent uniquement sur votre appareil."
+                ]
+            },
+            "7": {
+                "title": "7. Modifications de cette Politique",
+                "desc": "Nous pouvons mettre à jour cette politique de confidentialité."
+            },
+            "8": {
+                "title": "8. Nous Contacter",
+                "desc": "Pour toute question, vous pouvez nous contacter sur notre dépôt GitHub."
+            }
+        }
+    },
+    "premium": {
+        "paywall": {
+            "title": "EtherVault Premium",
+            "subtitle": "Débloquez la synchronisation multi-appareils et la sauvegarde automatique dans le cloud.",
+            "connecting": "Connexion sécurisée en cours...",
+            "connecting_google": "Connexion sécurisée à Google Play...",
+            "authorizing": "Autorisation de la transaction...",
+            "verifying": "Vérification du reçu...",
+            "processing": "Traitement du paiement sécurisé",
+            "restoring": "Restauration de l'achat",
+            "checking_receipts": "Vérification des reçus du store...",
+            "validating": "Validation de la signature numérique...",
+            "license_empty": "Veuillez entrer une clé de licence.",
+            "license_invalid": "Clé de licence invalide.",
+            "already_active_restore_hint": "Vous possédez déjà ce produit. Veuillez restaurer l'achat.",
+            "load_offerings_failed": "Cette fonctionnalité premium n'est peut-être pas disponible pour votre compte ou votre région. Veuillez réessayer plus tard."
+        },
+        "plan": {
+            "monthly_title": "Mensuel",
+            "monthly_period": "/ mois",
+            "monthly_desc": "Plan flexible, annulation possible à tout moment.",
+            "annual_title": "Annuel",
+            "annual_period": "/ an",
+            "annual_desc": "Économisez 50% par rapport au mensuel.",
+            "lifetime_title": "À Vie",
+            "lifetime_period": "achat unique",
+            "lifetime_desc": "Payez une fois, débloquez à vie.",
+            "lifetime_badge": "MEILLEURE OFFRE"
+        },
+        "feature": {
+            "sync_title": "Synchronisation Cloud",
+            "sync_desc": "Synchronisez votre coffre sécurisé via Google Drive.",
+            "backup_title": "Sauvegardes Cloud",
+            "backup_desc": "Sauvegardez vos données cryptées automatiquement sur le cloud.",
+            "crossplatform_title": "Accès Multiplateforme",
+            "crossplatform_desc": "Accédez à votre coffre sur Android, iOS, Windows, macOS et Linux.",
+            "attachments_title": "Pièces Jointes Chiffrées",
+            "attachments_desc": "Téléversez et chiffrez des documents privés, des clés et des images liés à vos identifiants."
+        },
+        "actions": {
+            "subscribe": "S'abonner & Débloquer",
+            "restore": "Restaurer l'Achat",
+            "license": "Activer une Clé"
+        },
+        "success": {
+            "title": "Premium Activé !",
+            "message": "Merci ! Votre compte a été mis à niveau."
+        },
+        "license": {
+            "title": "Activer la Licence",
+            "description": "Entrez votre clé de licence de 24 caractères."
+        },
+        "banner": {
+            "upgrade_title": "Passer à Premium",
+            "upgrade_desc": "Débloquez la synchronisation sécurisée entre vos appareils via Google Drive.",
+            "get_premium": "Obtenir Premium",
+            "active_title": "EtherVault Premium Actif",
+            "active_desc": "Merci pour votre soutien ! Vous avez un accès complet aux fonctionnalités Premium.",
+            "mock_refund": "Simuler un remboursement / Rétrograder"
+        },
+        "coming_soon_title": "Bientôt Disponible",
+        "coming_soon": "Les achats intégrés et abonnements seront bientôt disponibles."
+    }
+}

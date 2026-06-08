@@ -56,7 +56,7 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ isOpen, onClose, onP
         }
       } catch (e: any) {
         logger.error('[PREMIUM] Failed to load offerings:', e);
-        setProductError(t('premium.paywall.load_offerings_failed', 'Error occurs, please try again later.'));
+        setProductError(t('premium.paywall.load_offerings_failed', 'This premium feature may not be available for your account or region. Please try again later.'));
       } finally {
         setIsLoadingAndroidProduct(false);
       }

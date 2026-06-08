@@ -495,7 +495,8 @@
             "validating": "Validating digital purchase signature...",
             "license_empty": "Please enter a license key.",
             "license_invalid": "Invalid license key. Please check and try again.",
-            "already_active_restore_hint": "You have already purchased this entitlement. Please tap \"Restore Purchase\" to retrieve your premium status."
+            "already_active_restore_hint": "You have already purchased this entitlement. Please tap \"Restore Purchase\" to retrieve your premium status.",
+            "load_offerings_failed": "This premium feature may not be available for your account or region. Please try again later."
         },
         "plan": {
             "monthly_title": "Monthly",

@@ -1,0 +1,544 @@
+{
+    "layout": {
+        "nav": {
+            "vault": "Cofre",
+            "security": "Segurança",
+            "generator": "Gerador",
+            "settings": "Configurações"
+        },
+        "appearance": "Aparência",
+        "lock_vault": "Bloquear Cofre",
+        "search_placeholder": "Buscar..."
+    },
+    "common": {
+        "cancel": "Cancelar",
+        "confirm_delete": "Excluir",
+        "copy": "Copiar",
+        "copied": "Copiado",
+        "processing": "Processando...",
+        "confirm": "Confirmar",
+        "back": "Voltar",
+        "recommended": "RECOMENDADO",
+        "dismiss": "Descartar"
+    },
+    "vault": {
+        "title": "Seu Cofre",
+        "subtitle": "Gerencie suas credenciais com segurança de nível industrial",
+        "add": "ADICIONAR CREDENCIAL",
+        "sync_prompt": {
+            "title": "Sincronize seu cofre entre dispositivos",
+            "title_premium": "Sincronize seu cofre entre dispositivos (Premium)",
+            "description": "Conecte-se ao armazenamento em nuvem para acessar suas senhas de qualquer lugar.",
+            "action": "Configurar Sincronização",
+            "action_premium": "Obter Premium"
+        },
+        "strength": {
+            "Secure": "SEGURO",
+            "Strong": "FORTE",
+            "Medium": "MÉDIO",
+            "Weak": "FRACO"
+        },
+        "just_now": "Agora mesmo",
+        "search": "Buscar...",
+        "update": "Atualizar",
+        "save": "Salvar",
+        "edit_credential": "Editar Credencial",
+        "new_credential": "Nova Credencial",
+        "entry": {
+            "username": "Usuário",
+            "title": "Título",
+            "category": "Categoria",
+            "website": "URL do Site",
+            "username_email": "Usuário / E-mail",
+            "password": "Senha",
+            "title_placeholder": "Google, Netflix...",
+            "website_placeholder": "exemplo.com",
+            "username_placeholder": "usuário ou e-mail",
+            "password_placeholder": "Digite a senha",
+            "additional_info": "Informações Adicionais",
+            "recovery_phone": "Telefone de Recuperação",
+            "recovery_phone_placeholder": "+1 234 567 8900",
+            "recovery_email": "E-mail de Recuperação",
+            "recovery_email_placeholder": "backup@email.com",
+            "note": "Nota",
+            "note_placeholder": "Adicionar notas ou comentários..."
+        }
+    },
+    "category": {
+        "all": "Todos",
+        "personal": "Pessoal",
+        "work": "Trabalho",
+        "others": "Outros"
+    },
+    "settings": {
+        "title": "Configurações",
+        "subtitle": "Gerencie suas preferências de segurança e sincronização",
+        "data_management": "Gerenciamento de Dados",
+        "log_management": "Gerenciamento de Logs",
+        "import": "Importar",
+        "sync_provider": "Provedor de Sincronização",
+        "updating": "Atualizando...",
+        "cloud": {
+            "reconnect": "Reconectar Conta",
+            "paused": "Pausado",
+            "connected": "Conectado",
+            "connected_desc": "O cofre está sincronizado com segurança com {{provider}}.",
+            "connect_desc": "Conecte-se ao {{provider}} para ativar o backup e a sincronização automática na nuvem.",
+            "last_synced": "Última sincronização:",
+            "syncing": "Sincronizando...",
+            "sync_now": "Sincronizar Agora",
+            "disconnect": "Desconectar",
+            "connect_account": "Conectar Conta",
+            "connection_failed": "Falha na conexão. Verifique sua rede.",
+            "unlock_premium": "Desbloquear com Premium"
+        },
+        "option": {
+            "biometric": "ID Biométrico",
+            "2fa": "Proteção 2FA",
+            "lock_timer": "Temporizador de Bloqueio",
+            "login_alerts": "Alertas de Login",
+            "dark_mode": "Modo Escuro",
+            "language": "Idioma",
+            "master_log": "Log",
+            "open_log": "Abrir Log",
+            "time": {
+                "1m": "1 MIN",
+                "5m": "5 MIN",
+                "15m": "15 MIN",
+                "30m": "30 MIN",
+                "1h": "1 HR"
+            },
+            "recent_activity": "Atividade Recente",
+            "appearance": "Aparência",
+            "theme_color": "Cor do Tema"
+        },
+        "theme": {
+            "system": "Sistema",
+            "light": "Claro",
+            "dark": "Escuro"
+        },
+        "color": {
+            "blue": "Azul",
+            "emerald": "Esmeralda",
+            "violet": "Violeta",
+            "amber": "Âmbar",
+            "rose": "Rosa",
+            "pink": "Sakura",
+            "lightgrey": "Cashmere",
+            "silver": "Prata",
+            "ivory": "Marfim"
+        },
+        "activity_modal": {
+            "title": "Log do Sistema",
+            "empty": "Nenhuma atividade recente encontrada.",
+            "refresh": "Atualizar",
+            "close": "Fechar"
+        },
+        "change_password": "ALTERAR SENHA MESTRA",
+        "encryption": "Criptografia AES de 256 bits",
+        "password_modal": {
+            "title": "Alterar Senha Mestra",
+            "current": "Senha Atual",
+            "new": "Nova Senha",
+            "confirm": "Confirmar Nova Senha",
+            "cancel": "Cancelar",
+            "save": "Salvar Alterações"
+        },
+        "error": {
+            "match": "As novas senhas não coincidem",
+            "incorrect": "Senha original incorreta",
+            "failed": "Falha ao alterar a senha"
+        },
+        "success": {
+            "password": "Senha alterada com sucesso",
+            "cache_cleared": "Cache Limpo!",
+            "biometric_enabled": "Desbloqueio biométrico ativado"
+        },
+        "status": {
+            "encrypting": "Criptografando cofre...",
+            "updating_bio": "Atualizando segredo biométrico...",
+            "resyncing": "Sincronizando novos dados...",
+            "done": "Concluído!"
+        },
+        "export": "Exportar",
+        "clear_cache": "Limpar Cache",
+        "clear_cache_desc": "Isso removerá os logs locais e dados temporários. Os dados do seu cofre NÃO serão excluídos.",
+        "send_log": "Enviar Log",
+        "biometric_modal": {
+            "title": "Ativar Desbloqueio Biométrico",
+            "description": "Insira sua senha mestra para salvá-la com segurança no chaveiro do seu dispositivo.",
+            "enable": "Ativar Biometria"
+        }
+    },
+    "export": {
+        "title": "Exportar Cofre",
+        "warning_title": "Aviso de Segurança",
+        "warning_desc": "Você está prestes a exportar suas senhas em texto puro. Qualquer pessoa com acesso a este arquivo poderá ver suas credenciais. Guarde-o com segurança.",
+        "format": "Selecionar Formato",
+        "preview": "Prévia dos Dados",
+        "download": "Baixar Arquivo"
+    },
+    "import": {
+        "title": "Importar Cofre",
+        "drag_drop": "Arraste e solte o CSV/JSON aqui ou Clique para Selecionar",
+        "click_to_select": "Toque para Selecionar o Arquivo CSV/JSON",
+        "formats": "Formatos suportados: .csv, .json",
+        "ready": "Encontradas {{count}} credenciais. Pronto!",
+        "error": "Falha na Importação",
+        "error_binary": "Arquivo binário detectado",
+        "error_invalid_format": "Formato de arquivo inválido",
+        "note_title": "Nota",
+        "note_desc": "Credenciais duplicadas serão adicionadas como novos itens com uma etiqueta de data/hora. Nenhum dado existente será substituído.",
+        "action": "Importar Dados"
+    },
+    "login": {
+        "locked_local_db": "Banco de Dados Local Bloqueado",
+        "master_password": "Senha Mestra",
+        "unlock_placeholder": "Digite a chave para desbloquear",
+        "invalid_key": "Chave de Acesso Inválida",
+        "access_vault": "Acessar Cofre",
+        "secure_id": "ID SEGURO",
+        "system_auth": "AUTENTICAÇÃO DO SISTEMA...",
+        "unlock_bio": "Desbloquear com Bio ID",
+        "forgot_password": "Esqueceu a Senha?",
+        "reset_modal": {
+            "title": "Esqueceu a Senha Mestra?",
+            "warning_title": "Aviso de Segurança",
+            "warning_desc": "O EtherVault é um gerenciador de senhas de conhecimento zero (zero-knowledge) e local-first. Não armazenamos sua senha mestra em nenhum servidor. Se você a esquecer, não poderemos recuperá-la ou redefini-la. TODAS as credenciais serão excluídas permanentemente se você redefinir.",
+            "steps_title": "Como redefinir / Começar do zero",
+            "step1": "Vá para as Configurações do Sistema do seu dispositivo.",
+            "step2": "Navegue para Aplicativos > EtherVault > Armazenamento.",
+            "step3": "Toque em 'Limpar Armazenamento' ou 'Limpar Dados' para excluir o banco de dados.",
+            "step4": "Abra o aplicativo novamente para configurar uma nova senha mestra.",
+            "android_step1": "Vá para as Configurações do Sistema do seu dispositivo.",
+            "android_step2": "Navegue para Aplicativos > EtherVault > Armazenamento.",
+            "android_step3": "Toque em 'Limpar Armazenamento' ou 'Limpar Dados' para excluir o banco de dados.",
+            "android_step4": "Abra o aplicativo novamente para configurar uma nova senha mestra.",
+            "ios_step1": "Toque e segure o ícone do EtherVault na tela inicial.",
+            "ios_step2": "Toque em 'Remover Aplicativo' para desinstalar e apagar todo o armazenamento local.",
+            "ios_step3": "Reinstale o EtherVault pela App Store.",
+            "ios_step4": "Abra o aplicativo novamente para configurar uma nova senha mestra.",
+            "desktop_step1": "Feche o aplicativo EtherVault.",
+            "desktop_step2": "Vá para a pasta AppData: macOS: '~/Library/Application Support/EtherVault', Windows: '%APPDATA%\\EtherVault'.",
+            "desktop_step3": "Exclua a pasta completa 'EtherVault' para limpar o banco de dados e as configurações.",
+            "desktop_step4": "Abra o aplicativo novamente para configurar uma nova senha mestra.",
+            "web_step1": "Abra as Ferramentas do Desenvolvedor do navegador (F12).",
+            "web_step2": "Vá para a guia Aplicativo ou Armazenamento.",
+            "web_step3": "Selecione IndexedDB, encontre 'EtherVaultDB', clique em 'Excluir banco de dados' e limpe o Armazenamento Local.",
+            "web_step4": "Recarregue a página para configurar uma nova senha mestra.",
+            "action_reset": "Redefinição com Um Clique (Destrutivo)",
+            "confirm_reset": "AVISO: Isso excluirá permanentemente todas as suas senhas armazenadas e redefinirá o aplicativo. Esta ação não pode ser desfeita! Tem certeza absoluta?",
+            "reset_failed": "A redefinição automática falhou. Siga as etapas manuais.",
+            "support_title": "Precisa de Ajuda?"
+        }
+    },
+    "security": {
+        "title": "Saúde da Segurança",
+        "subtitle": "Análise em tempo real do seu cofre de credenciais",
+        "scan": "ESCANEAMENTO COMPLETO",
+        "scanning": "Escaneando...",
+        "scan_full": "Executar Escaneamento Completo",
+        "score": "Pontuação",
+        "status": {
+            "title": "Status da Proteção",
+            "robust": "Seu cofre digital é robusto. Mantenha 2FA forte em todos os lugares.",
+            "decent": "Sua segurança é razoável, mas melhorias são recomendadas.",
+            "weak": "Ação imediata recomendada para credenciais fracas."
+        },
+        "stats": {
+            "weak": "Fraca",
+            "reused": "Reutilizada",
+            "safe": "Segura",
+            "secure_strong": "Segura/Forte",
+            "other": "Outros"
+        },
+        "alerts": {
+            "title": "Alertas de Segurança",
+            "action_items": "Itens de Ação",
+            "empty_title": "Tudo Limpo",
+            "empty": "Nenhum problema de segurança encontrado. Bom trabalho!",
+            "resolve": "Resolver",
+            "weak_title": "Senha Fraca: {{title}}",
+            "weak_description": "Esta senha é muito curta ou carece de complexidade.",
+            "reused_title": "Senha Reutilizada: {{count}} Contas",
+            "reused_description": "Usada para {{titles}}.",
+            "reused_description_more": "Usada para {{titles}} e mais."
+        }
+    },
+    "generator": {
+        "title": "Gerador",
+        "entropy": "Entropia: ~{{bits}} bits",
+        "length": "Comprimento",
+        "chars": "{{count}} caracteres",
+        "options": {
+            "uppercase": "Maiúsculas",
+            "lowercase": "Minúsculas",
+            "numbers": "Números",
+            "symbols": "Símbolos"
+        },
+        "info": "Maior entropia torna as senhas mais difíceis de quebrar por força bruta.",
+        "subtitle": "Crie senhas fortes e seguras",
+        "actions": {
+            "regenerate": "Regerar"
+        }
+    },
+    "welcome": {
+        "step1": {
+            "title": "Proteja Seu Cofre",
+            "subtitle": "Crie uma chave mestra para criptografar seus dados localmente."
+        },
+        "step2": {
+            "title": "Acesso Rápido",
+            "subtitle": "Acelere sua experiência de login com segurança."
+        },
+        "master_key": "Chave Mestra",
+        "verify_key": "Verificar Chave",
+        "key_placeholder": "Digite uma chave forte",
+        "repeat_placeholder": "Repita a chave mestra",
+        "biometric": "Bloqueio Biométrico",
+        "biometric_subtitle": "Face ID / Touch ID",
+        "next": "Próxima Etapa",
+        "start": "Começar",
+        "error": {
+            "length": "A Chave Mestra deve ter pelo menos 8 caracteres.",
+            "weak": "A senha é muito fraca. Use letras, números e símbolos.",
+            "match": "As chaves não coincidem."
+        },
+        "warning_modal": {
+            "title": "Aviso sobre a Senha Mestra",
+            "warning_title": "Aviso de Segurança",
+            "warning_desc": "O EtherVault é um gerenciador de senhas zero-knowledge e local-first. Não armazenamos sua senha. Se você esquecer, não podemos recuperar. Certifique-se de ter memorizado.",
+            "action_back": "Voltar",
+            "action_continue": "Continuar"
+        }
+    },
+    "sync": {
+        "just_now": "Agora mesmo",
+        "syncing": "Sincronizando...",
+        "credentials_imported": "Cofre na nuvem encontrado. Entre com a senha do seu dispositivo original.",
+        "merge_complete": "Cofres mesclados com sucesso.",
+        "use_cloud_complete": "Mudou para o cofre na nuvem. Faça login novamente.",
+        "use_local_complete": "A nuvem foi sobrescrita com os dados locais.",
+        "salt_updated": "Configurações de segurança na nuvem atualizadas. Faça login novamente.",
+        "error": {
+            "missing_verifier": "Faltam dados de verificação no cofre na nuvem. Sincronize do dispositivo original primeiro.",
+            "missing_password": "A senha da nuvem é obrigatória para mesclar.",
+            "no_cloud_entries": "Nenhuma credencial encontrada na nuvem.",
+            "wrong_password": "Senha incorreta. Falha na descriptografia.",
+            "password_required": "A senha da nuvem é obrigatória para verificar o acesso."
+        },
+        "conflict": {
+            "title": "Conflito de Sincronização Detectado",
+            "description": "Este dispositivo foi configurado de forma independente. Ambos podem usar a mesma senha, mas com chaves de criptografia diferentes.",
+            "local_count": "Local: {{count}} credenciais",
+            "merge": "Mesclar Cofres",
+            "merge_desc": "Combine ambos os cofres usando sua senha original.",
+            "use_cloud": "Usar Somente a Nuvem",
+            "use_cloud_desc": "Excluir dados locais e mudar para o cofre na nuvem.",
+            "use_local": "Usar Local",
+            "use_local_desc": "Limpar dados da nuvem e sobrescrever com os dados locais.",
+            "enter_cloud_password": "Digite a senha do seu dispositivo original para descriptografar e mesclar:",
+            "enter_cloud_password_verify": "Digite a senha do seu dispositivo original para verificar o acesso:",
+            "cloud_password_placeholder": "Senha Mestra Original",
+            "password_hint": "Pode ser a mesma senha usada neste dispositivo.",
+            "merging": "Mesclando...",
+            "merge_now": "Mesclar Agora",
+            "use_cloud_now": "Mudar para Nuvem"
+        },
+        "found_modal": {
+            "title": "Cofre na Nuvem Encontrado",
+            "description": "Um cofre criptografado foi encontrado. Para sincronizar, precisamos importar as configurações de segurança.",
+            "warning_label": "Aviso de Segurança",
+            "warning_text": "Depois de importado, você precisará usar a senha do cofre na nuvem. Se esqueceu a senha, selecione Cancelar agora.",
+            "confirm": "Conectar & Importar"
+        },
+        "warning": {
+            "title": "Aviso de Segurança Importante",
+            "message": "Você está prestes a ativar a sincronização com {{providerName}}. Você DEVE lembrar sua Senha Mestra.",
+            "alert": "Não poderemos recuperar sua senha se você a esquecer.",
+            "confirm_password": "Confirmar Senha Mestra",
+            "placeholder": "Digite a Senha Mestra para continuar",
+            "verifying": "Verificando...",
+            "confirm": "Entendo, ativar sincronização"
+        }
+    },
+    "biometric_prompt": {
+        "title": "Desbloquear EtherVault",
+        "subtitle": "Use o ID biométrico",
+        "reason": "Desbloquear Cofre",
+        "cancel": "Cancelar"
+    },
+    "about": {
+        "title": "Sobre",
+        "description": "Um gerenciador de senhas seguro, local-first e multiplataforma projetado para privacidade e simplicidade.",
+        "opensource": "Código Aberto",
+        "privacy_title": "Privacidade & Segurança",
+        "privacy_desc": "Seus dados são criptografados com AES-256-GCM puramente no seu dispositivo. Não coletamos dados pessoais.",
+        "faq_title": "Perguntas Frequentes",
+        "faq_desc": "Encontre respostas rápidas para dúvidas comuns",
+        "faq_button": "Ver FAQ",
+        "help_title": "Ajuda & Suporte",
+        "contact": "Fale Conosco",
+        "footer": "© 2026 EtherVault"
+    },
+    "faq_view": {
+        "title": "Perguntas Frequentes",
+        "last_updated": "Última atualização: Junho de 2026",
+        "sections": {
+            "1": {
+                "title": "1. Segurança da Senha Mestra",
+                "desc": "O EtherVault é um gerenciador de senhas zero-knowledge e local-first. Não armazenamos sua senha. Se você esquecer, não podemos recuperar. Certifique-se de ter memorizado."
+            },
+            "2": {
+                "title": "2. Sincronização e Privacidade",
+                "access_title": "Acesso Exclusivo e Isolado ao App",
+                "access_desc": "O EtherVault usa uma pasta isolada dedicada. Não temos e não podemos solicitar permissão para acessar outros arquivos.",
+                "view_data_title": "Como ver os dados no Google Drive",
+                "view_data_desc": "No Google Drive, o EtherVault salva arquivos em uma pasta oculta. Para gerenciar, vá em Configurações do Google Drive Web > Gerenciar aplicativos."
+            },
+            "3": {
+                "title": "3. Senha da Nuvem Esquecida & Limpeza de Sincronização",
+                "desc": "Como não podemos recuperar sua senha, se esquecida, os dados na nuvem não poderão ser lidos. Você precisa limpar os dados na nuvem para recomeçar:",
+                "method1_title": "Método 1: Excluir manualmente via Configurações do Google Drive",
+                "method1_steps": [
+                    "Abra o Google Drive no navegador.",
+                    "Clique nas Configurações (ícone de engrenagem) > Ajustes.",
+                    "Clique em Gerenciar aplicativos no menu lateral.",
+                    "Encontre o EtherVault, clique em Opções e escolha Excluir dados de aplicativo ocultos."
+                ],
+                "method2_title": "Método 2: Forçar substituição por conflito de sincronização",
+                "method2_steps": [
+                    "Certifique-se de ter pelo menos uma senha no cofre local.",
+                    "Vá em Ajustes > Provedor de sincronização e reconecte.",
+                    "Escolha 'Usar Local' para substituir os dados na nuvem com suas senhas atuais."
+                ]
+            }
+        },
+        "footer": "Central de Ajuda do EtherVault — Mantenha seu cofre sempre seguro."
+    },
+    "privacy_view": {
+        "title": "Política de Privacidade",
+        "last_updated": "Última atualização: 3 de fevereiro de 2026",
+        "intro": "O EtherVault (\"nós\", \"nosso\" ou \"o Aplicativo\") é um gerenciador de senhas de código aberto.",
+        "summary": "Em resumo: Não coletamos, armazenamos ou vendemos seus dados pessoais. Seus dados são seus.",
+        "sections": {
+            "1": {
+                "title": "1. Coleta e Armazenamento de Dados",
+                "local_title": "Arquitetura Local-First",
+                "local_desc": "Todos os seus dados sensíveis são armazenados localmente e criptografados com AES-256.",
+                "server_title": "Sem Servidor Central",
+                "server_desc": "Não operamos servidores centrais e não temos acesso à sua senha ou aos seus dados."
+            },
+            "2": {
+                "title": "2. Sincronização em Nuvem",
+                "desc": "A sincronização é opcional e realizada na sua própria conta na nuvem.",
+                "points": [
+                    "Criptografia antes do envio: Os dados são criptografados localmente ANTES do upload.",
+                    "Controle do usuário: Você decide se deseja ativar a sincronização."
+                ]
+            },
+            "3": {
+                "title": "3. Dados Biométricos",
+                "desc": "O desbloqueio biométrico é processado inteiramente pelo sistema operacional do dispositivo.",
+                "points": [
+                    "Processamento local: A verificação é local.",
+                    "Sem acesso: Recebemos apenas uma resposta de sucesso ou falha."
+                ]
+            },
+            "4": {
+                "title": "4. Solicitações de Terceiros",
+                "desc": "Podemos buscar os ícones das páginas armazenadas para uma melhor experiência visual.",
+                "points": [
+                    "As solicitações podem ser enviadas diretamente para a página de destino.",
+                    "Isso pode expor seu endereço IP ao provedor do ícone."
+                ]
+            },
+            "5": {
+                "title": "5. Permissões do Dispositivo",
+                "lists": [
+                    "Acesso à Internet: Necessário para sincronização e ícones.",
+                    "Biometria: Necessário para habilitar desbloqueio biométrico.",
+                    "Armazenamento: Necessário para importar, exportar e armazenar dados localmente."
+                ]
+            },
+            "6": {
+                "title": "6. Logs & Diagnósticos",
+                "lists": [
+                    "Relatórios de erro: O app não envia relatórios automáticos.",
+                    "Logs locais: Os logs permanecem salvos apenas no seu dispositivo."
+                ]
+            },
+            "7": {
+                "title": "7. Alterações nesta Política",
+                "desc": "Podemos atualizar nossa política de tempos em tempos."
+            },
+            "8": {
+                "title": "8. Contato",
+                "desc": "Qualquer dúvida, fale conosco através do GitHub."
+            }
+        }
+    },
+    "premium": {
+        "paywall": {
+            "title": "EtherVault Premium",
+            "subtitle": "Desbloqueie a sincronização em múltiplos dispositivos e backups automáticos na nuvem.",
+            "connecting": "Estabelecendo conexão segura...",
+            "connecting_google": "Conectando com o Google Play...",
+            "authorizing": "Autorizando transação...",
+            "verifying": "Verificando recibo...",
+            "processing": "Processando pagamento seguro",
+            "restoring": "Restaurando compra",
+            "checking_receipts": "Verificando recibos na loja...",
+            "validating": "Validando assinatura digital...",
+            "license_empty": "Insira uma chave de licença.",
+            "license_invalid": "Chave de licença inválida.",
+            "already_active_restore_hint": "Você já possui este item ativo. Toque em Restaurar Compra.",
+            "load_offerings_failed": "Este recurso premium pode não estar disponível para sua conta ou região. Por favor, tente novamente mais tarde."
+        },
+        "plan": {
+            "monthly_title": "Mensal",
+            "monthly_period": "/ mês",
+            "monthly_desc": "Plano flexível, cancele a qualquer momento.",
+            "annual_title": "Anual",
+            "annual_period": "/ ano",
+            "annual_desc": "Economize 50% em comparação com o mensal.",
+            "lifetime_title": "Vitalícia",
+            "lifetime_period": "pagamento único",
+            "lifetime_desc": "Pague uma vez, use para sempre.",
+            "lifetime_badge": "MELHOR VALOR"
+        },
+        "feature": {
+            "sync_title": "Sincronização na Nuvem",
+            "sync_desc": "Sincronize seu cofre seguro através do Google Drive.",
+            "backup_title": "Backups na Nuvem",
+            "backup_desc": "Faça backup dos seus dados criptografados automaticamente.",
+            "crossplatform_title": "Acesso Multiplataforma",
+            "crossplatform_desc": "Acesse seu cofre no Android, iOS, Windows, macOS e Linux.",
+            "attachments_title": "Anexos Criptografados",
+            "attachments_desc": "Envie e criptografe documentos privados, chaves e fotos associados às suas senhas."
+        },
+        "actions": {
+            "subscribe": "Assinar & Desbloquear",
+            "restore": "Restaurar Compra",
+            "license": "Resgatar Licença"
+        },
+        "success": {
+            "title": "Premium Ativado!",
+            "message": "Obrigado! Sua conta foi atualizada."
+        },
+        "license": {
+            "title": "Resgatar Licença",
+            "description": "Insira a chave de licença de 24 caracteres."
+        },
+        "banner": {
+            "upgrade_title": "Melhorar para Premium",
+            "upgrade_desc": "Desbloqueie a sincronização segura em múltiplos dispositivos via Google Drive.",
+            "get_premium": "Obter Premium",
+            "active_title": "EtherVault Premium Ativo",
+            "active_desc": "Obrigado por nos apoiar! Você tem acesso completo a todas as funções Premium.",
+            "mock_refund": "Simular Reembolso / Downgrade"
+        },
+        "coming_soon_title": "Em breve",
+        "coming_soon": "As compras no app estarão disponíveis em breve."
+    }
+}

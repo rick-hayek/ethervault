@@ -495,7 +495,8 @@
             "validating": "正在验证数字签名...",
             "license_empty": "请输入许可密钥。",
             "license_invalid": "许可密钥无效。请检查并重试。",
-            "already_active_restore_hint": "您已购买过该权限。请点击“恢复购买”按钮以重新获取您的 Premium 权限。"
+            "already_active_restore_hint": "您已购买过该权限。请点击“恢复购买”按钮以重新获取您的 Premium 权限。",
+            "load_offerings_failed": "此付费功能在您的账号或地区可能不可用。请稍后再试。"
         },
         "plan": {
             "monthly_title": "按月订阅",
