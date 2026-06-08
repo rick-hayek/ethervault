@@ -30,7 +30,7 @@ EtherVault is built using a Monorepo architecture, with core business logic sepa
 ### ⚙️ Settings & Ecosystem
 - **Cloud Sync**: Supports encrypted data synchronization with cloud providers like Google Drive, ensuring consistency across devices.
 - **Appearance**: Supports Dark Mode, Light Mode, and System Default.
-- **Internationalization**: Built-in multi-language support (English/Chinese/Japanese/Korean).
+- **Internationalization**: Built-in multi-language support (English/Simplified Chinese/Japanese/Korean/Spanish/French/Portuguese/Traditional Chinese).
 - **Data Mobility**: Supports standard CSV/JSON import and export for easy data migration.
 - **Security Protection**: Supports Biometric Unlock (FaceID/TouchID), auto-lock, and local operation log auditing.
 

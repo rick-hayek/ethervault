@@ -174,6 +174,7 @@
         "title": "Export Vault",
         "warning_title": "Security Warning",
         "warning_desc": "You are about to export your passwords in plain text. Anyone with this file will be able to see your credentials. Store it securely.",
+        "attachment_warning": "Note: Attachment files will not be exported.",
         "format": "Select Format",
         "preview": "Data Preview",
         "download": "Download File"

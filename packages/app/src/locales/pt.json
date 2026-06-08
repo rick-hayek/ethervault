@@ -174,6 +174,7 @@
         "title": "Exportar Cofre",
         "warning_title": "Aviso de Segurança",
         "warning_desc": "Você está prestes a exportar suas senhas em texto puro. Qualquer pessoa com acesso a este arquivo poderá ver suas credenciais. Guarde-o com segurança.",
+        "attachment_warning": "Nota: Os arquivos anexos não serão exportados.",
         "format": "Selecionar Formato",
         "preview": "Prévia dos Dados",
         "download": "Baixar Arquivo"

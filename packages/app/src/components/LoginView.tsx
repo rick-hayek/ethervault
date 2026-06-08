@@ -5,6 +5,7 @@ import { BiometricService } from '../utils/BiometricService';
 import { Capacitor } from '@capacitor/core';
 import { getStorageService } from '@ethervault/core';
 import appLogo from '../../assets/logo.png';
+import { useAlert } from '../hooks/useAlert';
 
 interface LoginViewProps {
   onLogin: (masterKey: string) => Promise<boolean> | boolean;
@@ -13,6 +14,7 @@ interface LoginViewProps {
 
 export const LoginView: React.FC<LoginViewProps> = ({ onLogin, bioEnabled }) => {
   const { t } = useTranslation();
+  const { showError } = useAlert();
   const [key, setKey] = useState('');
   const [error, setError] = useState(false);
   const [showKey, setShowKey] = useState(false);
@@ -82,7 +84,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin, bioEnabled }) => 
         window.location.reload();
       } catch (error) {
         console.error('Failed to clear data programmatically:', error);
-        alert(t('login.reset_modal.reset_failed', 'Automatic reset failed. Please use the manual steps instead.'));
+        showError(t('login.reset_modal.reset_failed', 'Automatic reset failed. Please use the manual steps instead.'));
       }
     }
   };

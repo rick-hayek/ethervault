@@ -7,6 +7,7 @@ import { Portal } from './Portal';
 import { CustomDropdown } from './CustomDropdown';
 import { Capacitor } from '@capacitor/core';
 import { MobileFileService } from '../utils/MobileFileService';
+import { useAlert } from '../hooks/useAlert';
 
 export interface EntryModalProps {
     entry: PasswordEntry | null;
@@ -19,6 +20,7 @@ export interface EntryModalProps {
 
 export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, onDelete, isPremium, onUnlockPremium }) => {
     const { t } = useTranslation();
+    const { showSuccess, showError, showWarning } = useAlert();
     const categoryOptions = CATEGORIES.map(c => ({
         value: c,
         label: t(`category.${c.toLowerCase()}`)
@@ -54,6 +56,15 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
     const [newlyAddedAttachmentIds, setNewlyAddedAttachmentIds] = useState<string[]>([]);
     const [isUploadingAttachment, setIsUploadingAttachment] = useState(false);
     const [isDownloadingAttachment, setIsDownloadingAttachment] = useState<string | null>(null);
+    const [previewData, setPreviewData] = useState<{
+        attachmentId: string;
+        name: string;
+        mimeType: string;
+        url?: string;
+        textContent?: string;
+        isUnsupported?: boolean;
+    } | null>(null);
+    const [isPreviewLoading, setIsPreviewLoading] = useState<string | null>(null);
 
     const handleCancel = async () => {
         for (const attId of newlyAddedAttachmentIds) {
@@ -74,7 +85,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
         e.target.value = '';
 
         if (file.size > 10 * 1024 * 1024) {
-            alert(t('vault.attachment.error_size', 'File size exceeds 10MB limit.'));
+            showWarning(t('vault.attachment.error_size', 'File size exceeds 10MB limit.'));
             return;
         }
 
@@ -92,7 +103,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                 }));
                 setNewlyAddedAttachmentIds(prev => [...prev, metadata.id]);
             } catch (e: any) {
-                alert(t('vault.attachment.upload_failed', 'Failed to upload attachment: ') + e.message);
+                showError(t('vault.attachment.upload_failed', 'Failed to upload attachment: ') + e.message);
             } finally {
                 setIsUploadingAttachment(false);
             }
@@ -103,11 +114,15 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
     const handleDownloadAttachment = async (attachmentId: string) => {
         try {
             setIsDownloadingAttachment(attachmentId);
-            const { metadata, data } = await getVaultService().getAttachment(formData.id!, attachmentId);
+            const { metadata: fetchedMetadata, data } = await getVaultService().getAttachment(formData.id!, attachmentId);
+            // Use metadata from form state if the entry isn't saved to the DB yet
+            const metadata = formData.attachments?.find(a => a.id === attachmentId) || fetchedMetadata;
 
             if (Capacitor.isNativePlatform()) {
-                await MobileFileService.saveBinaryFile(metadata.name, data);
-                alert(t('vault.attachment.download_success', 'Attachment saved to device storage: ') + metadata.name);
+                const savedName = await MobileFileService.saveBinaryFile(metadata.name, data);
+                if (savedName) {
+                    showSuccess(t('vault.attachment.download_success', 'Attachment saved to device storage: ') + savedName);
+                }
             } else {
                 const blob = new Blob([data], { type: metadata.mimeType });
                 const url = URL.createObjectURL(blob);
@@ -121,9 +136,55 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                 URL.revokeObjectURL(url);
             }
         } catch (e: any) {
-            alert(t('vault.attachment.download_failed', 'Failed to download attachment: ') + e.message);
+            showError(t('vault.attachment.download_failed', 'Failed to download attachment: ') + e.message);
         } finally {
             setIsDownloadingAttachment(null);
+        }
+    };
+
+    const handleClosePreview = () => {
+        if (previewData?.url) {
+            URL.revokeObjectURL(previewData.url);
+        }
+        setPreviewData(null);
+    };
+
+    React.useEffect(() => {
+        return () => {
+            if (previewData?.url) {
+                URL.revokeObjectURL(previewData.url);
+            }
+        };
+    }, [previewData]);
+
+    const handlePreviewAttachment = async (attachmentId: string) => {
+        if (isPreviewLoading || isDownloadingAttachment) return;
+        try {
+            setIsPreviewLoading(attachmentId);
+            const { metadata: fetchedMetadata, data } = await getVaultService().getAttachment(formData.id!, attachmentId);
+            const metadata = formData.attachments?.find(a => a.id === attachmentId) || fetchedMetadata;
+
+            const filename = metadata.name;
+            const mimeType = metadata.mimeType;
+            const extension = filename.split('.').pop()?.toLowerCase() || '';
+
+            const isImage = mimeType.startsWith('image/') || ['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg', 'bmp'].includes(extension);
+            const isText = mimeType.startsWith('text/') || ['txt', 'md', 'json', 'csv', 'js', 'ts', 'jsx', 'tsx', 'css', 'html', 'yaml', 'yml', 'xml', 'ini', 'log'].includes(extension);
+
+            if (isImage) {
+                const blob = new Blob([data], { type: mimeType });
+                const url = URL.createObjectURL(blob);
+                setPreviewData({ attachmentId, name: filename, mimeType, url });
+            } else if (isText) {
+                const text = new TextDecoder('utf-8').decode(data);
+                setPreviewData({ attachmentId, name: filename, mimeType, textContent: text });
+            } else {
+                setPreviewData({ attachmentId, name: filename, mimeType, isUnsupported: true });
+            }
+        } catch (e: any) {
+            showError(t('vault.attachment.preview_failed', 'Failed to preview attachment: ') + e.message);
+        } finally {
+            setIsPreviewLoading(null);
         }
     };
 
@@ -136,7 +197,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
 
             setNewlyAddedAttachmentIds(prev => prev.filter(id => id !== attachmentId));
         } catch (e: any) {
-            alert(t('vault.attachment.delete_failed', 'Failed to delete attachment: ') + e.message);
+            showError(t('vault.attachment.delete_failed', 'Failed to delete attachment: ') + e.message);
         }
     };
 
@@ -144,7 +205,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
         e.preventDefault();
 
         if (!formData.title?.trim()) {
-            alert(t('vault.error.title_required', 'Title field must not be empty'));
+            showWarning(t('vault.error.title_required', 'Title field must not be empty'));
             return;
         }
 
@@ -396,6 +457,19 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                                     <div className="flex items-center gap-2">
                                                         <button
                                                             type="button"
+                                                            disabled={isPreviewLoading === att.id || isDownloadingAttachment === att.id}
+                                                            onClick={() => handlePreviewAttachment(att.id)}
+                                                            className="p-1.5 text-slate-500 hover:text-primary-500 dark:text-slate-400 dark:hover:text-primary-400 transition-colors disabled:opacity-50"
+                                                            title={t('vault.attachment.preview', 'Preview')}
+                                                        >
+                                                            {isPreviewLoading === att.id ? (
+                                                                <Loader2 className="w-4 h-4 animate-spin" />
+                                                            ) : (
+                                                                <Eye className="w-4 h-4" />
+                                                            )}
+                                                        </button>
+                                                        <button
+                                                            type="button"
                                                             disabled={isDownloadingAttachment === att.id}
                                                             onClick={() => handleDownloadAttachment(att.id)}
                                                             className="p-1.5 text-slate-500 hover:text-primary-500 dark:text-slate-400 dark:hover:text-primary-400 transition-colors disabled:opacity-50"
@@ -497,6 +571,61 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                     </form>
                 </div>
             </div>
+
+            {/* Preview Modal Overlay */}
+            {previewData && (
+                <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[110] flex items-center justify-center p-4 md:p-6 animate-in fade-in duration-200">
+                    <div className="bg-slate-900 border border-slate-800 w-full max-w-3xl h-[80vh] rounded-[2rem] shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-300">
+                        {/* Header */}
+                        <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between shrink-0">
+                            <div className="min-w-0">
+                                <h3 className="text-sm font-bold text-white truncate">{previewData.name}</h3>
+                                <p className="text-[10px] text-slate-400 truncate">{previewData.mimeType}</p>
+                            </div>
+                            <button 
+                                onClick={handleClosePreview}
+                                className="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-full transition-colors"
+                            >
+                                <X className="w-5 h-5" />
+                            </button>
+                        </div>
+
+                        {/* Content Area */}
+                        <div className="flex-1 overflow-auto p-6 flex items-center justify-center bg-slate-950">
+                            {previewData.url && (
+                                <img 
+                                    src={previewData.url} 
+                                    alt={previewData.name} 
+                                    className="max-w-full max-h-full object-contain rounded-lg shadow-lg"
+                                />
+                            )}
+                            {previewData.textContent !== undefined && (
+                                <pre className="w-full h-full overflow-auto text-left text-xs text-slate-300 font-mono p-4 bg-slate-900 rounded-xl border border-slate-800/50 whitespace-pre-wrap break-all select-text scrollbar-thin">
+                                    {previewData.textContent}
+                                </pre>
+                            )}
+                            {previewData.isUnsupported && (
+                                <div className="text-center space-y-4 max-w-sm">
+                                    <div className="mx-auto w-12 h-12 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center text-slate-500">
+                                        <FileText className="w-6 h-6" />
+                                    </div>
+                                    <div className="space-y-1">
+                                        <h4 className="text-sm font-semibold text-white">{t('vault.attachment.preview_unsupported', 'Preview Unavailable')}</h4>
+                                        <p className="text-xs text-slate-400">{t('vault.attachment.preview_unsupported_desc', 'This file type cannot be previewed directly. Please download the file to view it on your device.')}</p>
+                                    </div>
+                                    <button
+                                        onClick={() => handleDownloadAttachment(previewData.attachmentId)}
+                                        className="inline-flex items-center gap-2 px-4 py-2 bg-white text-slate-900 font-semibold text-xs rounded-xl shadow-lg hover:opacity-90 active:scale-[0.98] transition-all"
+                                    >
+                                        <Download className="w-4 h-4" />
+                                        {t('export.download', 'Download File')}
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            )}
         </Portal>
     );
 };

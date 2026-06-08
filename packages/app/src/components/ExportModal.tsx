@@ -17,7 +17,10 @@ export const ExportModal: React.FC<ExportModalProps> = ({ entries, onClose, onEx
 
     useEffect(() => {
         if (format === 'json') {
-            const previewData = entries.slice(0, 2).map(({ id, tags, lastUpdated, favorite, ...rest }) => rest);
+            const previewData = entries.slice(0, 2).map(({ id, tags, lastUpdated, favorite, ...rest }) => ({
+                ...rest,
+                password: '***'
+            }));
             setPreview(JSON.stringify(previewData, null, 2));
         } else {
             const headers = ['Title', 'Username', 'Password', 'Website', 'Category'];
@@ -60,6 +63,9 @@ export const ExportModal: React.FC<ExportModalProps> = ({ entries, onClose, onEx
                                 <h4 className="text-sm font-bold text-amber-700 dark:text-amber-400 mb-1">{t('export.warning_title')}</h4>
                                 <p className="text-xs text-amber-600/90 dark:text-amber-400/90 leading-relaxed">
                                     {t('export.warning_desc')}
+                                </p>
+                                <p className="text-xs text-amber-600/90 dark:text-amber-400/90 leading-relaxed mt-1.5 font-semibold">
+                                    {t('export.attachment_warning', 'Note: Attachment files will not be exported.')}
                                 </p>
                             </div>
                         </div>

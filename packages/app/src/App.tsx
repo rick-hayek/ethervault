@@ -52,7 +52,6 @@ const AppContent: React.FC = () => {
   const { showInfo, showSuccess } = useAlert();
 
   const handleUnlockPremium = () => {
-    mockUnlockPremium();
     // if dev
     if (import.meta.env.DEV) {
       mockUnlockPremium();
@@ -72,12 +71,12 @@ const AppContent: React.FC = () => {
   };
 
   const mockUnlockPremium = () => {
-    localStorage.setItem('ethervault_premium', 'true');
-    setSettings(prev => ({ ...prev, isPremium: true }));
+    // localStorage.setItem('ethervault_premium', 'true');
+    // setSettings(prev => ({ ...prev, isPremium: true }));
     setIsModalOpen(false);
-    //setIsPaywallOpen(true);
-    setIsPaywallOpen(false);
-    showSuccess(t('premium.success.title', 'Premium Activated!'));
+    setIsPaywallOpen(true);
+    // setIsPaywallOpen(false);
+    // showSuccess(t('premium.success.title', 'Premium Activated!'));
   };
 
   // const [isDarkMode, setIsDarkMode] = useState<boolean>(true); // Removed redundant state
