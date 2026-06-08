@@ -3,9 +3,21 @@ import { CloudProviderInterface, SyncResult } from '../models';
 import { VaultStorageItem, Logger } from '../../../types';
 import { getAuthService } from '../../../AuthService';
 import { getStorageService } from '../../../StorageService';
+import { getCryptoService } from '../../../CryptoService';
 import { NETWORK_TIMEOUT_MS } from '../../../constants';
 import { Browser } from '@capacitor/browser';
 import { Capacitor } from '@capacitor/core';
+
+function stackSafeUint8ToBase64(arr: Uint8Array): string {
+    let binary = '';
+    const len = arr.byteLength;
+    const chunkSize = 8192;
+    for (let i = 0; i < len; i += chunkSize) {
+        const chunk = arr.subarray(i, i + chunkSize);
+        binary += String.fromCharCode.apply(null, chunk as any);
+    }
+    return btoa(binary);
+}
 
 // Declare global Google API types
 declare global {
@@ -725,6 +737,43 @@ export class GoogleDriveProvider implements CloudProviderInterface {
         }
     }
 
+    async uploadAttachment(id: string, ciphertext: string, nonce: string): Promise<boolean> {
+        if (!this.connected || !this.accessToken) return false;
+        try {
+            return await this.uploadJson(`attachment-${id}`, { id, ciphertext, nonce });
+        } catch (e) {
+            console.error(`[GoogleDrive] uploadAttachment error for ${id}:`, e);
+            return false;
+        }
+    }
+
+    async downloadAttachment(id: string): Promise<import('../../../types').CloudAttachmentItem | null> {
+        if (!this.connected || !this.accessToken) return null;
+        try {
+            const fileId = await this.findFileId(`attachment-${id}`);
+            if (!fileId) return null;
+            return await this.downloadJson(fileId);
+        } catch (e) {
+            this.log('error', `[GoogleDrive] downloadAttachment error for ${id}:`, e);
+            return null;
+        }
+    }
+
+    async deleteAttachment(id: string): Promise<boolean> {
+        if (!this.connected || !this.accessToken) return false;
+        try {
+            const fileId = await this.findFileId(`attachment-${id}`);
+            if (!fileId) return true; // Treat as success
+            const response = await this.authenticatedFetch(`https://www.googleapis.com/drive/v3/files/${fileId}`, {
+                method: 'DELETE'
+            });
+            return response.ok;
+        } catch (e) {
+            console.error(`[GoogleDrive] deleteAttachment error for ${id}:`, e);
+            return false;
+        }
+    }
+
     // --- Metadata Sync Helpers ---
 
     private uint8ToBase64(arr: Uint8Array): string {
@@ -904,8 +953,8 @@ export class GoogleDriveProvider implements CloudProviderInterface {
             for (const remoteFile of remoteFiles) {
                 const filename = remoteFile.name;
 
-                // Fix #4: Skip metadata.json - it's not a vault entry
-                if (filename === 'metadata.json') continue;
+                // Skip metadata.json and attachment files
+                if (filename === 'metadata.json' || filename.startsWith('attachment-')) continue;
 
                 const localEntry = localMap.get(filename);
                 let shouldDownload = false;
@@ -974,6 +1023,78 @@ export class GoogleDriveProvider implements CloudProviderInterface {
 
             if (uploadCount > 0) {
                 this.log('info', `[GoogleDrive] Uploaded ${uploadCount} entries.`);
+            }
+
+            // --- 3. ATTACHMENT SYNC ---
+            this.log('info', '[GoogleDrive] Syncing attachments...');
+            const masterKey = getAuthService().getMasterKey();
+            const cryptoService = getCryptoService();
+            const activeAttachmentIds = new Set<string>();
+
+            const scanEntryForAttachments = (entry: VaultStorageItem) => {
+                try {
+                    if (entry.payload && entry.nonce) {
+                        const decryptedData = cryptoService.decrypt(entry.payload, entry.nonce, masterKey);
+                        const decryptedFields = JSON.parse(decryptedData);
+                        if (decryptedFields.attachments && Array.isArray(decryptedFields.attachments)) {
+                            for (const att of decryptedFields.attachments) {
+                                activeAttachmentIds.add(att.id);
+                            }
+                        }
+                    }
+                } catch (e) {
+                    this.log('warn', `[GoogleDrive] Failed to decrypt entry ${entry.id} during attachment scan`, e);
+                }
+            };
+
+            // Scan local entries (preferring updated remote version if we just downloaded it)
+            for (const entry of localEntries) {
+                const justDownloaded = updatedEntries.some(e => e.id === entry.id);
+                if (!justDownloaded) {
+                    scanEntryForAttachments(entry);
+                }
+            }
+            // Scan newly downloaded remote entries
+            for (const entry of updatedEntries) {
+                scanEntryForAttachments(entry);
+            }
+
+            // Map remote attachment files
+            const remoteAttachments = new Map<string, any>();
+            for (const file of remoteFiles) {
+                if (file.name.startsWith('attachment-') && file.name.endsWith('.json')) {
+                    const attId = file.name.substring('attachment-'.length, file.name.length - '.json'.length);
+                    remoteAttachments.set(attId, file);
+                }
+            }
+
+            // 3a. Upload missing active attachments to cloud
+            for (const attId of activeAttachmentIds) {
+                if (!remoteAttachments.has(attId)) {
+                    try {
+                        const localAtt = await getStorageService().getItem('attachments', attId);
+                        if (localAtt) {
+                            this.log('info', `[GoogleDrive] Uploading missing attachment: ${attId}`);
+                            const ciphertextB64 = stackSafeUint8ToBase64(localAtt.ciphertext);
+                            const nonceB64 = stackSafeUint8ToBase64(localAtt.nonce);
+                            await this.uploadAttachment(attId, ciphertextB64, nonceB64);
+                        }
+                    } catch (e) {
+                        this.log('error', `[GoogleDrive] Failed to upload attachment ${attId}`, e);
+                    }
+                }
+            }
+
+            // 3b. Delete remote attachments that are no longer referenced (orphaned)
+            for (const [attId, file] of remoteAttachments.entries()) {
+                if (!activeAttachmentIds.has(attId)) {
+                    try {
+                        this.log('info', `[GoogleDrive] Deleting orphaned remote attachment: ${attId}`);
+                        await this.deleteAttachment(attId);
+                    } catch (e) {
+                        this.log('error', `[GoogleDrive] Failed to delete orphaned remote attachment ${attId}`, e);
+                    }
+                }
             }
 
             if (uploadCount === 0 && updatedEntries.length === 0) {

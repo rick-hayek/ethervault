@@ -515,7 +515,9 @@
             "backup_title": "安全云端备份",
             "backup_desc": "再也不用担心数据库丢失。自动备份加密日志。",
             "crossplatform_title": "跨平台访问",
-            "crossplatform_desc": "在 Android、iOS、Windows、macOS 和 Linux 上无缝访问。"
+            "crossplatform_desc": "在 Android、iOS、Windows、macOS 和 Linux 上无缝访问。",
+            "attachments_title": "加密文件附件",
+            "attachments_desc": "上传并加密个人文件、密钥和图片，安全地关联至您的凭据。"
         },
         "actions": {
             "subscribe": "立即订阅并解锁",

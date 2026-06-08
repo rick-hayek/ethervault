@@ -52,7 +52,14 @@ const AppContent: React.FC = () => {
   const { showInfo } = useAlert();
 
   const handleUnlockPremium = () => {
+    // if dev
+    if (import.meta.env.DEV) {
+      mockUnlockPremium();
+      return;
+    }
+
     if (Capacitor.getPlatform() === 'android') {
+      setIsModalOpen(false);
       setIsPaywallOpen(true);
     } else {
       // Intercept with a Coming Soon alert instead of opening the mock paywall
@@ -61,6 +68,11 @@ const AppContent: React.FC = () => {
         t('premium.coming_soon_title', 'Coming Soon')
       );
     }
+  };
+
+  const mockUnlockPremium = () => {
+    setIsModalOpen(false);
+    setIsPaywallOpen(true);
   };
 
   // const [isDarkMode, setIsDarkMode] = useState<boolean>(true); // Removed redundant state
@@ -653,15 +665,30 @@ const AppContent: React.FC = () => {
         <EntryModal
           entry={editingEntry}
           onClose={() => setIsModalOpen(false)}
-          onSave={(data: any) => {
-            if (editingEntry) handleUpdatePassword(data);
-            else handleAddPassword(data);
+          onSave={async (data: any) => {
+            const exists = passwords.some(p => p.id === data.id);
+            if (exists) {
+              await handleUpdatePassword(data);
+            } else {
+              const allEntries = await getVaultService().getEntries();
+              const alreadyInDb = allEntries.some(p => p.id === data.id);
+              if (alreadyInDb) {
+                const result = await getVaultService().updateEntry(data.id, data);
+                setPasswords(prev => [result, ...prev]);
+                logger.info('[DATA] Completed auto-saved new entry');
+                syncToCloud();
+              } else {
+                await handleAddPassword(data);
+              }
+            }
             setIsModalOpen(false);
           }}
           onDelete={(id) => {
             handleDeletePassword(id);
             setIsModalOpen(false);
           }}
+          isPremium={settings.isPremium}
+          onUnlockPremium={handleUnlockPremium}
         />
       )}
 

@@ -6,7 +6,7 @@ import { IStorageService } from './interfaces';
  */
 export class StorageServiceImpl implements IStorageService {
     private dbName = 'EtherVaultDB';
-    private version = 1;
+    private version = 2;
     private dbPromise: Promise<IDBDatabase> | null = null;
 
     async init(): Promise<IDBDatabase> {
@@ -22,6 +22,9 @@ export class StorageServiceImpl implements IStorageService {
                 }
                 if (!db.objectStoreNames.contains('metadata')) {
                     db.createObjectStore('metadata');
+                }
+                if (!db.objectStoreNames.contains('attachments')) {
+                    db.createObjectStore('attachments', { keyPath: 'id' });
                 }
             };
 

@@ -49,6 +49,18 @@ export class CryptoServiceImpl implements ICryptoService {
         return this.sodium.to_string(decrypted);
     }
 
+    encryptBinary(data: Uint8Array, key: Uint8Array): { ciphertext: Uint8Array; nonce: Uint8Array } {
+        if (!this.sodium) throw new Error('Sodium not initialized');
+        const nonce = this.sodium.randombytes_buf(this.sodium.crypto_secretbox_NONCEBYTES) as Uint8Array;
+        const ciphertext = this.sodium.crypto_secretbox_easy(data, nonce, key) as Uint8Array;
+        return { ciphertext, nonce };
+    }
+
+    decryptBinary(ciphertext: Uint8Array, nonce: Uint8Array, key: Uint8Array): Uint8Array {
+        if (!this.sodium) throw new Error('Sodium not initialized');
+        return this.sodium.crypto_secretbox_open_easy(ciphertext, nonce, key) as Uint8Array;
+    }
+
     generatePassword(
         length: number = 20,
         options: PasswordGeneratorOptions = { uppercase: true, lowercase: true, numbers: true, symbols: true }
@@ -124,6 +136,14 @@ export class CryptoService {
 
     static decrypt(ciphertextBase64: string, nonceBase64: string, key: Uint8Array): string {
         return getCryptoService().decrypt(ciphertextBase64, nonceBase64, key);
+    }
+
+    static encryptBinary(data: Uint8Array, key: Uint8Array): { ciphertext: Uint8Array; nonce: Uint8Array } {
+        return getCryptoService().encryptBinary(data, key);
+    }
+
+    static decryptBinary(ciphertext: Uint8Array, nonce: Uint8Array, key: Uint8Array): Uint8Array {
+        return getCryptoService().decryptBinary(ciphertext, nonce, key);
     }
 
     static generatePassword(

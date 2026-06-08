@@ -1,3 +1,12 @@
+export interface AttachmentMetadata {
+    id: string;          // UUID
+    name: string;        // E.g., "passport.jpg"
+    size: number;        // Size in bytes
+    mimeType: string;    // E.g., "image/jpeg"
+    nonce: string;       // Base64 nonce used to encrypt the file bytes
+    updatedAt: number;   // Timestamp
+}
+
 export interface PasswordEntry {
     id: string;
     title: string;
@@ -19,6 +28,7 @@ export interface PasswordEntry {
     recoveryPhone?: string;
     recoveryEmail?: string;
     note?: string;
+    attachments?: AttachmentMetadata[];
 }
 
 export type Category = 'All' | 'Personal' | 'Work' | 'Others';
@@ -45,6 +55,19 @@ export interface VaultStorageItem {
     updatedAt: number;
     favorite: boolean;
     icon?: string;
+}
+
+export interface LocalAttachmentItem {
+    id: string;
+    entryId: string;
+    ciphertext: Uint8Array;
+    nonce: Uint8Array;
+}
+
+export interface CloudAttachmentItem {
+    id: string;
+    ciphertext: string;  // Base64
+    nonce: string;       // Base64
 }
 
 export interface Logger {

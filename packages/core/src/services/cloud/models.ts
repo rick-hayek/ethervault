@@ -48,6 +48,21 @@ export interface CloudProviderInterface {
     deleteEntry(id: string): Promise<boolean>;
 
     /**
+     * Upload a single file attachment
+     */
+    uploadAttachment?(id: string, ciphertext: string, nonce: string): Promise<boolean>;
+
+    /**
+     * Download a single file attachment
+     */
+    downloadAttachment?(id: string): Promise<import('../../types').CloudAttachmentItem | null>;
+
+    /**
+     * Delete a single file attachment
+     */
+    deleteAttachment?(id: string): Promise<boolean>;
+
+    /**
      * Perform a full sync (download changes, upload local changes)
      * This is the "heavy" operation called periodically or on demand.
      * @param localEntries Current local entries to verify against

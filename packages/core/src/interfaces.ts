@@ -20,6 +20,8 @@ export interface ICryptoService {
     generateSalt(): Uint8Array;
     encrypt(message: string, key: Uint8Array): { ciphertext: string; nonce: string };
     decrypt(ciphertextBase64: string, nonceBase64: string, key: Uint8Array): string;
+    encryptBinary(data: Uint8Array, key: Uint8Array): { ciphertext: Uint8Array; nonce: Uint8Array };
+    decryptBinary(ciphertext: Uint8Array, nonce: Uint8Array, key: Uint8Array): Uint8Array;
     generatePassword(length?: number, options?: PasswordGeneratorOptions): string;
 }
 
@@ -44,6 +46,9 @@ export interface ISecurityService {
 export interface ICloudService {
     uploadEntry(entry: VaultStorageItem): Promise<any>;
     deleteEntry(id: string): Promise<any>;
+    uploadAttachment?(id: string, ciphertext: string, nonce: string): Promise<boolean>;
+    downloadAttachment?(id: string): Promise<import('./types').CloudAttachmentItem | null>;
+    deleteAttachment?(id: string): Promise<boolean>;
 }
 
 export interface IVaultService {
@@ -59,5 +64,9 @@ export interface IVaultService {
     processCloudEntries(items: VaultStorageItem[]): Promise<void>;
     mergeCloudEntries(cloudEntries: VaultStorageItem[], cloudKey: Uint8Array): Promise<number>;
     clearLocalVault(): Promise<void>;
+    addAttachment(entryId: string, name: string, data: Uint8Array, mimeType: string): Promise<import('./types').AttachmentMetadata>;
+    getAttachment(entryId: string, attachmentId: string): Promise<{ metadata: import('./types').AttachmentMetadata; data: Uint8Array }>;
+    deleteAttachment(entryId: string, attachmentId: string): Promise<void>;
 }
+
 

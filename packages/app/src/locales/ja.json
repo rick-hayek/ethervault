@@ -515,7 +515,9 @@
             "backup_title": "安全なクラウドバックアップ",
             "backup_desc": "データベース紛失の心配なし。暗号化されたログを自動バックアップ。",
             "crossplatform_title": "マルチプラットフォーム対応",
-            "crossplatform_desc": "Android、iOS、Windows、macOS、Linuxでシームレスにアクセス。"
+            "crossplatform_desc": "Android、iOS、Windows、macOS、Linuxでシームレスにアクセス。",
+            "attachments_title": "暗号化ファイル添付",
+            "attachments_desc": "個人ドキュメント、秘密鍵、画像を暗号化してアップロードし、資格情報と安全に関連付けます。"
         },
         "actions": {
             "subscribe": "今すぐ登録してアンロック",

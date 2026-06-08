@@ -27,7 +27,7 @@ function createMockCryptoService(overrides: Partial<ICryptoService> = {}): ICryp
 }
 
 function createMockStorageService(overrides: Partial<IStorageService> = {}): IStorageService {
-    const store: Record<string, Record<string, any>> = { vault: {}, metadata: {} };
+    const store: Record<string, Record<string, any>> = { vault: {}, metadata: {}, attachments: {} };
     return {
         init: vi.fn().mockResolvedValue({} as IDBDatabase),
         setItem: vi.fn().mockImplementation(async (storeName, key, value) => {
@@ -405,6 +405,195 @@ describe('VaultServiceImpl', () => {
             const count = await vaultService.mergeCloudEntries(cloudItems, cloudKey);
 
             expect(count).toBe(0);
+        });
+    });
+
+    describe('Attachments', () => {
+        const entryId = 'entry-1';
+        const fileData = new Uint8Array([8, 6, 7, 5, 3, 0, 9]);
+
+        beforeEach(async () => {
+            mockCrypto.encryptBinary = vi.fn().mockReturnValue({
+                ciphertext: new Uint8Array([1, 2, 3]),
+                nonce: new Uint8Array([4, 5, 6])
+            });
+            mockCrypto.decryptBinary = vi.fn().mockReturnValue(fileData);
+
+            await vaultService.setInitialEntries([
+                { id: entryId, title: 'Original', username: 'user', password: 'pass', category: 'Personal', createdAt: 1000, updatedAt: 1000, favorite: false, attachments: [] }
+            ]);
+        });
+
+        it('should add attachment, encrypt binary, save to storage and sync to cloud', async () => {
+            mockCloud.uploadAttachment = vi.fn().mockResolvedValue(true);
+
+            const metadata = await vaultService.addAttachment(entryId, 'test.jpg', fileData, 'image/jpeg');
+
+            expect(metadata.id).toBeDefined();
+            expect(metadata.name).toBe('test.jpg');
+            expect(metadata.size).toBe(fileData.byteLength);
+            expect(metadata.mimeType).toBe('image/jpeg');
+            expect(metadata.nonce).toBeDefined();
+
+            expect(mockStorage.setItem).toHaveBeenCalledWith(
+                'attachments',
+                metadata.id,
+                expect.objectContaining({
+                    entryId,
+                    ciphertext: expect.any(Uint8Array),
+                    nonce: expect.any(Uint8Array)
+                })
+            );
+
+            const entries = await vaultService.getEntries();
+            expect(entries[0].attachments).toHaveLength(1);
+            expect(entries[0].attachments?.[0].name).toBe('test.jpg');
+
+            expect(mockCloud.uploadAttachment).toHaveBeenCalledWith(
+                metadata.id,
+                expect.any(String),
+                expect.any(String)
+            );
+        });
+
+        it('should retrieve and decrypt local attachment', async () => {
+            const attachmentId = 'att-123';
+            mockStorage.getItem = vi.fn().mockImplementation((storeName, key) => {
+                if (storeName === 'attachments' && key === attachmentId) {
+                    return {
+                        id: attachmentId,
+                        entryId,
+                        ciphertext: new Uint8Array([1, 2, 3]),
+                        nonce: new Uint8Array([4, 5, 6])
+                    };
+                }
+                return null;
+            });
+            await vaultService.setInitialEntries([
+                {
+                    id: entryId,
+                    title: 'Original',
+                    username: 'user',
+                    category: 'Personal',
+                    createdAt: 1000,
+                    updatedAt: 1000,
+                    favorite: false,
+                    attachments: [{
+                        id: attachmentId,
+                        name: 'test.jpg',
+                        size: fileData.byteLength,
+                        mimeType: 'image/jpeg',
+                        nonce: 'nonceB64',
+                        updatedAt: 1000
+                    }]
+                }
+            ]);
+
+            const result = await vaultService.getAttachment(entryId, attachmentId);
+            expect(result.data).toEqual(fileData);
+            expect(result.metadata.name).toBe('test.jpg');
+        });
+
+        it('should download and save attachment from cloud if missing locally', async () => {
+            const attachmentId = 'att-123';
+            mockStorage.getItem = vi.fn().mockResolvedValue(null);
+            mockCloud.downloadAttachment = vi.fn().mockResolvedValue({
+                id: attachmentId,
+                ciphertext: btoa(String.fromCharCode(1, 2, 3)),
+                nonce: btoa(String.fromCharCode(4, 5, 6))
+            });
+
+            await vaultService.setInitialEntries([
+                {
+                    id: entryId,
+                    title: 'Original',
+                    username: 'user',
+                    category: 'Personal',
+                    createdAt: 1000,
+                    updatedAt: 1000,
+                    favorite: false,
+                    attachments: [{
+                        id: attachmentId,
+                        name: 'test.jpg',
+                        size: fileData.byteLength,
+                        mimeType: 'image/jpeg',
+                        nonce: 'nonceB64',
+                        updatedAt: 1000
+                    }]
+                }
+            ]);
+
+            const result = await vaultService.getAttachment(entryId, attachmentId);
+            expect(result.data).toEqual(fileData);
+            expect(mockCloud.downloadAttachment).toHaveBeenCalledWith(attachmentId);
+            expect(mockStorage.setItem).toHaveBeenCalledWith(
+                'attachments',
+                attachmentId,
+                expect.any(Object)
+            );
+        });
+
+        it('should delete local and cloud attachment', async () => {
+            const attachmentId = 'att-123';
+            mockCloud.deleteAttachment = vi.fn().mockResolvedValue(true);
+
+            await vaultService.setInitialEntries([
+                {
+                    id: entryId,
+                    title: 'Original',
+                    username: 'user',
+                    category: 'Personal',
+                    createdAt: 1000,
+                    updatedAt: 1000,
+                    favorite: false,
+                    attachments: [{
+                        id: attachmentId,
+                        name: 'test.jpg',
+                        size: fileData.byteLength,
+                        mimeType: 'image/jpeg',
+                        nonce: 'nonceB64',
+                        updatedAt: 1000
+                    }]
+                }
+            ]);
+
+            await vaultService.deleteAttachment(entryId, attachmentId);
+
+            expect(mockStorage.deleteItem).toHaveBeenCalledWith('attachments', attachmentId);
+            expect(mockCloud.deleteAttachment).toHaveBeenCalledWith(attachmentId);
+
+            const entries = await vaultService.getEntries();
+            expect(entries[0].attachments).toHaveLength(0);
+        });
+
+        it('should clean up attachments when entry is deleted', async () => {
+            const attachmentId = 'att-123';
+            mockCloud.deleteAttachment = vi.fn().mockResolvedValue(true);
+
+            await vaultService.setInitialEntries([
+                {
+                    id: entryId,
+                    title: 'Original',
+                    username: 'user',
+                    category: 'Personal',
+                    createdAt: 1000,
+                    updatedAt: 1000,
+                    favorite: false,
+                    attachments: [{
+                        id: attachmentId,
+                        name: 'test.jpg',
+                        size: fileData.byteLength,
+                        mimeType: 'image/jpeg',
+                        nonce: 'nonceB64',
+                        updatedAt: 1000
+                    }]
+                }
+            ]);
+
+            await vaultService.deleteEntry(entryId);
+
+            expect(mockStorage.deleteItem).toHaveBeenCalledWith('attachments', attachmentId);
+            expect(mockCloud.deleteAttachment).toHaveBeenCalledWith(attachmentId);
         });
     });
 });

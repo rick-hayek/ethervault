@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Sparkles, Shield, Globe, Check, Loader2, CreditCard, Laptop, Key } from 'lucide-react';
+import { X, Sparkles, Shield, Globe, Check, Loader2, CreditCard, Laptop, Key, Paperclip } from 'lucide-react';
 import { Portal } from './Portal';
 import { useTranslation } from 'react-i18next';
 import { logger } from '../utils/logger';
@@ -256,10 +256,15 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ isOpen, onClose, onP
       title: t('premium.feature.backup_title', 'Secure Cloud Backups'),
       desc: t('premium.feature.backup_desc', 'Never worry about losing your database. Automatically back up encrypted logs.')
     },
+    // {
+    //   icon: Laptop,
+    //   title: t('premium.feature.crossplatform_title', 'Cross-Platform Access'),
+    //   desc: t('premium.feature.crossplatform_desc', 'Access your vault on Android, iOS, Windows, macOS, and Linux seamlessly.')
+    // },
     {
-      icon: Laptop,
-      title: t('premium.feature.crossplatform_title', 'Cross-Platform Access'),
-      desc: t('premium.feature.crossplatform_desc', 'Access your vault on Android, iOS, Windows, macOS, and Linux seamlessly.')
+      icon: Paperclip,
+      title: t('premium.feature.attachments_title', 'Encrypted File Attachments'),
+      desc: t('premium.feature.attachments_desc', 'Upload and encrypt private documents, keys, and images securely linked to your credentials.')
     }
   ];
 

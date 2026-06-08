@@ -104,6 +104,21 @@ class CloudServiceManager {
         return this.provider.deleteEntry(id);
     }
 
+    async uploadAttachment(id: string, ciphertext: string, nonce: string): Promise<boolean> {
+        if (!this.provider || !this.provider.isConnected()) return false;
+        return (this.provider as any).uploadAttachment?.(id, ciphertext, nonce) ?? false;
+    }
+
+    async downloadAttachment(id: string): Promise<import('../../types').CloudAttachmentItem | null> {
+        if (!this.provider || !this.provider.isConnected()) return null;
+        return (this.provider as any).downloadAttachment?.(id) ?? null;
+    }
+
+    async deleteAttachment(id: string): Promise<boolean> {
+        if (!this.provider || !this.provider.isConnected()) return false;
+        return (this.provider as any).deleteAttachment?.(id) ?? false;
+    }
+
     isSyncEnabled(): boolean {
         return !!this.provider && this.provider.isConnected();
     }

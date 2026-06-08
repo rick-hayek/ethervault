@@ -515,7 +515,9 @@
             "backup_title": "안전한 클라우드 백업",
             "backup_desc": "데이터베이스 손실 걱정 없이 클라우드에 암호화된 로그가 자동 백업됩니다.",
             "crossplatform_title": "크로스 플랫폼 지원",
-            "crossplatform_desc": "Android, iOS, Windows, macOS, Linux에서 원활하게 액세스하세요."
+            "crossplatform_desc": "Android, iOS, Windows, macOS, Linux에서 원활하게 액세스하세요.",
+            "attachments_title": "암호화 파일 첨부",
+            "attachments_desc": "개인 문서, 비밀 키 및 이미지를 암호화하여 업로드하고 자격 증명과 안전하게 연결합니다."
         },
         "actions": {
             "subscribe": "지금 구독하고 잠금 해제",

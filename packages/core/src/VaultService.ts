@@ -6,6 +6,29 @@ import { SecurityService } from './SecurityService';
 import { CloudService } from './services/cloud/CloudService';
 import type { ICryptoService, IStorageService, IAuthService, ISecurityService, ICloudService, IVaultService } from './interfaces';
 
+// Helper to convert Uint8Array to base64 in a stack-safe manner
+function uint8ArrayToBase64(arr: Uint8Array): string {
+    let binary = '';
+    const len = arr.byteLength;
+    const chunkSize = 8192;
+    for (let i = 0; i < len; i += chunkSize) {
+        const chunk = arr.subarray(i, i + chunkSize);
+        binary += String.fromCharCode.apply(null, chunk as any);
+    }
+    return btoa(binary);
+}
+
+// Helper to convert base64 to Uint8Array
+function base64ToUint8Array(str: string): Uint8Array {
+    const binary = atob(str);
+    const len = binary.length;
+    const bytes = new Uint8Array(len);
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes;
+}
+
 /**
  * Instance-based VaultService implementation.
  * Use getVaultService() singleton for production, or instantiate directly for testing.
@@ -76,7 +99,8 @@ export class VaultServiceImpl implements IVaultService {
             tags: newEntry.tags,
             recoveryPhone: newEntry.recoveryPhone,
             recoveryEmail: newEntry.recoveryEmail,
-            note: newEntry.note
+            note: newEntry.note,
+            attachments: newEntry.attachments
         };
 
         const { ciphertext, nonce } = this.cryptoService.encrypt(JSON.stringify(sensitiveFields), key);
@@ -124,7 +148,8 @@ export class VaultServiceImpl implements IVaultService {
             tags: updated.tags,
             recoveryPhone: updated.recoveryPhone,
             recoveryEmail: updated.recoveryEmail,
-            note: updated.note
+            note: updated.note,
+            attachments: updated.attachments
         };
 
         const { ciphertext, nonce } = this.cryptoService.encrypt(JSON.stringify(sensitiveFields), key);
@@ -152,6 +177,16 @@ export class VaultServiceImpl implements IVaultService {
     }
 
     async deleteEntry(id: string): Promise<void> {
+        const existing = this.entries.find(e => e.id === id);
+        if (existing && existing.attachments) {
+            for (const attachment of existing.attachments) {
+                await this.storageService.deleteItem('attachments', attachment.id);
+                if (this.cloudService && this.cloudService.deleteAttachment) {
+                    this.cloudService.deleteAttachment(attachment.id).catch(e => console.error('Cloud Delete Attachment Failed:', e));
+                }
+            }
+        }
+
         await this.storageService.deleteItem('vault', id);
         this.entries = this.entries.filter(e => e.id !== id);
 
@@ -188,7 +223,8 @@ export class VaultServiceImpl implements IVaultService {
                 tags: entry.tags,
                 recoveryPhone: entry.recoveryPhone,
                 recoveryEmail: entry.recoveryEmail,
-                note: entry.note
+                note: entry.note,
+                attachments: entry.attachments
             };
 
             const { ciphertext, nonce } = this.cryptoService.encrypt(JSON.stringify(sensitiveFields), newKey);
@@ -317,6 +353,127 @@ export class VaultServiceImpl implements IVaultService {
         this.entries = [];
         console.log('[VaultService] Local vault cleared.');
     }
+
+    async addAttachment(entryId: string, name: string, data: Uint8Array, mimeType: string): Promise<import('./types').AttachmentMetadata> {
+        const key = this.authServiceGetter().getMasterKey();
+        const { ciphertext, nonce } = this.cryptoService.encryptBinary(data, key);
+
+        const attachmentId = crypto.randomUUID();
+        const localItem = {
+            id: attachmentId,
+            entryId,
+            ciphertext,
+            nonce
+        };
+
+        await this.storageService.setItem('attachments', attachmentId, localItem);
+
+        const nonceB64 = uint8ArrayToBase64(nonce);
+
+        const metadata: import('./types').AttachmentMetadata = {
+            id: attachmentId,
+            name,
+            size: data.byteLength,
+            mimeType,
+            nonce: nonceB64,
+            updatedAt: Date.now()
+        };
+
+        // Retrieve existing entry (if it exists in DB)
+        const entries = await this.getEntries();
+        const entryIndex = entries.findIndex(e => e.id === entryId);
+        if (entryIndex !== -1) {
+            const existingEntry = entries[entryIndex];
+            const updatedAttachments = [...(existingEntry.attachments || []), metadata];
+            await this.updateEntry(entryId, { attachments: updatedAttachments });
+        }
+
+        // Upload to Cloud (Background)
+        if (this.cloudService && this.cloudService.uploadAttachment) {
+            const ciphertextB64 = uint8ArrayToBase64(ciphertext);
+            this.cloudService.uploadAttachment(attachmentId, ciphertextB64, nonceB64)
+                .catch((e: Error) => console.error('Cloud Sync Attachment Failed:', e));
+        }
+
+        return metadata;
+    }
+
+    async getAttachment(entryId: string, attachmentId: string): Promise<{ metadata: import('./types').AttachmentMetadata; data: Uint8Array }> {
+        // Try to get from local storage first
+        let localItem = await this.storageService.getItem('attachments', attachmentId);
+        let metadata: import('./types').AttachmentMetadata | undefined;
+
+        // Find entry metadata if available
+        const entries = await this.getEntries();
+        const entry = entries.find(e => e.id === entryId);
+        if (entry) {
+            metadata = entry.attachments?.find(a => a.id === attachmentId);
+        }
+
+        // If not found locally, try to download from cloud (requires metadata for validation or info)
+        if (!localItem) {
+            if (!metadata) {
+                throw new Error('Attachment metadata not found');
+            }
+            if (this.cloudService && this.cloudService.downloadAttachment) {
+                const cloudItem = await this.cloudService.downloadAttachment(attachmentId);
+                if (cloudItem) {
+                    const ciphertext = base64ToUint8Array(cloudItem.ciphertext);
+                    const nonce = base64ToUint8Array(cloudItem.nonce);
+                    localItem = {
+                        id: attachmentId,
+                        entryId,
+                        ciphertext,
+                        nonce
+                    };
+                    await this.storageService.setItem('attachments', attachmentId, localItem);
+                }
+            }
+        }
+
+        if (!localItem) {
+            throw new Error('Attachment not found locally or on cloud');
+        }
+
+        if (!metadata) {
+            metadata = {
+                id: attachmentId,
+                name: 'attachment',
+                size: localItem.ciphertext.byteLength,
+                mimeType: 'application/octet-stream',
+                nonce: uint8ArrayToBase64(localItem.nonce),
+                updatedAt: Date.now()
+            };
+        }
+
+        const key = this.authServiceGetter().getMasterKey();
+        const decryptedData = this.cryptoService.decryptBinary(localItem.ciphertext, localItem.nonce, key);
+
+        return {
+            metadata,
+            data: decryptedData
+        };
+    }
+
+    async deleteAttachment(entryId: string, attachmentId: string): Promise<void> {
+        // Retrieve existing entry (if it exists in DB)
+        const entries = await this.getEntries();
+        const entryIndex = entries.findIndex(e => e.id === entryId);
+        if (entryIndex !== -1) {
+            const existingEntry = entries[entryIndex];
+            const updatedAttachments = (existingEntry.attachments || []).filter(a => a.id !== attachmentId);
+            await this.updateEntry(entryId, { attachments: updatedAttachments });
+        }
+
+        // Delete from local storage
+        await this.storageService.deleteItem('attachments', attachmentId);
+
+        // Delete from Cloud (Background)
+        if (this.cloudService && this.cloudService.deleteAttachment) {
+            this.cloudService.deleteAttachment(attachmentId)
+                .catch((e: Error) => console.error('Cloud Delete Attachment Failed:', e));
+        }
+    }
 }
 
 // =============================================================================
@@ -412,5 +569,17 @@ export class VaultService {
 
     static async clearLocalVault(): Promise<void> {
         return getVaultService().clearLocalVault();
+    }
+
+    static async addAttachment(entryId: string, name: string, data: Uint8Array, mimeType: string): Promise<import('./types').AttachmentMetadata> {
+        return getVaultService().addAttachment(entryId, name, data, mimeType);
+    }
+
+    static async getAttachment(entryId: string, attachmentId: string): Promise<{ metadata: import('./types').AttachmentMetadata; data: Uint8Array }> {
+        return getVaultService().getAttachment(entryId, attachmentId);
+    }
+
+    static async deleteAttachment(entryId: string, attachmentId: string): Promise<void> {
+        return getVaultService().deleteAttachment(entryId, attachmentId);
     }
 }

@@ -515,7 +515,9 @@
             "backup_title": "Secure Cloud Backups",
             "backup_desc": "Never worry about losing your database. Automatically back up encrypted logs.",
             "crossplatform_title": "Cross-Platform Access",
-            "crossplatform_desc": "Access your vault on Android, iOS, Windows, macOS, and Linux seamlessly."
+            "crossplatform_desc": "Access your vault on Android, iOS, Windows, macOS, and Linux seamlessly.",
+            "attachments_title": "Encrypted File Attachments",
+            "attachments_desc": "Upload and encrypt private documents, keys, and images securely linked to your credentials."
         },
         "actions": {
             "subscribe": "Subscribe & Unlock Now",
