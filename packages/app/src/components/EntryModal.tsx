@@ -236,7 +236,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                             {/* Mobile Drag Handle */}
                             <div className="md:hidden w-12 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full mx-auto absolute left-0 right-0 top-3 pointer-events-none" />
 
-                            <h2 className="text-lg md:text-xl font-bold text-slate-900 dark:text-white md:pt-0">{entry ? t('vault.edit_credential') : t('vault.new_credential')}</h2>
+                            <h2 className="text-lg md:text-xl font-normal text-slate-900 dark:text-white md:pt-0">{entry ? t('vault.edit_credential') : t('vault.new_credential')}</h2>
                         </div>
                         <button onClick={handleCancel} className="hidden md:block p-2 -mr-2 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors bg-white/50 dark:bg-slate-800/50 rounded-full md:bg-transparent">
                             <X className="w-6 h-6" />
@@ -246,49 +246,49 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                     <form onSubmit={handleSubmit} className="pt-4 px-6 pb-6 md:p-8 space-y-5 overflow-y-auto overscroll-contain pb-safe-area-bottom">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                             <div className="space-y-2">
-                                <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.title')}</label>
+                                <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.title')}</label>
                                 <input
                                     required
                                     value={formData.title}
                                     onChange={e => setFormData({ ...formData, title: e.target.value })}
-                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 px-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
+                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 px-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-normal shadow-sm"
                                     placeholder={t('vault.entry.title_placeholder')}
                                 />
                             </div>
                             <div className="space-y-2">
-                                <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.category')}</label>
+                                <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.category')}</label>
                                 <CustomDropdown
                                     value={formData.category || 'All'}
                                     onChange={val => setFormData({ ...formData, category: val as Category })}
                                     options={categoryOptions}
                                     fullWidth={true}
-                                    buttonClassName="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 px-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm flex items-center justify-between text-left select-none"
+                                    buttonClassName="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 px-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-normal shadow-sm flex items-center justify-between text-left select-none"
                                     menuClassName="absolute left-0 z-50 w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-xl overflow-hidden py-1 animate-in fade-in duration-150"
                                 />
                             </div>
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.website')}</label>
+                            <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.website')}</label>
                             <div className="relative">
                                 <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                                 <input
                                     value={formData.website}
                                     onChange={e => setFormData({ ...formData, website: e.target.value })}
-                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
+                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-normal shadow-sm"
                                     placeholder={t('vault.entry.website_placeholder')}
                                 />
                             </div>
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.username_email')}</label>
+                            <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.username_email')}</label>
                             <div className="relative">
                                 <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                                 <input
                                     value={formData.username}
                                     onChange={e => setFormData({ ...formData, username: e.target.value })}
-                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-12 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
+                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-12 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-normal shadow-sm"
                                     placeholder={t('vault.entry.username_placeholder')}
                                 />
                                 <button
@@ -306,7 +306,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.password')}</label>
+                            <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.password')}</label>
                             <div className="relative">
                                 <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                                 <input
@@ -350,7 +350,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                 onClick={() => setShowAdditionalFields(!showAdditionalFields)}
                                 className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
                             >
-                                <span className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">
+                                <span className="text-[10px] font-normal text-slate-400 uppercase tracking-widest">
                                     {t('vault.entry.additional_info', 'Additional Information')}
                                 </span>
                                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${showAdditionalFields ? 'rotate-180' : ''}`} />
@@ -360,7 +360,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                 <div className="p-4 space-y-4 bg-slate-50/50 dark:bg-slate-950/50">
                                     {/* Recovery Phone */}
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">
+                                        <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">
                                             {t('vault.entry.recovery_phone', 'Recovery Phone')}
                                         </label>
                                         <div className="relative">
@@ -369,7 +369,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                                 type="tel"
                                                 value={formData.recoveryPhone || ''}
                                                 onChange={e => setFormData({ ...formData, recoveryPhone: e.target.value })}
-                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
+                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-normal shadow-sm"
                                                 placeholder={t('vault.entry.recovery_phone_placeholder', '+1 234 567 8900')}
                                             />
                                         </div>
@@ -377,7 +377,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
 
                                     {/* Recovery Email */}
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">
+                                        <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">
                                             {t('vault.entry.recovery_email', 'Recovery Email')}
                                         </label>
                                         <div className="relative">
@@ -386,7 +386,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                                 type="email"
                                                 value={formData.recoveryEmail || ''}
                                                 onChange={e => setFormData({ ...formData, recoveryEmail: e.target.value })}
-                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm"
+                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-normal shadow-sm"
                                                 placeholder={t('vault.entry.recovery_email_placeholder', 'backup@email.com')}
                                             />
                                         </div>
@@ -394,7 +394,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
 
                                     {/* Note */}
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-medium text-slate-400 uppercase tracking-widest px-1">
+                                        <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">
                                             {t('vault.entry.note', 'Note')}
                                         </label>
                                         <div className="relative">
@@ -403,7 +403,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                                 value={formData.note || ''}
                                                 onChange={e => setFormData({ ...formData, note: e.target.value })}
                                                 rows={3}
-                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-medium shadow-sm resize-none"
+                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-normal shadow-sm resize-none"
                                                 placeholder={t('vault.entry.note_placeholder', 'Add notes or comments...')}
                                             />
                                         </div>
@@ -426,11 +426,11 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                 className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
                             >
                                 <div className="flex items-center gap-2">
-                                    <span className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">
+                                    <span className="text-[10px] font-normal text-slate-400 uppercase tracking-widest">
                                         {t('vault.entry.attachments', 'Attachments')}
                                     </span>
                                     {!isPremium && (
-                                        <span className="text-[7.5px] font-extrabold uppercase tracking-wider text-primary-400 border border-primary-500/30 px-1.5 py-0.5 rounded bg-primary-500/10 flex items-center gap-0.5 select-none shrink-0">
+                                        <span className="text-[7.5px] font-normal uppercase tracking-wider text-primary-400 border border-primary-500/30 px-1.5 py-0.5 rounded bg-primary-500/10 flex items-center gap-0.5 select-none shrink-0">
                                             <Lock className="w-2 h-2 shrink-0" />
                                             PREMIUM
                                         </span>
@@ -450,7 +450,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                                     <div className="flex items-center gap-3 min-w-0">
                                                         <FileText className="w-5 h-5 text-slate-400 shrink-0" />
                                                         <div className="min-w-0">
-                                                            <p className="text-sm font-medium text-slate-700 dark:text-slate-200 truncate">{att.name}</p>
+                                                            <p className="text-sm font-normal text-slate-700 dark:text-slate-200 truncate">{att.name}</p>
                                                             <p className="text-xs text-slate-400">{(att.size / 1024).toFixed(1)} KB</p>
                                                         </div>
                                                     </div>
@@ -507,7 +507,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                         />
                                         <label
                                             htmlFor="attachment-file-input"
-                                            className="cursor-pointer w-full py-2.5 px-4 bg-white dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-center gap-2 text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white"
+                                            className="cursor-pointer w-full py-2.5 px-4 bg-white dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-center gap-2 text-xs font-normal text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white"
                                         >
                                             {isUploadingAttachment ? (
                                                 <Loader2 className="w-4 h-4 animate-spin text-slate-500" />
@@ -527,14 +527,14 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                     <button
                                         type="button"
                                         onClick={() => setShowDeleteConfirm(false)}
-                                        className="flex-1 px-4 py-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all text-sm font-medium"
+                                        className="flex-1 px-4 py-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all text-sm font-normal"
                                     >
                                         {t('common.cancel', 'Cancel')}
                                     </button>
                                     <button
                                         type="button"
                                         onClick={() => onDelete(entry.id)}
-                                        className="flex-1 px-4 py-4 rounded-xl bg-rose-500 text-white hover:bg-rose-600 transition-all text-sm font-medium shadow-lg shadow-rose-500/20"
+                                        className="flex-1 px-4 py-4 rounded-xl bg-rose-500 text-white hover:bg-rose-600 transition-all text-sm font-normal shadow-lg shadow-rose-500/20"
                                     >
                                         {t('common.confirm_delete', 'Delete')}
                                     </button>
@@ -554,14 +554,14 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                     <button
                                         type="button"
                                         onClick={handleCancel}
-                                        className="px-6 py-4 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
+                                        className="px-6 py-4 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-normal hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
                                     >
                                         {t('common.cancel', 'Cancel')}
                                     </button>
 
                                     <button
                                         type="submit"
-                                        className="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-4 rounded-xl font-medium shadow-xl hover:opacity-90 active:scale-[0.98] transition-all"
+                                        className="flex-1 py-4 bg-primary-50 dark:bg-primary-500/10 border border-primary-100 dark:border-primary-500/20 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-500/20 rounded-xl font-normal shadow-sm hover:shadow-md active:scale-[0.98] transition-all"
                                     >
                                         {entry ? t('vault.update') : t('vault.save')}
                                     </button>
@@ -579,7 +579,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                         {/* Header */}
                         <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between shrink-0">
                             <div className="min-w-0">
-                                <h3 className="text-sm font-bold text-white truncate">{previewData.name}</h3>
+                                <h3 className="text-sm font-normal text-white truncate">{previewData.name}</h3>
                                 <p className="text-[10px] text-slate-400 truncate">{previewData.mimeType}</p>
                             </div>
                             <button 
@@ -610,12 +610,12 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                         <FileText className="w-6 h-6" />
                                     </div>
                                     <div className="space-y-1">
-                                        <h4 className="text-sm font-semibold text-white">{t('vault.attachment.preview_unsupported', 'Preview Unavailable')}</h4>
+                                        <h4 className="text-sm font-normal text-white">{t('vault.attachment.preview_unsupported', 'Preview Unavailable')}</h4>
                                         <p className="text-xs text-slate-400">{t('vault.attachment.preview_unsupported_desc', 'This file type cannot be previewed directly. Please download the file to view it on your device.')}</p>
                                     </div>
                                     <button
                                         onClick={() => handleDownloadAttachment(previewData.attachmentId)}
-                                        className="inline-flex items-center gap-2 px-4 py-2 bg-white text-slate-900 font-semibold text-xs rounded-xl shadow-lg hover:opacity-90 active:scale-[0.98] transition-all"
+                                        className="inline-flex items-center gap-2 px-4 py-2 bg-white text-slate-900 font-normal text-xs rounded-xl shadow-lg hover:opacity-90 active:scale-[0.98] transition-all"
                                     >
                                         <Download className="w-4 h-4" />
                                         {t('export.download', 'Download File')}

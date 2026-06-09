@@ -74,6 +74,7 @@
         "title": "設定",
         "subtitle": "セキュリティと同期の設定を管理",
         "data_management": "データ管理",
+        "preferences": "環境設定",
         "log_management": "ログ管理",
         "import": "インポート",
         "sync_provider": "同期プロバイダー",
@@ -110,7 +111,9 @@
             },
             "recent_activity": "最近のアクティビティ",
             "appearance": "外観",
-            "theme_color": "テーマカラー"
+            "theme_color": "テーマカラー",
+            "theme_mode": "モード",
+            "theme_color_label": "カラー"
         },
         "theme": {
             "system": "システム",

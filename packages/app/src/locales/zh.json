@@ -75,6 +75,7 @@
         "subtitle": "管理您的安全和同步偏好",
         "data_management": "数据管理",
         "log_management": "日志管理",
+        "preferences": "偏好",
         "import": "导入",
         "sync_provider": "同步提供商",
         "updating": "更新中...",
@@ -110,7 +111,9 @@
             },
             "recent_activity": "近期活动",
             "appearance": "外观",
-            "theme_color": "主题色"
+            "theme_color": "主题色",
+            "theme_mode": "模式",
+            "theme_color_label": "颜色"
         },
         "theme": {
             "system": "跟随系统",

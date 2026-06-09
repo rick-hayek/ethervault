@@ -75,6 +75,7 @@
         "subtitle": "Gerencie suas preferências de segurança e sincronização",
         "data_management": "Gerenciamento de Dados",
         "log_management": "Gerenciamento de Logs",
+        "preferences": "Preferências",
         "import": "Importar",
         "sync_provider": "Provedor de Sincronização",
         "updating": "Atualizando...",
@@ -110,7 +111,9 @@
             },
             "recent_activity": "Atividade Recente",
             "appearance": "Aparência",
-            "theme_color": "Cor do Tema"
+            "theme_color": "Cor do Tema",
+            "theme_mode": "Modo",
+            "theme_color_label": "Cor"
         },
         "theme": {
             "system": "Sistema",

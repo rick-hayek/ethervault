@@ -55,7 +55,7 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
   const selectedOption = options.find(opt => opt.value === value) || options[0];
 
   // Default Settings style if none provided
-  const defaultBtnClass = "bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-semibold text-slate-700 dark:text-slate-300 uppercase rounded-xl py-1.5 px-3 outline-none hover:border-primary-500/50 dark:hover:border-primary-500/50 transition-all flex items-center gap-1.5 select-none";
+  const defaultBtnClass = "bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-[10px] font-normal text-slate-700 dark:text-slate-300 uppercase rounded-xl py-1.5 px-3 outline-none hover:border-primary-500/50 dark:hover:border-primary-500/50 transition-all flex items-center gap-1.5 select-none";
   const defaultMenuClass = "absolute right-0 z-50 w-44 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-xl overflow-hidden py-1 animate-in fade-in duration-150";
 
   return (
@@ -90,9 +90,9 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
                   onChange(opt.value);
                   setIsOpen(false);
                 }}
-                className={`w-full flex items-center justify-between px-4 py-2.5 text-left text-xs md:text-[11px] font-medium transition-colors ${
+                className={`w-full flex items-center justify-between px-4 py-2.5 text-left text-xs md:text-[11px] font-normal transition-colors ${
                   isSelected
-                    ? 'bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 font-semibold'
+                    ? 'bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 font-normal'
                     : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50'
                 } ${index > 0 ? 'border-t border-slate-50 dark:border-slate-850' : ''}`}
               >

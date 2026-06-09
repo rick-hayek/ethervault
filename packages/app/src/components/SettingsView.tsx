@@ -23,8 +23,11 @@ import {
   Loader2,
   Info,
   ChevronLeft,
+  ChevronRight,
   Palette,
-  Send
+  Send,
+  CloudUpload,
+  Download
 } from 'lucide-react';
 import { Filesystem, Directory } from '@capacitor/filesystem';
 import { Share } from '@capacitor/share';
@@ -882,16 +885,16 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   const CompactSetting = ({ icon: Icon, label, value, onClick, type = 'toggle' }: any) => (
     <div
       onClick={type === 'toggle' ? onClick : undefined}
-      className={`bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group transition-all ${type === 'toggle' ? 'cursor-pointer active:scale-[0.99] hover:border-primary-500/30' : ''}`}
+      className={`bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group transition-all ${type === 'toggle' ? 'cursor-pointer active:scale-[0.99] hover:border-primary-500/30' : ''}`}
     >
       <div className="flex items-center gap-3">
-        <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
+        <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
           <Icon className="w-3.5 h-3.5" />
         </div>
         <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{label}</span>
       </div>
       {type === 'toggle' ? (
-        <div className={`w-10 h-6 rounded-full relative transition-all duration-300 ${value ? 'bg-primary-600' : 'bg-slate-200 dark:bg-slate-700'}`}>
+        <div className={`w-10 h-6 rounded-full relative transition-all duration-300 ${value ? 'bg-primary-600/85' : 'bg-slate-200 dark:bg-slate-700'}`}>
           <div className={`absolute top-1 w-4 h-4 rounded-full bg-white transition-all duration-300 shadow-sm ${value ? 'right-1' : 'left-1'}`} />
         </div>
       ) : (
@@ -999,7 +1002,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           {/* Cloud Config - Tighter */}
-          <div className="lg:col-span-5 bg-white dark:bg-slate-900 p-6 rounded-[32px] border border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+          <div className="lg:col-span-5 bg-white dark:bg-slate-900 p-6 rounded-[32px] border-[0.5px] border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
             <div className="flex items-center justify-between mb-1">
               <h2 className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400">{t('settings.sync_provider')}</h2>
               {settings.lastSync && <span className="text-[8px] text-emerald-500 font-medium uppercase">{settings.lastSync}</span>}
@@ -1088,7 +1091,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                               <button
                                 onClick={() => handleSyncClick(p.id as CloudProvider)}
                                 disabled={isSyncing}
-                                className="flex-1 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-[11px] font-medium rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2 shadow-sm shadow-primary-200 dark:shadow-none"
+                                className="flex-1 py-2.5 bg-primary-600/85 hover:bg-primary-600 text-white text-[11px] font-medium rounded-xl transition-all active:scale-95 disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2 shadow-sm shadow-primary-200 dark:shadow-none"
                               >
                                 <RefreshCcw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin' : ''}`} />
                                 {isSyncing ? t('settings.cloud.syncing') : t('settings.cloud.sync_now')}
@@ -1114,7 +1117,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                             <button
                               onClick={() => handleSyncClick(p.id as CloudProvider)}
                               disabled={isSyncing}
-                              className="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-[11px] font-medium rounded-xl hover:shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-wait"
+                              className="w-full py-3 bg-primary-50 dark:bg-primary-500/10 border border-primary-100 dark:border-primary-500/20 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-500/20 text-[11px] font-medium rounded-xl active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-wait shadow-sm hover:shadow-md"
                             >
                               {isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                               {!settings.isPremium ? (
@@ -1158,187 +1161,249 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
             )}
           </div>
 
-          {/* Access Settings - High Density Grid */}
+          {/* Access Settings */}
           <div className="lg:col-span-7 space-y-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-              {biometricsSupported && (
-                <CompactSetting icon={Fingerprint} label={t('settings.option.biometric')} value={settings.biometricsEnabled} onClick={toggleBiometrics} />
-              )}
-              {/* Language Selector */}
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
-                <div className="flex items-center gap-3">
-                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
-                    <Languages className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.language')}</span>
-                </div>
-                <CustomDropdown
-                  value={i18n.language}
-                  onChange={(val) => i18n.changeLanguage(val)}
-                  options={[
-                    { value: 'en', label: 'English' },
-                    { value: 'es', label: 'Español' },
-                    { value: 'fr', label: 'Français' },
-                    { value: 'ja', label: '日本語' },
-                    { value: 'ko', label: '한국어' },
-                    { value: 'pt', label: 'Português' },
-                    { value: 'zh', label: '简体中文' },
-                    { value: 'zh-TW', label: '繁體中文' }
-                  ]}
-                />
-              </div>
+            {/* Preferences Section */}
+            <div className="space-y-1.5">
+              <h3 className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">{t('settings.preferences', 'Preferences')}</h3>
 
-              {/* Lock Timer Dropdown */}
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
-                <div className="flex items-center gap-3">
-                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
-                    <Clock className="w-3.5 h-3.5" />
-                  </div>
-                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.lock_timer')}</span>
-                </div>
-                <CustomDropdown
-                  value={settings.autoLockTimeout}
-                  onChange={(val) => setSettings({ ...settings, autoLockTimeout: Number(val) })}
-                  options={[1, 5, 15, 30, 60].map(val => ({
-                    value: val,
-                    label: val === 60 ? t('settings.option.time.1h') : t(`settings.option.time.${val}m`)
-                  }))}
-                />
-              </div>
+              <div className="bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-[20px] shadow-sm flex flex-col">
+                {biometricsSupported && (
+                  <button
+                    onClick={toggleBiometrics}
+                    className="w-full flex items-center justify-between p-3 px-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-t-[20px] transition-colors text-left group"
+                  >
+                    <div className="flex items-center gap-[18px]">
+                      <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
+                        <Fingerprint className="w-3.5 h-3.5" strokeWidth={1.5} />
+                      </div>
+                      <span className="text-xs font-normal text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.biometric')}</span>
+                    </div>
+                    <div className={`w-8 h-4 rounded-full relative transition-all duration-300 ${settings.biometricsEnabled ? 'bg-primary-600/85' : 'bg-slate-200 dark:bg-slate-700'}`}>
+                      <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all duration-300 shadow-sm ${settings.biometricsEnabled ? 'right-0.5' : 'left-0.5'}`} />
+                    </div>
+                  </button>
+                )}
 
-              <CompactSetting
-                icon={Moon}
-                label={t('settings.option.appearance', 'Appearance')}
-                value={
-                  settings.theme === 'system' ? t('settings.theme.system', 'System') :
-                    settings.theme === 'light' ? t('settings.theme.light', 'Light') :
-                      t('settings.theme.dark', 'Dark')
-                }
-                type="value"
-                onClick={() => {
-                  const next = settings.theme === 'dark' ? 'light' : (settings.theme === 'light' ? 'system' : 'dark');
-                  setSettings({ ...settings, theme: next });
-                }}
-              />
-              {/* Theme Color Selector */}
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group">
-                <div className="flex items-center gap-3">
-                  <div className="p-1.5 bg-slate-50 dark:bg-slate-800 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
-                    <Palette className="w-3.5 h-3.5" />
+                {/* Language Selector */}
+                <div className={`w-full flex items-center justify-between p-3 px-4 group relative ${!biometricsSupported ? 'rounded-t-[20px]' : ''}`}>
+                  {biometricsSupported && (
+                    <div className="absolute top-0 left-[60px] right-0 border-t border-slate-100 dark:border-slate-800/80 pointer-events-none" />
+                  )}
+                  <div className="flex items-center gap-[18px]">
+                    <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
+                      <Languages className="w-3.5 h-3.5" strokeWidth={1.5} />
+                    </div>
+                    <span className="text-xs font-normal text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.language')}</span>
                   </div>
-                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.theme_color', 'Theme Color')}</span>
+                  <CustomDropdown
+                    value={i18n.language}
+                    onChange={(val) => i18n.changeLanguage(val)}
+                    options={[
+                      { value: 'en', label: 'English' },
+                      { value: 'es', label: 'Español' },
+                      { value: 'fr', label: 'Français' },
+                      { value: 'ja', label: '日本語' },
+                      { value: 'ko', label: '한국어' },
+                      { value: 'pt', label: 'Português' },
+                      { value: 'zh', label: '简体中文' },
+                      { value: 'zh-TW', label: '繁體中文' }
+                    ]}
+                  />
                 </div>
-                <CustomDropdown
-                  value={settings.themeColor || 'silver'}
-                  onChange={(val) => setSettings({ ...settings, themeColor: val as any })}
-                  options={[
-                    { value: 'silver', label: t('settings.color.silver', 'Silver'), dotColor: 'bg-slate-400 dark:bg-slate-500' },
-                    { value: 'blue', label: t('settings.color.blue', 'Blue'), dotColor: 'bg-blue-500' },
-                    { value: 'emerald', label: t('settings.color.emerald', 'Green'), dotColor: 'bg-emerald-500' },
-                    { value: 'violet', label: t('settings.color.violet', 'Violet'), dotColor: 'bg-violet-500' },
-                    { value: 'amber', label: t('settings.color.amber', 'Amber'), dotColor: 'bg-amber-500' },
-                    { value: 'rose', label: t('settings.color.rose', 'Rose'), dotColor: 'bg-rose-500' },
-                    { value: 'pink', label: t('settings.color.pink', 'Sakura Pink'), dotColor: 'bg-pink-400' },
-                    { value: 'lightgrey', label: t('settings.color.lightgrey', 'Cashmere Grey'), dotColor: 'bg-slate-300 dark:bg-slate-600' },
-                    { value: 'ivory', label: t('settings.color.ivory', 'Ivory'), dotColor: 'bg-amber-100 dark:bg-amber-200' }
-                  ]}
-                />
-              </div>
 
+                {/* Lock Timer Dropdown */}
+                <div className="w-full flex items-center justify-between p-3 px-4 group relative rounded-b-[20px]">
+                  <div className="absolute top-0 left-[60px] right-0 border-t border-slate-100 dark:border-slate-800/80 pointer-events-none" />
+
+                  <div className="flex items-center gap-[18px]">
+                    <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
+                      <Clock className="w-3.5 h-3.5" strokeWidth={1.5} />
+                    </div>
+                    <span className="text-xs font-normal text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.lock_timer')}</span>
+                  </div>
+                  <CustomDropdown
+                    value={settings.autoLockTimeout}
+                    onChange={(val) => setSettings({ ...settings, autoLockTimeout: Number(val) })}
+                    options={[1, 5, 15, 30, 60].map(val => ({
+                      value: val,
+                      label: val === 60 ? t('settings.option.time.1h') : t(`settings.option.time.${val}m`)
+                    }))}
+                  />
+                </div>
+              </div>
+            </div>
+            {/* Appearance Section */}
+            <div className="space-y-1.5">
+              <h3 className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">{t('layout.appearance', 'Appearance')}</h3>
+
+              <div className="bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-[20px] shadow-sm flex flex-col">
+                {/* Mode Option */}
+                <button
+                  onClick={() => {
+                    const next = settings.theme === 'dark' ? 'light' : (settings.theme === 'light' ? 'system' : 'dark');
+                    setSettings({ ...settings, theme: next });
+                  }}
+                  className="w-full flex items-center justify-between p-3 px-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-t-[20px] transition-colors text-left group"
+                >
+                  <div className="flex items-center gap-[18px]">
+                    <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
+                      <Moon className="w-3.5 h-3.5" strokeWidth={1.5} />
+                    </div>
+                    <span className="text-xs font-normal text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.theme_mode', 'Mode')}</span>
+                  </div>
+                  <span className="text-[10px] font-normal text-primary-600 dark:text-primary-400 capitalize px-2 py-1">
+                    {settings.theme === 'system' ? t('settings.theme.system', 'System') :
+                      settings.theme === 'light' ? t('settings.theme.light', 'Light') :
+                        t('settings.theme.dark', 'Dark')}
+                  </span>
+                </button>
+
+                {/* Color Option */}
+                <div className="w-full flex items-center justify-between p-3 px-4 group relative rounded-b-[20px]">
+                  {/* Indented Divider */}
+                  <div className="absolute top-0 left-[60px] right-0 border-t border-slate-100 dark:border-slate-800/80 pointer-events-none" />
+
+                  <div className="flex items-center gap-[18px]">
+                    <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
+                      <Palette className="w-3.5 h-3.5" strokeWidth={1.5} />
+                    </div>
+                    <span className="text-xs font-normal text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.theme_color_label', 'Color')}</span>
+                  </div>
+                  <CustomDropdown
+                    value={settings.themeColor || 'silver'}
+                    onChange={(val) => setSettings({ ...settings, themeColor: val as any })}
+                    options={[
+                      { value: 'silver', label: t('settings.color.silver', 'Silver'), dotColor: 'bg-slate-400 dark:bg-slate-500' },
+                      { value: 'blue', label: t('settings.color.blue', 'Blue'), dotColor: 'bg-blue-500' },
+                      { value: 'emerald', label: t('settings.color.emerald', 'Green'), dotColor: 'bg-emerald-500' },
+                      { value: 'violet', label: t('settings.color.violet', 'Violet'), dotColor: 'bg-violet-500' },
+                      { value: 'amber', label: t('settings.color.amber', 'Amber'), dotColor: 'bg-amber-500' },
+                      { value: 'rose', label: t('settings.color.rose', 'Rose'), dotColor: 'bg-rose-500' },
+                      { value: 'pink', label: t('settings.color.pink', 'Sakura Pink'), dotColor: 'bg-pink-400' },
+                      { value: 'lightgrey', label: t('settings.color.lightgrey', 'Cashmere Grey'), dotColor: 'bg-slate-300 dark:bg-slate-600' },
+                      { value: 'ivory', label: t('settings.color.ivory', 'Ivory'), dotColor: 'bg-amber-100 dark:bg-amber-200' }
+                    ]}
+                  />
+                </div>
+              </div>
             </div>
 
 
             {/* Data Management Section */}
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-[24px] space-y-4">
+            <div className="space-y-1.5">
               <h3 className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">{t('settings.data_management', 'Data Management')}</h3>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-[20px] shadow-sm flex flex-col">
                 <button
                   onClick={() => setIsImportModalOpen(true)}
-                  className="flex flex-col items-center justify-center gap-2 py-4 bg-slate-50 dark:bg-slate-800 rounded-2xl hover:bg-primary-50 dark:hover:bg-primary-500/10 hover:text-primary-600 dark:hover:text-primary-400 transition-all group"
+                  className="w-full flex items-center justify-between p-3 px-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-t-[20px] transition-colors text-left group"
                 >
-                  <div className="p-2 bg-white dark:bg-slate-700 rounded-full shadow-sm group-hover:scale-110 transition-transform">
-                    <Database className="w-4 h-4 text-slate-400 group-hover:text-primary-500" />
+                  <div className="flex items-center gap-[18px]">
+                    <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors">
+                      <CloudUpload className="w-3.5 h-3.5" strokeWidth={1.5} />
+                    </div>
+                    <span className="text-xs font-normal text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.import', 'Import')}</span>
                   </div>
-                  <span className="text-[10px] font-medium tracking-wider">{t('settings.import', 'Import')}</span>
+                  <div className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500">
+                    <span className="text-xs font-normal">CSV / JSON</span>
+                    <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
+                  </div>
                 </button>
 
                 <button
                   onClick={() => setIsExportModalOpen(true)}
-                  className="flex flex-col items-center justify-center gap-2 py-4 bg-slate-50 dark:bg-slate-800 rounded-2xl hover:bg-primary-50 dark:hover:bg-primary-500/10 hover:text-primary-600 dark:hover:text-primary-400 transition-all group"
+                  className="w-full flex items-center justify-between p-3 px-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-b-[20px] transition-colors text-left group relative"
                 >
-                  <div className="p-2 bg-white dark:bg-slate-700 rounded-full shadow-sm group-hover:scale-110 transition-transform">
-                    <FileText className="w-4 h-4 text-slate-400 group-hover:text-primary-500" />
+                  {/* Indented Divider line bypassing the icon */}
+                  <div className="absolute top-0 left-[60px] right-0 border-t border-slate-100 dark:border-slate-800/80 pointer-events-none" />
+
+                  <div className="flex items-center gap-[18px]">
+                    <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors">
+                      <Download className="w-3.5 h-3.5" strokeWidth={1.5} />
+                    </div>
+                    <span className="text-xs font-normal text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.export', 'Export')}</span>
                   </div>
-                  <span className="text-[10px] font-medium tracking-wider">{t('settings.export', 'Export')}</span>
+                  <div className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500">
+                    <span className="text-xs font-normal">CSV / JSON</span>
+                    <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
+                  </div>
                 </button>
               </div>
             </div>
 
             {/* Log Management Section */}
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-4 rounded-[24px] space-y-4">
+            <div className="space-y-1.5">
               <h3 className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">{t('settings.log_management', 'Log Management')}</h3>
 
-              {/* Master Log Settings */}
-              <div className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800/80 p-3 rounded-2xl flex items-center justify-between group">
-                <div className="flex items-center gap-3">
-                  <div className="p-1.5 bg-white dark:bg-slate-850 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
-                    <FileText className="w-3.5 h-3.5" />
+              <div className="bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-[20px] shadow-sm flex flex-col">
+                {/* Master Log Settings */}
+                <div className={`w-full flex items-center justify-between p-3 px-4 group rounded-t-[20px] ${!(settings.masterLogEnabled ?? false) ? 'rounded-b-[20px]' : ''}`}>
+                  <div className="flex items-center gap-[18px]">
+                    <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
+                      <FileText className="w-3.5 h-3.5" strokeWidth={1.5} />
+                    </div>
+                    <span className="text-xs font-normal text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.master_log')}</span>
                   </div>
-                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.master_log')}</span>
+                  <div className="flex items-center gap-2">
+                    {(settings.masterLogEnabled ?? false) && window.electronAPI && (
+                      <button onClick={() => logger.openLogFile()} className="text-[9px] font-medium text-slate-400 hover:text-primary-500 transition-colors px-2">{t('settings.option.open_log')}</button>
+                    )}
+                    <button
+                      onClick={() => {
+                        const newValue = !(settings.masterLogEnabled ?? false);
+                        setSettings({ ...settings, masterLogEnabled: newValue });
+                        logger.setEnabled(newValue);
+                      }}
+                      className={`w-8 h-4 rounded-full relative transition-all ${settings.masterLogEnabled ?? false ? 'bg-primary-600/85' : 'bg-slate-200 dark:bg-slate-700'}`}
+                    >
+                      <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${(settings.masterLogEnabled ?? false) ? 'right-0.5' : 'left-0.5'}`} />
+                    </button>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  {(settings.masterLogEnabled ?? false) && window.electronAPI && (
-                    <button onClick={() => logger.openLogFile()} className="text-[9px] font-medium text-slate-400 hover:text-primary-500 transition-colors px-2">{t('settings.option.open_log')}</button>
-                  )}
+
+                {/* Recent Activity Button */}
+                {(settings.masterLogEnabled ?? false) && (
                   <button
-                    onClick={() => {
-                      const newValue = !(settings.masterLogEnabled ?? false);
-                      setSettings({ ...settings, masterLogEnabled: newValue });
-                      logger.setEnabled(newValue);
-                    }}
-                    className={`w-8 h-4 rounded-full relative transition-all ${settings.masterLogEnabled ?? false ? 'bg-primary-600' : 'bg-slate-200 dark:bg-slate-700'}`}
+                    onClick={() => setIsActivityModalOpen(true)}
+                    className="w-full flex items-center justify-between p-3 px-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors text-left group relative"
                   >
-                    <div className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${(settings.masterLogEnabled ?? false) ? 'right-0.5' : 'left-0.5'}`} />
+                    {/* Indented Divider */}
+                    <div className="absolute top-0 left-[60px] right-0 border-t border-slate-100 dark:border-slate-800/80 pointer-events-none" />
+
+                    <div className="flex items-center gap-[18px]">
+                      <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
+                        <Activity className="w-3.5 h-3.5" strokeWidth={1.5} />
+                      </div>
+                      <span className="text-xs font-normal text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.recent_activity')}</span>
+                    </div>
+                    <div className="p-1.5 rounded-lg text-slate-400">
+                      <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
+                    </div>
                   </button>
-                </div>
+                )}
+
+                {/* Clear Cache Button */}
+                {(settings.masterLogEnabled ?? false) && (
+                  <button
+                    onClick={() => setIsCacheConfirmOpen(true)}
+                    className="w-full flex items-center justify-between p-3 px-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-b-[20px] transition-colors text-left group relative"
+                  >
+                    {/* Indented Divider */}
+                    <div className="absolute top-0 left-[60px] right-0 border-t border-slate-100 dark:border-slate-800/80 pointer-events-none" />
+
+                    <div className="flex items-center gap-[18px]">
+                      <div className="p-1.5 rounded-lg text-rose-400 group-hover:text-rose-500 transition-colors">
+                        <Trash2 className="w-3.5 h-3.5" strokeWidth={1.5} />
+                      </div>
+                      <span className="text-xs font-normal text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.clear_cache', 'Clear App Cache')}</span>
+                    </div>
+                    <span className="text-[9px] font-medium uppercase text-rose-300 group-hover:text-rose-500 tracking-widest">{t('common.clear', 'Clean')}</span>
+                  </button>
+                )}
               </div>
-
-              {/* Recent Activity Button */}
-              {(settings.masterLogEnabled ?? false) && (
-                <div
-                  onClick={() => setIsActivityModalOpen(true)}
-                  className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-800/80 p-3 rounded-2xl flex items-center justify-between group cursor-pointer hover:border-primary-500/50 transition-all"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-1.5 bg-slate-50 dark:bg-slate-850 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
-                      <Activity className="w-3.5 h-3.5" />
-                    </div>
-                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.recent_activity')}</span>
-                  </div>
-                  <div className="p-1.5 bg-slate-50 dark:bg-slate-850 rounded-lg text-slate-400">
-                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
-                  </div>
-                </div>
-              )}
-
-              {/* Clear Cache Button */}
-              {(settings.masterLogEnabled ?? false) && (
-                <button
-                  onClick={() => setIsCacheConfirmOpen(true)}
-                  className="w-full flex items-center justify-between p-3 rounded-xl border border-rose-100 dark:border-rose-900/30 hover:bg-rose-50 dark:hover:bg-rose-900/10 transition-colors group bg-slate-50 dark:bg-slate-800/50"
-                >
-                  <div className="flex items-center gap-3">
-                    <div className="p-1.5 bg-rose-50 dark:bg-rose-900/20 rounded-lg text-rose-400 group-hover:text-rose-500 transition-colors">
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </div>
-                    <span className="text-xs font-medium text-slate-650 dark:text-slate-300 group-hover:text-rose-600 dark:group-hover:text-rose-400">{t('settings.clear_cache', 'Clear App Cache')}</span>
-                  </div>
-                  <span className="text-[9px] font-medium uppercase text-rose-300 group-hover:text-rose-500 tracking-widest">{t('common.clear', 'Clean')}</span>
-                </button>
-              )}
               {(settings.masterLogEnabled ?? false) && cacheMessage && (
-                <p className="text-[10px] font-medium text-center text-emerald-500 uppercase tracking-widest animate-in fade-in slide-in-from-bottom-1">
+                <p className="text-[10px] font-medium text-center text-emerald-500 uppercase tracking-widest animate-in fade-in slide-in-from-bottom-1 mt-1">
                   {cacheMessage}
                 </p>
               )}
@@ -1346,7 +1411,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
             <button
               onClick={() => setIsPasswordModalOpen(true)}
-              className="w-full py-3 bg-primary-50 dark:bg-primary-500/10 border border-primary-100 dark:border-primary-500/20 text-primary-600 dark:text-primary-400 text-[11px] font-medium rounded-2xl hover:bg-primary-100 transition-all flex items-center justify-center gap-2"
+              className="w-full py-3 bg-primary-50 dark:bg-primary-500/10 border border-primary-100 dark:border-primary-500/20 text-primary-600 dark:text-primary-400 text-[11px] font-normal rounded-2xl hover:bg-primary-100 transition-all flex items-center justify-center gap-2"
             >
               <Shield className="w-4 h-4" />
               {t('settings.change_password')}
@@ -1355,15 +1420,15 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
             {/* About Section */}
             <button
               onClick={() => setIsAboutModalOpen(true)}
-              className="w-full py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[24px] flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group shadow-sm"
+              className="w-full py-4 bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-[24px] flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group shadow-sm"
             >
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-500 group-hover:text-primary-500 transition-colors">
+                <div className="w-10 h-10 rounded-2xl flex items-center justify-center text-slate-500 group-hover:text-primary-500 transition-colors">
                   <Info className="w-5 h-5" />
                 </div>
                 <div className="text-left">
-                  <h3 className="text-xs font-medium tracking-widest text-slate-700 dark:text-slate-200">{t('about.title', 'About')}</h3>
-                  <p className="text-[10px] font-medium text-slate-400 group-hover:text-slate-500 dark:group-hover:text-slate-400 transition-colors mt-0.5">v{appVersion}</p>
+                  <h3 className="text-xs font-normal tracking-widest text-slate-700 dark:text-slate-200">{t('about.title', 'About')}</h3>
+                  <p className="text-[10px] font-normal text-slate-400 group-hover:text-slate-500 dark:group-hover:text-slate-400 transition-colors mt-0.5">v{appVersion}</p>
                 </div>
               </div>
               <div className="text-slate-300 dark:text-slate-700 group-hover:translate-x-1 transition-transform">
@@ -1516,7 +1581,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                       </button>
                       <button
                         type="submit"
-                        className="flex-1 py-3 bg-primary-600 hover:bg-primary-700 text-white text-[10px] font-medium rounded-xl hover:shadow-lg transition-all active:scale-95"
+                        className="flex-1 py-3 bg-primary-600/85 hover:bg-primary-600 text-white text-[10px] font-medium rounded-xl hover:shadow-lg transition-all active:scale-95"
                       >
                         {t('settings.biometric_modal.enable')}
                       </button>

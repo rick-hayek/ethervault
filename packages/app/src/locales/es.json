@@ -75,6 +75,7 @@
         "subtitle": "Gestione sus preferencias de seguridad y sincronización",
         "data_management": "Gestión de Datos",
         "log_management": "Gestión de Registros",
+        "preferences": "Preferencias",
         "import": "Importar",
         "sync_provider": "Proveedor de Sincronización",
         "updating": "Actualizando...",
@@ -82,21 +83,21 @@
             "reconnect": "Reanudar Conexión",
             "paused": "Pausado",
             "connected": "Conectado",
-            "connected_desc": "La bóveda se ha sincronizado de forma segura con {{provider}}.",
-            "connect_desc": "Conéctese a {{provider}} para habilitar la copia de seguridad y sincronización automáticas en la nube.",
+            "connected_desc": "La bóveda se sincroniza de forma segura con {{provider}}.",
+            "connect_desc": "Conéctate a {{provider}} para habilitar la copia de seguridad y sincronización automática en la nube.",
             "last_synced": "Última sincronización:",
             "syncing": "Sincronizando...",
-            "sync_now": "Sincronizar ahora",
+            "sync_now": "Sincronizar Ahora",
             "disconnect": "Desconectar",
             "connect_account": "Conectar Cuenta",
-            "connection_failed": "Error de conexión. Compruebe su red.",
+            "connection_failed": "Error de conexión. Por favor, comprueba tu red.",
             "unlock_premium": "Desbloquear con Premium"
         },
         "option": {
-            "biometric": "ID Biométrico",
+            "biometric": "Identificación Biométrica",
             "2fa": "Protección 2FA",
             "lock_timer": "Temporizador de Bloqueo",
-            "login_alerts": "Alertas de Inicio de Sesión",
+            "login_alerts": "Alertas de Inicio",
             "dark_mode": "Modo Oscuro",
             "language": "Idioma",
             "master_log": "Registro",
@@ -106,11 +107,13 @@
                 "5m": "5 MINS",
                 "15m": "15 MINS",
                 "30m": "30 MINS",
-                "1h": "1 HR"
+                "1h": "1 H"
             },
             "recent_activity": "Actividad Reciente",
             "appearance": "Apariencia",
-            "theme_color": "Color del Tema"
+            "theme_color": "Color del Tema",
+            "theme_mode": "Modo",
+            "theme_color_label": "Color"
         },
         "theme": {
             "system": "Sistema",

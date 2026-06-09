@@ -174,7 +174,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin, bioEnabled }) => 
 
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-700 text-white py-3.5 md:py-4 rounded-xl md:rounded-2xl font-medium text-sm md:text-base shadow-xl shadow-primary-500/20 transition-all active:scale-[0.98] hover:opacity-90"
+              className="w-full flex items-center justify-center gap-2 bg-primary-600/85 hover:bg-primary-600 text-white py-3.5 md:py-4 rounded-xl md:rounded-2xl font-medium text-sm md:text-base shadow-xl shadow-primary-500/20 transition-all active:scale-[0.98]"
             >
               {t('login.access_vault')}
               <ChevronRight className="w-4 h-4 md:w-5 md:h-5" />

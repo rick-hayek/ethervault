@@ -75,6 +75,7 @@
         "subtitle": "보안 및 동기화 환경설정 관리",
         "data_management": "데이터 관리",
         "log_management": "로그 관리",
+        "preferences": "환경 설정",
         "import": "가져오기",
         "sync_provider": "동기화 제공자",
         "updating": "업데이트 중...",
@@ -110,7 +111,9 @@
             },
             "recent_activity": "최근 활동",
             "appearance": "외관",
-            "theme_color": "테마 색상"
+            "theme_color": "테마 색상",
+            "theme_mode": "모드",
+            "theme_color_label": "색상"
         },
         "theme": {
             "system": "시스템",

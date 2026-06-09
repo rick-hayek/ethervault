@@ -75,6 +75,7 @@
         "subtitle": "Manage your security and synchronization preferences",
         "data_management": "Data Management",
         "log_management": "Log Management",
+        "preferences": "Preferences",
         "import": "Import",
         "sync_provider": "Sync Provider",
         "updating": "Updating...",
@@ -110,7 +111,9 @@
             },
             "recent_activity": "Recent Activity",
             "appearance": "Appearance",
-            "theme_color": "Theme Color"
+            "theme_color": "Theme Color",
+            "theme_mode": "Mode",
+            "theme_color_label": "Color"
         },
         "theme": {
             "system": "System",

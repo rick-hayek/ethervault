@@ -95,30 +95,26 @@ export const Layout: React.FC<LayoutProps> = ({
       id: 'vault',
       label: t('layout.nav.vault'),
       icon: Lock,
-      activeClass: 'bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400',
-      ringClass: 'ring-primary-500/20'
+      activeClass: 'text-primary-600 dark:text-primary-400',
     },
     // ... items
     {
       id: 'security',
       label: t('layout.nav.security'),
       icon: ShieldCheck,
-      activeClass: 'bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400',
-      ringClass: 'ring-primary-500/20'
+      activeClass: 'text-primary-600 dark:text-primary-400',
     },
     {
       id: 'generator',
       label: t('layout.nav.generator'),
       icon: KeyRound,
-      activeClass: 'bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400',
-      ringClass: 'ring-primary-500/20'
+      activeClass: 'text-primary-600 dark:text-primary-400',
     },
     {
       id: 'settings',
       label: t('layout.nav.settings'),
       icon: Settings,
-      activeClass: 'bg-primary-50 text-primary-600 dark:bg-primary-500/10 dark:text-primary-400',
-      ringClass: 'ring-primary-500/20'
+      activeClass: 'text-primary-600 dark:text-primary-400',
     },
   ];
 
@@ -147,11 +143,11 @@ export const Layout: React.FC<LayoutProps> = ({
               key={item.id}
               onClick={() => setView(item.id)}
               className={`w-full flex items-center justify-start gap-3 px-3 py-3 rounded-xl transition-all duration-300 group ${currentView === item.id
-                ? `${item.activeClass} font-normal shadow-sm ring-1 ${item.ringClass}`
+                ? `${item.activeClass} font-normal`
                 : 'text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'
                 }`}
             >
-              <item.icon className={`w-5 h-5 shrink-0 transition-transform duration-300 ${currentView === item.id ? 'scale-110' : 'group-hover:scale-110'}`} />
+              <item.icon className={`w-5 h-5 shrink-0 transition-transform duration-300 ${currentView === item.id ? 'scale-110' : 'group-hover:scale-110'}`} strokeWidth={1.2} />
               <span className="md:block truncate text-sm">{item.label}</span>
             </button>
           ))}
@@ -163,7 +159,7 @@ export const Layout: React.FC<LayoutProps> = ({
             className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
           >
             <div className="flex items-center gap-3">
-              {isDarkMode ? <Sun className="w-5 h-5 text-amber-400" /> : <Moon className="w-5 h-5 text-slate-600" />}
+              {isDarkMode ? <Sun className="w-5 h-5 text-amber-400" strokeWidth={1.2} /> : <Moon className="w-5 h-5 text-slate-600" strokeWidth={1.2} />}
               <span className="md:block text-[10px] font-medium text-slate-600 dark:text-slate-300 tracking-wider">{t('layout.appearance')}</span>
             </div>
           </button>
@@ -172,7 +168,7 @@ export const Layout: React.FC<LayoutProps> = ({
             onClick={onLock}
             className="w-full flex items-center justify-start gap-3 px-3 py-3 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-colors"
           >
-            <LogOut className="w-5 h-5 shrink-0" />
+            <LogOut className="w-5 h-5 shrink-0" strokeWidth={1.2} />
             <span className="md:block text-[10px] font-medium tracking-wider">{t('layout.lock_vault')}</span>
           </button>
         </div>

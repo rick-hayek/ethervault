@@ -505,7 +505,7 @@ export const PaywallModal: React.FC<PaywallModalProps> = ({ isOpen, onClose, onP
                   </button>
                   <button
                     type="submit"
-                    className="flex-1 py-2.5 bg-primary-600 hover:bg-primary-700 text-white text-xs font-semibold rounded-xl transition-all active:scale-[0.98]"
+                    className="flex-1 py-2.5 bg-primary-600/85 hover:bg-primary-600 text-white text-xs font-semibold rounded-xl transition-all active:scale-[0.98]"
                   >
                     {t('common.confirm', 'Verify License')}
                   </button>
