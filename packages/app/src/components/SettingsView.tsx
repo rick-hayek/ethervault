@@ -907,7 +907,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
   return (
     <div className="min-h-full">
-      <div className="sticky top-0 z-30 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm px-4 pt-[calc(env(safe-area-inset-top)+4px)] pb-2 md:sticky md:px-8 md:pt-8 md:pb-4 transition-all">
+      <div className="sticky top-0 z-30 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm px-4 pt-[calc(env(safe-area-inset-top)+4px)] pb-4 md:sticky md:px-8 md:pt-8 transition-all">
         <div className="flex items-center justify-between">
           <div className="block">
             <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
@@ -1108,7 +1108,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                             <button
                               onClick={() => handleSyncClick(p.id as CloudProvider)} // Will trigger connect flow
                               disabled={isSyncing}
-                              className="w-full py-3 bg-amber-500 text-white text-[11px] font-medium rounded-xl hover:bg-amber-600 transition-all active:scale-95 flex items-center justify-center gap-2 shadow-sm shadow-amber-500/20 disabled:opacity-50 disabled:cursor-wait"
+                              className="w-full py-2.5 bg-amber-500 text-white text-xs font-medium rounded-xl hover:bg-amber-600 transition-all active:scale-95 flex items-center justify-center gap-2 shadow-sm shadow-amber-500/20 disabled:opacity-50 disabled:cursor-wait"
                             >
                               {isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                               {t('settings.cloud.reconnect', 'Resume Connection')}
@@ -1117,12 +1117,12 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                             <button
                               onClick={() => handleSyncClick(p.id as CloudProvider)}
                               disabled={isSyncing}
-                              className="w-full py-3 bg-primary-50 dark:bg-primary-500/10 border border-primary-100 dark:border-primary-500/20 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-500/20 text-[11px] font-medium rounded-xl active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-wait shadow-sm hover:shadow-md"
+                              className="w-full py-2.5 bg-primary-50 dark:bg-primary-500/10 border border-primary-100 dark:border-primary-500/20 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-500/20 text-xs font-medium rounded-xl active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-wait shadow-sm hover:shadow-md"
                             >
                               {isSyncing ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
                               {!settings.isPremium ? (
                                 <>
-                                  <Lock className="w-3.5 h-3.5 mr-1" />
+                                  <Lock className="w-4 h-4 mr-1" />
                                   {t('settings.cloud.unlock_premium', 'Unlock with Premium')}
                                 </>
                               ) : (

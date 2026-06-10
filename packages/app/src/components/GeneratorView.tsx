@@ -41,20 +41,16 @@ export const GeneratorView: React.FC = () => {
     return Math.floor(length * Math.log2(poolSize));
   };
 
-  const CompactOption = ({ icon: Icon, label, value, onClick, index, total }: any) => (
+  const CompactOption = ({ icon: Icon, label, value, onClick }: any) => (
     <div
       onClick={onClick}
-      className={`w-full flex items-center justify-between p-3 px-4 group cursor-pointer active:bg-slate-50 dark:active:bg-slate-800/40 transition-colors text-left relative ${index === 0 ? 'rounded-t-[20px]' : ''
-        } ${index === total - 1 ? 'rounded-b-[20px]' : ''}`}
+      className="w-full flex items-center justify-between p-3 px-4 group cursor-pointer active:bg-slate-50 dark:active:bg-slate-800/40 transition-colors text-left"
     >
-      {index > 0 && (
-        <div className="absolute top-0 left-12 right-0 border-t border-slate-100 dark:border-slate-800/80 pointer-events-none" />
-      )}
       <div className="flex items-center gap-3">
         <div className="p-1.5 text-slate-400 group-hover:text-primary-500 transition-colors">
           <Icon className="w-3.5 h-3.5" />
         </div>
-        <span className="text-xs font-normal text-slate-700 dark:text-slate-300 tracking-tight">{label}</span>
+        <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">{label}</span>
       </div>
       <div className={`w-8 h-4 rounded-full relative transition-colors duration-200 ${value ? 'bg-primary-600/85' : 'bg-slate-200 dark:bg-slate-700'
         }`}>
@@ -66,14 +62,16 @@ export const GeneratorView: React.FC = () => {
 
   return (
     <div className="min-h-full">
-      <div className="sticky top-0 z-30 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm px-4 pt-[calc(env(safe-area-inset-top)+4px)] pb-2 md:sticky md:px-8 md:pt-8 md:pb-4 transition-all">
+      <div className="sticky top-0 z-30 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm px-4 pt-[calc(env(safe-area-inset-top)+4px)] pb-4 md:sticky md:px-8 md:pt-8 transition-all">
         <div className="flex items-center justify-between">
           <div className="block">
             <h1 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white">{t('generator.title')}</h1>
             <p className="hidden md:block text-xs text-slate-500 dark:text-slate-400 font-medium">{t('generator.subtitle')}</p>
           </div>
-          <div className="hidden md:block px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl text-xs font-medium tracking-wider border border-slate-200 dark:border-slate-700">
-            {t('generator.entropy', { bits: getEntropy() })}
+          <div className="hidden md:flex">
+            <div className="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl text-xs font-medium tracking-wider border border-slate-200 dark:border-slate-700 shadow-sm">
+              {t('generator.entropy', { bits: getEntropy() })}
+            </div>
           </div>
         </div>
       </div>
@@ -92,43 +90,58 @@ export const GeneratorView: React.FC = () => {
                   {password}
                 </span>
 
-                <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto w-full pt-4">
-                  <button
-                    onClick={generatePassword}
-                    className="flex-1 py-4 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary-300 dark:hover:border-primary-500/50 rounded-2xl font-medium text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 transition-all flex items-center justify-center gap-2 active:scale-[0.98] shadow-sm hover:shadow-md"
-                  >
-                    <RefreshCw className="w-5 h-5" />
-                    <span className="tracking-wider text-xs">{t('generator.actions.regenerate', 'Regenerate')}</span>
-                  </button>
-                  <button
-                    onClick={handleCopy}
-                    className="flex-1 py-4 bg-primary-50 dark:bg-primary-500/10 border border-primary-100 dark:border-primary-500/20 hover:border-primary-200 dark:hover:border-primary-500/30 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-500/20 rounded-2xl font-medium transition-all flex items-center justify-center gap-2 active:scale-[0.98] shadow-sm hover:shadow-md"
-                  >
-                    {copied ? <Check className="w-5 h-5" /> : <Copy className="w-5 h-5" />}
-                    <span className="tracking-wider text-xs">{copied ? t('common.copied', 'Copied') : t('common.copy', 'Copy')}</span>
-                  </button>
+                <div className="space-y-4 max-w-md mx-auto w-full">
+                  <div className="flex flex-col sm:flex-row gap-3 w-full">
+                    <button
+                      onClick={generatePassword}
+                      className="flex-1 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-primary-300 dark:hover:border-primary-500/50 rounded-2xl font-medium text-slate-600 dark:text-slate-300 hover:text-primary-600 dark:hover:text-primary-400 transition-all flex items-center justify-center gap-2 active:scale-[0.98] shadow-sm hover:shadow-md"
+                    >
+                      <RefreshCw className="w-4 h-4" />
+                      <span className="tracking-wider text-xs">{t('generator.actions.regenerate', 'Regenerate')}</span>
+                    </button>
+                    <button
+                      onClick={handleCopy}
+                      className="flex-1 py-2.5 bg-primary-50 dark:bg-primary-500/10 border border-primary-100 dark:border-primary-500/20 hover:border-primary-200 dark:hover:border-primary-500/30 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-500/20 rounded-2xl font-medium transition-all flex items-center justify-center gap-2 active:scale-[0.98] shadow-sm hover:shadow-md"
+                    >
+                      {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                      <span className="tracking-wider text-xs">{copied ? t('common.copied', 'Copied') : t('common.copy', 'Copy')}</span>
+                    </button>
+                  </div>
+                  <div className="md:hidden flex justify-center pt-1">
+                    <div className="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl text-[10px] md:text-xs font-medium tracking-wider border border-slate-200 dark:border-slate-700">
+                      {t('generator.entropy', { bits: getEntropy() })}
+                    </div>
+                  </div>
                 </div>
-
-
               </div>
             </div>
           </div>
 
           {/* Right Column: Configuration */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="bg-white dark:bg-slate-900 p-6 md:p-8 rounded-[32px] border-[0.5px] border-slate-200 dark:border-slate-800 shadow-sm h-full flex flex-col justify-center">
-              <div className="space-y-8">
-                <div>
-                  <div className="flex justify-between items-center mb-6">
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-xs font-medium uppercase tracking-[0.2em] text-slate-400 flex items-center gap-2">
-                        <Hash className="w-4 h-4" />
-                        {t('generator.length')}
-                      </label>
-                      <div className="md:hidden px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 rounded-lg text-[9px] font-medium tracking-wider border border-slate-200 dark:border-slate-700 w-fit">
-                        {t('generator.entropy', { bits: getEntropy() })}
-                      </div>
+          <div className="lg:col-span-5 flex flex-col">
+            <div className="bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 shadow-sm rounded-[24px] md:rounded-[32px] overflow-hidden flex flex-col justify-between h-full">
+              <div className="divide-y divide-slate-100 dark:divide-slate-800/80">
+                {/* Length row */}
+                <div className="w-full flex items-center justify-between p-3 px-4 gap-4">
+                  <div className="flex items-center gap-3 shrink-0">
+                    <div className="p-1.5 text-slate-400">
+                      <Hash className="w-3.5 h-3.5" />
                     </div>
+                    <span className="text-xs font-medium text-slate-700 dark:text-slate-300 tracking-tight">
+                      {t('generator.length')}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-3 flex-1 justify-end">
+                    <input
+                      type="range"
+                      min="4"
+                      max="128"
+                      value={length}
+                      onChange={(e) => setLength(parseInt(e.target.value))}
+                      onTouchStart={(e) => e.stopPropagation()}
+                      onTouchEnd={(e) => e.stopPropagation()}
+                      className="w-full max-w-[160px] md:max-w-[200px] h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full appearance-none cursor-pointer accent-primary-600/85 hover:accent-primary-500 transition-all touch-none"
+                    />
                     <input
                       type="number"
                       min="4"
@@ -138,64 +151,46 @@ export const GeneratorView: React.FC = () => {
                         const val = parseInt(e.target.value);
                         if (!isNaN(val)) setLength(Math.min(128, Math.max(1, val)));
                       }}
-                      className="text-lg font-normal text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-2xl tabular-nums w-20 text-center border border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-2 focus:ring-primary-500/50"
-                    />
-                  </div>
-
-                  <div className="h-10 flex items-center px-1">
-                    <input
-                      type="range" min="4" max="128" value={length}
-                      onChange={(e) => setLength(parseInt(e.target.value))}
-                      onTouchStart={(e) => e.stopPropagation()}
-                      onTouchEnd={(e) => e.stopPropagation()}
-                      className="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full appearance-none cursor-pointer accent-primary-600/85 hover:accent-primary-500 transition-all touch-none"
+                      className="text-xs font-normal text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800 px-2 py-1 rounded-xl tabular-nums w-16 text-center border-[0.5px] border-slate-200 dark:border-slate-700 focus:outline-none focus:ring-1 focus:ring-primary-500/50 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                   </div>
                 </div>
 
-                <div className="bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-[20px] shadow-sm flex flex-col">
-                  <CompactOption
-                    icon={Type}
-                    label={t('generator.options.uppercase')}
-                    value={options.uppercase}
-                    onClick={() => setOptions(prev => ({ ...prev, uppercase: !prev.uppercase }))}
-                    index={0}
-                    total={4}
-                  />
-                  <CompactOption
-                    icon={Type}
-                    label={t('generator.options.lowercase')}
-                    value={options.lowercase}
-                    onClick={() => setOptions(prev => ({ ...prev, lowercase: !prev.lowercase }))}
-                    index={1}
-                    total={4}
-                  />
-                  <CompactOption
-                    icon={Hash}
-                    label={t('generator.options.numbers')}
-                    value={options.numbers}
-                    onClick={() => setOptions(prev => ({ ...prev, numbers: !prev.numbers }))}
-                    index={2}
-                    total={4}
-                  />
-                  <CompactOption
-                    icon={Code}
-                    label={t('generator.options.symbols')}
-                    value={options.symbols}
-                    onClick={() => setOptions(prev => ({ ...prev, symbols: !prev.symbols }))}
-                    index={3}
-                    total={4}
-                  />
-                </div>
+                {/* Option Toggles */}
+                <CompactOption
+                  icon={Type}
+                  label={t('generator.options.uppercase')}
+                  value={options.uppercase}
+                  onClick={() => setOptions(prev => ({ ...prev, uppercase: !prev.uppercase }))}
+                />
+                <CompactOption
+                  icon={Type}
+                  label={t('generator.options.lowercase')}
+                  value={options.lowercase}
+                  onClick={() => setOptions(prev => ({ ...prev, lowercase: !prev.lowercase }))}
+                />
+                <CompactOption
+                  icon={Hash}
+                  label={t('generator.options.numbers')}
+                  value={options.numbers}
+                  onClick={() => setOptions(prev => ({ ...prev, numbers: !prev.numbers }))}
+                />
+                <CompactOption
+                  icon={Code}
+                  label={t('generator.options.symbols')}
+                  value={options.symbols}
+                  onClick={() => setOptions(prev => ({ ...prev, symbols: !prev.symbols }))}
+                />
+              </div>
 
-                <div className="pt-6 border-t border-slate-100 dark:border-slate-800 flex items-start gap-3">
-                  <div className="p-2 bg-primary-50 dark:bg-primary-900/20 rounded-full text-primary-500 shrink-0">
-                    <Info className="w-4 h-4" />
-                  </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed pt-1">
-                    {t('generator.info')}
-                  </p>
+              {/* Info Footer */}
+              <div className="p-4 bg-slate-50/50 dark:bg-slate-950/30 border-t border-slate-100 dark:border-slate-800/80 flex items-start gap-2.5 mt-auto">
+                <div className="text-primary-500 shrink-0 pt-0.5">
+                  <Info className="w-4 h-4" />
                 </div>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium leading-relaxed">
+                  {t('generator.info')}
+                </p>
               </div>
             </div>
           </div>

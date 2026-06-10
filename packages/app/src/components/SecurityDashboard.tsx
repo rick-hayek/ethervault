@@ -27,10 +27,10 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
 
   return (
     <div className="min-h-full">
-      <div className="sticky top-0 z-30 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm px-4 pt-[calc(env(safe-area-inset-top)+4px)] pb-2 md:sticky md:px-8 md:pt-8 md:pb-4 transition-all">
+      <div className="sticky top-0 z-30 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm px-4 pt-[calc(env(safe-area-inset-top)+4px)] pb-4 md:sticky md:px-8 md:pt-8 transition-all">
         <div className="flex items-center justify-between">
           <div className="block">
-            <h1 className="text-xl md:text-2xl font-normal tracking-tight text-slate-900 dark:text-white">{t('security.title')}</h1>
+            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{t('security.title')}</h1>
             <p className="hidden md:block text-slate-500 dark:text-slate-400 text-xs mt-0.5">{t('security.subtitle')}</p>
           </div>
           <button
@@ -70,7 +70,7 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
                   strokeDasharray={2 * Math.PI * 44}
                   strokeDashoffset={2 * Math.PI * 44 * (1 - audit.score / 100)}
                   strokeLinecap="round"
-                  className="text-primary-500 transition-all duration-1000 ease-out shadow-sm drop-shadow-md"
+                  className={`${audit.score >= 80 ? 'text-emerald-500' : audit.score >= 50 ? 'text-amber-500' : 'text-rose-500'} transition-all duration-1000 ease-out shadow-sm drop-shadow-md`}
                 />
               </svg>
               <div className="absolute text-center">
@@ -127,7 +127,7 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
               audit.alerts.map((alert, index) => (
                 <div key={index} className="p-4 flex items-center justify-between gap-3 group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className={`w-10 h-10 rounded-2xl flex items-center justify-center shrink-0 ${alert.severity === 'high' ? 'bg-rose-50 dark:bg-rose-500/10 text-rose-500' : 'bg-amber-50 dark:bg-amber-500/10 text-amber-500'
+                    <div className={`w-10 h-10 flex items-center justify-center shrink-0 ${alert.severity === 'high' ? 'text-rose-500' : 'text-amber-500'
                       }`}>
                       <AlertCircle className="w-5 h-5" />
                     </div>
@@ -173,7 +173,7 @@ export const SecurityDashboard: React.FC<SecurityDashboardProps> = ({ passwords,
               }
             }}
             disabled={isScanning}
-            className="w-full flex items-center justify-center gap-2 py-3 bg-primary-50 dark:bg-primary-500/10 border border-primary-100 dark:border-primary-500/20 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-500/20 rounded-2xl font-normal active:scale-95 transition-all disabled:opacity-50 shadow-sm hover:shadow-md"
+            className="w-full flex items-center justify-center gap-2 py-2.5 bg-primary-50 dark:bg-primary-500/10 border border-primary-100 dark:border-primary-500/20 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-500/20 rounded-2xl font-normal active:scale-95 transition-all disabled:opacity-50 shadow-sm hover:shadow-md"
           >
             <RefreshCcw className={`w-4 h-4 ${isScanning ? 'animate-spin' : ''}`} />
             <span className="tracking-wider text-xs">{isScanning ? t('security.scanning', 'Scanning...') : t('security.scan_full', 'Run Full Scan')}</span>

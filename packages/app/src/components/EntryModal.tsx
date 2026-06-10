@@ -221,11 +221,11 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
     return (
         <Portal>
             <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-end md:items-center justify-center p-0 md:p-4 animate-in fade-in duration-200">
-                <div className="bg-white dark:bg-slate-900 w-full md:max-w-lg h-[100dvh] md:h-auto md:max-h-[90vh] rounded-none md:rounded-[2rem] border-t md:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 md:zoom-in-95 duration-300 flex flex-col">
-                    <div className="px-6 md:px-8 pt-[calc(env(safe-area-inset-top)+4px)] pb-4 md:py-6 flex items-center justify-between bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-10 shrink-0">
+                <div className="bg-white dark:bg-slate-900 w-full md:max-w-lg h-[100dvh] md:h-auto md:max-h-[90vh] rounded-none md:rounded-[2rem] border-t-[0.5px] md:border-[0.5px] border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 md:zoom-in-95 duration-300 flex flex-col">
+                    <div className="px-5 md:px-6 pt-[calc(env(safe-area-inset-top)+4px)] pb-3 md:py-4 flex items-center justify-between bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-10 shrink-0">
                         <div className="flex items-center gap-3">
-                            <div className="hidden md:flex p-2 bg-slate-900 dark:bg-white rounded-xl">
-                                <Lock className="w-5 h-5 text-white dark:text-slate-900" />
+                            <div className="hidden md:flex p-1.5 bg-slate-900 dark:bg-white rounded-lg">
+                                <Lock className="w-4 h-4 text-white dark:text-slate-900" />
                             </div>
 
                             {/* Mobile Back Button */}
@@ -236,79 +236,78 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                             {/* Mobile Drag Handle */}
                             <div className="md:hidden w-12 h-1.5 bg-slate-200 dark:bg-slate-800 rounded-full mx-auto absolute left-0 right-0 top-3 pointer-events-none" />
 
-                            <h2 className="text-lg md:text-xl font-normal text-slate-900 dark:text-white md:pt-0">{entry ? t('vault.edit_credential') : t('vault.new_credential')}</h2>
+                            <h2 className="text-base md:text-lg font-normal text-slate-900 dark:text-white md:pt-0">{entry ? t('vault.edit_credential') : t('vault.new_credential')}</h2>
                         </div>
                         <button onClick={handleCancel} className="hidden md:block p-2 -mr-2 text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors bg-white/50 dark:bg-slate-800/50 rounded-full md:bg-transparent">
-                            <X className="w-6 h-6" />
+                            <X className="w-5 h-5" />
                         </button>
                     </div>
 
-                    <form onSubmit={handleSubmit} className="pt-4 px-6 pb-6 md:p-8 space-y-5 overflow-y-auto overscroll-contain pb-safe-area-bottom">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.title')}</label>
+                    <form onSubmit={handleSubmit} className="pt-2 px-5 pb-5 md:p-6 space-y-3.5 overflow-y-auto overscroll-contain pb-safe-area-bottom">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5">
+                            <div className="space-y-1">
+                                <label className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">{t('vault.entry.title')}</label>
                                 <input
                                     required
                                     value={formData.title}
                                     onChange={e => setFormData({ ...formData, title: e.target.value })}
-                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 px-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-normal shadow-sm"
+                                    className="w-full bg-slate-50 dark:bg-slate-950 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-xl py-2 px-3 outline-none focus:border-primary-500 transition-all text-sm text-slate-900 dark:text-white font-normal shadow-sm"
                                     placeholder={t('vault.entry.title_placeholder')}
                                 />
                             </div>
-                            <div className="space-y-2">
-                                <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.category')}</label>
+                            <div className="space-y-1">
+                                <label className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">{t('vault.entry.category')}</label>
                                 <CustomDropdown
                                     value={formData.category || 'All'}
                                     onChange={val => setFormData({ ...formData, category: val as Category })}
                                     options={categoryOptions}
                                     fullWidth={true}
-                                    buttonClassName="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 px-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-normal shadow-sm flex items-center justify-between text-left select-none"
-                                    menuClassName="absolute left-0 z-50 w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-xl overflow-hidden py-1 animate-in fade-in duration-150"
+                                    buttonClassName="w-full bg-slate-50 dark:bg-slate-950 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-xl py-2 px-3 outline-none focus:border-primary-500 transition-all text-sm text-slate-900 dark:text-white font-normal shadow-sm flex items-center justify-between text-left select-none"
+                                    menuClassName="absolute left-0 z-50 w-full bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800/80 rounded-2xl shadow-xl overflow-hidden py-1 animate-in fade-in duration-150"
                                 />
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.website')}</label>
+                        <div className="space-y-1">
+                            <label className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">{t('vault.entry.website')}</label>
                             <div className="relative">
-                                <Globe className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
                                 <input
                                     value={formData.website}
                                     onChange={e => setFormData({ ...formData, website: e.target.value })}
-                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-normal shadow-sm"
+                                    className="w-full bg-slate-50 dark:bg-slate-950 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-xl py-2 pl-9 pr-3 outline-none focus:border-primary-500 transition-all text-sm text-slate-900 dark:text-white font-normal shadow-sm"
                                     placeholder={t('vault.entry.website_placeholder')}
                                 />
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.username_email')}</label>
+                        <div className="space-y-1">
+                            <label className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">{t('vault.entry.username_email')}</label>
                             <div className="relative">
-                                <UserIcon className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
                                 <input
                                     value={formData.username}
                                     onChange={e => setFormData({ ...formData, username: e.target.value })}
-                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-12 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-normal shadow-sm"
+                                    className="w-full bg-slate-50 dark:bg-slate-950 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-xl py-2 pl-9 pr-10 outline-none focus:border-primary-500 transition-all text-sm text-slate-900 dark:text-white font-normal shadow-sm"
                                     placeholder={t('vault.entry.username_placeholder')}
                                 />
                                 <button
                                     type="button"
                                     onClick={() => {
                                         navigator.clipboard.writeText(formData.username || '');
-                                        // Optional: Show toast or feedback
                                     }}
-                                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-400 hover:text-primary-500 transition-colors"
+                                    className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-slate-400 hover:text-primary-500 transition-colors"
                                     title={t('common.copy')}
                                 >
-                                    <Copy className="w-4 h-4" />
+                                    <Copy className="w-3.5 h-3.5" />
                                 </button>
                             </div>
                         </div>
 
-                        <div className="space-y-2">
-                            <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">{t('vault.entry.password')}</label>
+                        <div className="space-y-1">
+                            <label className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">{t('vault.entry.password')}</label>
                             <div className="relative">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
                                 <input
                                     type={showPassword ? "text" : "password"}
                                     value={formData.password}
@@ -318,92 +317,92 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                             setFormData({ ...formData, password: val });
                                         }
                                     }}
-                                    className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3.5 pl-12 pr-20 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-mono shadow-sm"
+                                    className="w-full bg-slate-50 dark:bg-slate-950 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-xl py-2 pl-9 pr-16 outline-none focus:border-primary-500 transition-all text-sm text-slate-900 dark:text-white font-mono shadow-sm"
                                     placeholder={t('vault.entry.password_placeholder')}
                                 />
-                                <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
+                                <div className="absolute right-2.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="p-1.5 text-slate-400 hover:text-primary-500 transition-colors"
+                                        className="p-1 text-slate-400 hover:text-primary-500 transition-colors"
                                     >
-                                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                        {showPassword ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
                                     </button>
                                     <button
                                         type="button"
                                         onClick={() => {
                                             navigator.clipboard.writeText(formData.password || '');
                                         }}
-                                        className="p-1.5 text-slate-400 hover:text-primary-500 transition-colors"
+                                        className="p-1 text-slate-400 hover:text-primary-500 transition-colors"
                                         title={t('common.copy')}
                                     >
-                                        <Copy className="w-4 h-4" />
+                                        <Copy className="w-3.5 h-3.5" />
                                     </button>
                                 </div>
                             </div>
                         </div>
 
                         {/* Collapsible Additional Fields Section */}
-                        <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden">
+                        <div className="border-[0.5px] border-slate-200 dark:border-slate-800 rounded-[20px] overflow-hidden">
                             <button
                                 type="button"
                                 onClick={() => setShowAdditionalFields(!showAdditionalFields)}
-                                className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
+                                className="w-full flex items-center justify-between px-3.5 py-0 h-[38px] bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
                             >
-                                <span className="text-[10px] font-normal text-slate-400 uppercase tracking-widest">
+                                <span className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400">
                                     {t('vault.entry.additional_info', 'Additional Information')}
                                 </span>
                                 <ChevronDown className={`w-4 h-4 text-slate-400 transition-transform duration-200 ${showAdditionalFields ? 'rotate-180' : ''}`} />
                             </button>
 
                             <div className={`overflow-hidden transition-all duration-300 ease-in-out ${showAdditionalFields ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                                <div className="p-4 space-y-4 bg-slate-50/50 dark:bg-slate-950/50">
+                                <div className="p-3 space-y-3 bg-slate-50/50 dark:bg-slate-950/50">
                                     {/* Recovery Phone */}
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">
+                                    <div className="space-y-1">
+                                        <label className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">
                                             {t('vault.entry.recovery_phone', 'Recovery Phone')}
                                         </label>
                                         <div className="relative">
-                                            <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                            <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
                                             <input
                                                 type="tel"
                                                 value={formData.recoveryPhone || ''}
                                                 onChange={e => setFormData({ ...formData, recoveryPhone: e.target.value })}
-                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-normal shadow-sm"
+                                                className="w-full bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-xl py-2 pl-9 pr-3 outline-none focus:border-primary-500 transition-all text-sm text-slate-900 dark:text-white font-normal shadow-sm"
                                                 placeholder={t('vault.entry.recovery_phone_placeholder', '+1 234 567 8900')}
                                             />
                                         </div>
                                     </div>
 
                                     {/* Recovery Email */}
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">
+                                    <div className="space-y-1">
+                                        <label className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">
                                             {t('vault.entry.recovery_email', 'Recovery Email')}
                                         </label>
                                         <div className="relative">
-                                            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                            <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
                                             <input
                                                 type="email"
                                                 value={formData.recoveryEmail || ''}
                                                 onChange={e => setFormData({ ...formData, recoveryEmail: e.target.value })}
-                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-normal shadow-sm"
+                                                className="w-full bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-xl py-2 pl-9 pr-3 outline-none focus:border-primary-500 transition-all text-sm text-slate-900 dark:text-white font-normal shadow-sm"
                                                 placeholder={t('vault.entry.recovery_email_placeholder', 'backup@email.com')}
                                             />
                                         </div>
                                     </div>
 
                                     {/* Note */}
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] font-normal text-slate-400 uppercase tracking-widest px-1">
+                                    <div className="space-y-1">
+                                        <label className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">
                                             {t('vault.entry.note', 'Note')}
                                         </label>
                                         <div className="relative">
-                                            <MessageSquare className="absolute left-4 top-3.5 w-4 h-4 text-slate-400" />
+                                            <MessageSquare className="absolute left-3 top-3 w-3.5 h-3.5 text-slate-400" />
                                             <textarea
                                                 value={formData.note || ''}
                                                 onChange={e => setFormData({ ...formData, note: e.target.value })}
-                                                rows={3}
-                                                className="w-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl py-3 pl-12 pr-4 outline-none focus:border-primary-500 transition-all text-base md:text-sm text-slate-900 dark:text-white font-normal shadow-sm resize-none"
+                                                rows={2}
+                                                className="w-full bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-xl py-2 pl-9 pr-3 outline-none focus:border-primary-500 transition-all text-sm text-slate-900 dark:text-white font-normal shadow-sm resize-none"
                                                 placeholder={t('vault.entry.note_placeholder', 'Add notes or comments...')}
                                             />
                                         </div>
@@ -413,7 +412,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                         </div>
 
                         {/* Attachments Section */}
-                        <div className="border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden mt-4">
+                        <div className="border-[0.5px] border-slate-200 dark:border-slate-800 rounded-[20px] overflow-hidden mt-4">
                             <button
                                 type="button"
                                 onClick={() => {
@@ -423,14 +422,14 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                     }
                                     setShowAttachmentsSection(!showAttachmentsSection);
                                 }}
-                                className="w-full flex items-center justify-between px-4 py-3 bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
+                                className="w-full flex items-center justify-between px-3.5 py-0 h-[38px] bg-slate-50 dark:bg-slate-950 hover:bg-slate-100 dark:hover:bg-slate-900 transition-colors"
                             >
                                 <div className="flex items-center gap-2">
-                                    <span className="text-[10px] font-normal text-slate-400 uppercase tracking-widest">
+                                    <span className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400">
                                         {t('vault.entry.attachments', 'Attachments')}
                                     </span>
                                     {!isPremium && (
-                                        <span className="text-[7.5px] font-normal uppercase tracking-wider text-primary-400 border border-primary-500/30 px-1.5 py-0.5 rounded bg-primary-500/10 flex items-center gap-0.5 select-none shrink-0">
+                                        <span className="text-[7px] font-normal uppercase tracking-wider text-primary-400 border-[0.5px] border-primary-500/30 px-1.5 py-0.5 rounded bg-primary-500/10 flex items-center gap-0.5 select-none shrink-0">
                                             <Lock className="w-2 h-2 shrink-0" />
                                             PREMIUM
                                         </span>
@@ -442,11 +441,11 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                             </button>
 
                             {isPremium && showAttachmentsSection && (
-                                <div className="p-4 space-y-4 bg-slate-50/50 dark:bg-slate-950/50">
+                                <div className="p-3 space-y-3 bg-slate-50/50 dark:bg-slate-950/50">
                                     {formData.attachments && formData.attachments.length > 0 ? (
                                         <div className="space-y-2">
                                             {formData.attachments.map((att) => (
-                                                <div key={att.id} className="flex items-center justify-between p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/60 dark:border-slate-800/60 shadow-sm">
+                                                <div key={att.id} className="flex items-center justify-between p-2.5 bg-white dark:bg-slate-900 rounded-xl border-[0.5px] border-slate-200/60 dark:border-slate-800/60 shadow-sm">
                                                     <div className="flex items-center gap-3 min-w-0">
                                                         <FileText className="w-5 h-5 text-slate-400 shrink-0" />
                                                         <div className="min-w-0">
@@ -507,7 +506,7 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                         />
                                         <label
                                             htmlFor="attachment-file-input"
-                                            className="cursor-pointer w-full py-2.5 px-4 bg-white dark:bg-slate-900 border border-dashed border-slate-300 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-center gap-2 text-xs font-normal text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white"
+                                            className="cursor-pointer w-full py-2 px-4 bg-white dark:bg-slate-900 border-[0.5px] border-dashed border-slate-300 dark:border-slate-700 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors flex items-center justify-center gap-2 text-xs font-normal text-slate-600 dark:text-slate-300 hover:text-slate-800 dark:hover:text-white"
                                         >
                                             {isUploadingAttachment ? (
                                                 <Loader2 className="w-4 h-4 animate-spin text-slate-500" />
@@ -521,20 +520,20 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                             )}
                         </div>
 
-                        <div className="pt-6 flex gap-3 pb-8 md:pb-0">
+                        <div className="pt-4 flex gap-3 pb-6 md:pb-0">
                             {entry && showDeleteConfirm ? (
                                 <div className="flex-1 flex-row flex items-center gap-3 animate-in fade-in slide-in-from-bottom-2 duration-200">
                                     <button
                                         type="button"
                                         onClick={() => setShowDeleteConfirm(false)}
-                                        className="flex-1 px-4 py-4 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all text-sm font-normal"
+                                        className="flex-1 px-4 py-2.5 rounded-xl border-[0.5px] border-slate-200 dark:border-slate-700 text-slate-500 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all text-xs font-normal"
                                     >
                                         {t('common.cancel', 'Cancel')}
                                     </button>
                                     <button
                                         type="button"
                                         onClick={() => onDelete(entry.id)}
-                                        className="flex-1 px-4 py-4 rounded-xl bg-rose-500 text-white hover:bg-rose-600 transition-all text-sm font-normal shadow-lg shadow-rose-500/20"
+                                        className="flex-1 px-4 py-2.5 rounded-xl bg-rose-500 text-white hover:bg-rose-600 transition-all text-xs font-normal shadow-lg shadow-rose-500/20"
                                     >
                                         {t('common.confirm_delete', 'Delete')}
                                     </button>
@@ -545,23 +544,23 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                         <button
                                             type="button"
                                             onClick={() => setShowDeleteConfirm(true)}
-                                            className="flex items-center justify-center px-5 py-4 rounded-xl border border-rose-100 dark:border-rose-900/30 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all"
+                                            className="flex items-center justify-center px-4 py-2.5 rounded-xl border-[0.5px] border-rose-100 dark:border-rose-900/30 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all"
                                         >
-                                            <Trash2 className="w-5 h-5" />
+                                            <Trash2 className="w-4 h-4" />
                                         </button>
                                     )}
 
                                     <button
                                         type="button"
                                         onClick={handleCancel}
-                                        className="px-6 py-4 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-normal hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
+                                        className="px-5 py-2.5 rounded-xl border-[0.5px] border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 text-xs font-normal hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
                                     >
                                         {t('common.cancel', 'Cancel')}
                                     </button>
 
                                     <button
                                         type="submit"
-                                        className="flex-1 py-4 bg-primary-50 dark:bg-primary-500/10 border border-primary-100 dark:border-primary-500/20 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-500/20 rounded-xl font-normal shadow-sm hover:shadow-md active:scale-[0.98] transition-all"
+                                        className="flex-1 py-2.5 bg-primary-50 dark:bg-primary-500/10 border-[0.5px] border-primary-100 dark:border-primary-500/20 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-500/20 rounded-xl text-xs font-normal shadow-sm hover:shadow-md active:scale-[0.98] transition-all"
                                     >
                                         {entry ? t('vault.update') : t('vault.save')}
                                     </button>
@@ -575,9 +574,9 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
             {/* Preview Modal Overlay */}
             {previewData && (
                 <div className="fixed inset-0 bg-slate-950/80 backdrop-blur-md z-[110] flex items-center justify-center p-4 md:p-6 animate-in fade-in duration-200">
-                    <div className="bg-slate-900 border border-slate-800 w-full max-w-3xl h-[80vh] rounded-[2rem] shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-300">
+                    <div className="bg-slate-900 border-[0.5px] border-slate-800 w-full max-w-3xl h-[80vh] rounded-[2rem] shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-300">
                         {/* Header */}
-                        <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between shrink-0">
+                        <div className="px-6 py-4 border-b-[0.5px] border-slate-800 flex items-center justify-between shrink-0">
                             <div className="min-w-0">
                                 <h3 className="text-sm font-normal text-white truncate">{previewData.name}</h3>
                                 <p className="text-[10px] text-slate-400 truncate">{previewData.mimeType}</p>
@@ -600,13 +599,13 @@ export const EntryModal: React.FC<EntryModalProps> = ({ entry, onClose, onSave, 
                                 />
                             )}
                             {previewData.textContent !== undefined && (
-                                <pre className="w-full h-full overflow-auto text-left text-xs text-slate-300 font-mono p-4 bg-slate-900 rounded-xl border border-slate-800/50 whitespace-pre-wrap break-all select-text scrollbar-thin">
+                                <pre className="w-full h-full overflow-auto text-left text-xs text-slate-300 font-mono p-4 bg-slate-900 rounded-xl border-[0.5px] border-slate-800/50 whitespace-pre-wrap break-all select-text scrollbar-thin">
                                     {previewData.textContent}
                                 </pre>
                             )}
                             {previewData.isUnsupported && (
                                 <div className="text-center space-y-4 max-w-sm">
-                                    <div className="mx-auto w-12 h-12 bg-slate-900 border border-slate-800 rounded-2xl flex items-center justify-center text-slate-500">
+                                    <div className="mx-auto w-12 h-12 bg-slate-900 border-[0.5px] border-slate-800 rounded-2xl flex items-center justify-center text-slate-500">
                                         <FileText className="w-6 h-6" />
                                     </div>
                                     <div className="space-y-1">

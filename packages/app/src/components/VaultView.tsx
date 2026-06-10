@@ -24,9 +24,9 @@ const CloudSyncPrompt: React.FC<{
             <Sparkles className="w-5 h-5 animate-pulse" />
           </div>
           <div>
-            <h3 className="text-sm font-normal bg-gradient-to-r from-white via-amber-200 to-amber-100 bg-clip-text text-transparent flex items-center gap-1.5">
+            <h3 className="text-sm font-bold bg-gradient-to-r from-white via-amber-200 to-amber-100 bg-clip-text text-transparent flex items-center gap-1.5">
               {t('vault.sync_prompt.title_premium', 'Sync your vault across devices (Premium)')}
-              <span className="text-[7.5px] font-normal uppercase tracking-wider text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded bg-amber-500/10 flex items-center gap-0.5 select-none shrink-0">
+              <span className="text-[7.5px] font-extrabold uppercase tracking-wider text-amber-400 border border-amber-500/30 px-1.5 py-0.5 rounded bg-amber-500/10 flex items-center gap-0.5 select-none shrink-0">
                 <Lock className="w-2.5 h-2.5 shrink-0" />
                 PREMIUM
               </span>
@@ -39,13 +39,13 @@ const CloudSyncPrompt: React.FC<{
         <div className="flex items-center gap-3 w-full md:w-auto justify-end relative z-10">
           <button
             onClick={onDismiss}
-            className="px-4 py-2 text-xs font-normal text-slate-500 hover:text-slate-200 transition-colors uppercase tracking-wider"
+            className="px-4 py-2 text-xs font-medium text-slate-500 hover:text-slate-200 transition-colors uppercase tracking-wider"
           >
             {t('common.dismiss', 'Dismiss')}
           </button>
           <button
             onClick={onUnlockPremium}
-            className="px-5 py-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 rounded-xl text-xs font-normal transition-all shadow-md shadow-amber-500/20 active:scale-95 whitespace-nowrap"
+            className="px-5 py-2 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 rounded-xl text-xs font-medium transition-all shadow-md shadow-amber-500/20 active:scale-95 whitespace-nowrap"
           >
             {t('vault.sync_prompt.action_premium', 'Get Premium')}
           </button>
@@ -62,7 +62,7 @@ const CloudSyncPrompt: React.FC<{
           <Globe className="w-5 h-5" />
         </div>
         <div>
-          <h3 className="text-sm font-normal text-slate-900 dark:text-white flex items-center gap-1.5">
+          <h3 className="text-sm font-medium text-slate-900 dark:text-white flex items-center gap-1.5">
             {t('vault.sync_prompt.title', 'Sync your vault across devices')}
           </h3>
           <p className="text-xs text-slate-600 dark:text-slate-300 mt-0.5">
@@ -73,7 +73,7 @@ const CloudSyncPrompt: React.FC<{
       <div className="flex items-center gap-3 w-full md:w-auto justify-end">
         <button
           onClick={onDismiss}
-          className="px-4 py-2 text-xs font-normal text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors uppercase tracking-wider"
+          className="px-4 py-2 text-xs font-medium text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors uppercase tracking-wider"
         >
           {t('common.dismiss', 'Dismiss')}
         </button>
@@ -185,7 +185,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
   return (
     <div className="min-h-full">
       {/* Mobile Header */}
-      <header className="md:hidden flex items-center pt-[calc(env(safe-area-inset-top)+4px)] pb-4 bg-slate-50 dark:bg-slate-950 shrink-0 z-30 px-4 titlebar transition-all duration-300 min-h-[60px]">
+      <header className="sticky top-0 z-30 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm md:hidden flex items-center pt-[calc(env(safe-area-inset-top)+4px)] pb-4 px-4 titlebar transition-all duration-300 min-h-[60px]">
         {isSearchMode ? (
           <div className="flex-1 flex items-center gap-3 animate-in fade-in slide-in-from-right-5 duration-200">
             <Search className="w-5 h-5 text-slate-400 shrink-0" />
@@ -210,7 +210,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
         ) : (
           <>
             <div className="flex-1">
-              <h1 className="text-2xl font-normal tracking-tight text-slate-900 dark:text-white">{t('vault.title')}</h1>
+              <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{t('vault.title')}</h1>
               <p className="hidden text-slate-500 dark:text-slate-400 mt-0.5 text-xs">{t('vault.subtitle')}</p>
             </div>
             <div className="flex items-center gap-2">
@@ -237,7 +237,7 @@ export const VaultView: React.FC<VaultViewProps> = ({
       <div className="hidden md:flex flex-col gap-6 sticky top-0 z-20 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm px-8 pt-8 pb-4 transition-all">
         <div className="flex flex-row items-center justify-between">
           <div>
-            <h1 className="text-2xl font-normal tracking-tight text-slate-900 dark:text-white">{t('vault.title')}</h1>
+            <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">{t('vault.title')}</h1>
             <p className="text-slate-500 dark:text-slate-400 mt-0.5 text-xs">{t('vault.subtitle')}</p>
           </div>
           <button
@@ -320,14 +320,13 @@ export const VaultView: React.FC<VaultViewProps> = ({
                 <React.Fragment key={entry.id}>
                   {/* Desktop View Row */}
                   <div
-                    className={`hidden md:flex items-center justify-between p-4 px-6 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors group relative ${
-                      index === 0 ? 'rounded-t-[24px]' : ''
-                    } ${index === passwords.length - 1 ? 'rounded-b-[24px]' : ''}`}
+                    className={`hidden md:flex items-center justify-between p-4 px-6 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors group relative ${index === 0 ? 'rounded-t-[24px]' : ''
+                      } ${index === passwords.length - 1 ? 'rounded-b-[24px]' : ''}`}
                   >
                     {index > 0 && (
-                      <div className="absolute top-0 left-6 right-0 border-t border-slate-100 dark:border-slate-800/80 pointer-events-none" />
+                      <div className="absolute top-0 left-0 right-0 border-t border-slate-100 dark:border-slate-800/80 pointer-events-none" />
                     )}
-                    
+
                     {/* Column 1: Icon & Title */}
                     <div className="flex items-center gap-4 w-1/4 min-w-0">
                       <div className="w-10 h-10 rounded-xl bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-900 dark:text-slate-100 font-normal border border-slate-100 dark:border-slate-700 overflow-hidden shadow-sm shrink-0">
@@ -394,12 +393,11 @@ export const VaultView: React.FC<VaultViewProps> = ({
                   {/* Clean Mobile List Item */}
                   <div
                     onClick={() => onEdit(entry)}
-                    className={`md:hidden flex items-center justify-between p-4 active:bg-slate-50 dark:active:bg-slate-800/50 transition-colors cursor-pointer relative ${
-                      index === 0 ? 'rounded-t-[20px]' : ''
-                    } ${index === passwords.length - 1 ? 'rounded-b-[20px]' : ''}`}
+                    className={`md:hidden flex items-center justify-between p-4 active:bg-slate-50 dark:active:bg-slate-800/50 transition-colors cursor-pointer relative ${index === 0 ? 'rounded-t-[20px]' : ''
+                      } ${index === passwords.length - 1 ? 'rounded-b-[20px]' : ''}`}
                   >
                     {index > 0 && (
-                      <div className="absolute top-0 left-4 right-0 border-t border-slate-100 dark:border-slate-800/80 pointer-events-none" />
+                      <div className="absolute top-0 left-0 right-0 border-t border-slate-100 dark:border-slate-800/80 pointer-events-none" />
                     )}
                     <div className="flex items-center gap-4 flex-1 min-w-0">
                       {/* Icon */}
