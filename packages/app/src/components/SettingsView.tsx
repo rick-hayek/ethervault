@@ -1418,23 +1418,23 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
             </button>
 
             {/* About Section */}
-            <button
-              onClick={() => setIsAboutModalOpen(true)}
-              className="w-full py-4 bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-[24px] flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all group shadow-sm"
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-2xl flex items-center justify-center text-slate-500 group-hover:text-primary-500 transition-colors">
-                  <Info className="w-5 h-5" />
+            <div className="bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-[20px] shadow-sm flex flex-col">
+              <button
+                onClick={() => setIsAboutModalOpen(true)}
+                className="w-full flex items-center justify-between p-3 px-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-[20px] transition-colors text-left group"
+              >
+                <div className="flex items-center gap-[18px]">
+                  <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors">
+                    <Info className="w-3.5 h-3.5" strokeWidth={1.5} />
+                  </div>
+                  <span className="text-xs font-normal text-slate-700 dark:text-slate-300 tracking-tight">{t('about.title', 'About')}</span>
                 </div>
-                <div className="text-left">
-                  <h3 className="text-xs font-normal tracking-widest text-slate-700 dark:text-slate-200">{t('about.title', 'About')}</h3>
-                  <p className="text-[10px] font-normal text-slate-400 group-hover:text-slate-500 dark:group-hover:text-slate-400 transition-colors mt-0.5">v{appVersion}</p>
+                <div className="flex items-center gap-1.5 text-slate-400 dark:text-slate-500">
+                  <span className="text-[10px] font-normal group-hover:text-slate-500 dark:group-hover:text-slate-400 transition-colors">v{appVersion}</span>
+                  <ChevronRight className="w-4 h-4" strokeWidth={1.5} />
                 </div>
-              </div>
-              <div className="text-slate-300 dark:text-slate-700 group-hover:translate-x-1 transition-transform">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-              </div>
-            </button>
+              </button>
+            </div>
           </div>
         </div>
 

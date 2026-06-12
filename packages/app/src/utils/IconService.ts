@@ -1,3 +1,5 @@
+import { Capacitor, CapacitorHttp } from '@capacitor/core';
+import { logger } from './logger';
 
 export const IconService = {
     /**
@@ -12,7 +14,7 @@ export const IconService = {
             const url = urlStr.includes('://') ? urlStr : `https://${urlStr}`;
             domain = new URL(url).hostname;
         } catch (e) {
-            console.warn('[IconService] Invalid URL:', urlStr);
+            logger.warn('[IconService] Invalid URL:', urlStr);
             return null;
         }
 
@@ -26,16 +28,26 @@ export const IconService = {
         const fetchDirect = async (targetUrl: string) => {
             // Fallback for web (CORS might block this for external sites, but works for same-origin or permissive CORS)
             try {
-                const response = await fetch(targetUrl);
-                if (!response.ok) return null;
-                const blob = await response.blob();
-                return new Promise<string | null>((resolve) => {
-                    const reader = new FileReader();
-                    reader.onloadend = () => resolve(reader.result as string);
-                    reader.onerror = () => resolve(null);
-                    reader.readAsDataURL(blob);
-                });
+                if (Capacitor.isNativePlatform()) {
+                    const response = await CapacitorHttp.get({
+                        url: targetUrl,
+                        responseType: 'blob'
+                    });
+                    if (response.status !== 200 || !response.data) return null;
+                    return `data:image/x-icon;base64,${response.data}`;
+                } else {
+                    const response = await fetch(targetUrl);
+                    if (!response.ok) return null;
+                    const blob = await response.blob();
+                    return new Promise<string | null>((resolve) => {
+                        const reader = new FileReader();
+                        reader.onloadend = () => resolve(reader.result as string);
+                        reader.onerror = () => resolve(null);
+                        reader.readAsDataURL(blob);
+                    });
+                }
             } catch (e) {
+                logger.error('[IconService] fetchDirect error:', e);
                 return null;
             }
         };
@@ -47,39 +59,39 @@ export const IconService = {
         };
 
         // 1. Try Google S2 (Primary)
-        console.log('[IconService] Strategy 1: Google S2 for', domain);
+        logger.info('[IconService] Strategy 1: Google S2 for', domain);
         const googleUrl = `https://s2.googleusercontent.com/s2/favicons?domain=${domain}&sz=64`;
         const googleIcon = await performFetch(googleUrl);
         if (googleIcon) {
-            console.log('[IconService] Strategy 1 Success');
+            logger.info('[IconService] Strategy 1 Success');
             return googleIcon;
         }
 
         // 2. Try Direct /favicon.ico (Fallback)
-        console.log('[IconService] Strategy 2: Direct /favicon.ico for', domain);
+        logger.info('[IconService] Strategy 2: Direct /favicon.ico for', domain);
         const directUrl = `https://${domain}/favicon.ico`;
         const directIcon = await performFetch(directUrl);
         if (directIcon) {
-            console.log('[IconService] Strategy 2 Success');
+            logger.info('[IconService] Strategy 2 Success');
             return directIcon;
         }
 
         // 3. Try Redirect Resolution (Strategy 3)
         // If the domain itself redirects (e.g. gmail.com -> mail.google.com), try the resolved URL
         if (window.electronAPI?.utils?.getRedirectUrl) {
-            console.log('[IconService] Strategy 3: Checking for redirect...');
+            logger.info('[IconService] Strategy 3: Checking for redirect...');
             try {
                 const finalUrl = await window.electronAPI.utils.getRedirectUrl(`https://${domain}`);
                 if (finalUrl) {
                     const newDomain = new URL(finalUrl).hostname;
                     if (newDomain && newDomain !== domain) {
-                        console.log('[IconService] Redirect found:', domain, '->', newDomain);
+                        logger.info('[IconService] Redirect found:', domain, '->', newDomain);
 
                         // Retry Strategy 1 with new domain
                         const retryGoogleUrl = `https://s2.googleusercontent.com/s2/favicons?domain=${newDomain}&sz=64`;
                         const retryIcon = await performFetch(retryGoogleUrl);
                         if (retryIcon) {
-                            console.log('[IconService] Strategy 3 Success (Google S2 via Redirect)');
+                            logger.info('[IconService] Strategy 3 Success (Google S2 via Redirect)');
                             return retryIcon;
                         }
 
@@ -87,17 +99,17 @@ export const IconService = {
                         const retryDirectUrl = `https://${newDomain}/favicon.ico`;
                         const retryDirectIcon = await performFetch(retryDirectUrl);
                         if (retryDirectIcon) {
-                            console.log('[IconService] Strategy 3 Success (Direct via Redirect)');
+                            logger.info('[IconService] Strategy 3 Success (Direct via Redirect)');
                             return retryDirectIcon;
                         }
                     }
                 }
             } catch (e) {
-                console.warn('[IconService] Strategy 3 failed:', e);
+                logger.warn('[IconService] Strategy 3 failed:', e);
             }
         }
 
-        console.warn('[IconService] All strategies failed for', domain);
+        logger.warn('[IconService] All strategies failed for', domain);
         return null;
     }
 };

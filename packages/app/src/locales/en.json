@@ -383,7 +383,15 @@
         "faq_button": "View FAQ",
         "help_title": "Help & Support",
         "contact": "Contact Us",
-        "footer": "© 2026 EtherVault"
+        "footer": "© 2026 EtherVault",
+        "check_update": "Check for Updates",
+        "checking_update": "Checking...",
+        "update_available": "Click to update",
+        "updating": "Updating...",
+        "update_desc": "Get the latest features from Google Play",
+        "confirm_update": "Do you want to download and install the update now?",
+        "no_update": "You are already using the latest version.",
+        "check_update_failed": "Failed to check for updates."
     },
     "faq_view": {
         "title": "Frequently Asked Questions",

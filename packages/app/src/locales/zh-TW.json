@@ -311,7 +311,7 @@
         "warning_modal": {
             "title": "主密碼安全警告",
             "warning_title": "安全警告",
-            "warning_desc": "EtherVault 是一款零知識、本地優先的密碼管理器。我們不會在任何伺服器上儲存您的主密碼。如果您忘記了它，我們無法為您恢復或重置。請確保您已經記住 master password。",
+            "warning_desc": "EtherVault 是一款零知識、本地優先的密碼管理器。我們不會在任何伺服器上儲存您的主密碼。如果您忘記了它，我們無法為您恢復或重置。請確保您已經記住主密碼。",
             "action_back": "返回",
             "action_continue": "繼續"
         }
@@ -383,7 +383,15 @@
         "faq_button": "查看常見問題 (FAQ)",
         "help_title": "幫助與支援",
         "contact": "聯絡我們",
-        "footer": "© 2026 EtherVault"
+        "footer": "© 2026 EtherVault",
+        "check_update": "檢查更新",
+        "checking_update": "檢查中...",
+        "update_available": "點擊更新",
+        "updating": "更新中...",
+        "update_desc": "從Google Play獲取最新版本",
+        "confirm_update": "是否現在開始下載並更新？",
+        "no_update": "已經是最新版本。",
+        "check_update_failed": "檢查更新失敗。"
     },
     "faq_view": {
         "title": "常見問題",
@@ -391,7 +399,7 @@
         "sections": {
             "1": {
                 "title": "1. 主密碼安全",
-                "desc": "EtherVault 是一款零知識、本地優先的密碼管理器。我們不會在任何伺服器上儲存您的主密碼。如果您忘記了它，我們無法為您恢復或重置。請確保您已經記住 master password。"
+                "desc": "EtherVault 是一款零知識、本地優先的密碼管理器。我們不會在任何伺服器上儲存您的主密碼。如果您忘記了它，我們無法為您恢復或重置。請確保您已經記密碼。"
             },
             "2": {
                 "title": "2. 雲端同步與資料隱私",

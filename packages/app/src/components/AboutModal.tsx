@@ -1,6 +1,8 @@
 
-import React from 'react';
-import { X, Github, Mail, Shield, Info, ExternalLink, Globe, ChevronLeft, HelpCircle } from 'lucide-react';
+import React, { useState } from 'react';
+import { X, Github, Mail, Shield, Info, ExternalLink, Globe, ChevronLeft, HelpCircle, Download, RefreshCw, ChevronRight } from 'lucide-react';
+import { AppUpdate } from '@capawesome/capacitor-app-update';
+import { Capacitor } from '@capacitor/core';
 import { useTranslation } from 'react-i18next';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useBackHandler } from '../hooks/useBackHandler';
@@ -16,6 +18,39 @@ interface AboutModalProps {
 
 export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVersion, onOpenPrivacy, onOpenFAQ }) => {
     const { t } = useTranslation();
+    const isAndroid = Capacitor.getPlatform() === 'android';
+    const [updateState, setUpdateState] = useState<'idle' | 'checking' | 'available' | 'updating'>('idle');
+
+    const handleUpdateClick = async () => {
+        if (updateState === 'available') {
+            const confirmUpdate = window.confirm(t('about.confirm_update'));
+            if (confirmUpdate) {
+                setUpdateState('updating');
+                try {
+                    await AppUpdate.performImmediateUpdate();
+                } catch (e) {
+                    console.error('Update failed', e);
+                    setUpdateState('available');
+                }
+            }
+            return;
+        }
+
+        setUpdateState('checking');
+        try {
+            const result = await AppUpdate.getAppUpdateInfo();
+            if (result.updateAvailability === 2) {
+                setUpdateState('available');
+            } else {
+                setUpdateState('idle');
+                window.alert(t('about.no_update'));
+            }
+        } catch (e) {
+            console.error('Check update failed', e);
+            setUpdateState('idle');
+            window.alert(t('about.check_update_failed'));
+        }
+    };
 
     const openLink = (url: string) => {
         if (window.electronAPI) {
@@ -85,6 +120,28 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVers
 
                             {/* Links Section */}
                             <div className="space-y-3">
+                                {isAndroid && (
+                                    <button
+                                        onClick={handleUpdateClick}
+                                        disabled={updateState === 'checking' || updateState === 'updating'}
+                                        className="w-full flex items-center gap-4 p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-2xl hover:border-primary-500 dark:hover:border-primary-500 transition-all group text-left shadow-sm hover:shadow-md"
+                                    >
+                                        <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center text-primary-600 dark:text-primary-400 group-hover:bg-primary-50 dark:group-hover:bg-primary-500/20 transition-colors shadow-sm">
+                                            {updateState === 'checking' ? <RefreshCw size={20} className="animate-spin" /> : <Download size={20} />}
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                            <div className="text-slate-900 dark:text-white font-bold text-sm">
+                                                {updateState === 'idle' && t('about.check_update', 'Check for Updates')}
+                                                {updateState === 'checking' && t('about.checking_update', 'Checking...')}
+                                                {updateState === 'available' && <span className="text-primary-600 dark:text-primary-400">{t('about.update_available', 'Click to update')}</span>}
+                                                {updateState === 'updating' && t('about.updating', 'Updating...')}
+                                            </div>
+                                            <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">{t('about.update_desc', 'Get the latest features from Google Play')}</div>
+                                        </div>
+                                        <ChevronRight size={14} className="text-slate-400 group-hover:text-primary-500 transition-colors" />
+                                    </button>
+                                )}
+
                                 <button
                                     onClick={() => openLink('https://github.com/rick-hayek/ethervault')}
                                     className="w-full flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-primary-500 dark:hover:border-primary-500 transition-all group text-left shadow-sm hover:shadow-md"

@@ -30,25 +30,32 @@ export const PrivacyModal: React.FC<PrivacyModalProps> = ({ isOpen, onClose }) =
 
     if (!isOpen) return null;
 
+    const renderListItem = (text: string, idx: number) => {
+        const match = text.match(/^(.*?)(:|：)(.*)$/);
+        if (match) {
+            return (
+                <li key={idx} className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-1">
+                    <span className="text-slate-900 dark:text-white font-medium">{match[1]}{match[2]}</span>
+                    {match[3]}
+                </li>
+            );
+        }
+        return (
+            <li key={idx} className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-1">
+                {text}
+            </li>
+        );
+    };
+
     const renderPoints = (points: string[]) => (
         <ul className="list-disc pl-5 space-y-2 mt-2">
-            {points.map((point, idx) => (
-                <li key={idx} className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-1">
-                    <span className="text-slate-900 dark:text-white font-medium">{point.split(':')[0]}:</span>
-                    {point.split(':').slice(1).join(':')}
-                </li>
-            ))}
+            {points.map((point, idx) => renderListItem(point, idx))}
         </ul>
     );
 
     const renderList = (items: string[]) => (
         <ul className="list-disc pl-5 space-y-2 mt-2">
-            {items.map((item, idx) => (
-                <li key={idx} className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed pl-1">
-                    <span className="text-slate-900 dark:text-white font-medium">{item.split(':')[0]}:</span>
-                    {item.split(':').slice(1).join(':')}
-                </li>
-            ))}
+            {items.map((item, idx) => renderListItem(item, idx))}
         </ul>
     );
 

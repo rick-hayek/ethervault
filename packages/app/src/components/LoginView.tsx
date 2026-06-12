@@ -145,7 +145,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin, bioEnabled }) => 
                     }
                   }}
                   placeholder={t('login.unlock_placeholder')}
-                  autoFocus
+                  autoFocus={!bioEnabled}
                   className="w-full bg-slate-100 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl md:rounded-2xl py-3.5 md:py-4 pl-12 pr-12 outline-none focus:border-primary-500 transition-all text-slate-900 dark:text-white font-medium text-center tracking-widest text-sm md:text-base"
                 />
                 <button

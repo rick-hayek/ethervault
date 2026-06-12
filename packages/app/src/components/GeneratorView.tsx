@@ -80,12 +80,12 @@ export const GeneratorView: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Column: Result Card */}
           <div className="lg:col-span-7 flex flex-col">
-            <div className="bg-white dark:bg-slate-900 p-6 md:p-10 rounded-[32px] border-[0.5px] border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden flex-1 flex flex-col justify-center min-h-[300px]">
+            <div className="bg-white dark:bg-slate-900 p-5 md:p-10 rounded-[32px] border-[0.5px] border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden flex-1 flex flex-col justify-center min-h-[200px] md:min-h-[300px]">
               {/* Background Decoration */}
 
               <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 to-sky-500 rounded-[32px] blur-2xl opacity-5 dark:opacity-10 pointer-events-none" />
 
-              <div className="relative text-center space-y-8 z-10">
+              <div className="relative text-center space-y-5 md:space-y-8 z-10">
                 <span className="text-2xl md:text-3xl font-mono font-normal text-slate-800 dark:text-white line-clamp-2 break-all w-full px-4 tracking-tight leading-tight selection:bg-primary-500 selection:text-white min-h-[1.2em]">
                   {password}
                 </span>

@@ -311,7 +311,7 @@
         "warning_modal": {
             "title": "主密码安全警告",
             "warning_title": "安全警告",
-            "warning_desc": "EtherVault 是一款零知识、本地优先的密码管理器。我们不会在任何服务器上存储您的主密码。如果您忘记了它，我们无法为您恢复或重置。请确保您已经记住 master password。",
+            "warning_desc": "EtherVault 是一款零知识、本地优先的密码管理器。我们不会在任何服务器上存储您的主密码。如果您忘记了它，我们无法为您恢复或重置。请确保您已经记住主密码。",
             "action_back": "返回",
             "action_continue": "继续"
         }
@@ -358,10 +358,10 @@
         },
         "warning": {
             "title": "重要安全提示",
-            "message": "您即将启用与 {{providerName}} 的同步。为了在其他设备上访问您的保险库，您必须记住您的大师密码。",
+            "message": "您即将启用与 {{providerName}} 的同步。为了在其他设备上访问您的保险库，您必须记住您的主密码。",
             "alert": "如果您忘记密码，我们将无法为您找回。",
-            "confirm_password": "确认大师密码",
-            "placeholder": "输入大师密码以继续",
+            "confirm_password": "确认主密码",
+            "placeholder": "输入主密码以继续",
             "verifying": "正在验证...",
             "confirm": "我已了解，启用同步"
         }
@@ -383,7 +383,15 @@
         "faq_button": "查看常见问题 (FAQ)",
         "help_title": "帮助与支持",
         "contact": "联系我们",
-        "footer": "© 2026 EtherVault"
+        "footer": "© 2026 EtherVault",
+        "check_update": "检查更新",
+        "checking_update": "检查中...",
+        "update_available": "点击更新",
+        "updating": "更新中...",
+        "update_desc": "从Google Play获取最新版本",
+        "confirm_update": "是否现在开始下载并更新？",
+        "no_update": "已经是最新版本。",
+        "check_update_failed": "检查更新失败。"
     },
     "faq_view": {
         "title": "常见问题",
@@ -391,7 +399,7 @@
         "sections": {
             "1": {
                 "title": "1. 主密码安全",
-                "desc": "EtherVault 是一款零知识、本地优先的密码管理器。我们不会在任何服务器上存储您的主密码。如果您忘记了它，我们无法为您恢复或重置。请确保您已经记住 master password。"
+                "desc": "EtherVault 是一款零知识、本地优先的密码管理器。我们不会在任何服务器上存储您的主密码。如果您忘记了它，我们无法为您恢复或重置。请确保您已经记住主密码。"
             },
             "2": {
                 "title": "2. 云端同步与数据隐私",
