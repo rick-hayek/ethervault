@@ -19,7 +19,7 @@ interface AboutModalProps {
 export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVersion, onOpenPrivacy, onOpenFAQ }) => {
     const { t } = useTranslation();
     const isAndroid = Capacitor.getPlatform() === 'android';
-    const [updateState, setUpdateState] = useState<'idle' | 'checking' | 'available' | 'updating'>('idle');
+    const [updateState, setUpdateState] = useState<'idle' | 'checking' | 'available' | 'updating' | 'no_update' | 'error'>('idle');
 
     const handleUpdateClick = async () => {
         if (updateState === 'available') {
@@ -42,13 +42,13 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVers
             if (result.updateAvailability === 2) {
                 setUpdateState('available');
             } else {
-                setUpdateState('idle');
-                window.alert(t('about.no_update'));
+                setUpdateState('no_update');
+                setTimeout(() => setUpdateState('idle'), 2000);
             }
         } catch (e) {
             console.error('Check update failed', e);
-            setUpdateState('idle');
-            window.alert(t('about.check_update_failed'));
+            setUpdateState('error');
+            setTimeout(() => setUpdateState('idle'), 2000);
         }
     };
 
@@ -135,6 +135,8 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVers
                                                 {updateState === 'checking' && t('about.checking_update', 'Checking...')}
                                                 {updateState === 'available' && <span className="text-primary-600 dark:text-primary-400">{t('about.update_available', 'Click to update')}</span>}
                                                 {updateState === 'updating' && t('about.updating', 'Updating...')}
+                                                {updateState === 'no_update' && <span className="text-slate-600 dark:text-slate-400">{t('about.no_update', 'Up to date')}</span>}
+                                                {updateState === 'error' && <span className="text-red-500">{t('about.check_update_failed', 'Failed to check')}</span>}
                                             </div>
                                             <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">{t('about.update_desc', 'Get the latest features from Google Play')}</div>
                                         </div>
