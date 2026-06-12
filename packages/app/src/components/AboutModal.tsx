@@ -124,9 +124,9 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVers
                                     <button
                                         onClick={handleUpdateClick}
                                         disabled={updateState === 'checking' || updateState === 'updating'}
-                                        className="w-full flex items-center gap-4 p-4 bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800 rounded-2xl hover:border-primary-500 dark:hover:border-primary-500 transition-all group text-left shadow-sm hover:shadow-md"
+                                        className="w-full flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-primary-500 dark:hover:border-primary-500 transition-all group text-left shadow-sm hover:shadow-md"
                                     >
-                                        <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center text-primary-600 dark:text-primary-400 group-hover:bg-primary-50 dark:group-hover:bg-primary-500/20 transition-colors shadow-sm">
+                                        <div className="flex items-center justify-center text-slate-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors w-8">
                                             {updateState === 'checking' ? <RefreshCw size={20} className="animate-spin" /> : <Download size={20} />}
                                         </div>
                                         <div className="flex-1 min-w-0">
@@ -146,7 +146,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVers
                                     onClick={() => openLink('https://github.com/rick-hayek/ethervault')}
                                     className="w-full flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-primary-500 dark:hover:border-primary-500 transition-all group text-left shadow-sm hover:shadow-md"
                                 >
-                                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-900 dark:text-white group-hover:bg-primary-50 dark:group-hover:bg-primary-500/20 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors shadow-sm">
+                                    <div className="flex items-center justify-center text-slate-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors w-8">
                                         <Github size={20} />
                                     </div>
                                     <div className="flex-1 min-w-0">
@@ -160,7 +160,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVers
                                     onClick={onOpenFAQ}
                                     className="w-full flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-primary-500 dark:hover:border-primary-500 transition-all group text-left shadow-sm hover:shadow-md"
                                 >
-                                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-900 dark:text-white group-hover:bg-primary-50 dark:group-hover:bg-primary-500/20 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors shadow-sm">
+                                    <div className="flex items-center justify-center text-slate-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors w-8">
                                         <HelpCircle size={20} />
                                     </div>
                                     <div className="flex-1 min-w-0">
@@ -174,7 +174,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVers
                                     onClick={() => openLink(`mailto:${import.meta.env.VITE_CONTACT_EMAIL}`)}
                                     className="w-full flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 rounded-2xl hover:border-primary-500 dark:hover:border-primary-500 transition-all group text-left shadow-sm hover:shadow-md"
                                 >
-                                    <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-800 flex items-center justify-center text-slate-900 dark:text-white group-hover:bg-primary-50 dark:group-hover:bg-primary-500/20 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors shadow-sm">
+                                    <div className="flex items-center justify-center text-slate-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors w-8">
                                         <Mail size={20} />
                                     </div>
                                     <div className="flex-1 min-w-0">
