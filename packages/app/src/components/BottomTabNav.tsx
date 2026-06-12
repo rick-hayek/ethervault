@@ -44,29 +44,32 @@ export const BottomTabNav: React.FC<BottomTabNavProps> = ({ currentView, setView
             <button
                 key={item.id}
                 onClick={() => setView(item.id)}
-                className={`relative flex flex-col items-center justify-center w-12 h-12 rounded-2xl transition-all duration-300 ${isActive ? item.activeClass : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
+                className={`relative flex flex-col items-center justify-center transition-all duration-300 ease-out ${isActive
+                    ? 'w-[76px] h-14 bg-black/5 dark:bg-white/10 rounded-full text-primary-600 dark:text-primary-400'
+                    : 'w-14 h-14 text-slate-800 dark:text-slate-300'
                     }`}
             >
-                <div className={`p-1.5 rounded-xl transition-all duration-300 ${isActive ? 'scale-110' : ''}`}>
-                    <item.icon className="w-5 h-5" strokeWidth={1.2} />
+                <div className={`transition-all duration-300 flex items-center justify-center ${isActive ? '-translate-y-2' : ''}`}>
+                    <item.icon className="w-6 h-6" strokeWidth={1.2} />
                 </div>
-                <span className={`text-[9px] font-normal uppercase tracking-wider transition-all duration-300 ${isActive ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 absolute bottom-2'
-                    }`}>
-                    {item.label}
-                </span>
+                {isActive && (
+                    <span className="absolute bottom-[6px] text-[10px] font-normal tracking-wide">
+                        {item.label}
+                    </span>
+                )}
             </button>
         );
     };
 
     return (
-        <div className="md:hidden fixed bottom-0 left-0 right-0 z-40 px-4 pb-2 pt-2 bg-slate-50/80 dark:bg-slate-950/80 border-t border-slate-200/60 dark:border-slate-800/50 backdrop-blur-xl safe-area-bottom">
-            <nav className="flex items-center justify-between max-w-sm mx-auto">
+        <div className="md:hidden fixed bottom-6 left-5 right-5 z-40 pointer-events-none pb-safe-area-bottom">
+            <nav className="pointer-events-auto flex items-center justify-between px-2 py-2 bg-white/20 dark:bg-slate-900/20 backdrop-blur-2xl rounded-full shadow-[0_12px_40px_rgb(0,0,0,0.12)] dark:shadow-[0_12px_40px_rgb(0,0,0,0.4)] border border-slate-200/50 dark:border-slate-800/50">
                 {navItems.slice(0, 2).map(renderNavItem)}
 
                 {onAddClick && (
                     <button
                         onClick={onAddClick}
-                        className="flex items-center justify-center w-12 h-12 rounded-full bg-primary-50 dark:bg-primary-500/10 border border-primary-100 dark:border-primary-500/20 text-primary-600 dark:text-primary-400 hover:bg-primary-100 dark:hover:bg-primary-500/20 shadow-sm hover:shadow-md active:scale-95 transition-all"
+                        className="flex items-center justify-center w-14 h-14 rounded-full bg-primary-500/15 dark:bg-primary-400/20 text-primary-600 dark:text-primary-400 shadow-sm active:scale-95 transition-all mx-1"
                     >
                         <Plus className="w-7 h-7" strokeWidth={1.2} />
                     </button>
