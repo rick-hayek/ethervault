@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { X, Github, Mail, Shield, Info, ExternalLink, Globe, ChevronLeft, HelpCircle, Download, RefreshCw, ChevronRight } from 'lucide-react';
+import { X, Github, Mail, Shield, Info, ExternalLink, Globe, ChevronLeft, HelpCircle, Download, RefreshCw, ChevronRight, Check } from 'lucide-react';
 import { AppUpdate } from '@capawesome/capacitor-app-update';
 import { Capacitor } from '@capacitor/core';
 import { useTranslation } from 'react-i18next';
@@ -135,7 +135,12 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVers
                                                 {updateState === 'checking' && t('about.checking_update', 'Checking...')}
                                                 {updateState === 'available' && <span className="text-primary-600 dark:text-primary-400">{t('about.update_available', 'Click to update')}</span>}
                                                 {updateState === 'updating' && t('about.updating', 'Updating...')}
-                                                {updateState === 'no_update' && <span className="text-slate-600 dark:text-slate-400">{t('about.no_update', 'Up to date')}</span>}
+                                                {updateState === 'no_update' && (
+                                                    <span className="text-slate-600 dark:text-slate-400 inline-flex items-center gap-1">
+                                                        <Check size={16} className="text-green-500 dark:text-green-400" />
+                                                        {t('about.no_update', 'Up to date')}
+                                                    </span>
+                                                )}
                                                 {updateState === 'error' && <span className="text-red-500">{t('about.check_update_failed', 'Failed to check')}</span>}
                                             </div>
                                             <div className="text-xs text-slate-500 dark:text-slate-400 mt-0.5 truncate">{t('about.update_desc', 'Get the latest features from Google Play')}</div>
