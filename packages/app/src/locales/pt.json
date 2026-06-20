@@ -383,7 +383,15 @@
         "faq_button": "Ver FAQ",
         "help_title": "Ajuda & Suporte",
         "contact": "Fale Conosco",
-        "footer": "© 2026 EtherVault"
+        "footer": "© 2026 EtherVault",
+        "no_update": "Já está atualizado",
+        "check_update_failed": "Falha ao verificar atualizações",
+        "check_update": "Verificar atualizações",
+        "checking_update": "Verificando...",
+        "update_available": "Toque para atualizar",
+        "updating": "Atualizando...",
+        "update_desc": "Obtenha os recursos mais recentes no Google Play",
+        "confirm_update": "Deseja baixar e instalar a atualização agora?"
     },
     "faq_view": {
         "title": "Perguntas Frequentes",
@@ -414,11 +422,68 @@
                 "method2_steps": [
                     "Certifique-se de ter pelo menos uma senha no cofre local.",
                     "Vá em Ajustes > Provedor de sincronização e reconecte.",
-                    "Escolha 'Usar Local' para substituir os dados na nuvem com suas senhas atuais."
+                    "Escolha 'Usar Local' para substituir os dados na nuvem com suas senhas atuais.",
+                    "Selecione 'Usar apenas local' para substituir o cofre na nuvem pela sua senha e configurações locais atuais."
                 ]
             }
         },
         "footer": "Central de Ajuda do EtherVault — Mantenha seu cofre sempre seguro."
+    },
+    "terms_view": {
+        "title": "Termos de Serviço",
+        "last_updated": "Última atualização: 15 de junho de 2026",
+        "intro": "Ao utilizar o EtherVault, concorda com estes termos.",
+        "sections": {
+            "1": {
+                "title": "1. Serviço",
+                "desc": "Gestor de senhas."
+            },
+            "2": {
+                "title": "2. Zero-Knowledge",
+                "master_password_title": "2.1 Senha Mestre",
+                "master_password_desc": "Irrecuperável em caso de perda.",
+                "data_security_title": "2.2 Segurança",
+                "data_security_desc": "Encriptação local AES-256."
+            },
+            "3": {
+                "title": "3. Nuvem",
+                "desc": "Sincronização opcional.",
+                "points": [
+                    "Nós não hospedamos.",
+                    "Termos do provedor aplicam-se.",
+                    "Criptografado antes do upload."
+                ]
+            },
+            "4": {
+                "title": "4. Premium",
+                "desc": "Assinaturas opcionais.",
+                "points": [
+                    "Ligado anonimamente.",
+                    "Restauração possível.",
+                    "Reembolso via Loja."
+                ]
+            },
+            "5": {
+                "title": "5. Privacidade",
+                "desc": "Consulte a Política de Privacidade."
+            },
+            "6": {
+                "title": "6. Licença",
+                "desc": "MIT."
+            },
+            "7": {
+                "title": "7. Responsabilidade",
+                "desc": "Fornecido 'tal como está'."
+            },
+            "8": {
+                "title": "8. Mudanças",
+                "desc": "Podem ser alterados."
+            },
+            "9": {
+                "title": "9. Contato",
+                "desc": "Via GitHub."
+            }
+        }
     },
     "privacy_view": {
         "title": "Política de Privacidade",
@@ -438,7 +503,8 @@
                 "desc": "A sincronização é opcional e realizada na sua própria conta na nuvem.",
                 "points": [
                     "Criptografia antes do envio: Os dados são criptografados localmente ANTES do upload.",
-                    "Controle do usuário: Você decide se deseja ativar a sincronização."
+                    "Controle do usuário: Você decide se deseja ativar a sincronização.",
+                    "Políticas de Terceiros: Os dados armazenados no seu provedor de nuvem estão sujeitos à política de privacidade e aos termos de serviço desse provedor."
                 ]
             },
             "3": {
@@ -480,7 +546,8 @@
                 "title": "8. Contato",
                 "desc": "Qualquer dúvida, fale conosco através do GitHub."
             }
-        }
+        },
+        "footer": "EtherVault — Seu código, seus dados, seu cofre."
     },
     "premium": {
         "paywall": {

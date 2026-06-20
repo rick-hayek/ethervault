@@ -383,7 +383,15 @@
         "faq_button": "Ver FAQ",
         "help_title": "Ayuda y Soporte",
         "contact": "Contacto",
-        "footer": "© 2026 EtherVault"
+        "footer": "© 2026 EtherVault",
+        "no_update": "Ya está actualizado",
+        "check_update_failed": "Error al buscar actualizaciones",
+        "check_update": "Buscar actualizaciones",
+        "checking_update": "Buscando...",
+        "update_available": "Toque para actualizar",
+        "updating": "Actualizando...",
+        "update_desc": "Obtenga las últimas funciones de Google Play",
+        "confirm_update": "¿Desea descargar e instalar la actualización ahora?"
     },
     "faq_view": {
         "title": "Preguntas Frecuentes",
@@ -414,11 +422,68 @@
                 "method2_steps": [
                     "Asegúrese de tener al menos una credencial en su bóveda local.",
                     "Vaya a Ajustes > Proveedor de sincronización y vuelva a conectar.",
-                    "Seleccione 'Usar Local' para sobrescribir los datos de la nube con su contraseña y ajustes actuales."
+                    "Seleccione 'Usar Local' para sobrescribir los datos de la nube con su contraseña y ajustes actuales.",
+                    "Seleccione 'Usar solo local' para sobrescribir la bóveda en la nube con su contraseña y configuración local actual."
                 ]
             }
         },
         "footer": "Centro de Ayuda de EtherVault — Mantenga su bóveda segura, siempre."
+    },
+    "terms_view": {
+        "title": "Términos de servicio",
+        "last_updated": "Última actualización: 15 de junio de 2026",
+        "intro": "Al usar EtherVault, acepta estar sujeto a estos Términos de servicio.",
+        "sections": {
+            "1": {
+                "title": "1. Descripción del servicio",
+                "desc": "EtherVault es un administrador de contraseñas multiplataforma."
+            },
+            "2": {
+                "title": "2. Arquitectura de conocimiento cero",
+                "master_password_title": "2.1 Contraseña maestra",
+                "master_password_desc": "Si olvida su contraseña maestra, no podemos recuperar sus datos.",
+                "data_security_title": "2.2 Seguridad",
+                "data_security_desc": "Sus datos se encriptan localmente con AES-256."
+            },
+            "3": {
+                "title": "3. Sincronización",
+                "desc": "Ofrecemos sincronización opcional en la nube.",
+                "points": [
+                    "No alojamos sus datos.",
+                    "Se aplican los términos de su proveedor de nube.",
+                    "Los datos se encriptan antes de subirse."
+                ]
+            },
+            "4": {
+                "title": "4. Premium",
+                "desc": "Ofrecemos funciones Premium opcionales.",
+                "points": [
+                    "Vinculación anónima al dispositivo.",
+                    "Restaurar compras disponible.",
+                    "Reembolsos gestionados por la tienda."
+                ]
+            },
+            "5": {
+                "title": "5. Privacidad",
+                "desc": "Revise nuestra Política de Privacidad."
+            },
+            "6": {
+                "title": "6. Licencia",
+                "desc": "El código fuente está bajo licencia MIT."
+            },
+            "7": {
+                "title": "7. Limitación de responsabilidad",
+                "desc": "La app se proporciona 'tal cual', sin garantías."
+            },
+            "8": {
+                "title": "8. Modificaciones",
+                "desc": "Podemos modificar estos términos en cualquier momento."
+            },
+            "9": {
+                "title": "9. Contacto",
+                "desc": "Contáctenos vía GitHub."
+            }
+        }
     },
     "privacy_view": {
         "title": "Política de Privacidad",
@@ -438,7 +503,8 @@
                 "desc": "La sincronización es opcional y se realiza directamente en su propia cuenta de la nube.",
                 "points": [
                     "Cifrado antes de la sincronización: Todos los datos se cifran localmente ANTES de subirse a la nube.",
-                    "Control del usuario: La sincronización es opcional y debe ser activada por usted."
+                    "Control del usuario: La sincronización es opcional y debe ser activada por usted.",
+                    "Políticas de terceros: los datos almacenados en su proveedor de la nube están sujetos a la política de privacidad y los términos de servicio de ese proveedor."
                 ]
             },
             "3": {
@@ -480,7 +546,8 @@
                 "title": "8. Contacto",
                 "desc": "Si tiene preguntas, puede contactarnos a través de GitHub."
             }
-        }
+        },
+        "footer": "EtherVault — Su código, sus datos, su bóveda."
     },
     "premium": {
         "paywall": {

@@ -383,7 +383,15 @@
         "faq_button": "Voir la FAQ",
         "help_title": "Aide & Support",
         "contact": "Contactez-nous",
-        "footer": "© 2026 EtherVault"
+        "footer": "© 2026 EtherVault",
+        "no_update": "Déjà à jour",
+        "check_update_failed": "Échec de la recherche de mises à jour",
+        "check_update": "Rechercher des mises à jour",
+        "checking_update": "Recherche...",
+        "update_available": "Appuyez pour mettre à jour",
+        "updating": "Mise à jour...",
+        "update_desc": "Obtenez les dernières fonctionnalités sur Google Play",
+        "confirm_update": "Voulez-vous télécharger et installer la mise à jour maintenant ?"
     },
     "faq_view": {
         "title": "Foire Aux Questions",
@@ -414,11 +422,68 @@
                 "method2_steps": [
                     "Assurez-vous d'avoir au moins un identifiant local.",
                     "Allez dans Paramètres > Fournisseur de synchro, et reconnectez.",
-                    "Sélectionnez 'Utiliser le Coffre Local' pour écraser les données du cloud."
+                    "Sélectionnez 'Utiliser le Coffre Local' pour écraser les données du cloud.",
+                    "Sélectionnez 'Utiliser uniquement local' pour écraser le coffre-fort cloud avec votre mot de passe et vos paramètres locaux actuels."
                 ]
             }
         },
         "footer": "Centre d'aide EtherVault — Gardez votre coffre toujours sécurisé."
+    },
+    "terms_view": {
+        "title": "Conditions d'utilisation",
+        "last_updated": "Dernière mise à jour : 15 juin 2026",
+        "intro": "En utilisant EtherVault, vous acceptez ces conditions d'utilisation.",
+        "sections": {
+            "1": {
+                "title": "1. Description du service",
+                "desc": "EtherVault est un gestionnaire de mots de passe."
+            },
+            "2": {
+                "title": "2. Architecture Zéro-Connaissance",
+                "master_password_title": "2.1 Mot de passe maître",
+                "master_password_desc": "Si vous l'oubliez, nous ne pourrons pas récupérer vos données.",
+                "data_security_title": "2.2 Sécurité",
+                "data_security_desc": "Chiffrement AES-256 local."
+            },
+            "3": {
+                "title": "3. Synchronisation Cloud",
+                "desc": "Synchronisation optionnelle.",
+                "points": [
+                    "Données chiffrées avant envoi.",
+                    "Soumis aux conditions de votre cloud.",
+                    "Nous n'hébergeons rien."
+                ]
+            },
+            "4": {
+                "title": "4. Premium",
+                "desc": "Abonnements optionnels.",
+                "points": [
+                    "Lié anonymement.",
+                    "Restauration possible.",
+                    "Remboursement via le Store."
+                ]
+            },
+            "5": {
+                "title": "5. Confidentialité",
+                "desc": "Voir notre politique de confidentialité."
+            },
+            "6": {
+                "title": "6. Licence",
+                "desc": "Licence MIT pour le code source."
+            },
+            "7": {
+                "title": "7. Responsabilité",
+                "desc": "L'application est fournie 'en l'état'."
+            },
+            "8": {
+                "title": "8. Modifications",
+                "desc": "Conditions modifiables à tout moment."
+            },
+            "9": {
+                "title": "9. Contact",
+                "desc": "Via GitHub."
+            }
+        }
     },
     "privacy_view": {
         "title": "Politique de Confidentialité",
@@ -438,7 +503,8 @@
                 "desc": "La synchronisation est optionnelle et s'effectue directement sur votre compte cloud personnel.",
                 "points": [
                     "Chiffrement avant synchro : Les données sont chiffrées localement AVANT d'être envoyées sur le cloud.",
-                    "Contrôle utilisateur : C'est vous qui décidez d'activer ou non la synchronisation."
+                    "Contrôle utilisateur : C'est vous qui décidez d'activer ou non la synchronisation.",
+                    "Politiques des tiers : les données stockées sur votre fournisseur cloud sont soumises à la politique de confidentialité et aux conditions de service de ce fournisseur."
                 ]
             },
             "3": {
@@ -480,7 +546,8 @@
                 "title": "8. Nous Contacter",
                 "desc": "Pour toute question, vous pouvez nous contacter sur notre dépôt GitHub."
             }
-        }
+        },
+        "footer": "EtherVault — Votre code, vos données, votre coffre-fort."
     },
     "premium": {
         "paywall": {

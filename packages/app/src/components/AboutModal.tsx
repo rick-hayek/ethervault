@@ -14,9 +14,10 @@ interface AboutModalProps {
     appVersion: string;
     onOpenPrivacy: () => void;
     onOpenFAQ: () => void;
+    onOpenTerms: () => void;
 }
 
-export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVersion, onOpenPrivacy, onOpenFAQ }) => {
+export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVersion, onOpenPrivacy, onOpenFAQ, onOpenTerms }) => {
     const { t } = useTranslation();
     const isAndroid = Capacitor.getPlatform() === 'android';
     const [updateState, setUpdateState] = useState<'idle' | 'checking' | 'available' | 'updating' | 'no_update' | 'error'>('idle');
@@ -203,12 +204,19 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose, appVers
                                         <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
                                             {t('about.privacy_desc', 'Your data is encrypted with AES-256-GCM purely on your device. We do not collect any personal data or analytics.')}
                                         </p>
-                                        <div className="pt-2">
+                                        <div className="pt-2 flex items-center gap-4">
                                             <button
                                                 onClick={onOpenPrivacy}
                                                 className="inline-flex items-center gap-1 text-xs font-semibold text-primary-600 dark:text-primary-400 hover:underline active:scale-95 transition-all"
                                             >
                                                 <span>{t('privacy_view.title', 'Privacy Policy')}</span>
+                                                <ExternalLink size={12} />
+                                            </button>
+                                            <button
+                                                onClick={onOpenTerms}
+                                                className="inline-flex items-center gap-1 text-xs font-semibold text-primary-600 dark:text-primary-400 hover:underline active:scale-95 transition-all"
+                                            >
+                                                <span>{t('terms_view.title', 'Terms of Service')}</span>
                                                 <ExternalLink size={12} />
                                             </button>
                                         </div>

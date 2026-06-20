@@ -1,0 +1,615 @@
+{
+    "layout": {
+        "nav": {
+            "vault": "Tresor",
+            "security": "Sicherheit",
+            "generator": "Generator",
+            "settings": "Einstellungen"
+        },
+        "appearance": "Erscheinungsbild",
+        "lock_vault": "Tresor sperren",
+        "search_placeholder": "Suchen..."
+    },
+    "common": {
+        "cancel": "Abbrechen",
+        "confirm_delete": "Löschen",
+        "copy": "Kopieren",
+        "copied": "Kopiert",
+        "processing": "Wird verarbeitet...",
+        "confirm": "Bestätigen",
+        "back": "Zurück",
+        "recommended": "Empfohlen",
+        "dismiss": "Schließen"
+    },
+    "vault": {
+        "title": "Ihr Tresor",
+        "subtitle": "Verwalten Sie Ihre Passwörter mit branchenüblicher Sicherheit",
+        "add": "Eintrag hinzufügen",
+        "sync_prompt": {
+            "title": "Tresor über Geräte hinweg synchronisieren",
+            "title_premium": "Tresor über Geräte hinweg synchronisieren (Premium)",
+            "description": "Verbinden Sie Cloud-Speicher, um überall auf Ihre Passwörter zuzugreifen.",
+            "action": "Synchronisierung einrichten",
+            "action_premium": "Premium holen"
+        },
+        "strength": {
+            "Secure": "Sicher",
+            "Strong": "Stark",
+            "Medium": "Mittel",
+            "Weak": "Schwach"
+        },
+        "just_now": "Gerade eben",
+        "search": "Suchen...",
+        "update": "Aktualisieren",
+        "save": "Speichern",
+        "edit_credential": "Eintrag bearbeiten",
+        "new_credential": "Neuer Eintrag",
+        "entry": {
+            "username": "Benutzername",
+            "title": "Titel",
+            "category": "Kategorie",
+            "website": "Website URL",
+            "username_email": "Benutzername / E-Mail",
+            "password": "Passwort",
+            "title_placeholder": "Google, Netflix...",
+            "website_placeholder": "example.com",
+            "username_placeholder": "Benutzername oder E-Mail",
+            "password_placeholder": "Passwort eingeben",
+            "additional_info": "Zusätzliche Infos",
+            "recovery_phone": "Wiederherstellungs-Telefon",
+            "recovery_phone_placeholder": "+49 151 12345678",
+            "recovery_email": "Wiederherstellungs-E-Mail",
+            "recovery_email_placeholder": "backup@email.com",
+            "note": "Notiz",
+            "note_placeholder": "Notizen hinzufügen..."
+        }
+    },
+    "category": {
+        "all": "Alle",
+        "personal": "Persönlich",
+        "work": "Arbeit",
+        "others": "Andere"
+    },
+    "settings": {
+        "title": "Einstellungen",
+        "subtitle": "Sicherheit und Synchronisierung verwalten",
+        "data_management": "Datenverwaltung",
+        "preferences": "Präferenzen",
+        "log_management": "Protokollverwaltung",
+        "import": "Importieren",
+        "sync_provider": "Sync-Anbieter",
+        "updating": "Aktualisieren...",
+        "cloud": {
+            "reconnect": "Neu verbinden",
+            "paused": "Pausiert",
+            "connected": "Verbunden",
+            "connected_desc": "Ihr Tresor wird sicher mit {{provider}} synchronisiert.",
+            "connect_desc": "Verbinden Sie sich mit {{provider}}, um Cloud-Backups und Synchronisierung zu aktivieren.",
+            "last_synced": "Zuletzt synchronisiert:",
+            "syncing": "Synchronisieren...",
+            "sync_now": "Jetzt synchronisieren",
+            "disconnect": "Trennen",
+            "connect_account": "Konto verbinden",
+            "connection_failed": "Verbindung fehlgeschlagen. Bitte überprüfen Sie Ihr Netzwerk.",
+            "unlock_premium": "Premium-Sync freischalten"
+        },
+        "option": {
+            "biometric": "Biometrische ID",
+            "2fa": "2FA-Schutz",
+            "lock_timer": "Sperr-Timer",
+            "login_alerts": "Anmeldewarnungen",
+            "dark_mode": "Dunkelmodus",
+            "language": "Sprache",
+            "master_log": "Protokolle",
+            "open_log": "Protokoll öffnen",
+            "time": {
+                "1m": "1 Minute",
+                "5m": "5 Minuten",
+                "15m": "15 Minuten",
+                "30m": "30 Minuten",
+                "1h": "1 Stunde"
+            },
+            "recent_activity": "Letzte Aktivitäten",
+            "appearance": "Erscheinungsbild",
+            "theme_color": "Themenfarbe",
+            "theme_mode": "Modus",
+            "theme_color_label": "Farbe"
+        },
+        "theme": {
+            "system": "System",
+            "light": "Hell",
+            "dark": "Dunkel"
+        },
+        "color": {
+            "blue": "Blau",
+            "emerald": "Smaragd",
+            "violet": "Violett",
+            "amber": "Bernstein",
+            "rose": "Rose",
+            "pink": "Rosa",
+            "lightgrey": "Hellgrau",
+            "silver": "Silber",
+            "ivory": "Elfenbein"
+        },
+        "activity_modal": {
+            "title": "Systemprotokoll",
+            "empty": "Keine aktuellen Aktivitäten.",
+            "refresh": "Aktualisieren",
+            "close": "Schließen"
+        },
+        "change_password": "Master-Passwort ändern",
+        "encryption": "AES-256 Bit Verschlüsselung",
+        "password_modal": {
+            "title": "Master-Passwort ändern",
+            "current": "Aktuelles Passwort",
+            "new": "Neues Passwort",
+            "confirm": "Neues Passwort (Bestätigung)",
+            "cancel": "Abbrechen",
+            "save": "Änderungen speichern"
+        },
+        "error": {
+            "match": "Neues Passwort stimmt nicht überein",
+            "incorrect": "Aktuelles Passwort ist falsch",
+            "failed": "Fehler beim Ändern des Passworts"
+        },
+        "success": {
+            "password": "Passwort erfolgreich geändert",
+            "cache_cleared": "Cache geleert!",
+            "biometric_enabled": "Biometrische Entsperrung aktiviert"
+        },
+        "status": {
+            "encrypting": "Tresor wird neu verschlüsselt...",
+            "updating_bio": "Biometrisches Geheimnis wird aktualisiert...",
+            "resyncing": "Neue Daten werden in die Cloud synchronisiert...",
+            "done": "Fertig!"
+        },
+        "export": "Exportieren",
+        "clear_cache": "Cache leeren",
+        "clear_cache_desc": "Dies löscht lokale Protokolle und temporäre Daten, jedoch keine Tresordaten.",
+        "send_log": "Protokoll senden",
+        "biometric_modal": {
+            "title": "Biometrische Entsperrung aktivieren",
+            "description": "Bitte geben Sie Ihr Master-Passwort ein, um es sicher im Schlüsselbund Ihres Geräts zu speichern.",
+            "enable": "Biometrie aktivieren"
+        }
+    },
+    "export": {
+        "title": "Tresor exportieren",
+        "warning_title": "Sicherheitswarnung",
+        "warning_desc": "Sie sind dabei, Ihre Passwörter im Klartext zu exportieren. Jeder, der diese Datei besitzt, kann Ihre Daten sehen. Bitte sicher aufbewahren.",
+        "attachment_warning": "Hinweis: Dateianhänge werden nicht exportiert.",
+        "format": "Format wählen",
+        "preview": "Datenvorschau",
+        "download": "Datei herunterladen"
+    },
+    "import": {
+        "title": "Tresor importieren",
+        "drag_drop": "CSV/JSON hier ablegen oder zum Auswählen klicken",
+        "click_to_select": "Tippen, um CSV/JSON-Datei auszuwählen",
+        "formats": "Unterstützte Formate: .csv, .json",
+        "ready": "Es wurden {{count}} Einträge gefunden. Bereit!",
+        "error": "Import fehlgeschlagen",
+        "error_binary": "Binärdatei erkannt",
+        "error_invalid_format": "Ungültiges Dateiformat",
+        "note_title": "Hinweis",
+        "note_desc": "Doppelte Einträge werden als neue Elemente mit Zeitstempel hinzugefügt. Es werden keine bestehenden Daten überschrieben.",
+        "action": "Daten importieren"
+    },
+    "login": {
+        "locked_local_db": "Gesperrte lokale DB",
+        "master_password": "Master-Passwort",
+        "unlock_placeholder": "Geben Sie den Schlüssel ein",
+        "invalid_key": "Ungültiger Zugriffsschlüssel",
+        "access_vault": "Tresor aufrufen",
+        "secure_id": "Sichere ID",
+        "system_auth": "Systemauthentifizierung...",
+        "unlock_bio": "Mit Biometrie entsperren",
+        "forgot_password": "Passwort vergessen?",
+        "reset_modal": {
+            "title": "Master-Passwort vergessen?",
+            "warning_title": "Sicherheitswarnung",
+            "warning_desc": "EtherVault ist ein Zero-Knowledge-Passwort-Manager. Wir speichern Ihr Master-Passwort nicht auf unseren Servern. Wenn Sie es verlieren, können wir es nicht wiederherstellen oder zurücksetzen. Alle in diesem lokalen Tresor gespeicherten Anmeldeinformationen gehen dauerhaft verloren, wenn Sie zurücksetzen!",
+            "steps_title": "Anleitung zum Zurücksetzen / Neuanfang",
+            "step1": "Öffnen Sie die Systemeinstellungen Ihres Geräts.",
+            "step2": "Gehen Sie zu Apps > EtherVault > Speicher.",
+            "step3": "Tippen Sie auf 'Speicher löschen' oder 'Daten löschen', um die Datenbank zu entfernen.",
+            "step4": "Starten Sie die App neu und richten Sie ein neues Master-Passwort ein.",
+            "android_step1": "Öffnen Sie die Systemeinstellungen Ihres Geräts.",
+            "android_step2": "Gehen Sie zu Apps > EtherVault > Speicher.",
+            "android_step3": "Tippen Sie auf 'Speicher löschen' oder 'Daten löschen', um die Datenbank zu entfernen.",
+            "android_step4": "Starten Sie die App neu und richten Sie ein neues Master-Passwort ein.",
+            "ios_step1": "Drücken Sie lange auf das EtherVault-App-Symbol auf Ihrem Startbildschirm.",
+            "ios_step2": "Tippen Sie auf 'App entfernen' und dann auf 'App löschen', um sie zu deinstallieren und lokale Daten vollständig zu löschen.",
+            "ios_step3": "Installieren Sie EtherVault erneut aus dem App Store.",
+            "ios_step4": "Starten Sie die App neu und richten Sie ein neues Master-Passwort ein.",
+            "desktop_step1": "Schließen Sie die EtherVault-Anwendung.",
+            "desktop_step2": "Navigieren Sie zum App-Datenordner (macOS: '~/Library/Application Support/EtherVault', Windows: '%APPDATA%\\EtherVault').",
+            "desktop_step3": "Löschen Sie den gesamten Ordner 'EtherVault', um Ihre lokale Datenbank und Einstellungen zu löschen.",
+            "desktop_step4": "Starten Sie die App neu und richten Sie ein neues Master-Passwort ein.",
+            "web_step1": "Öffnen Sie die Entwicklertools in Ihrem Browser (F12).",
+            "web_step2": "Gehen Sie zur Registerkarte 'Anwendung' oder 'Speicher'.",
+            "web_step3": "Wählen Sie unter IndexedDB 'EtherVaultDB' aus und klicken Sie auf 'Datenbank löschen', um dann den lokalen Speicher zu leeren.",
+            "web_step4": "Laden Sie die Seite neu, um ein neues Master-Passwort einzurichten.",
+            "action_reset": "1-Klick-Zurücksetzen (Daten löschen)",
+            "confirm_reset": "WARNUNG: Dadurch werden ALLE in dieser App gespeicherten Anmeldeinformationen dauerhaft gelöscht und die App zurückgesetzt. Diese Aktion kann nicht rückgängig gemacht werden! Sind Sie sicher, dass Sie fortfahren möchten?",
+            "reset_failed": "Das automatische Zurücksetzen ist fehlgeschlagen. Bitte verwenden Sie die oben genannten manuellen Schritte.",
+            "support_title": "Brauchen Sie Hilfe?"
+        }
+    },
+    "security": {
+        "title": "Sicherheitszustand",
+        "subtitle": "Echtzeitanalyse für Ihren Passworttresor",
+        "scan": "Vollständiger Scan",
+        "scanning": "Scannen...",
+        "scan_full": "Einen vollständigen Scan durchführen",
+        "score": "Punktzahl",
+        "status": {
+            "title": "Schutzstatus",
+            "robust": "Ihr digitaler Tresor ist robust. Sorgen Sie weiterhin überall für eine starke 2FA.",
+            "decent": "Ihre Sicherheit ist ordentlich, erfordert jedoch einige Verbesserungen.",
+            "weak": "Es wird empfohlen, schwache Anmeldeinformationen umgehend zu beheben."
+        },
+        "stats": {
+            "weak": "Schwach",
+            "reused": "Wiederverwendet",
+            "safe": "Sicher",
+            "secure_strong": "Sicher/Stark",
+            "other": "Andere"
+        },
+        "alerts": {
+            "title": "Sicherheitswarnungen",
+            "action_items": "Aufgaben",
+            "empty_title": "Alles in Ordnung",
+            "empty": "Es wurden keine Sicherheitsprobleme gefunden. Toller Job!",
+            "resolve": "Lösen",
+            "weak_title": "Schwaches Passwort: {{title}}",
+            "weak_description": "Dieses Passwort ist zu kurz oder nicht komplex genug.",
+            "reused_title": "Wiederverwendetes Passwort: {{count}} Konten",
+            "reused_description": "Verwendet für {{titles}}.",
+            "reused_description_more": "Verwendet für {{titles}} und andere."
+        }
+    },
+    "generator": {
+        "title": "Passwortgenerator",
+        "entropy": "Entropie: ~{{bits}} Bits",
+        "length": "Länge",
+        "chars": "{{count}} Zeichen",
+        "options": {
+            "uppercase": "Großbuchstaben",
+            "lowercase": "Kleinbuchstaben",
+            "numbers": "Zahlen",
+            "symbols": "Symbole"
+        },
+        "info": "Höhere Entropie macht das Passwort schwieriger zu knacken.",
+        "subtitle": "Erstellen Sie starke und sichere Passwörter",
+        "actions": {
+            "regenerate": "Neu generieren"
+        }
+    },
+    "welcome": {
+        "step1": {
+            "title": "Sichern Sie Ihren Tresor",
+            "subtitle": "Erstellen Sie einen Master-Schlüssel, um Ihre Daten lokal zu verschlüsseln."
+        },
+        "step2": {
+            "title": "Schnellzugriff",
+            "subtitle": "Beschleunigen Sie Ihre Anmeldeerfahrung sicher."
+        },
+        "master_key": "Master-Schlüssel",
+        "verify_key": "Schlüssel überprüfen",
+        "key_placeholder": "Geben Sie einen starken Schlüssel ein",
+        "repeat_placeholder": "Wiederholen Sie den Master-Schlüssel",
+        "biometric": "Biometrische Sperre",
+        "biometric_subtitle": "Verwenden Sie Ihre biometrische ID",
+        "next": "Nächster Schritt",
+        "start": "Loslegen",
+        "error": {
+            "length": "Der Master-Schlüssel muss mindestens 8 Zeichen lang sein.",
+            "weak": "Passwort zu schwach. Verwenden Sie eine Mischung aus Buchstaben, Zahlen und Symbolen.",
+            "match": "Die Schlüssel stimmen nicht überein."
+        },
+        "warning_modal": {
+            "title": "Warnung zum Master-Passwort",
+            "warning_title": "Sicherheitswarnung",
+            "warning_desc": "EtherVault ist ein Zero-Knowledge-Passwort-Manager. Wir speichern Ihr Master-Passwort nicht auf unseren Servern. Wenn Sie es verlieren, können wir es nicht wiederherstellen oder zurücksetzen. Bitte stellen Sie sicher, dass Sie sich Ihr Master-Passwort merken.",
+            "action_back": "Zurück",
+            "action_continue": "Weiter"
+        }
+    },
+    "sync": {
+        "just_now": "Gerade eben",
+        "syncing": "Synchronisieren...",
+        "credentials_imported": "Cloud-Tresor gefunden. Bitte melden Sie sich mit dem Passwort des ursprünglichen Geräts an.",
+        "merge_complete": "Erfolgreich Einträge aus der Cloud zusammengeführt.",
+        "use_cloud_complete": "In den Cloud-Tresor gewechselt. Bitte melden Sie sich mit Ihrem Cloud-Passwort an.",
+        "use_local_complete": "Cloud-Daten wurden mit lokalen Daten überschrieben.",
+        "salt_updated": "Cloud-Sicherheitseinstellungen aktualisiert. Sie müssen sich erneut anmelden.",
+        "error": {
+            "missing_verifier": "Dem Cloud-Tresor fehlen Daten zur Passwortüberprüfung. Bitte synchronisieren Sie zuerst das ursprüngliche Gerät.",
+            "missing_password": "Für die Zusammenführung ist das Cloud-Passwort erforderlich.",
+            "no_cloud_entries": "Keine zusammenzuführenden Cloud-Einträge gefunden.",
+            "wrong_password": "Falsches Cloud-Passwort. Entschlüsselung fehlgeschlagen.",
+            "password_required": "Das Cloud-Passwort ist erforderlich, um den Zugriff vor dem Wechsel zu überprüfen."
+        },
+        "conflict": {
+            "title": "Synchronisierungskonflikt erkannt",
+            "description": "Dieses Gerät wurde getrennt vom Cloud-Tresor eingerichtet. Sie haben möglicherweise unterschiedliche Verschlüsselungsschlüssel.",
+            "local_count": "Lokal: {{count}} Einträge",
+            "merge": "Tresore zusammenführen",
+            "merge_desc": "Kombinieren Sie beide Tresore. Verwendet das Passwort des ursprünglichen Geräts.",
+            "use_cloud": "Nur Cloud verwenden",
+            "use_cloud_desc": "Lokale Daten löschen. Wechseln Sie in den Cloud-Tresor.",
+            "use_local": "Nur Lokal verwenden",
+            "use_local_desc": "Cloud-Daten löschen. Mit lokalen Daten überschreiben.",
+            "enter_cloud_password": "Geben Sie das Passwort des ursprünglichen Geräts ein, um Einträge zu entschlüsseln und zusammenzuführen:",
+            "enter_cloud_password_verify": "Geben Sie das Passwort des ursprünglichen Geräts ein, um den Zugriff zu überprüfen:",
+            "cloud_password_placeholder": "Master-Passwort des ursprünglichen Geräts",
+            "password_hint": "Dies kann dasselbe Passwort sein, das Sie auf diesem Gerät verwenden.",
+            "merging": "Zusammenführen...",
+            "merge_now": "Jetzt zusammenführen",
+            "use_cloud_now": "Zur Cloud wechseln"
+        },
+        "found_modal": {
+            "title": "Cloud-Tresor erkannt",
+            "description": "In Ihrem Cloud-Speicher wurde ein vorhandener verschlüsselter Tresor gefunden. Um die Synchronisierung zu starten, müssen wir Sicherheitseinstellungen aus der Cloud importieren.",
+            "warning_label": "Sicherheitswarnung",
+            "warning_text": "Nach dem Import müssen Sie sich mit dem für diesen Cloud-Tresor verwendeten Passwort anmelden.",
+            "confirm": "Verbinden und Importieren"
+        },
+        "warning": {
+            "title": "Wichtige Sicherheitswarnung",
+            "message": "Sie sind dabei, die Synchronisierung mit {{providerName}} zu aktivieren. Sie müssen sich Ihr Master-Passwort merken.",
+            "alert": "Wenn Sie Ihr Passwort vergessen, gibt es keine Möglichkeit zur Wiederherstellung.",
+            "confirm_password": "Master-Passwort bestätigen",
+            "placeholder": "Geben Sie Ihr Master-Passwort ein, um fortzufahren",
+            "verifying": "Überprüfen...",
+            "confirm": "Ich verstehe, Synchronisierung aktivieren"
+        }
+    },
+    "biometric_prompt": {
+        "title": "EtherVault entsperren",
+        "subtitle": "Verwenden Sie Ihre biometrische ID",
+        "reason": "Tresor entsperren",
+        "cancel": "Abbrechen"
+    },
+    "about": {
+        "title": "Über",
+        "description": "Ein sicherer, Offline-First, plattformübergreifender Passwort-Manager.",
+        "opensource": "Open Source",
+        "privacy_title": "Privatsphäre & Sicherheit",
+        "privacy_desc": "Ihre Daten werden lokal mit AES-256-GCM verschlüsselt.",
+        "faq_title": "Häufig gestellte Fragen",
+        "faq_desc": "Finden Sie schnelle Antworten",
+        "faq_button": "FAQ anzeigen",
+        "help_title": "Hilfe & Support",
+        "contact": "Kontaktiere uns",
+        "footer": "© 2026 EtherVault",
+        "check_update": "Nach Updates suchen",
+        "checking_update": "Suchen...",
+        "update_available": "Klicken zum Aktualisieren",
+        "updating": "Aktualisieren...",
+        "update_desc": "Holen Sie sich die neuesten Funktionen von Google Play",
+        "confirm_update": "Möchten Sie das Update jetzt herunterladen und installieren?",
+        "no_update": "Sie verwenden bereits die neueste Version",
+        "check_update_failed": "Fehler bei der Suche nach Updates"
+    },
+    "faq_view": {
+        "title": "Häufig gestellte Fragen",
+        "last_updated": "Zuletzt aktualisiert: Juni 2026",
+        "sections": {
+            "1": {
+                "title": "1. Master-Passwort Sicherheit",
+                "desc": "EtherVault speichert Ihr Master-Passwort nicht."
+            },
+            "2": {
+                "title": "2. Cloud-Synchronisierung",
+                "access_title": "Nur isolierter App-Zugriff",
+                "access_desc": "EtherVault verwendet einen isolierten Sandbox-Ordner für die Synchronisierung.",
+                "view_data_title": "So zeigen Sie die Daten an",
+                "view_data_desc": "In Google Drive wird EtherVault in einem versteckten Ordner gespeichert."
+            },
+            "3": {
+                "title": "3. Cloud-Passwort vergessen",
+                "desc": "Wenn Sie Ihr Cloud-Passwort vergessen haben, müssen Sie die Cloud-Daten löschen.",
+                "method1_title": "Methode 1: Versteckte Daten löschen",
+                "method1_steps": [
+                    "Melden Sie sich bei Google Drive an.",
+                    "Klicken Sie auf 'Einstellungen'.",
+                    "Klicken Sie auf 'Apps verwalten'.",
+                    "Wählen Sie 'Versteckte App-Daten löschen' bei EtherVault."
+                ],
+                "method2_title": "Methode 2: Überschreiben der Cloud-Daten erzwingen",
+                "method2_steps": [
+                    "Stellen Sie sicher, dass Sie mindestens einen Eintrag in Ihrem lokalen Tresor haben.",
+                    "Gehen Sie zu Einstellungen > Sync-Anbieter und verbinden Sie sich neu.",
+                    "Es erscheint ein Konfliktfenster.",
+                    "Wählen Sie 'Nur Lokal verwenden', um die Cloud-Daten zu überschreiben."
+                ]
+            }
+        },
+        "footer": "EtherVault Help Center"
+    },
+    "terms_view": {
+        "title": "Nutzungsbedingungen",
+        "last_updated": "15. Juni 2026",
+        "intro": "Durch die Nutzung von EtherVault stimmen Sie diesen Bedingungen zu.",
+        "sections": {
+            "1": {
+                "title": "1. Dienst",
+                "desc": "Passwortmanager."
+            },
+            "2": {
+                "title": "2. Zero-Knowledge",
+                "master_password_title": "2.1 Master-Passwort",
+                "master_password_desc": "Bei Verlust keine Wiederherstellung möglich.",
+                "data_security_title": "2.2 Sicherheit",
+                "data_security_desc": "Lokale AES-256-Verschlüsselung."
+            },
+            "3": {
+                "title": "3. Cloud",
+                "desc": "Optionale Synchronisation.",
+                "points": [
+                    "Kein Hosting durch uns.",
+                    "Bedingungen Ihres Anbieters.",
+                    "Vor Upload verschlüsselt."
+                ]
+            },
+            "4": {
+                "title": "4. Premium",
+                "desc": "Optionale Käufe.",
+                "points": [
+                    "Anonym.",
+                    "Wiederherstellbar.",
+                    "Rückerstattung über Store."
+                ]
+            },
+            "5": {
+                "title": "5. Datenschutz",
+                "desc": "Siehe Datenschutzerklärung."
+            },
+            "6": {
+                "title": "6. Lizenz",
+                "desc": "MIT."
+            },
+            "7": {
+                "title": "7. Haftung",
+                "desc": "Bereitstellung 'wie besehen'."
+            },
+            "8": {
+                "title": "8. Änderungen",
+                "desc": "Jederzeit möglich."
+            },
+            "9": {
+                "title": "9. Kontakt",
+                "desc": "Über GitHub."
+            }
+        }
+    },
+    "privacy_view": {
+        "title": "Datenschutzrichtlinie",
+        "last_updated": "Zuletzt aktualisiert: 3. Februar 2026",
+        "intro": "EtherVault ist ein datenschutzorientierter Passwort-Manager.",
+        "summary": "Kurz gesagt: Wir sammeln, speichern und verkaufen Ihre persönlichen Daten nicht.",
+        "sections": {
+            "1": {
+                "title": "1. Datenerfassung",
+                "local_title": "Local-First",
+                "local_desc": "Alle sensiblen Daten werden lokal auf Ihrem Gerät gespeichert.",
+                "server_title": "Kein zentraler Server",
+                "server_desc": "Wir betreiben keinen zentralen Server."
+            },
+            "2": {
+                "title": "2. Cloud-Synchronisierung",
+                "desc": "EtherVault bietet eine optionale Funktion zur Synchronisierung Ihrer Daten.",
+                "points": [
+                    "Verschlüsselung vor Synchronisierung",
+                    "Benutzerkontrolle",
+                    "Richtlinien Dritter: Es gelten die Richtlinien Ihres Cloud-Anbieters."
+                ]
+            },
+            "3": {
+                "title": "3. Biometrische Daten",
+                "desc": "EtherVault unterstützt das Entsperren mit biometrischen Daten.",
+                "points": [
+                    "Lokale Verarbeitung",
+                    "Kein Zugriff"
+                ]
+            },
+            "4": {
+                "title": "4. Anfragen von Drittanbietern",
+                "desc": "EtherVault kann Symbole für die in Ihrem Tresor gespeicherten Websites abrufen.",
+                "points": [
+                    "Diese Anfragen können direkt oder über Dienste an Zielwebsites gesendet werden.",
+                    "Dadurch kann Ihre IP-Adresse an den Inhaltsanbieter weitergegeben werden."
+                ]
+            },
+            "5": {
+                "title": "5. Geräteberechtigungen",
+                "lists": [
+                    "Netzwerk/Internetzugang",
+                    "Biometrische Hardware",
+                    "Speicher/Dateisystem"
+                ]
+            },
+            "6": {
+                "title": "6. Protokolle und Analysen",
+                "lists": [
+                    "Absturzberichte: Es werden keine Berichte gesendet.",
+                    "Lokale Protokolle: Verbleiben auf Ihrem Gerät."
+                ]
+            },
+            "7": {
+                "title": "7. Richtlinienänderungen",
+                "desc": "Wir können diese Richtlinie von Zeit zu Zeit aktualisieren."
+            },
+            "8": {
+                "title": "8. Kontaktiere uns",
+                "desc": "Bei Fragen erreichen Sie uns über unser GitHub-Repository."
+            }
+        },
+        "footer": "EtherVault — Ihr Code, Ihre Daten, Ihr Tresor."
+    },
+    "premium": {
+        "paywall": {
+            "title": "EtherVault Premium",
+            "subtitle": "Geräteübergreifende Synchronisierung und automatisches Cloud-Backup.",
+            "connecting": "Sichere Verbindung zum App Store herstellen...",
+            "connecting_google": "Sichere Verbindung zu Google Play herstellen...",
+            "authorizing": "Zahlung autorisieren...",
+            "verifying": "Verschlüsselten Beleg überprüfen...",
+            "processing": "Sicheren Checkout verarbeiten",
+            "restoring": "Käufe wiederherstellen",
+            "checking_receipts": "Store-Belege überprüfen...",
+            "validating": "Digitale Signatur für Käufe validieren...",
+            "license_empty": "Bitte geben Sie einen Lizenzschlüssel ein.",
+            "license_invalid": "Ungültiger Lizenzschlüssel. Bitte überprüfen und erneut versuchen.",
+            "already_active_restore_hint": "Sie besitzen diesen Vorteil bereits. Bitte tippen Sie auf Käufe wiederherstellen.",
+            "load_offerings_failed": "Diese Premium-Funktion ist möglicherweise in Ihrer Region nicht verfügbar."
+        },
+        "plan": {
+            "monthly_title": "Monatlich",
+            "monthly_period": "/ Monat",
+            "monthly_desc": "Flexibler Plan. Jederzeit kündbar.",
+            "annual_title": "Jährlich",
+            "annual_period": "/ Jahr",
+            "annual_desc": "Sparen Sie 50 % im Vergleich zum Monatsplan.",
+            "lifetime_title": "Lebenslang",
+            "lifetime_period": "Einmalige Zahlung",
+            "lifetime_desc": "Einmal zahlen. Für immer freischalten.",
+            "lifetime_badge": "Bester Wert"
+        },
+        "feature": {
+            "sync_title": "Multi-Device Cloud Sync",
+            "sync_desc": "Synchronisieren Sie Ihren verschlüsselten Tresor sicher über Google Drive.",
+            "backup_title": "Sicheres Cloud-Backup",
+            "backup_desc": "Machen Sie sich keine Sorgen über den Verlust Ihrer Datenbank.",
+            "crossplatform_title": "Plattformübergreifender Zugriff",
+            "crossplatform_desc": "Nahtloser Zugriff auf Ihre Passwörter unter Android, iOS, Windows, macOS und Linux.",
+            "attachments_title": "Verschlüsselte Dateianhänge",
+            "attachments_desc": "Laden Sie private Dokumente und Bilder hoch."
+        },
+        "actions": {
+            "subscribe": "Jetzt abonnieren, um freizuschalten",
+            "restore": "Käufe wiederherstellen",
+            "license": "Lizenzschlüssel einlösen"
+        },
+        "success": {
+            "title": "Premium aktiviert!",
+            "message": "Vielen Dank für das Abonnieren! Ihr Konto wurde aufgewertet."
+        },
+        "license": {
+            "title": "Lizenz einlösen",
+            "description": "Geben Sie unten Ihren 24-stelligen Lizenzschlüssel ein, um Premium zu aktivieren."
+        },
+        "banner": {
+            "upgrade_title": "Upgrade auf Premium",
+            "upgrade_desc": "Schalten Sie die sichere Multi-Device-Synchronisierung über Google Drive frei.",
+            "get_premium": "Premium holen",
+            "active_title": "EtherVault Premium aktiv",
+            "active_desc": "Vielen Dank für Ihre Unterstützung!",
+            "mock_refund": "Simulation Rückerstattung / Downgrade"
+        },
+        "coming_soon_title": "Demnächst",
+        "coming_soon": "In-App-Käufe und Synchronisierung sind bald verfügbar!"
+    }
+}

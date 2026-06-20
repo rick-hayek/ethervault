@@ -43,6 +43,7 @@ import { SyncConflictModal, ConflictResolution } from './SyncConflictModal';
 import { CloudVaultFoundModal } from './CloudVaultFoundModal';
 import { AboutModal } from './AboutModal';
 import { PrivacyModal } from './PrivacyModal';
+import { TermsModal } from './TermsModal';
 import { FAQModal } from './FAQModal';
 import { useAlert } from '../hooks/useAlert';
 import { useBackHandler } from '../hooks/useBackHandler';
@@ -66,6 +67,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isAboutModalOpen, setIsAboutModalOpen] = useState(false);
   const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);
+  const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);
   const [isFAQModalOpen, setIsFAQModalOpen] = useState(false);
 
 
@@ -1203,9 +1205,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                       { value: 'en', label: 'English' },
                       { value: 'es', label: 'Español' },
                       { value: 'fr', label: 'Français' },
+                      { value: 'de', label: 'Deutsch' },
+                      { value: 'it', label: 'Italiano' },
                       { value: 'ja', label: '日本語' },
                       { value: 'ko', label: '한국어' },
                       { value: 'pt', label: 'Português' },
+                      { value: 'ru', label: 'Русский' },
+                      { value: 'th', label: 'ไทย' },
+                      { value: 'ar', label: 'العربية' },
                       { value: 'zh', label: '简体中文' },
                       { value: 'zh-TW', label: '繁體中文' }
                     ]}
@@ -1736,8 +1743,9 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
         }
       </div>
 
-      <AboutModal isOpen={isAboutModalOpen} onClose={() => setIsAboutModalOpen(false)} appVersion={appVersion} onOpenPrivacy={() => setIsPrivacyModalOpen(true)} onOpenFAQ={() => setIsFAQModalOpen(true)} />
+      <AboutModal isOpen={isAboutModalOpen} onClose={() => setIsAboutModalOpen(false)} appVersion={appVersion} onOpenPrivacy={() => setIsPrivacyModalOpen(true)} onOpenTerms={() => setIsTermsModalOpen(true)} onOpenFAQ={() => setIsFAQModalOpen(true)} />
       <PrivacyModal isOpen={isPrivacyModalOpen} onClose={() => setIsPrivacyModalOpen(false)} />
+      <TermsModal isOpen={isTermsModalOpen} onClose={() => setIsTermsModalOpen(false)} />
       <FAQModal isOpen={isFAQModalOpen} onClose={() => setIsFAQModalOpen(false)} />
       {isCloudVaultFoundModalOpen && (
         <CloudVaultFoundModal

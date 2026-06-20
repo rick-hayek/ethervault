@@ -1,0 +1,615 @@
+{
+    "layout": {
+        "nav": {
+            "vault": "Cassaforte",
+            "security": "Sicurezza",
+            "generator": "Generatore",
+            "settings": "Impostazioni"
+        },
+        "appearance": "Aspetto",
+        "lock_vault": "Blocca cassaforte",
+        "search_placeholder": "Cerca..."
+    },
+    "common": {
+        "cancel": "Annulla",
+        "confirm_delete": "Elimina",
+        "copy": "Copia",
+        "copied": "Copiato",
+        "processing": "Elaborazione...",
+        "confirm": "Conferma",
+        "back": "Indietro",
+        "recommended": "Consigliato",
+        "dismiss": "Chiudi"
+    },
+    "vault": {
+        "title": "La Tua Cassaforte",
+        "subtitle": "Gestisci le tue password con sicurezza di livello industriale",
+        "add": "Aggiungi voce",
+        "sync_prompt": {
+            "title": "Sincronizza cassaforte su tutti i dispositivi",
+            "title_premium": "Sincronizza cassaforte su tutti i dispositivi (Premium)",
+            "description": "Connetti l'archiviazione cloud per accedere alle password ovunque.",
+            "action": "Imposta sincronizzazione",
+            "action_premium": "Ottieni Premium"
+        },
+        "strength": {
+            "Secure": "Sicuro",
+            "Strong": "Forte",
+            "Medium": "Medio",
+            "Weak": "Debole"
+        },
+        "just_now": "Proprio ora",
+        "search": "Cerca...",
+        "update": "Aggiorna",
+        "save": "Salva",
+        "edit_credential": "Modifica credenziale",
+        "new_credential": "Nuova credenziale",
+        "entry": {
+            "username": "Nome utente",
+            "title": "Titolo",
+            "category": "Categoria",
+            "website": "URL sito web",
+            "username_email": "Nome utente / Email",
+            "password": "Password",
+            "title_placeholder": "Google, Netflix...",
+            "website_placeholder": "example.com",
+            "username_placeholder": "Nome utente o email",
+            "password_placeholder": "Inserisci password",
+            "additional_info": "Informazioni aggiuntive",
+            "recovery_phone": "Telefono di recupero",
+            "recovery_phone_placeholder": "+39 333 1234567",
+            "recovery_email": "Email di recupero",
+            "recovery_email_placeholder": "backup@email.com",
+            "note": "Nota",
+            "note_placeholder": "Aggiungi note..."
+        }
+    },
+    "category": {
+        "all": "Tutti",
+        "personal": "Personale",
+        "work": "Lavoro",
+        "others": "Altri"
+    },
+    "settings": {
+        "title": "Impostazioni",
+        "subtitle": "Gestisci sicurezza e sincronizzazione",
+        "data_management": "Gestione dati",
+        "preferences": "Preferenze",
+        "log_management": "Gestione log",
+        "import": "Importa",
+        "sync_provider": "Provider di sincronizzazione",
+        "updating": "Aggiornamento...",
+        "cloud": {
+            "reconnect": "Riconnetti",
+            "paused": "In pausa",
+            "connected": "Connesso",
+            "connected_desc": "La tua cassaforte è sincronizzata in modo sicuro con {{provider}}.",
+            "connect_desc": "Connettiti a {{provider}} per abilitare i backup cloud e la sincronizzazione.",
+            "last_synced": "Ultima sincronizzazione:",
+            "syncing": "Sincronizzazione...",
+            "sync_now": "Sincronizza ora",
+            "disconnect": "Disconnetti",
+            "connect_account": "Connetti account",
+            "connection_failed": "Connessione fallita. Controlla la tua rete.",
+            "unlock_premium": "Sblocca sincronizzazione Premium"
+        },
+        "option": {
+            "biometric": "ID Biometrico",
+            "2fa": "Protezione 2FA",
+            "lock_timer": "Timer blocco",
+            "login_alerts": "Avvisi di accesso",
+            "dark_mode": "Modalità scura",
+            "language": "Lingua",
+            "master_log": "Registri di sistema",
+            "open_log": "Apri registro",
+            "time": {
+                "1m": "1 minuto",
+                "5m": "5 minuti",
+                "15m": "15 minuti",
+                "30m": "30 minuti",
+                "1h": "1 ora"
+            },
+            "recent_activity": "Attività recente",
+            "appearance": "Aspetto",
+            "theme_color": "Colore tema",
+            "theme_mode": "Modalità",
+            "theme_color_label": "Colore"
+        },
+        "theme": {
+            "system": "Sistema",
+            "light": "Chiaro",
+            "dark": "Scuro"
+        },
+        "color": {
+            "blue": "Blu",
+            "emerald": "Smeraldo",
+            "violet": "Viola",
+            "amber": "Ambra",
+            "rose": "Rosa",
+            "pink": "Fucsia",
+            "lightgrey": "Grigio chiaro",
+            "silver": "Argento",
+            "ivory": "Avorio"
+        },
+        "activity_modal": {
+            "title": "Registro di sistema",
+            "empty": "Nessuna attività recente.",
+            "refresh": "Aggiorna",
+            "close": "Chiudi"
+        },
+        "change_password": "Cambia Password Master",
+        "encryption": "Crittografia AES-256 Bit",
+        "password_modal": {
+            "title": "Cambia Password Master",
+            "current": "Password attuale",
+            "new": "Nuova password",
+            "confirm": "Conferma nuova password",
+            "cancel": "Annulla",
+            "save": "Salva modifiche"
+        },
+        "error": {
+            "match": "La nuova password non corrisponde",
+            "incorrect": "La password attuale non è corretta",
+            "failed": "Impossibile cambiare la password"
+        },
+        "success": {
+            "password": "Password cambiata con successo",
+            "cache_cleared": "Cache svuotata!",
+            "biometric_enabled": "Sblocco biometrico abilitato"
+        },
+        "status": {
+            "encrypting": "Ri-crittografia della cassaforte...",
+            "updating_bio": "Aggiornamento segreto biometrico...",
+            "resyncing": "Sincronizzazione nuovi dati sul cloud...",
+            "done": "Fatto!"
+        },
+        "export": "Esporta",
+        "clear_cache": "Svuota cache",
+        "clear_cache_desc": "Questo eliminerà i log locali e i dati temporanei, ma non i dati della cassaforte.",
+        "send_log": "Invia log",
+        "biometric_modal": {
+            "title": "Abilita sblocco biometrico",
+            "description": "Inserisci la tua password master per archiviarla in modo sicuro nel portachiavi del tuo dispositivo.",
+            "enable": "Abilita biometria"
+        }
+    },
+    "export": {
+        "title": "Esporta Cassaforte",
+        "warning_title": "Avviso di Sicurezza",
+        "warning_desc": "Stai per esportare le tue password in testo normale. Chiunque abbia questo file può vedere i tuoi dati. Tienilo al sicuro.",
+        "attachment_warning": "Nota: I file allegati non verranno esportati.",
+        "format": "Scegli formato",
+        "preview": "Anteprima dati",
+        "download": "Scarica file"
+    },
+    "import": {
+        "title": "Importa Cassaforte",
+        "drag_drop": "Trascina CSV/JSON qui, o clicca per selezionare",
+        "click_to_select": "Tocca per selezionare il file CSV/JSON",
+        "formats": "Formati supportati: .csv, .json",
+        "ready": "Trovati {{count}} voci. Pronto!",
+        "error": "Importazione fallita",
+        "error_binary": "Rilevato file binario",
+        "error_invalid_format": "Formato file non valido",
+        "note_title": "Nota",
+        "note_desc": "I duplicati verranno aggiunti come nuovi elementi con un timestamp. I dati esistenti non verranno sovrascritti.",
+        "action": "Importa Dati"
+    },
+    "login": {
+        "locked_local_db": "DB locale bloccato",
+        "master_password": "Password Master",
+        "unlock_placeholder": "Inserisci la chiave",
+        "invalid_key": "Chiave di accesso non valida",
+        "access_vault": "Accedi alla cassaforte",
+        "secure_id": "ID Sicuro",
+        "system_auth": "Autenticazione di sistema...",
+        "unlock_bio": "Sblocca con biometria",
+        "forgot_password": "Password dimenticata?",
+        "reset_modal": {
+            "title": "Hai dimenticato la password master?",
+            "warning_title": "Avviso di Sicurezza",
+            "warning_desc": "EtherVault è un gestore di password a conoscenza zero. Non conserviamo la tua password master sui nostri server. Se la perdi, non possiamo recuperarla o ripristinarla. Qualsiasi credenziale salvata in questa cassaforte locale andrà persa definitivamente se esegui il ripristino!",
+            "steps_title": "Come ripristinare / Ricominciare da capo",
+            "step1": "Apri le Impostazioni di sistema del tuo dispositivo.",
+            "step2": "Vai su App > EtherVault > Archiviazione.",
+            "step3": "Tocca 'Cancella memoria' o 'Cancella dati' per rimuovere il database.",
+            "step4": "Riavvia l'app e imposta una nuova password master.",
+            "android_step1": "Apri le Impostazioni di sistema del tuo dispositivo.",
+            "android_step2": "Vai su App > EtherVault > Archiviazione.",
+            "android_step3": "Tocca 'Cancella memoria' o 'Cancella dati' per rimuovere il database.",
+            "android_step4": "Riavvia l'app e imposta una nuova password master.",
+            "ios_step1": "Tieni premuto sull'icona dell'app EtherVault nella schermata iniziale.",
+            "ios_step2": "Tocca 'Rimuovi app' poi 'Elimina app' per disinstallarla e cancellare completamente i dati locali.",
+            "ios_step3": "Reinstalla EtherVault dall'App Store.",
+            "ios_step4": "Riavvia l'app e imposta una nuova password master.",
+            "desktop_step1": "Chiudi l'applicazione EtherVault.",
+            "desktop_step2": "Vai alla cartella dei dati dell'app (macOS: '~/Library/Application Support/EtherVault', Windows: '%APPDATA%\\EtherVault').",
+            "desktop_step3": "Elimina l'intera cartella 'EtherVault' per cancellare il database locale e le preferenze.",
+            "desktop_step4": "Riavvia l'app e imposta una nuova password master.",
+            "web_step1": "Apri gli Strumenti per Sviluppatori del tuo browser (F12).",
+            "web_step2": "Vai alla scheda 'Applicazione' o 'Archiviazione'.",
+            "web_step3": "Sotto IndexedDB, seleziona 'EtherVaultDB' e clicca 'Elimina database', poi svuota lo storage locale.",
+            "web_step4": "Ricarica la pagina per impostare una nuova password master.",
+            "action_reset": "Ripristino in 1 Clic (Cancella Dati)",
+            "confirm_reset": "ATTENZIONE: Questo eliminerà permanentemente TUTTE le credenziali salvate su questa app e la ripristinerà. L'azione non può essere annullata! Sei sicuro di voler procedere?",
+            "reset_failed": "Ripristino automatico fallito. Usa i passaggi manuali sopra indicati.",
+            "support_title": "Hai bisogno di aiuto?"
+        }
+    },
+    "security": {
+        "title": "Salute della Sicurezza",
+        "subtitle": "Analisi in tempo reale della tua cassaforte",
+        "scan": "Scansione completa",
+        "scanning": "Scansione in corso...",
+        "scan_full": "Esegui una scansione completa",
+        "score": "Punteggio",
+        "status": {
+            "title": "Stato di Protezione",
+            "robust": "La tua cassaforte digitale è robusta. Continua a mantenere una forte 2FA ovunque.",
+            "decent": "La tua sicurezza è decente ma richiede qualche miglioramento.",
+            "weak": "Si raccomanda di risolvere prontamente i problemi relativi alle credenziali deboli."
+        },
+        "stats": {
+            "weak": "Debole",
+            "reused": "Riutilizzato",
+            "safe": "Sicuro",
+            "secure_strong": "Sicuro/Forte",
+            "other": "Altri"
+        },
+        "alerts": {
+            "title": "Avvisi di Sicurezza",
+            "action_items": "Cose da fare",
+            "empty_title": "Tutto a posto",
+            "empty": "Nessun problema di sicurezza trovato. Ottimo lavoro!",
+            "resolve": "Risolvi",
+            "weak_title": "Password debole: {{title}}",
+            "weak_description": "Questa password è troppo breve o non sufficientemente complessa.",
+            "reused_title": "Password riutilizzata: {{count}} account",
+            "reused_description": "Usata per {{titles}}.",
+            "reused_description_more": "Usata per {{titles}} e altri."
+        }
+    },
+    "generator": {
+        "title": "Generatore di Password",
+        "entropy": "Entropia: ~{{bits}} bit",
+        "length": "Lunghezza",
+        "chars": "{{count}} caratteri",
+        "options": {
+            "uppercase": "Maiuscole",
+            "lowercase": "Minuscole",
+            "numbers": "Numeri",
+            "symbols": "Simboli"
+        },
+        "info": "Un'entropia più elevata rende la password più difficile da decifrare.",
+        "subtitle": "Crea password forti e sicure",
+        "actions": {
+            "regenerate": "Rigenera"
+        }
+    },
+    "welcome": {
+        "step1": {
+            "title": "Proteggi la tua cassaforte",
+            "subtitle": "Crea una chiave master per crittografare i tuoi dati localmente."
+        },
+        "step2": {
+            "title": "Accesso rapido",
+            "subtitle": "Velocizza in modo sicuro la tua esperienza di accesso."
+        },
+        "master_key": "Chiave Master",
+        "verify_key": "Verifica chiave",
+        "key_placeholder": "Inserisci una chiave forte",
+        "repeat_placeholder": "Ripeti la chiave master",
+        "biometric": "Blocco biometrico",
+        "biometric_subtitle": "Usa il tuo ID biometrico",
+        "next": "Passaggio successivo",
+        "start": "Inizia",
+        "error": {
+            "length": "La chiave master deve contenere almeno 8 caratteri.",
+            "weak": "Password troppo debole. Usa un mix di lettere, numeri e simboli.",
+            "match": "Le chiavi non corrispondono."
+        },
+        "warning_modal": {
+            "title": "Avviso Password Master",
+            "warning_title": "Avviso di Sicurezza",
+            "warning_desc": "EtherVault è un gestore di password a conoscenza zero. Non conserviamo la tua password master sui nostri server. Se la perdi, non possiamo recuperarla o ripristinarla. Assicurati di ricordare la tua password master.",
+            "action_back": "Indietro",
+            "action_continue": "Continua"
+        }
+    },
+    "sync": {
+        "just_now": "Proprio ora",
+        "syncing": "Sincronizzazione...",
+        "credentials_imported": "Trovata cassaforte cloud. Per favore, accedi con la password del dispositivo originale.",
+        "merge_complete": "Voci unite dal cloud con successo.",
+        "use_cloud_complete": "Passato alla cassaforte cloud. Per favore, accedi con la password del cloud.",
+        "use_local_complete": "Dati cloud sovrascritti con dati locali.",
+        "salt_updated": "Impostazioni di sicurezza cloud aggiornate. È necessario effettuare nuovamente il login.",
+        "error": {
+            "missing_verifier": "Alla cassaforte cloud mancano i dati di verifica della password. Si prega di sincronizzare prima dal dispositivo originale.",
+            "missing_password": "È richiesta la password del cloud per unire.",
+            "no_cloud_entries": "Nessuna voce cloud trovata da unire.",
+            "wrong_password": "Password cloud errata. Decrittografia fallita.",
+            "password_required": "La password del cloud è necessaria per verificare l'accesso prima del passaggio."
+        },
+        "conflict": {
+            "title": "Rilevato conflitto di sincronizzazione",
+            "description": "Questo dispositivo è stato configurato separatamente dalla cassaforte cloud. Potresti avere chiavi di crittografia diverse.",
+            "local_count": "Locale: {{count}} voci",
+            "merge": "Unisci cassaforti",
+            "merge_desc": "Combina entrambe le cassaforti. Usa la password del dispositivo originale.",
+            "use_cloud": "Usa solo Cloud",
+            "use_cloud_desc": "Elimina i dati locali. Passa alla cassaforte cloud.",
+            "use_local": "Usa solo Locale",
+            "use_local_desc": "Elimina i dati cloud. Sovrascrivi con i dati locali.",
+            "enter_cloud_password": "Inserisci la password del dispositivo originale per decrittografare le voci e unirle:",
+            "enter_cloud_password_verify": "Inserisci la password del dispositivo originale per verificare l'accesso:",
+            "cloud_password_placeholder": "Password master del dispositivo originale",
+            "password_hint": "Potrebbe essere la stessa password che usi su questo dispositivo.",
+            "merging": "Unione in corso...",
+            "merge_now": "Unisci ora",
+            "use_cloud_now": "Passa al Cloud"
+        },
+        "found_modal": {
+            "title": "Cassaforte Cloud Rilevata",
+            "description": "È stata trovata una cassaforte crittografata esistente nel tuo storage cloud. Per iniziare a sincronizzare, dobbiamo importare le impostazioni di sicurezza dal cloud.",
+            "warning_label": "Avviso di Sicurezza",
+            "warning_text": "Dopo l'importazione, dovrai accedere utilizzando la password utilizzata per quella cassaforte cloud.",
+            "confirm": "Connetti e Importa"
+        },
+        "warning": {
+            "title": "Avviso importante sulla sicurezza",
+            "message": "Stai per abilitare la sincronizzazione con {{providerName}}. Devi ricordare la tua password master.",
+            "alert": "Se dimentichi la password, non c'è modo di recuperarla.",
+            "confirm_password": "Conferma password master",
+            "placeholder": "Inserisci la password master per continuare",
+            "verifying": "Verifica...",
+            "confirm": "Ho capito, abilita la sincronizzazione"
+        }
+    },
+    "biometric_prompt": {
+        "title": "Sblocca EtherVault",
+        "subtitle": "Usa il tuo ID biometrico",
+        "reason": "Sblocca la cassaforte",
+        "cancel": "Annulla"
+    },
+    "about": {
+        "title": "Informazioni",
+        "description": "Un gestore di password sicuro, offline-first e multipiattaforma.",
+        "opensource": "Open Source",
+        "privacy_title": "Privacy & Sicurezza",
+        "privacy_desc": "I tuoi dati sono crittografati localmente con AES-256-GCM.",
+        "faq_title": "Domande Frequenti",
+        "faq_desc": "Trova risposte rapide",
+        "faq_button": "Visualizza FAQ",
+        "help_title": "Aiuto & Supporto",
+        "contact": "Contattaci",
+        "footer": "© 2026 EtherVault",
+        "check_update": "Controlla aggiornamenti",
+        "checking_update": "Controllo...",
+        "update_available": "Tocca per aggiornare",
+        "updating": "Aggiornamento...",
+        "update_desc": "Ottieni le ultime funzionalità da Google Play",
+        "confirm_update": "Vuoi scaricare e installare l'aggiornamento ora?",
+        "no_update": "Stai già utilizzando l'ultima versione",
+        "check_update_failed": "Impossibile controllare gli aggiornamenti"
+    },
+    "faq_view": {
+        "title": "Domande Frequenti",
+        "last_updated": "Ultimo aggiornamento: Giugno 2026",
+        "sections": {
+            "1": {
+                "title": "1. Sicurezza Password Master",
+                "desc": "EtherVault non salva la tua password master."
+            },
+            "2": {
+                "title": "2. Sincronizzazione Cloud",
+                "access_title": "Accesso Isolato Solo App",
+                "access_desc": "EtherVault utilizza una cartella sandbox isolata per la sincronizzazione.",
+                "view_data_title": "Come visualizzare i dati",
+                "view_data_desc": "In Google Drive, EtherVault viene memorizzato in una cartella nascosta."
+            },
+            "3": {
+                "title": "3. Password Cloud Dimenticata",
+                "desc": "Se hai dimenticato la password cloud, devi cancellare i dati cloud.",
+                "method1_title": "Metodo 1: Elimina dati nascosti",
+                "method1_steps": [
+                    "Accedi a Google Drive.",
+                    "Clicca su 'Impostazioni'.",
+                    "Clicca su 'Gestisci app'.",
+                    "Scegli 'Elimina dati nascosti app' su EtherVault."
+                ],
+                "method2_title": "Metodo 2: Forza sovrascrittura dati",
+                "method2_steps": [
+                    "Assicurati di avere almeno una voce nella cassaforte locale.",
+                    "Vai su Impostazioni > Provider sincronizzazione e riconnetti.",
+                    "Apparirà un modale di conflitto.",
+                    "Seleziona 'Usa solo Locale' per sovrascrivere."
+                ]
+            }
+        },
+        "footer": "Centro Assistenza EtherVault"
+    },
+    "terms_view": {
+        "title": "Termini di Servizio",
+        "last_updated": "15 Giugno 2026",
+        "intro": "Usando EtherVault, accetti questi termini.",
+        "sections": {
+            "1": {
+                "title": "1. Servizio",
+                "desc": "Gestore di password."
+            },
+            "2": {
+                "title": "2. Zero-Knowledge",
+                "master_password_title": "2.1 Password Master",
+                "master_password_desc": "Irrecuperabile se persa.",
+                "data_security_title": "2.2 Sicurezza",
+                "data_security_desc": "Crittografia locale AES-256."
+            },
+            "3": {
+                "title": "3. Cloud",
+                "desc": "Sincronizzazione opzionale.",
+                "points": [
+                    "Non ospitiamo i dati.",
+                    "Termini del provider applicabili.",
+                    "Criptati prima dell'upload."
+                ]
+            },
+            "4": {
+                "title": "4. Premium",
+                "desc": "Acquisti opzionali.",
+                "points": [
+                    "Anonimo.",
+                    "Ripristinabile.",
+                    "Rimborso tramite Store."
+                ]
+            },
+            "5": {
+                "title": "5. Privacy",
+                "desc": "Vedi Informativa sulla Privacy."
+            },
+            "6": {
+                "title": "6. Licenza",
+                "desc": "MIT."
+            },
+            "7": {
+                "title": "7. Responsabilità",
+                "desc": "Fornito 'così com'è'."
+            },
+            "8": {
+                "title": "8. Modifiche",
+                "desc": "Possibili modifiche."
+            },
+            "9": {
+                "title": "9. Contatti",
+                "desc": "Via GitHub."
+            }
+        }
+    },
+    "privacy_view": {
+        "title": "Informativa sulla Privacy",
+        "last_updated": "Ultimo aggiornamento: 3 Febbraio 2026",
+        "intro": "EtherVault è un gestore di password incentrato sulla privacy.",
+        "summary": "In breve: non raccogliamo, memorizziamo né vendiamo i tuoi dati personali.",
+        "sections": {
+            "1": {
+                "title": "1. Raccolta dati",
+                "local_title": "Local-First",
+                "local_desc": "Tutti i dati sensibili sono archiviati localmente sul tuo dispositivo.",
+                "server_title": "Nessun Server Centrale",
+                "server_desc": "Non operiamo un server centrale."
+            },
+            "2": {
+                "title": "2. Sincronizzazione Cloud",
+                "desc": "EtherVault offre una funzione opzionale per sincronizzare i tuoi dati.",
+                "points": [
+                    "Crittografia prima della sincronizzazione",
+                    "Controllo dell'utente",
+                    "Politiche di terze parti: si applicano le politiche del provider cloud."
+                ]
+            },
+            "3": {
+                "title": "3. Dati Biometrici",
+                "desc": "EtherVault supporta lo sblocco tramite biometria.",
+                "points": [
+                    "Elaborazione locale",
+                    "Nessun accesso"
+                ]
+            },
+            "4": {
+                "title": "4. Richieste di Terze Parti",
+                "desc": "EtherVault potrebbe recuperare icone per i siti web salvati.",
+                "points": [
+                    "Queste richieste possono essere inviate direttamente.",
+                    "Ciò potrebbe esporre il tuo indirizzo IP."
+                ]
+            },
+            "5": {
+                "title": "5. Autorizzazioni Dispositivo",
+                "lists": [
+                    "Rete/Accesso Internet",
+                    "Hardware biometrico",
+                    "Archiviazione/File system"
+                ]
+            },
+            "6": {
+                "title": "6. Log e Analisi",
+                "lists": [
+                    "Report sugli arresti anomali: non vengono inviati.",
+                    "Log locali: rimangono sul tuo dispositivo."
+                ]
+            },
+            "7": {
+                "title": "7. Modifiche alla Politica",
+                "desc": "Potremmo aggiornare questa politica di tanto in tanto."
+            },
+            "8": {
+                "title": "8. Contattaci",
+                "desc": "Per domande, raggiungici tramite la nostra repository GitHub."
+            }
+        },
+        "footer": "EtherVault — Il tuo Codice, i tuoi Dati, la tua Cassaforte."
+    },
+    "premium": {
+        "paywall": {
+            "title": "EtherVault Premium",
+            "subtitle": "Sincronizzazione cross-device e backup cloud automatico.",
+            "connecting": "Connessione sicura all'App Store in corso...",
+            "connecting_google": "Connessione sicura a Google Play in corso...",
+            "authorizing": "Autorizzazione del pagamento...",
+            "verifying": "Verifica della ricevuta crittografata...",
+            "processing": "Elaborazione del checkout sicuro",
+            "restoring": "Ripristino degli acquisti in corso",
+            "checking_receipts": "Verifica delle ricevute dello store...",
+            "validating": "Convalida firma digitale...",
+            "license_empty": "Inserisci una chiave di licenza.",
+            "license_invalid": "Chiave licenza non valida. Controlla e riprova.",
+            "already_active_restore_hint": "Possiedi già questo vantaggio. Tocca Ripristina acquisti.",
+            "load_offerings_failed": "Funzionalità premium non disponibile in questa regione."
+        },
+        "plan": {
+            "monthly_title": "Mensile",
+            "monthly_period": "/ mese",
+            "monthly_desc": "Piano flessibile. Annulla in qualsiasi momento.",
+            "annual_title": "Annuale",
+            "annual_period": "/ anno",
+            "annual_desc": "Risparmia il 50% rispetto al piano mensile.",
+            "lifetime_title": "A vita",
+            "lifetime_period": "Pagamento una tantum",
+            "lifetime_desc": "Paga una volta. Sblocca per sempre.",
+            "lifetime_badge": "Miglior Valore"
+        },
+        "feature": {
+            "sync_title": "Sincronizzazione Multi-Device",
+            "sync_desc": "Sincronizza in modo sicuro la cassaforte tramite Google Drive.",
+            "backup_title": "Backup Cloud Sicuro",
+            "backup_desc": "Non preoccuparti mai di perdere il tuo database.",
+            "crossplatform_title": "Accesso Multipiattaforma",
+            "crossplatform_desc": "Accesso continuo su Android, iOS, Windows, macOS e Linux.",
+            "attachments_title": "Allegati Crittografati",
+            "attachments_desc": "Carica documenti e immagini privati."
+        },
+        "actions": {
+            "subscribe": "Abbonati Ora per Sbloccare",
+            "restore": "Ripristina Acquisti",
+            "license": "Riscatta Licenza"
+        },
+        "success": {
+            "title": "Premium Attivato!",
+            "message": "Grazie per esserti abbonato! L'account è stato aggiornato."
+        },
+        "license": {
+            "title": "Riscatta Licenza",
+            "description": "Inserisci di seguito la tua chiave a 24 caratteri per attivare."
+        },
+        "banner": {
+            "upgrade_title": "Passa a Premium",
+            "upgrade_desc": "Sblocca la sincronizzazione sicura tramite Google Drive.",
+            "get_premium": "Ottieni Premium",
+            "active_title": "EtherVault Premium Attivo",
+            "active_desc": "Grazie per il tuo supporto!",
+            "mock_refund": "Simula Rimborso / Downgrade"
+        },
+        "coming_soon_title": "Prossimamente",
+        "coming_soon": "Acquisti in-app e sincronizzazione in arrivo a breve!"
+    }
+}
