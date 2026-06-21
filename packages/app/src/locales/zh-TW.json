@@ -611,5 +611,40 @@
         },
         "coming_soon_title": "敬請期待",
         "coming_soon": "應用內購買與同步訂閱即將推出！"
+    },
+    "theme": {
+        "section_title": "主題",
+        "default": {
+            "name": "經典",
+            "desc": "簡潔專業"
+        },
+        "kawaii": {
+            "name": "可愛",
+            "desc": "柔軟圓潤，甜美可愛"
+        },
+        "cyberpunk": {
+            "name": "朋克",
+            "desc": "霓虹閃爍，銳利前衛"
+        },
+        "steel": {
+            "name": "重金屬",
+            "desc": "粗獷鑄鐵與熱血搖滾的碰撞"
+        },
+        "fresh": {
+            "name": "清新",
+            "desc": "明亮自然，通透清爽"
+        },
+        "retro": {
+            "name": "復古",
+            "desc": "懷舊溫暖"
+        },
+        "ocean": {
+            "name": "深海",
+            "desc": "深邃寧靜"
+        },
+        "noir": {
+            "name": "暗黑",
+            "desc": "極致暗黑奢華"
+        }
     }
 }

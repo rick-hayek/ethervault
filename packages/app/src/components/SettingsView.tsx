@@ -47,6 +47,7 @@ import { TermsModal } from './TermsModal';
 import { FAQModal } from './FAQModal';
 import { useAlert } from '../hooks/useAlert';
 import { useBackHandler } from '../hooks/useBackHandler';
+import { useTheme } from '../hooks/ThemeContext';
 import { MobileFileService } from '../utils/MobileFileService';
 import { CustomDropdown } from './CustomDropdown';
 
@@ -60,6 +61,10 @@ interface SettingsViewProps {
 
 export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSettings, onDataChange, biometricsSupported = false, onUnlockPremium }) => {
   const { t, i18n } = useTranslation();
+  const { activeTheme, setTheme, allThemes } = useTheme();
+
+  const dropdownBtnClass = "bg-surface border border-primary-500/10 dark:border-primary-400/10 text-xs text-primary-600 dark:text-primary-400 rounded-theme py-1.5 px-3 outline-none hover:border-primary-500/30 transition-all flex items-center justify-between w-40 select-none font-medium";
+  const dropdownMenuClass = "absolute right-0 z-50 w-48 bg-surface-card border border-primary-500/10 dark:border-primary-400/10 rounded-theme-lg shadow-theme-lg overflow-hidden py-1 animate-in fade-in duration-150";
 
   // Modals State
   const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
@@ -349,7 +354,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
       return (
         <Portal>
           <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4" onClick={onClose}>
-            <div className="bg-white dark:bg-slate-900 w-full max-w-sm rounded-3xl border border-rose-200 dark:border-rose-900/30 shadow-2xl p-6 text-center space-y-4 animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+            <div className="bg-surface-card w-full max-w-sm rounded-theme-lg border border-rose-200 dark:border-rose-900/30 shadow-theme-lg p-6 text-center space-y-4 animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
               <div className="w-12 h-12 rounded-full bg-rose-100 dark:bg-rose-900/20 flex items-center justify-center mx-auto text-rose-500">
                 <Shield className="w-6 h-6" />
               </div>
@@ -887,7 +892,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
   const CompactSetting = ({ icon: Icon, label, value, onClick, type = 'toggle' }: any) => (
     <div
       onClick={type === 'toggle' ? onClick : undefined}
-      className={`bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 p-3 rounded-2xl flex items-center justify-between group transition-all ${type === 'toggle' ? 'cursor-pointer active:scale-[0.99] hover:border-primary-500/30' : ''}`}
+      className={`bg-surface-card border-[0.5px] border-primary-500/10 dark:border-primary-400/10 p-3 rounded-theme flex items-center justify-between group transition-all ${type === 'toggle' ? 'cursor-pointer active:scale-[0.99] hover:border-primary-500/30' : ''}`}
     >
       <div className="flex items-center gap-3">
         <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
@@ -907,9 +912,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
     </div>
   );
 
+
+
   return (
     <div className="min-h-full">
-      <div className="sticky top-0 z-30 bg-slate-50/95 dark:bg-slate-950/95 backdrop-blur-sm px-4 pt-[calc(env(safe-area-inset-top)+4px)] pb-4 md:sticky md:px-8 md:pt-8 transition-all">
+      <div className="sticky top-0 z-30 bg-surface/95 backdrop-blur-sm px-4 pt-[calc(env(safe-area-inset-top)+4px)] pb-4 md:sticky md:px-8 md:pt-8 transition-all">
         <div className="flex items-center justify-between">
           <div className="block">
             <h1 className="text-xl md:text-2xl font-bold tracking-tight text-slate-900 dark:text-white flex items-center gap-2">
@@ -1004,7 +1011,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
           {/* Cloud Config - Tighter */}
-          <div className="lg:col-span-5 bg-white dark:bg-slate-900 p-6 rounded-[32px] border-[0.5px] border-slate-200 dark:border-slate-800 shadow-sm space-y-3">
+          <div className="lg:col-span-5 bg-surface-card p-6 rounded-theme-lg border-[0.5px] border-primary-500/10 dark:border-primary-400/10 shadow-theme space-y-3">
             <div className="flex items-center justify-between mb-1">
               <h2 className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400">{t('settings.sync_provider')}</h2>
               {settings.lastSync && <span className="text-[8px] text-emerald-500 font-medium uppercase">{settings.lastSync}</span>}
@@ -1101,7 +1108,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                               <button
                                 onClick={() => handleSyncClick('none')} // Disconnect
                                 disabled={isSyncing}
-                                className="px-4 py-2.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:text-rose-500 hover:border-rose-200 dark:hover:border-rose-900/50 text-[11px] font-medium rounded-xl transition-all active:scale-95"
+                                className="px-4 py-2.5 bg-surface-card border border-primary-500/10 dark:border-primary-400/10 text-slate-500 dark:text-slate-400 hover:text-rose-500 hover:border-rose-200 dark:hover:border-rose-900/50 text-[11px] font-medium rounded-theme transition-all active:scale-95"
                               >
                                 {t('settings.cloud.disconnect')}
                               </button>
@@ -1169,11 +1176,11 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
             <div className="space-y-1.5">
               <h3 className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">{t('settings.preferences', 'Preferences')}</h3>
 
-              <div className="bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-[20px] shadow-sm flex flex-col">
+              <div className="bg-surface-card border-[0.5px] border-primary-500/10 dark:border-primary-400/10 rounded-theme shadow-theme flex flex-col">
                 {biometricsSupported && (
                   <button
                     onClick={toggleBiometrics}
-                    className="w-full flex items-center justify-between p-3 px-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-t-[20px] transition-colors text-left group"
+                    className="w-full flex items-center justify-between p-3 px-4 hover:bg-primary-500/5 dark:hover:bg-primary-400/5 rounded-t-[20px] transition-colors text-left group"
                   >
                     <div className="flex items-center gap-[18px]">
                       <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
@@ -1216,6 +1223,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                       { value: 'zh', label: '简体中文' },
                       { value: 'zh-TW', label: '繁體中文' }
                     ]}
+                    buttonClassName={dropdownBtnClass}
+                    menuClassName={dropdownMenuClass}
                   />
                 </div>
 
@@ -1236,6 +1245,8 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                       value: val,
                       label: val === 60 ? t('settings.option.time.1h') : t(`settings.option.time.${val}m`)
                     }))}
+                    buttonClassName={dropdownBtnClass}
+                    menuClassName={dropdownMenuClass}
                   />
                 </div>
               </div>
@@ -1244,14 +1255,14 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
             <div className="space-y-1.5">
               <h3 className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">{t('layout.appearance', 'Appearance')}</h3>
 
-              <div className="bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-[20px] shadow-sm flex flex-col">
+              <div className="bg-surface-card border-[0.5px] border-primary-500/10 dark:border-primary-400/10 rounded-theme shadow-theme flex flex-col">
                 {/* Mode Option */}
                 <button
                   onClick={() => {
                     const next = settings.theme === 'dark' ? 'light' : (settings.theme === 'light' ? 'system' : 'dark');
                     setSettings({ ...settings, theme: next });
                   }}
-                  className="w-full flex items-center justify-between p-3 px-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-t-[20px] transition-colors text-left group"
+                  className="w-full flex items-center justify-between p-3 px-4 hover:bg-primary-500/5 dark:hover:bg-primary-400/5 rounded-t-theme rounded-b-none transition-colors text-left group"
                 >
                   <div className="flex items-center gap-[18px]">
                     <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
@@ -1266,31 +1277,44 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                   </span>
                 </button>
 
-                {/* Color Option */}
-                <div className="w-full flex items-center justify-between p-3 px-4 group relative rounded-b-[20px]">
-                  {/* Indented Divider */}
-                  <div className="absolute top-0 left-[60px] right-0 border-t border-slate-100 dark:border-slate-800/80 pointer-events-none" />
-
+                {/* Theme Style Option */}
+                <div className="w-full flex items-center justify-between p-3 px-4 group relative rounded-b-theme rounded-t-none border-t border-slate-100 dark:border-slate-800/80">
                   <div className="flex items-center gap-[18px]">
                     <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
                       <Palette className="w-3.5 h-3.5" strokeWidth={1.5} />
                     </div>
-                    <span className="text-xs font-normal text-slate-700 dark:text-slate-300 tracking-tight">{t('settings.option.theme_color_label', 'Color')}</span>
+                    <span className="text-xs font-normal text-slate-700 dark:text-slate-300 tracking-tight">{t('theme.section_title', 'Theme')}</span>
                   </div>
                   <CustomDropdown
-                    value={settings.themeColor || 'silver'}
-                    onChange={(val) => setSettings({ ...settings, themeColor: val as any })}
-                    options={[
-                      { value: 'silver', label: t('settings.color.silver', 'Silver'), dotColor: 'bg-slate-400 dark:bg-slate-500' },
-                      { value: 'blue', label: t('settings.color.blue', 'Blue'), dotColor: 'bg-blue-500' },
-                      { value: 'emerald', label: t('settings.color.emerald', 'Green'), dotColor: 'bg-emerald-500' },
-                      { value: 'violet', label: t('settings.color.violet', 'Violet'), dotColor: 'bg-violet-500' },
-                      { value: 'amber', label: t('settings.color.amber', 'Amber'), dotColor: 'bg-amber-500' },
-                      { value: 'rose', label: t('settings.color.rose', 'Rose'), dotColor: 'bg-rose-500' },
-                      { value: 'pink', label: t('settings.color.pink', 'Sakura Pink'), dotColor: 'bg-pink-400' },
-                      { value: 'lightgrey', label: t('settings.color.lightgrey', 'Cashmere Grey'), dotColor: 'bg-slate-300 dark:bg-slate-600' },
-                      { value: 'ivory', label: t('settings.color.ivory', 'Ivory'), dotColor: 'bg-amber-100 dark:bg-amber-200' }
-                    ]}
+                    value={activeTheme}
+                    onChange={(themeId) => {
+                      const selectedTheme = allThemes.find(t => t.id === themeId);
+                      if (selectedTheme?.premium && !settings.isPremium) {
+                        onUnlockPremium?.();
+                      } else {
+                        setTheme(themeId);
+                      }
+                    }}
+                    options={allThemes.map(theme => {
+                      const isLocked = theme.premium && !settings.isPremium;
+                      return {
+                        value: theme.id,
+                        label: (
+                          <span className="flex items-center gap-1.5">
+                            <span className="text-xs leading-none shrink-0">{theme.emoji}</span>
+                            <span>{t(theme.nameKey, theme.id)}</span>
+                            {isLocked && (
+                              <span className="ml-1 text-[6.5px] font-extrabold uppercase tracking-wider text-primary-400 border border-primary-500/30 px-1 py-0.25 rounded bg-primary-500/10 inline-flex items-center gap-0.5 select-none shrink-0">
+                                <Lock className="w-1.5 h-1.5 shrink-0" />
+                                PREMIUM
+                              </span>
+                            )}
+                          </span>
+                        )
+                      };
+                    })}
+                    buttonClassName={dropdownBtnClass}
+                    menuClassName={dropdownMenuClass}
                   />
                 </div>
               </div>
@@ -1301,10 +1325,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
             <div className="space-y-1.5">
               <h3 className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">{t('settings.data_management', 'Data Management')}</h3>
 
-              <div className="bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-[20px] shadow-sm flex flex-col">
+              <div className="bg-surface-card border-[0.5px] border-primary-500/10 dark:border-primary-400/10 rounded-theme shadow-theme flex flex-col">
                 <button
                   onClick={() => setIsImportModalOpen(true)}
-                  className="w-full flex items-center justify-between p-3 px-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-t-[20px] transition-colors text-left group"
+                  className="w-full flex items-center justify-between p-3 px-4 hover:bg-primary-500/5 dark:hover:bg-primary-400/5 rounded-t-[20px] transition-colors text-left group"
                 >
                   <div className="flex items-center gap-[18px]">
                     <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors">
@@ -1320,7 +1344,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
 
                 <button
                   onClick={() => setIsExportModalOpen(true)}
-                  className="w-full flex items-center justify-between p-3 px-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-b-[20px] transition-colors text-left group relative"
+                  className="w-full flex items-center justify-between p-3 px-4 hover:bg-primary-500/5 dark:hover:bg-primary-400/5 rounded-b-[20px] transition-colors text-left group relative"
                 >
                   {/* Indented Divider line bypassing the icon */}
                   <div className="absolute top-0 left-[60px] right-0 border-t border-slate-100 dark:border-slate-800/80 pointer-events-none" />
@@ -1343,7 +1367,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
             <div className="space-y-1.5">
               <h3 className="text-[9px] font-medium uppercase tracking-[0.2em] text-slate-400 pl-1">{t('settings.log_management', 'Log Management')}</h3>
 
-              <div className="bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-[20px] shadow-sm flex flex-col">
+              <div className="bg-surface-card border-[0.5px] border-primary-500/10 dark:border-primary-400/10 rounded-theme shadow-theme flex flex-col">
                 {/* Master Log Settings */}
                 <div className={`w-full flex items-center justify-between p-3 px-4 group rounded-t-[20px] ${!(settings.masterLogEnabled ?? false) ? 'rounded-b-[20px]' : ''}`}>
                   <div className="flex items-center gap-[18px]">
@@ -1373,7 +1397,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                 {(settings.masterLogEnabled ?? false) && (
                   <button
                     onClick={() => setIsActivityModalOpen(true)}
-                    className="w-full flex items-center justify-between p-3 px-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors text-left group relative"
+                    className="w-full flex items-center justify-between p-3 px-4 hover:bg-primary-500/5 dark:hover:bg-primary-400/5 transition-colors text-left group relative"
                   >
                     {/* Indented Divider */}
                     <div className="absolute top-0 left-[60px] right-0 border-t border-slate-100 dark:border-slate-800/80 pointer-events-none" />
@@ -1394,7 +1418,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                 {(settings.masterLogEnabled ?? false) && (
                   <button
                     onClick={() => setIsCacheConfirmOpen(true)}
-                    className="w-full flex items-center justify-between p-3 px-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-b-[20px] transition-colors text-left group relative"
+                    className="w-full flex items-center justify-between p-3 px-4 hover:bg-primary-500/5 dark:hover:bg-primary-400/5 rounded-b-[20px] transition-colors text-left group relative"
                   >
                     {/* Indented Divider */}
                     <div className="absolute top-0 left-[60px] right-0 border-t border-slate-100 dark:border-slate-800/80 pointer-events-none" />
@@ -1425,10 +1449,10 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
             </button>
 
             {/* About Section */}
-            <div className="bg-white dark:bg-slate-900 border-[0.5px] border-slate-200 dark:border-slate-800 rounded-[20px] shadow-sm flex flex-col">
+            <div className="bg-surface-card border-[0.5px] border-primary-500/10 dark:border-primary-400/10 rounded-theme shadow-theme flex flex-col">
               <button
                 onClick={() => setIsAboutModalOpen(true)}
-                className="w-full flex items-center justify-between p-3 px-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 rounded-[20px] transition-colors text-left group"
+                className="w-full flex items-center justify-between p-3 px-4 hover:bg-primary-500/5 dark:hover:bg-primary-400/5 rounded-theme transition-colors text-left group"
               >
                 <div className="flex items-center gap-[18px]">
                   <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors">
@@ -1449,7 +1473,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           isPasswordModalOpen && (
             <Portal>
               <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-                <div className="relative bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden p-8 animate-in zoom-in-95 duration-200">
+                <div className="relative bg-surface-card w-full max-w-md rounded-theme-lg border border-primary-500/10 dark:border-primary-400/10 shadow-theme-lg overflow-hidden p-8 animate-in zoom-in-95 duration-200">
 
                   {/* Loading Overlay */}
                   {isChangingPassword && (
@@ -1474,7 +1498,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                             setPasswordForm({ ...passwordForm, old: val });
                           }
                         }}
-                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-primary-500 transition-all text-sm"
+                        className="w-full bg-surface border border-primary-500/10 dark:border-primary-400/10 rounded-theme py-2.5 px-4 outline-none focus:border-primary-500 transition-all text-sm"
                       />
                     </div>
                     <div className="space-y-1.5 pt-2 border-t border-slate-100 dark:border-slate-800">
@@ -1489,7 +1513,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                             setPasswordForm({ ...passwordForm, new: val });
                           }
                         }}
-                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-primary-500 transition-all text-sm"
+                        className="w-full bg-surface border border-primary-500/10 dark:border-primary-400/10 rounded-theme py-2.5 px-4 outline-none focus:border-primary-500 transition-all text-sm"
                       />
                     </div>
                     <div className="space-y-1.5">
@@ -1504,7 +1528,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                             setPasswordForm({ ...passwordForm, confirm: val });
                           }
                         }}
-                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-2.5 px-4 outline-none focus:border-primary-500 transition-all text-sm"
+                        className="w-full bg-surface border border-primary-500/10 dark:border-primary-400/10 rounded-theme py-2.5 px-4 outline-none focus:border-primary-500 transition-all text-sm"
                       />
                     </div>
 
@@ -1543,7 +1567,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           isBioModalOpen && (
             <Portal>
               <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
-                <div className="bg-white dark:bg-slate-900 w-full max-w-md rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden p-8 animate-in zoom-in-95 duration-200">
+                <div className="bg-surface-card w-full max-w-md rounded-theme-lg border border-primary-500/10 dark:border-primary-400/10 shadow-theme-lg overflow-hidden p-8 animate-in zoom-in-95 duration-200">
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-12 h-12 rounded-2xl bg-primary-50 dark:bg-primary-500/20 flex items-center justify-center text-primary-600 dark:text-primary-400">
                       <Fingerprint className="w-6 h-6" />
@@ -1568,7 +1592,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                               setBioPassword(val);
                             }
                           }}
-                          className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl py-3 px-4 outline-none focus:border-primary-500 transition-all text-sm font-medium"
+                          className="w-full bg-surface border border-primary-500/10 dark:border-primary-400/10 rounded-theme py-3 px-4 outline-none focus:border-primary-500 transition-all text-sm font-medium"
                           placeholder={t('login.unlock_placeholder')}
                           autoFocus
                         />
@@ -1650,7 +1674,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
           isActivityModalOpen && (
             <Portal>
               <div className="fixed inset-0 bg-slate-950/60 backdrop-blur-sm z-[100] flex items-end md:items-center justify-center p-0 md:p-4" onClick={() => setIsActivityModalOpen(false)}>
-                <div className="bg-white dark:bg-slate-900 w-full h-[100dvh] md:h-[600px] md:max-w-2xl flex flex-col rounded-none md:rounded-3xl border-t md:border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden animate-in slide-in-from-bottom-10 md:zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
+                <div className="bg-surface-card w-full h-[100dvh] md:h-[600px] md:max-w-2xl flex flex-col rounded-none md:rounded-theme-lg border-t md:border border-primary-500/10 dark:border-primary-400/10 shadow-theme-lg overflow-hidden animate-in slide-in-from-bottom-10 md:zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
                   <div className="flex items-center justify-between px-6 md:px-8 pt-[calc(env(safe-area-inset-top)+4px)] pb-4 md:py-6 border-b border-slate-100 dark:border-slate-800">
                     <div className="flex items-center gap-3">
                       <div className="hidden md:flex p-2 bg-primary-50 dark:bg-slate-800 rounded-xl text-primary-500">
@@ -1712,7 +1736,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                         const highlightedLog = log.replace(/(\[AUTH\]|\[VAULT\]|\[DATA\])/g, '<span class="font-bold text-primary-500">$1</span>');
 
                         return (
-                          <div key={index} className={`flex items-start gap-3 border-b border-slate-200/50 dark:border-slate-800/50 pb-1 ${colorClass}`}>
+                          <div key={index} className={`flex items-start gap-3 border-b border-primary-500/5 dark:border-primary-400/5 pb-1 ${colorClass}`}>
                             <span className="opacity-50 select-none w-6 shrink-0 text-right">{index + 1}</span>
                             <span className="break-all" dangerouslySetInnerHTML={{ __html: highlightedLog }} />
                           </div>
@@ -1758,7 +1782,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
         <Portal>
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
             <div className="absolute inset-0 bg-slate-950/60 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setIsCacheConfirmOpen(false)} />
-            <div className="relative bg-white dark:bg-slate-900 w-full max-w-sm rounded-[2rem] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 p-6 space-y-6">
+            <div className="relative bg-surface-card w-full max-w-sm rounded-theme-lg shadow-theme-lg overflow-hidden animate-in zoom-in-95 duration-300 p-6 space-y-6">
               <div className="space-y-2 text-center">
                 <div className="w-12 h-12 bg-rose-50 dark:bg-rose-900/20 rounded-full flex items-center justify-center mx-auto mb-4 text-rose-500">
                   <Trash2 className="w-6 h-6" />
@@ -1771,7 +1795,7 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
               <div className="flex gap-3">
                 <button
                   onClick={() => setIsCacheConfirmOpen(false)}
-                  className="flex-1 px-4 py-3 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-500 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-all font-mono text-sm"
+                  className="flex-1 px-4 py-3 rounded-theme border border-primary-500/10 dark:border-primary-400/10 text-slate-500 font-medium hover:bg-primary-500/5 dark:hover:bg-primary-400/5 transition-all font-mono text-sm"
                 >
                   {t('common.cancel')}
                 </button>

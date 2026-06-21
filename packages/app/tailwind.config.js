@@ -12,6 +12,8 @@ export default {
             colors: {
                 background: "var(--background)",
                 foreground: "var(--foreground)",
+                surface: "rgb(var(--surface) / <alpha-value>)",
+                "surface-card": "rgb(var(--surface-card) / <alpha-value>)",
                 primary: {
                     50: "rgb(var(--primary-50) / <alpha-value>)",
                     100: "rgb(var(--primary-100) / <alpha-value>)",
@@ -24,6 +26,18 @@ export default {
                     800: "rgb(var(--primary-800) / <alpha-value>)",
                     900: "rgb(var(--primary-900) / <alpha-value>)",
                 }
+            },
+            borderRadius: {
+                'theme': 'var(--radius-base)',
+                'theme-lg': 'var(--radius-lg)',
+                'theme-full': 'var(--radius-full)',
+            },
+            fontFamily: {
+                'theme': 'var(--font-family)',
+            },
+            boxShadow: {
+                'theme': '0 4px 24px var(--shadow-color)',
+                'theme-lg': '0 12px 40px var(--shadow-color)',
             },
         },
     },

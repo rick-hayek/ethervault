@@ -8,10 +8,13 @@
     <title>EtherVault</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Theme fonts: Inter (default), Quicksand (kawaii), Orbitron (cyberpunk), Nunito (fresh), Courier Prime (retro), DM Sans (ocean), Metal Mania (steel) -->
+    <!-- Estimated added download: ~300-500KB total across all font families (loaded on-demand per theme) -->
+    <!-- Fallback: Each theme font-family stack includes system-ui/sans-serif fallbacks for offline use -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600;700&family=Orbitron:wght@400;500;700&family=Nunito:wght@400;500;600;700&family=Courier+Prime:wght@400;700&family=DM+Sans:wght@400;500;600;700&family=Metal+Mania&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: var(--font-family, 'Inter', sans-serif);
             transition: background-color 0.3s ease;
         }
     </style>

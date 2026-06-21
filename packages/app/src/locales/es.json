@@ -611,5 +611,40 @@
         },
         "coming_soon_title": "Próximamente",
         "coming_soon": "Las compras integradas en la aplicación estarán disponibles pronto."
+    },
+    "theme": {
+        "section_title": "Tema",
+        "default": {
+            "name": "Clásico",
+            "desc": "Limpio y profesional"
+        },
+        "kawaii": {
+            "name": "Kawaii",
+            "desc": "Suave, redondeado y adorable"
+        },
+        "cyberpunk": {
+            "name": "Cyberpunk",
+            "desc": "Neon y vanguardista"
+        },
+        "steel": {
+            "name": "Heavy Metal",
+            "desc": "Hierro crudo, fuego carmesí y espíritu de rock"
+        },
+        "fresh": {
+            "name": "Fresco",
+            "desc": "Brillante y natural"
+        },
+        "retro": {
+            "name": "Retro",
+            "desc": "Calidez nostálgica"
+        },
+        "ocean": {
+            "name": "Océano",
+            "desc": "Profundo y tranquilo"
+        },
+        "noir": {
+            "name": "Noir",
+            "desc": "Lujo oscuro"
+        }
     }
 }

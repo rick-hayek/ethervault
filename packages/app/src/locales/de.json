@@ -611,5 +611,40 @@
         },
         "coming_soon_title": "Demnächst",
         "coming_soon": "In-App-Käufe und Synchronisierung sind bald verfügbar!"
+    },
+    "theme": {
+        "section_title": "Thema",
+        "default": {
+            "name": "Klassisch",
+            "desc": "Schlicht und professionell"
+        },
+        "kawaii": {
+            "name": "Kawaii",
+            "desc": "Weich, rund und liebenswert"
+        },
+        "cyberpunk": {
+            "name": "Cyberpunk",
+            "desc": "Neonfarben und kantig"
+        },
+        "steel": {
+            "name": "Heavy Metal",
+            "desc": "Rohes Holzkohleeisen, dunkelrotes Feuer und Rock-Spirit"
+        },
+        "fresh": {
+            "name": "Frisch",
+            "desc": "Hell und natürlich"
+        },
+        "retro": {
+            "name": "Retro",
+            "desc": "Nostalgische Wärme"
+        },
+        "ocean": {
+            "name": "Ozean",
+            "desc": "Tief und beruhigend"
+        },
+        "noir": {
+            "name": "Noir",
+            "desc": "Dunkler Luxus"
+        }
     }
 }

@@ -17,6 +17,7 @@ import { PaywallModal } from './components/PaywallModal';
 import { getVaultService, getAuthService, CloudService, AppSettings, PasswordEntry, Category, CloudProvider, getCryptoService } from '@ethervault/core';
 import { BackHandlerProvider, useBackHandler } from './hooks/useBackHandler';
 import { AlertProvider, useAlert } from './hooks/useAlert';
+import { ThemeProvider, useTheme } from './hooks/ThemeContext';
 import { useTranslation } from 'react-i18next';
 import { App as CapacitorApp } from '@capacitor/app';
 import { Capacitor } from '@capacitor/core';
@@ -50,6 +51,7 @@ const variants = {
 const AppContent: React.FC = () => {
   const { t } = useTranslation();
   const { showInfo, showSuccess } = useAlert();
+  const { activeTheme, setTheme, themeDefinition } = useTheme();
 
   const handleUnlockPremium = () => {
     // if dev
@@ -107,14 +109,12 @@ const AppContent: React.FC = () => {
 
   const [settings, setSettings] = useState<AppSettings>(() => {
     const savedProvider = localStorage.getItem('ethervault_cloud_provider') as CloudProvider | null;
-    const savedThemeColor = localStorage.getItem('ethervault_theme_color') || 'silver';
     return {
       biometricsEnabled: localStorage.getItem('ethervault_bio') === 'true',
       autoLockTimeout: 15,
       theme: 'system',
       cloudProvider: savedProvider || 'none',
       lastSync: '',
-      themeColor: savedThemeColor as any,
       isPremium: localStorage.getItem('ethervault_premium') === 'true',
       masterLogEnabled: localStorage.getItem('ethervault_master_log') === 'true'
     };
@@ -129,6 +129,14 @@ const AppContent: React.FC = () => {
       setSettings(prev => ({ ...prev, cloudProvider: 'none' }));
     }
   }, [settings.isPremium, settings.cloudProvider]);
+
+  // Enforce premium theme restriction guard
+  useEffect(() => {
+    if (!settings.isPremium && themeDefinition.premium) {
+      logger.info('[PREMIUM] Non-premium user using premium theme. Resetting to default.');
+      setTheme('default');
+    }
+  }, [settings.isPremium, themeDefinition.premium, setTheme]);
 
   // Persist cloud provider to localStorage and initialize CloudService when it changes
   useEffect(() => {
@@ -290,12 +298,7 @@ const AppContent: React.FC = () => {
     }
   }, [settings.theme]);
 
-  // Unified Theme Color Effect
-  useEffect(() => {
-    const color = settings.themeColor || 'silver';
-    localStorage.setItem('ethervault_theme_color', color);
-    document.documentElement.setAttribute('data-theme-color', color);
-  }, [settings.themeColor]);
+  // Theme is now managed by ThemeContext — see ThemeProvider in hooks/ThemeContext.tsx
 
   // Master Log Persistence Effect
   useEffect(() => {
@@ -708,11 +711,13 @@ const AppContent: React.FC = () => {
 };
 
 const AppWithProviders: React.FC = () => (
-  <AlertProvider>
-    <BackHandlerProvider>
-      <AppContent />
-    </BackHandlerProvider>
-  </AlertProvider>
+  <ThemeProvider>
+    <AlertProvider>
+      <BackHandlerProvider>
+        <AppContent />
+      </BackHandlerProvider>
+    </AlertProvider>
+  </ThemeProvider>
 );
 
 export default AppWithProviders;

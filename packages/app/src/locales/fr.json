@@ -611,5 +611,40 @@
         },
         "coming_soon_title": "Bientôt Disponible",
         "coming_soon": "Les achats intégrés et abonnements seront bientôt disponibles."
+    },
+    "theme": {
+        "section_title": "Thème",
+        "default": {
+            "name": "Classique",
+            "desc": "Épuré et professionnel"
+        },
+        "kawaii": {
+            "name": "Kawaii",
+            "desc": "Doux, rond et adorable"
+        },
+        "cyberpunk": {
+            "name": "Cyberpunk",
+            "desc": "Néon et audacieux"
+        },
+        "steel": {
+            "name": "Heavy Metal",
+            "desc": "Fer brut, feu cramoisi et esprit rock"
+        },
+        "fresh": {
+            "name": "Frais",
+            "desc": "Lumineux et naturel"
+        },
+        "retro": {
+            "name": "Rétro",
+            "desc": "Chaleur nostalgique"
+        },
+        "ocean": {
+            "name": "Océan",
+            "desc": "Profond et apaisant"
+        },
+        "noir": {
+            "name": "Noir",
+            "desc": "Luxe sombre"
+        }
     }
 }

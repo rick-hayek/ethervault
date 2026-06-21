@@ -611,5 +611,40 @@
         },
         "coming_soon_title": "Em breve",
         "coming_soon": "As compras no app estarão disponíveis em breve."
+    },
+    "theme": {
+        "section_title": "Tema",
+        "default": {
+            "name": "Clássico",
+            "desc": "Limpo e profissional"
+        },
+        "kawaii": {
+            "name": "Kawaii",
+            "desc": "Suave, redondo e adorável"
+        },
+        "cyberpunk": {
+            "name": "Cyberpunk",
+            "desc": "Neon e moderno"
+        },
+        "steel": {
+            "name": "Heavy Metal",
+            "desc": "Ferro bruto, fogo carmesim e espírito rock"
+        },
+        "fresh": {
+            "name": "Fresco",
+            "desc": "Brilhante e natural"
+        },
+        "retro": {
+            "name": "Retro",
+            "desc": "Calor nostálgico"
+        },
+        "ocean": {
+            "name": "Oceano",
+            "desc": "Profundo e calmante"
+        },
+        "noir": {
+            "name": "Noir",
+            "desc": "Luxo escuro"
+        }
     }
 }

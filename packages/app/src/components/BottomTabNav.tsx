@@ -45,7 +45,7 @@ export const BottomTabNav: React.FC<BottomTabNavProps> = ({ currentView, setView
                 key={item.id}
                 onClick={() => setView(item.id)}
                 className={`relative flex flex-col items-center justify-center transition-all duration-300 ease-out ${isActive
-                    ? 'w-[76px] h-14 bg-black/5 dark:bg-white/10 rounded-full text-primary-600 dark:text-primary-400'
+                    ? 'w-[76px] h-14 bg-black/5 dark:bg-white/10 rounded-theme-full text-primary-600 dark:text-primary-400'
                     : 'w-14 h-14 text-slate-800 dark:text-slate-300'
                     }`}
             >
@@ -63,13 +63,13 @@ export const BottomTabNav: React.FC<BottomTabNavProps> = ({ currentView, setView
 
     return (
         <div className="md:hidden fixed bottom-6 left-5 right-5 z-40 pointer-events-none pb-safe-area-bottom">
-            <nav className="pointer-events-auto flex items-center justify-between px-2 py-2 bg-white/20 dark:bg-slate-900/20 backdrop-blur-2xl rounded-full shadow-[0_12px_40px_rgb(0,0,0,0.12)] dark:shadow-[0_12px_40px_rgb(0,0,0,0.4)] border border-slate-200/50 dark:border-slate-800/50">
+            <nav className="pointer-events-auto flex items-center justify-between px-2 py-2 bg-surface-card/60 dark:bg-surface-card/40 backdrop-blur-2xl rounded-theme-full shadow-theme-lg border border-primary-500/10 dark:border-primary-400/10">
                 {navItems.slice(0, 2).map(renderNavItem)}
 
                 {onAddClick && (
                     <button
                         onClick={onAddClick}
-                        className="flex items-center justify-center w-14 h-14 rounded-full bg-primary-500/15 dark:bg-primary-400/20 text-primary-600 dark:text-primary-400 shadow-sm active:scale-95 transition-all mx-1"
+                        className="flex items-center justify-center w-14 h-14 rounded-theme-full bg-primary-500/15 dark:bg-primary-400/20 text-primary-600 dark:text-primary-400 shadow-sm active:scale-95 transition-all mx-1"
                     >
                         <Plus className="w-7 h-7" strokeWidth={1.2} />
                     </button>

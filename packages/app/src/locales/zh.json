@@ -611,5 +611,40 @@
         },
         "coming_soon_title": "敬请期待",
         "coming_soon": "应用内购买和同步订阅功能即将上线！"
+    },
+    "theme": {
+        "section_title": "主题",
+        "default": {
+            "name": "经典",
+            "desc": "简洁专业"
+        },
+        "kawaii": {
+            "name": "可爱",
+            "desc": "柔软圆润，甜美可爱"
+        },
+        "cyberpunk": {
+            "name": "朋克",
+            "desc": "霓虹闪烁，锐利前卫"
+        },
+        "steel": {
+            "name": "重金属",
+            "desc": "粗犷铸铁与热血摇滚的碰撞"
+        },
+        "fresh": {
+            "name": "清新",
+            "desc": "明亮自然，通透清爽"
+        },
+        "retro": {
+            "name": "复古",
+            "desc": "怀旧温暖"
+        },
+        "ocean": {
+            "name": "深海",
+            "desc": "深邃宁静"
+        },
+        "noir": {
+            "name": "暗黑",
+            "desc": "极致暗黑奢华"
+        }
     }
 }

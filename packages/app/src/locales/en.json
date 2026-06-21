@@ -611,5 +611,40 @@
         },
         "coming_soon_title": "Coming Soon",
         "coming_soon": "In-app purchases and sync subscriptions are coming soon!"
+    },
+    "theme": {
+        "section_title": "Theme",
+        "default": {
+            "name": "Classic",
+            "desc": "Clean and professional"
+        },
+        "kawaii": {
+            "name": "Kawaii",
+            "desc": "Soft, round, and adorable"
+        },
+        "cyberpunk": {
+            "name": "Cyberpunk",
+            "desc": "Neon-lit and edgy"
+        },
+        "steel": {
+            "name": "Heavy Metal",
+            "desc": "Raw charcoal iron, crimson fire, and rock spirit"
+        },
+        "fresh": {
+            "name": "Fresh",
+            "desc": "Bright and natural"
+        },
+        "retro": {
+            "name": "Retro",
+            "desc": "Nostalgic warmth"
+        },
+        "ocean": {
+            "name": "Ocean",
+            "desc": "Deep and calming"
+        },
+        "noir": {
+            "name": "Noir",
+            "desc": "Dark luxury"
+        }
     }
 }

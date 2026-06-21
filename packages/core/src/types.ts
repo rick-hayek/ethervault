@@ -35,6 +35,8 @@ export type Category = 'All' | 'Personal' | 'Work' | 'Others';
 
 export type CloudProvider = 'none' | 'dropbox' | 'google' | 'drive' | 'webdav' | 'icloud' | 'onedrive';
 
+export type ThemeId = 'default' | 'kawaii' | 'cyberpunk' | 'steel' | 'fresh' | 'retro' | 'ocean' | 'noir';
+
 export interface AppSettings {
     biometricsEnabled: boolean;
     autoLockTimeout: number;
@@ -42,7 +44,9 @@ export interface AppSettings {
     cloudProvider: CloudProvider;
     lastSync: string;
     masterLogEnabled?: boolean;
-    themeColor?: 'blue' | 'emerald' | 'violet' | 'amber' | 'rose' | 'pink' | 'lightgrey' | 'silver' | 'ivory';
+    /** @deprecated Use activeTheme instead. Kept for migration only. */
+    themeColor?: string;
+    activeTheme?: ThemeId;
     isPremium: boolean;
 }
 

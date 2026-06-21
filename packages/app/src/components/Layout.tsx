@@ -122,15 +122,15 @@ export const Layout: React.FC<LayoutProps> = ({
     <div
       onTouchStart={useSlider ? undefined : handleTouchStart}
       onTouchEnd={useSlider ? undefined : handleTouchEnd}
-      className="h-[100dvh] flex flex-col md:flex-row bg-slate-50 dark:bg-slate-950 transition-colors duration-300 overflow-hidden"
+      className="h-[100dvh] flex flex-col md:flex-row bg-surface transition-colors duration-300 overflow-hidden font-theme"
     >
       {/* Sidebar - Desktop/Tablet (Fixed position, non-scrolling) */}
-      <aside className="hidden md:flex flex-col md:w-64 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 h-full shrink-0 z-20">
+      <aside className="hidden md:flex flex-col md:w-64 border-r border-primary-500/10 dark:border-primary-400/10 bg-surface-card h-full shrink-0 z-20">
         <div className="p-4 md:p-8 flex items-center justify-start gap-3 titlebar">
           <img
             src={appLogo}
             alt="EtherVault Logo"
-            className="w-8 h-8 rounded-xl shadow-md shrink-0"
+            className="w-8 h-8 rounded-theme shadow-theme shrink-0"
           />
           <span className="md:block text-xl font-bold text-slate-900 dark:text-white truncate">
             EtherVault
@@ -142,8 +142,8 @@ export const Layout: React.FC<LayoutProps> = ({
             <button
               key={item.id}
               onClick={() => setView(item.id)}
-              className={`w-full flex items-center justify-start gap-3 px-3 py-3 rounded-xl transition-all duration-300 group ${currentView === item.id
-                ? `${item.activeClass} font-normal`
+              className={`w-full flex items-center justify-start gap-3 px-3 py-3 rounded-theme transition-all duration-300 group ${currentView === item.id
+                ? `${item.activeClass} font-normal bg-primary-500/10 dark:bg-primary-400/10`
                 : 'text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'
                 }`}
             >
@@ -153,10 +153,10 @@ export const Layout: React.FC<LayoutProps> = ({
           ))}
         </nav>
 
-        <div className="p-4 border-t border-slate-200 dark:border-slate-800 space-y-1">
+        <div className="p-4 border-t border-primary-500/10 dark:border-primary-400/10 space-y-1">
           <button
             onClick={toggleDarkMode}
-            className="w-full flex items-center justify-between p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors group"
+            className="w-full flex items-center justify-between p-3 rounded-theme hover:bg-primary-500/5 dark:hover:bg-primary-400/5 transition-colors group"
           >
             <div className="flex items-center gap-3">
               {isDarkMode ? <Sun className="w-5 h-5 text-amber-400" strokeWidth={1.2} /> : <Moon className="w-5 h-5 text-slate-600" strokeWidth={1.2} />}
@@ -166,7 +166,7 @@ export const Layout: React.FC<LayoutProps> = ({
 
           <button
             onClick={onLock}
-            className="w-full flex items-center justify-start gap-3 px-3 py-3 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-colors"
+            className="w-full flex items-center justify-start gap-3 px-3 py-3 text-rose-500 hover:bg-rose-500/10 dark:hover:bg-rose-500/20 rounded-theme transition-colors"
           >
             <LogOut className="w-5 h-5 shrink-0" strokeWidth={1.2} />
             <span className="md:block text-[10px] font-medium tracking-wider">{t('layout.lock_vault')}</span>

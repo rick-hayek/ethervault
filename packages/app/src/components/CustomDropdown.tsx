@@ -3,7 +3,7 @@ import { Check, ChevronDown } from 'lucide-react';
 
 export interface DropdownOption {
   value: string | number;
-  label: string;
+  label: React.ReactNode;
   dotColor?: string;
 }
 
@@ -65,7 +65,7 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
         onClick={() => setIsOpen(!isOpen)}
         className={buttonClassName || defaultBtnClass}
       >
-        <div className="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap">
+        <div className="flex items-center gap-2 overflow-hidden text-ellipsis whitespace-nowrap min-w-0">
           {selectedOption?.dotColor && (
             <span className={`w-1.5 h-1.5 rounded-full ${selectedOption.dotColor} shrink-0`} />
           )}
