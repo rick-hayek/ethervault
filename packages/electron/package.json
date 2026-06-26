@@ -1,6 +1,6 @@
 {
     "name": "@ethervault/electron",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "description": "Secure password management for desktop.",
     "author": "Rick Huang",
     "repository": "github:rick-hayek/ethervault",
