@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { logger } from './utils/logger';
 import { IconService } from './utils/IconService';
@@ -137,6 +137,19 @@ const AppContent: React.FC = () => {
       setTheme('default');
     }
   }, [settings.isPremium, themeDefinition.premium, setTheme]);
+
+  // Enforce Noir theme constraints: Mode is always Dark, transitions to System when leaving
+  const prevThemeRef = useRef(activeTheme);
+  useEffect(() => {
+    if (activeTheme === 'noir') {
+      if (settings.theme !== 'dark') {
+        setSettings(prev => ({ ...prev, theme: 'dark' }));
+      }
+    } else if (prevThemeRef.current === 'noir') {
+      setSettings(prev => ({ ...prev, theme: 'system' }));
+    }
+    prevThemeRef.current = activeTheme;
+  }, [activeTheme, settings.theme]);
 
   // Persist cloud provider to localStorage and initialize CloudService when it changes
   useEffect(() => {

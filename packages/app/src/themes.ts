@@ -143,6 +143,41 @@ export const THEME_DEFINITIONS: ThemeDefinition[] = [
     },
   },
 
+  // ── Noir (暗黑) ──────────────────────────────────────────────────────────
+  {
+    id: 'noir',
+    emoji: '🖤',
+    nameKey: 'theme.noir.name',
+    descKey: 'theme.noir.desc',
+    premium: false,
+    previewColors: ['#fbbf24', '#1c1917', '#000000'],
+    tokens: {
+      primary: {
+        '50':  '255 251 235',
+        '100': '254 243 199',
+        '200': '253 230 138',
+        '300': '252 211 77',
+        '400': '251 191 36',
+        '500': '245 158 11',
+        '600': '202 138 4',
+        '700': '161 98 7',
+        '800': '120 53 15',
+        '900': '78 38 12',
+      },
+      surfaceLight: '245 245 244',
+      surfaceDark:  '0 0 0',
+      cardLight:    '255 255 255',
+      cardDark:     '10 10 10',
+      radiusBase:   '12px',
+      radiusLg:     '1rem',
+      radiusFull:   '9999px',
+      fontFamily:   "'Inter', system-ui, -apple-system, sans-serif",
+      fontWeightBase: '400',
+      shadowColor:     'rgba(0, 0, 0, 0.06)',
+      shadowColorDark: 'rgba(0, 0, 0, 0)',
+    },
+  },
+
   // ── Cyberpunk (朋克) ──────────────────────────────────────────────────────
   {
     id: 'cyberpunk',
@@ -280,41 +315,6 @@ export const THEME_DEFINITIONS: ThemeDefinition[] = [
       fontWeightBase: '400',
       shadowColor:     'rgba(14, 165, 233, 0.1)',
       shadowColorDark: 'rgba(14, 165, 233, 0.18)',
-    },
-  },
-
-  // ── Noir (暗黑) ──────────────────────────────────────────────────────────
-  {
-    id: 'noir',
-    emoji: '🖤',
-    nameKey: 'theme.noir.name',
-    descKey: 'theme.noir.desc',
-    premium: true,
-    previewColors: ['#fbbf24', '#1c1917', '#000000'],
-    tokens: {
-      primary: {
-        '50':  '255 251 235',
-        '100': '254 243 199',
-        '200': '253 230 138',
-        '300': '252 211 77',
-        '400': '251 191 36',
-        '500': '245 158 11',
-        '600': '202 138 4',
-        '700': '161 98 7',
-        '800': '120 53 15',
-        '900': '78 38 12',
-      },
-      surfaceLight: '245 245 244',
-      surfaceDark:  '0 0 0',
-      cardLight:    '255 255 255',
-      cardDark:     '10 10 10',
-      radiusBase:   '12px',
-      radiusLg:     '1rem',
-      radiusFull:   '9999px',
-      fontFamily:   "'Inter', system-ui, -apple-system, sans-serif",
-      fontWeightBase: '400',
-      shadowColor:     'rgba(0, 0, 0, 0.06)',
-      shadowColorDark: 'rgba(0, 0, 0, 0)',
     },
   },
 ];

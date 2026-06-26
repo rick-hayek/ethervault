@@ -94,7 +94,7 @@ export const CustomDropdown: React.FC<CustomDropdownProps> = ({
                   isSelected
                     ? 'bg-primary-50 dark:bg-primary-500/10 text-primary-600 dark:text-primary-400 font-normal'
                     : 'text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/50'
-                } ${index > 0 ? 'border-t border-slate-50 dark:border-slate-850' : ''}`}
+                } ${index > 0 ? 'border-t-[0.5px] border-slate-100 dark:border-slate-800/50' : ''}`}
               >
                 <div className="flex items-center gap-2">
                   {opt.dotColor && (

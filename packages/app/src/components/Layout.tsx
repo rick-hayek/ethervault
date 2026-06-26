@@ -13,6 +13,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { BottomTabNav } from './BottomTabNav';
 import appLogo from '../../assets/logo.png';
+import { useTheme } from '../hooks/ThemeContext';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -40,6 +41,7 @@ export const Layout: React.FC<LayoutProps> = ({
   useSlider = false
 }) => {
   const { t } = useTranslation();
+  const { activeTheme } = useTheme();
   const [isSearchMode, setIsSearchMode] = useState(false);
 
   const mainRef = React.useRef<HTMLElement>(null);
@@ -156,7 +158,12 @@ export const Layout: React.FC<LayoutProps> = ({
         <div className="p-4 border-t border-primary-500/10 dark:border-primary-400/10 space-y-1">
           <button
             onClick={toggleDarkMode}
-            className="w-full flex items-center justify-between p-3 rounded-theme hover:bg-primary-500/5 dark:hover:bg-primary-400/5 transition-colors group"
+            disabled={activeTheme === 'noir'}
+            className={`w-full flex items-center justify-between p-3 rounded-theme transition-colors group ${
+              activeTheme === 'noir'
+                ? 'opacity-60 cursor-not-allowed'
+                : 'hover:bg-primary-500/5 dark:hover:bg-primary-400/5'
+            }`}
           >
             <div className="flex items-center gap-3">
               {isDarkMode ? <Sun className="w-5 h-5 text-amber-400" strokeWidth={1.2} /> : <Moon className="w-5 h-5 text-slate-600" strokeWidth={1.2} />}

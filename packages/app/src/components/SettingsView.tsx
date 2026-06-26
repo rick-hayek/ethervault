@@ -1259,10 +1259,16 @@ export const SettingsView: React.FC<SettingsViewProps> = ({ settings, setSetting
                 {/* Mode Option */}
                 <button
                   onClick={() => {
+                    if (activeTheme === 'noir') return;
                     const next = settings.theme === 'dark' ? 'light' : (settings.theme === 'light' ? 'system' : 'dark');
                     setSettings({ ...settings, theme: next });
                   }}
-                  className="w-full flex items-center justify-between p-3 px-4 hover:bg-primary-500/5 dark:hover:bg-primary-400/5 rounded-t-theme rounded-b-none transition-colors text-left group"
+                  disabled={activeTheme === 'noir'}
+                  className={`w-full flex items-center justify-between p-3 px-4 rounded-t-theme rounded-b-none transition-colors text-left group ${
+                    activeTheme === 'noir'
+                      ? 'opacity-60 cursor-not-allowed'
+                      : 'hover:bg-primary-500/5 dark:hover:bg-primary-400/5'
+                  }`}
                 >
                   <div className="flex items-center gap-[18px]">
                     <div className="p-1.5 rounded-lg text-slate-400 group-hover:text-primary-500 transition-colors">
