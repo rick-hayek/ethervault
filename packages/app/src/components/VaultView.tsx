@@ -433,8 +433,8 @@ export const VaultView: React.FC<VaultViewProps> = ({
                 </React.Fragment>
               ))}
             </div>
-            {/* Mobile Spacer to clear bottom tab bar */}
-            <div className="h-24 md:hidden" />
+            {/* Mobile Spacer to clear bottom tab bar and floating action button */}
+            <div className="h-16 md:hidden" />
           </>
         ) : (
           <div className="p-12 text-center text-slate-400 dark:text-slate-600 text-xs">
@@ -442,6 +442,17 @@ export const VaultView: React.FC<VaultViewProps> = ({
           </div>
         )}
       </div>
+
+      {/* Mobile Floating Action Button (FAB) */}
+      <button
+        onClick={onAdd}
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchEnd={(e) => e.stopPropagation()}
+        aria-label={t('vault.add')}
+        className="md:hidden fixed bottom-[calc(6.5rem+env(safe-area-inset-bottom))] right-20 z-30 w-14 h-14 rounded-theme-full bg-primary-600 dark:bg-primary-500 text-white shadow-theme-lg shadow-primary-500/30 dark:shadow-primary-400/25 flex items-center justify-center active:scale-90 hover:scale-105 transition-all focus:outline-none"
+      >
+        <Plus className="w-7 h-7" strokeWidth={1.5} />
+      </button>
     </div>
   );
 };
