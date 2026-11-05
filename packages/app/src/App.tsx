@@ -548,7 +548,7 @@ const AppContent: React.FC = () => {
             onTagChange={setActiveTag}
             onEdit={handleOpenEdit}
             onAdd={handleOpenAdd}
-            onGoToSettings={() => setCurrentView('settings')}
+            onGoToSettings={() => handleSetView('settings')}
             onLock={handleLock}
             searchQuery={searchQuery}
             isSyncEnabled={settings.cloudProvider !== 'none'}
@@ -636,7 +636,7 @@ const AppContent: React.FC = () => {
             onTagChange={setActiveTag}
             onEdit={handleOpenEdit}
             onAdd={handleOpenAdd}
-            onGoToSettings={() => setCurrentView('settings')}
+            onGoToSettings={() => handleSetView('settings')}
             onLock={handleLock}
             searchQuery={searchQuery}
             isSyncEnabled={settings.cloudProvider !== 'none'}

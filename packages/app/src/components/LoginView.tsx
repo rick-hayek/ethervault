@@ -21,7 +21,7 @@ export const LoginView: React.FC<LoginViewProps> = ({ onLogin, bioEnabled }) => 
   const [isBioLoading, setIsBioLoading] = useState(false);
   const [isResetModalOpen, setIsResetModalOpen] = useState(false);
 
-  const contactEmail = import.meta.env.VITE_CONTACT_EMAIL || 'immaxgreat@gmail.com';
+  const contactEmail = import.meta.env.VITE_CONTACT_EMAIL || 'support@voocii.com';
 
   const getResetSteps = () => {
     const isDesktop = !!(window as any).electronAPI;
